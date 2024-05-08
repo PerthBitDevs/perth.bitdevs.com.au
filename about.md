@@ -8,7 +8,9 @@ Melbourne Bitdevs is on the last thursday of every month at the **RMIT Blockchai
 
 As a group, we discuss the latest Bitcoin news from a technical perspective. Sometimes we diverge into adjacent fields of privacy, self hosting, free software, and more!
 
-**[Join the telegram](https://t.me/+UYLmJ87DXQ81MmI1) to join our group, confirm event details - and be let upstairs!**
+**[Join the telegram](https://t.me/+jKSVmXSvGvViNzBl) to join our group, confirm event details - and be let upstairs!**
+
+Please ping someone if joining approval is taking too long!
 
 ## News items for this month
 
