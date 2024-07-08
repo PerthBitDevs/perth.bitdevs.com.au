@@ -1,6 +1,5 @@
 html {
-  background-image: url(/assets/lightning.gif);
-  background-size: cover;
+  background-image: url(/assets/greenmesh.gif);
 }
 
 html, body {
@@ -22,10 +21,13 @@ html, body {
   }
 }
 
+
 .Site {
   max-width: 880px;
   margin: 0 auto;
   padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.875);
+
 }
 
 a {
@@ -45,6 +47,7 @@ p {
 h1, h2, h3 {
   color:$primary-color;
   font-weight: bold;
+  color: $primary-color;
 }
 
 h4, h5, h6 {
