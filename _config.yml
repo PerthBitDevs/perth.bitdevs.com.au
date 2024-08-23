@@ -3,15 +3,15 @@ markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title
 plugins: [jekyll-sitemap, jekyll-feed, jekyll-seo-tag]
-url: https://bitdevs.com.au
+url: https://perth.bitdevs.com.au
 
 sass:
   sass_dir: assets/css
   style: :compressed
 
 # Customise atom feed settings (this is where Jekyll-Feed gets configuration information)
-title: "BitDevs Melbourne"
-description: "Melbourne BitDevs is an in-person community for those interested in discussing and exploring developments in Bitcoin and related protocols."
+title: "BitDevs Perth"
+description: "Perth BitDevs is an in-person community for those interested in discussing and exploring developments in Bitcoin and related protocols."
 
 # include new files
 include: 
