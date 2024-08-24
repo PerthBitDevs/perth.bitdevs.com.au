@@ -11,14 +11,20 @@ title: Home
 
   <div class="Home-posts">
     <h2 class="Home-posts-title">Recent Events</h2>
+    The Next Bitdevs will be held at Busselton [Bitcoin Bush Bash](https://bitcoinbushbash.info/) 6-9 September.
+    <p class="Home-about">
+      The BitDevs will take place at Shelter Brewing on Sunday 8th September. Please submit any discussion points to
+      [the github issue here](https://github.com/PerthBitDevs/PerthBitDevs/issues/12).
+    </p>
+  </div>
+  <div class="Home-posts">
+    <h2 class="Home-posts-title">Recent Events</h2>
     {% assign event_posts = 100 %} {% assign counter = 0 %} {% for post in
     site.posts %} {% if post.type == "socratic" or post.type == "whitepaper"%}
     <div class="Home-posts-post">
       <span class="Home-posts-post-date">{{ post.date | date_to_string }}</span>
       <span class="Home-posts-post-arrow">&raquo;</span>
-      <a class="Home-posts-post-title" href="{{ post.url }}"
-        >{{ post.title }}</a
-      >
+      <a class="Home-posts-post-title" href="{{ post.url }}">{{ post.title }}</a>
     </div>
     {% assign counter = counter | plus: 1 %} {% if counter == event_posts %} {%
     break %} {% comment %}exit the for loop{% endcomment %} {% endif %} {% endif
