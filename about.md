@@ -2,15 +2,17 @@
 layout: default
 ---
 
-# MelbBitdevs
+#  Perth Bitdevs
 
-Melbourne Bitdevs is held on the last Thursday of every month at the **RMIT Blockchain Hub** at 6PM.
+Perth Bitdevs is held on the first Thursday of every month at the **Phat Brew Brewing Co** in City West at 6PM.
 
-As a group, we discuss the latest Bitcoin news from a technical perspective. Sometimes diverging into adjacent fields of privacy, self hosting, free software, and more!
+This is a socratic style seminar with Chatam House Rules. 
 
-**[Join the telegram](https://t.me/+jKSVmXSvGvViNzBl) to join our group, confirm event details - and be let upstairs!**
+As a group, we discuss the latest Bitcoin news from a technical perspective. Sometimes diverging into adjacent fields of privacy, self hosting, free software, and more! 
 
-Please feel free to ping someone in the community if joining approval is taking too long!
+Whilst the topics are often technical in nature the goal of the group is to explore and explain the topics so please don't be intimidated and give it a go!
+
+**[Join the telegram](https://t.me/bitcoin_perth) to join the Bitcoin Perth group, confirm event details - and say hello!**
 
 ## News items for this month
 
