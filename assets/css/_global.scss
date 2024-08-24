@@ -1,8 +1,9 @@
 html {
-  background-image: url(/assets/greenmesh.gif);
+  background-image: url(/assets/background.jpg);
 }
 
-html, body {
+html,
+body {
   font-family: $body-font;
   font-size: 16px;
   line-height: 1.5;
@@ -44,13 +45,17 @@ p {
 }
 
 
-h1, h2, h3 {
-  color:$primary-color;
+h1,
+h2,
+h3 {
+  color: $primary-color;
   font-weight: bold;
   color: $primary-color;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-weight: bolder;
 }
 

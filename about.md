@@ -16,7 +16,7 @@ Whilst the topics are often technical in nature the goal of the group is to expl
 
 ## News items for this month
 
-Please suggest any noteworthy topics for next month in the [GitHub issue]([https://github.com/MelbourneBitDevs/MelbBitDevs/issues](https://github.com/PerthBitDevs/PerthBitDevs/issues))! We're open to discussing pretty much anything Bitcoin or Bitcoin-adjacent!
+Please suggest any noteworthy topics for next month in the [GitHub issue]([https://github.com/PerthBitDevs/PerthBitDevs/issues](https://github.com/PerthBitDevs/PerthBitDevs/issues))! We're open to discussing pretty much anything Bitcoin or Bitcoin-adjacent!
 
 ## Things to note
 
