@@ -16,13 +16,13 @@ Whilst the topics are often technical in nature the goal of the group is to expl
 
 ## News items for this month
 
-Please suggest any noteworthy topics for next month in the [GitHub issue](https://github.com/MelbourneBitDevs/MelbBitDevs/issues)! We're open to discussing pretty much anything Bitcoin or Bitcoin-adjacent!
+Please suggest any noteworthy topics for next month in the [GitHub issue]([https://github.com/MelbourneBitDevs/MelbBitDevs/issues](https://github.com/PerthBitDevs/PerthBitDevs/issues))! We're open to discussing pretty much anything Bitcoin or Bitcoin-adjacent!
 
 ## Things to note
 
 Attendence is often larger than meetup page RSVPs.
 
-This event is not streamed online, to preserve free discussion, atmosphere, engagement, and community.
+This event is not streamed online, to preserve free discussion, atmosphere, engagement, and community. There are no photos allowed unless previously agreed with everyone in the photo. 
 
 To facillitate optimal free and open discussion, privacy of attendees is taken seriously, absolutely no photos/recordings without explicit consent from all parties. [Chatham house rule](https://en.wikipedia.org/wiki/Chatham_House_Rule) applies.
 
