@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — November 2025 (Bushbash Edition)</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">November 2025 - Bushbash Edition</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Sunday November 2 &middot; Busselton</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">11 topics</div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BIP Proposal: Chain Code Delegation</h3>
+    <p>A new BIP for Chain Code Delegation, a collaborative custody technique that involves privileged participants (delegatee) withholding BIP32 chain codes at key setup time from a delegator, and sharing only enough information for non-privileged participants to provide their signature. This enables collaborative custodians to co-sign when needed while avoiding the broad visibility that comes with holding an xpub.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bips/pull/2004" target="_blank" rel="noopener">BIP PR #2004</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/ffeb5bde-6121-4123-898d-2e6be6b07619" alt="Chain code delegation diagram" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Large OP_RETURNs Since V30</h3>
+    <p>Mononaut observes large OP_RETURN transactions appearing on-chain since Bitcoin Core v30 removed the relay limit.</p>
+    <div class="links">
+      <a href="https://x.com/mononautical/status/1981931710963909081" target="_blank" rel="noopener">Mononaut thread on X</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/3befac52-2d59-4ac6-90c6-8a199c0511c8" alt="Large OP_RETURN transactions" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BIP-444: Reduced Data Temporary Softfork</h3>
+    <p>BIP-444 was proposed &quot;to reject the standardization of data storage at the consensus level, closing the gap being abused.&quot; This represents the next step in the ongoing &quot;Arbitrary Data&quot; discussion. The proposal includes rules like limiting output scriptPubKeys to 34 bytes, restricting OP_PUSHDATA payloads larger than 256 bytes, and invalidating Tapscripts executing OP_IF/OP_NOTIF. Despite no code or activation client being written, it was scheduled to start 2026-02-01 for one year. Reception was largely critical: kills all upgrade hooks, poorly defined, doesn&rsquo;t actually stop inclusion of arbitrary data on-chain. One day after publication, Peter Todd inscribed the entire BIP text on-chain using a new meta-protocol that bypasses the proposed rules.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bips/pull/2017" target="_blank" rel="noopener">BIP-444 Pull Request</a>
+      <a href="https://groups.google.com/g/bitcoindev/c/nOZim6FbuF8" target="_blank" rel="noopener">Mailing list discussion</a>
+      <a href="https://bitcoinmagazine.com/technical/red-vs-blue-the-bitcoin-ordinals-wargame" target="_blank" rel="noopener">Red Team Blue Team article</a>
+      <a href="https://x.com/peterktodd/status/1982591621356212274" target="_blank" rel="noopener">Peter Todd response</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/78e87bdc-0b3f-4fe8-88d6-192c415cbe6e" alt="BIP-444 reaction" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>How to Farm the BIP-444 Airdrop if a Chain Split Occurs</h3>
+    <p>When a chain split occurs, coin holders have keys to assets on both sides. To safely sell on one chain while retaining the other, they need replay protection. After BIP-444 activates, two validation paths exist: a legacy branch (accepts all base consensus transactions) and a policy branch (rejects oversized data carriers). Holders can create conflicting transactions: one with oversized OP_RETURN (accepted only on legacy) and one compliant (accepted only on policy), resulting in duplicated spendability.</p>
+    <div class="links">
+      <a href="https://github.com/mikekelly/BIP444-Airdrop" target="_blank" rel="noopener">BIP444-Airdrop guide</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Remove Unreliable DNS Seed</h3>
+    <p>Pull request #33723 raised in the Bitcoin Core repository to remove a specific DNS seed for returning a non-representative sample in violation of the DNS seed policy. Discussion points: What is a DNS seed? Why are DNS seeds hardcoded into each release? Who was removed and is it reasonable?</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/pull/33723" target="_blank" rel="noopener">Bitcoin Core PR #33723</a>
+      <a href="https://github.com/bitcoin/bitcoin/blob/master/doc/dnsseed-policy.md" target="_blank" rel="noopener">DNS seed policy</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/91cbd4e9-393e-4951-aa56-c7cab21a71a9" alt="DNS seed removal PR" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Does Chunking Data Actually Change Anything?</h3>
+    <p>How to convert a transaction to a JPEG with and without chunks. Examining whether chunking data makes any difference in the context of on-chain data storage debates.</p>
+    <div class="links">
+      <a href="https://mempool.space/tx/0301e0480b374b32851a9462db29dc19fe830a7f7d7a88b81612b9d42099c0ae?mode=details" target="_blank" rel="noopener">Example transaction on mempool.space</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/46ad8aa2-e586-466f-9944-ca3a31f4cb67" alt="Data chunking analysis" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/88c18074-a219-43e5-bab1-43b807d32669" alt="Chunk size details" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/4c616fb5-7e37-49f5-926c-6bd679b84003" alt="Results" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bitcoin Core V30.0 Released</h3>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/blame/master/doc/release-notes/release-notes-30.0.md" target="_blank" rel="noopener">V30.0 Release Notes</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BitVM2 Unhappy Path Seen in Wild</h3>
+    <p>The BitVM2 unhappy path (dispute resolution) has been observed on-chain for the first time.</p>
+    <div class="links">
+      <a href="https://x.com/dntse/status/1930272316124287393" target="_blank" rel="noopener">dntse thread on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>10/10 Largest Crypto Liquidation of All Time?</h3>
+    <p>Discussion of what may have been the largest crypto liquidation event of all time.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Beacon 21M</h3>
+    <p>Beacon 21M project announcements and updates.</p>
+    <div class="links">
+      <a href="https://github.com/beacon21m" target="_blank" rel="noopener">GitHub: beacon21m</a>
+      <a href="https://primal.net/e/nevent1qqsq5uap9tj235xayy49zmtwwc6yk3h3yxpyecg03kue6g5a6seze2ckr0xdv" target="_blank" rel="noopener">Primal announcement 1</a>
+      <a href="https://primal.net/e/nevent1qqsv7fuzd6u78cflu5hprvhq3f3pnw6dd8ejwmt2lkwumw4kqv0kqrq6gkpzl" target="_blank" rel="noopener">Primal announcement 2</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Lava Service Changes Custody Arrangements</h3>
+    <p>Lava offered self-custody loans using DLC (discrete log contracts). An update changed this from a non-custodial setup to a fully trusted and custodial model, with Lava now having full control over users&rsquo; funds. This fundamental change was not clearly communicated to users in the upgrade process. Lava stated they no longer use DLCs because the technology doesn&rsquo;t meet their security standards, citing client-side key risk, hot keys, and oracle manipulation vulnerabilities.</p>
+    <div class="links">
+      <a href="https://x.com/OwenKemeys/status/1986206658486227396" target="_blank" rel="noopener">Owen Kemeys: Upgrade notice screenshots</a>
+      <a href="https://bitcoinmagazine.com/business/lava-abandons-self-custody-amidst-fund-raise-sparking-controversy" target="_blank" rel="noopener">Bitcoin Magazine: Lava abandons self-custody</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; November 2025 - Bushbash Edition<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/28" target="_blank">GitHub Issue #28</a></p>
+  </footer>
+</div>
+</body>
+</html>

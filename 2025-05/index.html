@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — May 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+  <header>
+    <div class="badge">May 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 1st May, 6pm &middot; Phat Brew, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">20 topics</div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>SwiftSync</h3>
+    <p>A 5.28x speedup of initial block download (IBD) over Bitcoin Core&rsquo;s default IBD settings, reducing the initial sync time from about 41 hours to about 8 hours. The user performing SwiftSync downloads a &quot;hints&quot; file and uses it when processing each block such that it only stores outputs in the UTXO database if the hints file indicates that the output will remain in the UTXO set up to the block that the SwiftSync &quot;checkpoint&quot; matches. This massively reduces the number of entries that are added, and then later removed, from the UTXO database during IBD.</p>
+    <div class="links">
+      <a href="https://x.com/somsenruben/status/1909914823694901411" target="_blank" rel="noopener">x.com - Ruben Somsen on SwiftSync</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Quantum Computing Threat to Bitcoin</h3>
+    <p>Multiple discussions about quantum computing threat. Jameson Lopp posted to the Bitcoin-Dev mailing list several arguments for the destruction of bitcoins vulnerable to quantum theft after an upgrade path to quantum resistance has been adopted and users have had time to adopt the solution. (Optech #348)</p>
+    <div class="links">
+      <a href="https://mailing-list.bitcoindevs.xyz/bitcoindev/CADL_X_cF=UKVa7CitXReMq8nA_4RadCF==kU4YG+0GYN97P6hQ@mail.gmail.com/" target="_blank" rel="noopener">Bitcoin-Dev Mailing List - Lopp on Quantum Vulnerability</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Block Releases Open-Source Tools for Bitcoin Treasury Management</h3>
+    <p>Released as part of the Block Open Source initiative. Not much yet - a bit of a let down. Maybe the public pricing endpoint is useful: pricing data refreshed every 60 seconds, comprised of a volume weighted average of price data from many cryptocurrency exchanges.</p>
+    <div class="links">
+      <a href="https://github.com/block/bitcoin-treasury" target="_blank" rel="noopener">github.com - Block Bitcoin Treasury</a>
+      <a href="https://pricing.bitcoin.block.xyz/current-price" target="_blank" rel="noopener">pricing.bitcoin.block.xyz - Current Price API</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>New SEC Chairperson - Paul Atkins</h3>
+    <p>Gary Gensler is out. Atkins is &quot;a vocal supporter of the digital asset space.&quot; A &quot;top priority&quot; of his chairmanship would be to provide a &quot;firm regulatory foundation for digital assets through a rational, coherent and principled approach.&quot; Paul Atkins&rsquo; first public event as chairman was a crypto roundtable. He previously served as an SEC Commissioner from 2002 to 2008 under the George W. Bush administration.</p>
+    <div class="links">
+      <a href="https://coingeek.com/paul-atkins-officially-sworn-into-office-as-sec-chairman/" target="_blank" rel="noopener">coingeek.com - Paul Atkins Sworn In</a>
+      <a href="https://www.coindesk.com/policy/2025/04/25/new-sec-chief-atkins-says-agency-doesn-t-have-to-wait-to-impose-crypto-policy" target="_blank" rel="noopener">coindesk.com - Atkins on Crypto Policy</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Tether Directs Hashrate to OCEAN Pool</h3>
+    <p>OCEAN enables miners to construct their own block templates via its DATUM protocol - individual miners have a say! Tether has a number of mining interests, them directing their hashrate to OCEAN is good for decentralisation.</p>
+    <div class="links">
+      <a href="https://www.theminermag.com/news/2025-04-14/tether-ocean-pool-bitcoin" target="_blank" rel="noopener">theminermag.com - Tether OCEAN Pool</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Core v29.0 Is Out!</h3>
+    <p>Ephemeral dust is a new concept that allows a single dust output in a transaction, provided the transaction is zero fee. Also features the switch of the build system to CMake, bringing multi-config builds, more robust support for Windows, macOS, and various Linux distributions, and better support for modern C++ features.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/releases/tag/v29.0" target="_blank" rel="noopener">github.com - Bitcoin Core v29.0 Release</a>
+      <a href="https://bitcoincore.org/en/releases/29.0/" target="_blank" rel="noopener">bitcoincore.org - v29.0 Release Notes</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>ESP32 Bluetooth CVE</h3>
+    <p>Blockstream Jade uses ESP32, a microcontroller widely used in IoT devices to provide Wi-Fi and Bluetooth connectivity. An attacker can embed a hidden list of vulnerabilities through module updates, potentially compromising ESP32 devices and allowing unauthorized access to private keys. However, Blockstream says both v1 and Plus products are not affected by the ESP32 Bluetooth CVE.</p>
+    <div class="links">
+      <a href="https://x.com/adam3us/status/1913245160676167763" target="_blank" rel="noopener">x.com - Adam Back on ESP32 CVE</a>
+      <a href="https://x.com/Blockstream/status/1912468476200997138" target="_blank" rel="noopener">x.com - Blockstream response</a>
+      <a href="https://cryptodeeptech.ru/bitcoin-bluetooth-attacks/" target="_blank" rel="noopener">cryptodeeptech.ru - Bitcoin Bluetooth Attacks</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Twenty One Capital</h3>
+    <p>Twenty One Capital is set to launch with over 42,000 BTC in its treasury. Led by Jack Mallers of Strike. Backed by Tether, SoftBank, Cantor equity partners. Mission: &quot;to maximize Bitcoin ownership per share and offer investors direct exposure to Bitcoin via a public company structure.&quot; Aims to replicate (Micro)Strategy.</p>
+    <div class="links">
+      <a href="https://bitcoinmagazine.com/news/jack-mallers-named-ceo-of-new-bitcoin-powerhouse-twenty-one-capital-plans-to-launch-with-42000-btc" target="_blank" rel="noopener">bitcoinmagazine.com - Twenty One Capital</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Federal Reserve Retracts Guidance Discouraging Banks from Crypto</h3>
+    <p>&quot;The Board will no longer expect banks to provide notification and will instead monitor banks&rsquo; crypto-asset activities through the normal supervisory process.&quot; Saylor: &quot;Banks are now free to begin supporting Bitcoin.&quot;</p>
+    <div class="links">
+      <a href="https://www.theblock.co/post/351943/federal-reserve-retracts-guidance-discouraging-banks-from-engaging-in-crypto" target="_blank" rel="noopener">theblock.co - Federal Reserve Retracts Guidance</a>
+      <a href="https://x.com/saylor/status/1915539240710021530" target="_blank" rel="noopener">x.com - Saylor on Fed guidance</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>UTXOscope - On-Chain Price Analysis Tool</h3>
+    <p>UTXOscope is a text-only BTC blockchain analysis tool that visualizes price dynamics using only on-chain data. It estimates Bitcoin price trends by analyzing the value distribution of newly created UTXOs, identifying clusters that likely represent common purchase amounts ($100, $50, $200), and tracking these clusters over time to infer price movements. This demonstrates how price information is inherently embedded in the blockchain itself, without needing external oracles.</p>
+    <img src="https://github.com/user-attachments/assets/50dc3d3b-8d9e-4510-ace5-c28b50a56d29" alt="UTXOscope visualization" loading="lazy">
+    <div class="links">
+      <a href="https://github.com/Drew72-ita/UTXOscope" target="_blank" rel="noopener">github.com - UTXOscope</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>LNBig Shares Thoughts on Running Lightning Nodes</h3>
+    <p>&quot;The entire network of my nodes earns about 500,000 satoshis per day on average.&quot; Liquidity across all nodes is roughly around 300 bitcoins. That works out to about 0.6% profit from fees annually - not accounting for the costs of opening/closing channels and on-chain fees. &quot;Is this a profitable venture? You decide for yourselves.&quot;</p>
+    <div class="links">
+      <a href="https://njump.me/nevent1qqsfjq45qu5d8tzjhz2kqtzsw49dn8tucyva2jat8trpxnlh4muqzjspzemhxue69uhhyetvv9ujumn0wd68ytnzv9hxgqgdwaehxw309ahx7uewd3hkcq3qngumlqmus6xkrmvvee4yc7swh9h4uk7vpq4ddt7a2jtvkc22y0asytq3hw" target="_blank" rel="noopener">njump.me - LNBig post on Nostr</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Mempool v3.2.0 Released</h3>
+    <p>Support for v3 transactions, anchor outputs, new UTXO bubble chart on the address page, DATUM miner tags, tags to identify runestone messages and inscriptions, package broadcast, stratum job data visualizations, taproot multisig labels, transaction &amp; PSBT preview feature, and address poisoning detection.</p>
+    <div class="links">
+      <a href="https://github.com/mempool/mempool/releases/tag/v3.2.0" target="_blank" rel="noopener">github.com - Mempool v3.2.0 Release</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Softforks Database</h3>
+    <p>A comprehensive research database comparing active Bitcoin soft fork proposals.</p>
+    <div class="links">
+      <a href="https://bitcoin.softforks.org" target="_blank" rel="noopener">bitcoin.softforks.org</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Consensus Cleanup Soft Fork BIP Draft - Announced and Withdrawn</h3>
+    <p>This proposal addresses a number of long-standing vulnerabilities and weaknesses in the Bitcoin protocol, bundling fixes together to overcome the fixed cost of deploying a soft fork. Opened March 27th. Feedback was that it should be &quot;separate, focused BIPs&quot; (4 of them) rather than a single BIP. Closed April ~23rd.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bips/pull/1800" target="_blank" rel="noopener">github.com - BIP PR #1800</a>
+      <a href="https://github.com/darosior/bips/blob/f0ca398f3438fc46bc9d88b978a856e200292151/bip-0054.md" target="_blank" rel="noopener">github.com - BIP-0054 Draft</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>AI Bots with eCash Stamps</h3>
+    <p>Very interesting approach to gated payments.</p>
+    <div class="links">
+      <a href="https://primal.net/e/nevent1qvzqqqqqqypzpwleyw4fy3sxt7yvgrran0mpenxqlululur94r9jlax0hd3q3rc7qqsv28jedeyyrusylh7y7f3m09ks4k4634aheyd0zyx5gj4ymgrqh7c64rg6g" target="_blank" rel="noopener">primal.net - eCash Stamps post</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>OP_RETURN Drama</h3>
+    <p>Discussed briefly in the WA Bitcoiners Signal group. Active debate on the Bitcoin-Dev mailing list and in Bitcoin Core PR #32359.</p>
+    <img src="https://github.com/user-attachments/assets/8492dabd-8906-4965-82f0-b0d4ee4d29cf" alt="OP_RETURN discussion" loading="lazy">
+    <div class="links">
+      <a href="https://groups.google.com/g/bitcoindev/c/d6ZO7gXGYbQ" target="_blank" rel="noopener">groups.google.com - Bitcoin-Dev Discussion</a>
+      <a href="https://github.com/bitcoin/bitcoin/pull/32359" target="_blank" rel="noopener">github.com - Bitcoin Core PR #32359</a>
+      <a href="https://x.com/OrangeSurfBTC/status/1917557451047477534" target="_blank" rel="noopener">x.com - OrangeSurfBTC on OP_RETURN</a>
+      <a href="https://x.com/cbspears/status/1917320208483578277" target="_blank" rel="noopener">x.com - Further content by cbspears</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>OP_RETURN Discussion (Additional Context)</h3>
+    <img src="https://github.com/user-attachments/assets/461e8c5c-3243-419c-8534-fe7e88e4d334" alt="OP_RETURN image" loading="lazy">
+    <div class="links">
+      <a href="https://x.com/ejuline/status/1917178149554528703" target="_blank" rel="noopener">x.com - ejuline on OP_RETURN</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Social Engineering Attack for 3,500 BTC</h3>
+    <p>Social engineering attack resulting in the theft of a casual 3,500 BTC.</p>
+    <div class="links">
+      <a href="https://x.com/zachxbt/status/1916756932763046273" target="_blank" rel="noopener">x.com - ZachXBT on the attack</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Lightspark - New &quot;L2&quot;</h3>
+    <div class="links">
+      <a href="https://x.com/bergealex4/status/1917407213242703883" target="_blank" rel="noopener">x.com - Bergealex on Lightspark</a>
+      <a href="https://docs.spark.money/home/welcome" target="_blank" rel="noopener">docs.spark.money - Spark Documentation</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; May 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/22" target="_blank">GitHub Issue #22</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — March 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+  <header>
+    <div class="badge">March 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 6th March, 6pm &middot; Phat Brew, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">12 topics</div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Obscura VPN Now Available</h3>
+    <p>Obscura VPN is from Carl Dong, former Bitcoin Core developer who was responsible for reproducible builds. Obscura is designed to never see user traffic, making tracking impossible. It blends with regular internet traffic to avoid network filters, ensuring unrestricted access.</p>
+    <img src="https://github.com/user-attachments/assets/14cb8c73-a443-4bf4-9814-eb46f31b6ac8" alt="Obscura VPN" loading="lazy">
+    <div class="links">
+      <a href="https://obscura.net" target="_blank" rel="noopener">obscura.net</a>
+      <a href="https://threadreaderapp.com/thread/1889381916081791265.html" target="_blank" rel="noopener">threadreaderapp.com - Obscura Thread</a>
+      <a href="https://www.nobsbitcoin.com/obscura-vpn-is-now-available-on-macos/" target="_blank" rel="noopener">nobsbitcoin.com - Obscura VPN on macOS</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Proton Wallet Now Available to All</h3>
+    <p>Anyone can sign up for Proton Wallet for free to securely buy, send, receive, and hold BTC. It&rsquo;s a self-custody wallet - Proton never has access to your private keys - from the highly regarded Proton team (Protonmail, SimpleLogin etc).</p>
+    <div class="links">
+      <a href="https://proton.me/blog/wallet-launch" target="_blank" rel="noopener">proton.me - Wallet Launch Blog</a>
+      <a href="https://proton.me/wallet" target="_blank" rel="noopener">proton.me/wallet</a>
+      <a href="https://proton.me/blog/proton-wallet-security-model" target="_blank" rel="noopener">proton.me - Wallet Security Model</a>
+      <a href="https://www.nobsbitcoin.com/proton-wallet-v0-0-57-0/" target="_blank" rel="noopener">nobsbitcoin.com - Proton Wallet v0.0.57.0</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Argentina&rsquo;s Milei Promotes LIBRA Memecoin</h3>
+    <p>The coin&rsquo;s market cap surged to $4.4 billion but then dropped over 95%. Milei&rsquo;s deleted tweet claimed Libra was aimed at boosting Argentina&rsquo;s economy and included a Solana contract address for the token.</p>
+    <div class="links">
+      <a href="https://www.coindesk.com/business/2025/02/15/javier-milei-backtracks-on-usd4-4b-memecoin-after-insiders-pocket-usd87m" target="_blank" rel="noopener">coindesk.com - Milei Backtracks on $4.4B Memecoin</a>
+      <a href="https://xcancel.com/saifedean/status/1890724929168912636" target="_blank" rel="noopener">Saifedean&rsquo;s commentary</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>ByBit Hack</h3>
+    <p>Major exchange security incident at ByBit.</p>
+    <div class="links">
+      <a href="https://x.com/leishman/status/1893534874314608683" target="_blank" rel="noopener">x.com - Leishman on ByBit Hack</a>
+      <a href="https://primal.net/e/note1md5d9v3459k9czf875ws58u0xf03w9qvwygt7wkn06skjk47lwzse9yasp" target="_blank" rel="noopener">primal.net - Lopp Detail</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>UK Orders Apple to Create Backdoor for Encrypted iCloud</h3>
+    <p>UK orders Apple to create backdoor for encrypted iCloud accounts worldwide. Apple might withdraw support for Advanced Data Protection for iCloud in the UK instead of installing a backdoor. But even doing this might not satisfy the UK&rsquo;s demand for worldwide backdoor access.</p>
+    <div class="links">
+      <a href="https://archive.md/8EYGP" target="_blank" rel="noopener">archive.md - TechCrunch Archive</a>
+      <a href="https://www.nobsbitcoin.com/uk-government-demands-apple-to-create-backdoor-for-encrypted-icloud-accounts-worldwide/" target="_blank" rel="noopener">nobsbitcoin.com - UK Government Demands Apple Backdoor</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>LNbits &quot;Almost Out of Beta&quot;</h3>
+    <p>After 5 years and 8.5k commits, LNbits is almost out of beta. LNbits is a free and open-source Lightning wallet and accounts system.</p>
+    <div class="links">
+      <a href="https://github.com/lnbits/lnbits" target="_blank" rel="noopener">github.com/lnbits</a>
+      <a href="https://v1.lnbits.com" target="_blank" rel="noopener">v1.lnbits.com</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Inquisition v28.1 Released</h3>
+    <p>Bitcoin Inquisition is a signet full node designed for experimenting with proposed soft forks and other major protocol changes. This version has support for ephemeral dust, which is part of the ephemeral anchors idea that would allow Lightning on-chain transactions to have fees set at spend time. Any participant can use the ephemeral anchor output as the input to a child transaction which adds fees at the time the transaction is broadcast.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin-inquisition/bitcoin/releases/tag/v28.1-inq" target="_blank" rel="noopener">github.com - Bitcoin Inquisition v28.1 Release</a>
+      <a href="https://bitcoinops.org/en/topics/ephemeral-anchors/" target="_blank" rel="noopener">bitcoinops.org - Ephemeral Anchors</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Kagi Implements Privacy Pass</h3>
+    <p>Kagi implements Privacy Pass, an authentication protocol that allows clients to authenticate to Kagi servers in a way that verifies the client has the right to access its services but does not reveal the identity of the connecting client.</p>
+    <div class="links">
+      <a href="https://blog.kagi.com/kagi-privacy-pass" target="_blank" rel="noopener">blog.kagi.com - Kagi Privacy Pass</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Nostr Wallet Connect (NWC) Seeing Increased Adoption</h3>
+    <p>NWC allows for sustained interaction between Bitcoin Lightning wallets and apps. Once an app connection is created, the app can request payments through a Nostr relay. Now available in Primal 2.1 and Zeus v0.10.0-alpha2.</p>
+    <div class="links">
+      <a href="https://www.nobsbitcoin.com/primal-v2-1/" target="_blank" rel="noopener">nobsbitcoin.com - Primal v2.1</a>
+      <a href="https://github.com/ZeusLN/zeus/releases/tag/v0.10.0-alpha2" target="_blank" rel="noopener">github.com - Zeus v0.10.0-alpha2</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Hashpool</h3>
+    <p>Hashpool - a new mining pool concept. Covered by @humansinstitute.</p>
+    <div class="links">
+      <a href="https://hashpool.dev/articles/what-is-hashpool/" target="_blank" rel="noopener">hashpool.dev - What is Hashpool?</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>BIP 3 Has Been Merged</h3>
+    <p>BIPs are Bitcoin Improvement Proposals. BIP 3 introduced new guidelines and policies for the preparation and publication of BIPs, and reduces the set of BIP statuses.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bips/pull/1712" target="_blank" rel="noopener">github.com - BIP 3 Pull Request</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Tracking Bitcoin Laws in the US</h3>
+    <p>It&rsquo;s probably worth examining the state-of-play each month as a lot is happening in the space. In the last month: Montana, North Dakota, Pennsylvania, South Dakota, and Wyoming all rejected Strategic Bitcoin Reserve-like laws. The Texas Senate Business and Commerce Committee unanimously approved the Strategic Bitcoin Reserve (SB 21) bill with a 9-0 vote. Oklahoma&rsquo;s Strategic Bitcoin Reserve Act (HB 1203) moves to the House floor.</p>
+    <div class="links">
+      <a href="https://bitcoinlaws.io" target="_blank" rel="noopener">bitcoinlaws.io - Tracking Bitcoin Laws</a>
+      <a href="https://bitbo.io/news/oklahoma-bitcoin-reserve-bill/" target="_blank" rel="noopener">bitbo.io - Oklahoma Bitcoin Reserve Bill</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; March 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/20" target="_blank">GitHub Issue #20</a></p>
+  </footer>
+</div>
+</body>
+</html>

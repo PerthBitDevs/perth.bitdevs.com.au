@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — July 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">July 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 3rd July, 6pm &middot; Phat Brew Club, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">12 topics</div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Zeus Wallet Upgrade</h3>
+    <p>Zeus wallet v0.11.1 released with new features and improvements.</p>
+    <div class="links">
+      <a href="https://github.com/ZeusLN/zeus/releases/tag/v0.11.1" target="_blank" rel="noopener">github.com/ZeusLN/zeus/releases/tag/v0.11.1</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Perth Bloke Launches NostrMQ</h3>
+    <p>NostrMQ is a new messaging queue protocol built on Nostr. Example use case: Mongo By Relays - no hosting, no API layer, ephemeral keys for encrypted responses.</p>
+    <div class="links">
+      <a href="https://github.com/humansinstitute/nostrMQ" target="_blank" rel="noopener">github.com/humansinstitute/nostrMQ</a>
+      <a href="https://primal.net/e/nevent1qqs0amh638qsh6m7ra4dlssjpde70f9kaqfspenwd9e3xgg26d343acq9v05d" target="_blank" rel="noopener">Primal announcement</a>
+      <a href="https://github.com/humansinstitute/nostrMQ/blob/main/docs/mongobyrelay.md" target="_blank" rel="noopener">Mongo By Relay docs</a>
+      <a href="https://github.com/humansinstitute/nostrMQ/blob/main/examples/mongo-pilot-client.js" target="_blank" rel="noopener">Example client</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>The Filter Wars Continue</h3>
+    <p>Aeon BTC decides to ban their node from connecting to Knots nodes and publishes a &quot;Know Knots node list&quot; so others can do the same. Gmax sees issues with the ban list potentially creating network splits and suggests the list only be used for outbound peers.</p>
+    <div class="links">
+      <a href="https://x.com/aeonBTC/status/1936838919833919853" target="_blank" rel="noopener">Aeon BTC announcement</a>
+      <a href="https://github.com/aeonBTC/Knots-Banlist/issues/6" target="_blank" rel="noopener">Gmax issue on Knots-Banlist repo</a>
+      <a href="https://github.com/bitcoin/bitcoin/blob/29.x/src/node/connection_types.h" target="_blank" rel="noopener">Node connection types reference</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/650e3fe4-5609-4fd7-9650-4e125091b042" alt="Filter wars context" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Node Fingerprint Attack</h3>
+    <p>Daniela Brozzoni posted to Delving Bitcoin about research into identifying the same node on multiple networks using addr messages. Nodes send addr messages to advertise other potential nodes, but the researchers were able to fingerprint individual nodes using details from their specific address messages, allowing them to identify the same node running on multiple networks (such as IPv4 and Tor). Suggested mitigations include removing timestamps from address messages or randomizing them slightly.</p>
+    <div class="links">
+      <a href="https://delvingbitcoin.org/t/fingerprinting-nodes-via-addr-requests/1786" target="_blank" rel="noopener">Delving Bitcoin: Fingerprinting nodes via addr requests</a>
+      <a href="https://github.com/bitcoin/bips/blob/master/bip-0155.mediawiki" target="_blank" rel="noopener">BIP-155: ADDR Message v2</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Time to Talk About Forking: CTV &amp; CSFS</h3>
+    <p>70 developers signed a letter supporting CTV (OP_CHECKTEMPLATEVERIFY, BIP-119) and CSFS (OP_CHECKSIGFROMSTACK, BIP-348). O&rsquo;Beirne posted the letter to the mailing list. Antoine Poinsot and Greg Sanders started their own CTV discussion thread. Open question: OP_NOP4 and legacy script, or OP_SUCCESS and Tapscript only?</p>
+    <div class="links">
+      <a href="https://ctv-csfs.com/" target="_blank" rel="noopener">ctv-csfs.com - Developer letter</a>
+      <a href="https://groups.google.com/g/bitcoindev/c/KJF6A55DPJ8" target="_blank" rel="noopener">Mailing list: O&rsquo;Beirne letter</a>
+      <a href="https://groups.google.com/g/bitcoindev/c/-qJc1EWQzY0" target="_blank" rel="noopener">Mailing list: Poinsot &amp; Sanders CTV thread</a>
+      <a href="https://github.com/bitcoin/bips/blob/master/bip-0119.mediawiki" target="_blank" rel="noopener">BIP-119: CTV</a>
+      <a href="https://github.com/bitcoin/bips/blob/master/bip-0348.md" target="_blank" rel="noopener">BIP-348: CSFS</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BitVM3 and Garbled Circuits</h3>
+    <p>New BitVM3 proposal using garbled circuits for off-chain computation verification on Bitcoin.</p>
+    <div class="links">
+      <a href="https://delvingbitcoin.org/t/garbled-circuits-and-bitvm3/1773" target="_blank" rel="noopener">Delving Bitcoin discussion</a>
+      <a href="https://bitvm.org/bitvm3.pdf" target="_blank" rel="noopener">BitVM3 PDF whitepaper</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/78b85417-a285-4aa8-b718-b3bf74f5fa05" alt="BitVM3 diagram 1" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/c1f7b224-b68d-4df0-9aed-e41b72452e50" alt="BitVM3 diagram 2" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Descriptor Encrypt</h3>
+    <p>Josh Doman announced a Rust library that deterministically encrypts wallet descriptors so they can only be decrypted by the set of keys that can spend the funds. This enables secure public backups where sensitive wallet information needs to remain hidden from unauthorized parties.</p>
+    <div class="links">
+      <a href="https://delvingbitcoin.org/t/rust-descriptor-encrypt-encrypt-any-descriptor-such-that-only-authorized-spenders-can-decrypt/1750/" target="_blank" rel="noopener">Delving Bitcoin announcement</a>
+      <a href="https://descriptorencrypt.org/" target="_blank" rel="noopener">descriptorencrypt.org</a>
+      <a href="https://github.com/joshdoman/descriptor-encrypt" target="_blank" rel="noopener">GitHub: descriptor-encrypt</a>
+      <a href="https://github.com/bitcoin/bips/blob/master/bip-0380.mediawiki" target="_blank" rel="noopener">BIP-380: Output Script Descriptors</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Bitcoin Treasury Update</h3>
+    <p>Bitcoin entities have increased holdings by 18% in 2025. Major moves include Strategy&rsquo;s $84B capital raise plan, Trump Media planning to raise $2.5B, Green Minerals (Norway) purchasing $1.2B, GameStop&rsquo;s $513M Bitcoin purchase, Metaplanet&rsquo;s goal of holding 210,000 BTC by 2027, Twenty One Capital launching with over 42,000 BTC, and many more corporate treasury strategies.</p>
+    <img src="https://github.com/user-attachments/assets/6859fd3c-52bd-4993-8bdc-002b955e155b" alt="Bitcoin treasury holdings chart" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Ashigaru Whirlpool Released</h3>
+    <p>The Ashigaru Open Source Project has released Ashigaru Whirlpool, a version of Samourai Wallet&rsquo;s Whirlpool, allowing users to coinjoin again. Alongside the coordinator code, the project has launched a desktop client terminal application (available on Linux, macOS, and Windows), forked from Sparrow Terminal.</p>
+    <div class="links">
+      <a href="https://ashigaru.rs/news/release-terminal-v1-0-0/" target="_blank" rel="noopener">Ashigaru Terminal v1.0.0 Release</a>
+      <a href="https://ashigaru.rs/news/announcement-whirlpool/" target="_blank" rel="noopener">Ashigaru Whirlpool Announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Frostsnap Released</h3>
+    <p>The first hardware wallet that is not a trusted third party. Frostsnap devices are not trusted to generate keys on their own - they involve your phone or laptop in sensitive operations to disrupt any possibility of device attacks. Built on FROST (Flexible Round-Optimised Schnorr Threshold), which enables true t-of-n thresholds. Unlike MuSig/MuSig2 where all participants must be online, FROST allows any subset of t participants to sign. Distributed Key Generation ensures every participant contributes equally without a trusted dealer.</p>
+    <div class="links">
+      <a href="https://frostsnap.com" target="_blank" rel="noopener">frostsnap.com</a>
+      <a href="https://github.com/frostsnap/frostsnap" target="_blank" rel="noopener">GitHub: frostsnap</a>
+      <a href="https://twitter.com/FrostsnapTech" target="_blank" rel="noopener">@FrostsnapTech on Twitter</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/467365b7-5c74-418c-8924-c0e5f3c13ff2" alt="Frostsnap overview" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/d1e969b8-12da-4fa4-a181-e5c3ed9b33fb" alt="FROST diagram 1" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/d7f8e0b7-c48f-4393-86f2-2e0edb9adc37" alt="FROST diagram 2" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Frostsnap Additional Context</h3>
+    <p>Additional diagrams and reference material for the Frostsnap discussion.</p>
+    <div class="links">
+      <a href="https://github.com/frostsnap/frostsnap/blob/master/README.md" target="_blank" rel="noopener">Frostsnap README</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/16496958-02cd-40cf-968d-89206b9138cb" alt="Frostsnap context 1" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/3596e51a-cbbf-4eae-86a1-f985799851aa" alt="Frostsnap context 2" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Wallets Using Spark</h3>
+    <p>Spark is an off-chain scaling solution built on top of Statechains. Wallet of Satoshi&rsquo;s new &quot;non-custodial&quot; version is built on Spark. Blitz Wallet integrates Bitcoin Lightning Network, Liquid sidechain, and eCash to balance trade-offs and make self-custodial payments easier. The new Breez SDK is also built on Spark&rsquo;s L2. Blitz introduces a &quot;custodial ladder&quot; to help users transition to full self-custody at their own pace.</p>
+    <div class="links">
+      <a href="https://www.spark.money" target="_blank" rel="noopener">spark.money</a>
+      <a href="https://bitcoinmagazine.com/news/wallet-of-satoshi-partners-with-spark-to-offer-self-custodial-bitcoin-lightning-experience" target="_blank" rel="noopener">Wallet of Satoshi + Spark</a>
+      <a href="https://bitcoinmagazine.com/news/spark-partners-with-breez-to-launch-bitcoin-native-sdk-for-lightning-payments" target="_blank" rel="noopener">Spark + Breez SDK</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; July 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/24" target="_blank">GitHub Issue #24</a></p>
+  </footer>
+</div>
+</body>
+</html>

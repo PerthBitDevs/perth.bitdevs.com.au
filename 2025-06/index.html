@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — June 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+  <header>
+    <div class="badge">June 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 5th June, 6pm &middot; Phat Brew Club, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">19 topics</div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Libre Board - Fully Open Source Bitcoin Mining Control Board</h3>
+    <p>A project by the 256 Foundation providing a fully open source Bitcoin mining control board.</p>
+    <div class="links">
+      <a href="https://github.com/256-Foundation/Libre-Board" target="_blank" rel="noopener">github.com - Libre Board</a>
+      <a href="https://xcancel.com/Schnitzel/status/1919446954926391482" target="_blank" rel="noopener">xcancel.com - Schnitzel announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Apple&rsquo;s App Tax Is No More - In-App BTC Payments Soon?</h3>
+    <p>Arising from the legal fight between Epic Games (maker of Fortnite) and Apple. Could open the door to in-app BTC payments.</p>
+    <div class="links">
+      <a href="https://cointelegraph.com/news/apple-app-store-epic-games-restrictions-ease-court-ruling-united-states" target="_blank" rel="noopener">cointelegraph.com - Apple App Store Restrictions Ease</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Companies Acquire ~96,000 BTC in April</h3>
+    <p>Is this a good thing? Only ~13,600 BTC entered circulation through mining rewards in the same period.</p>
+    <div class="links">
+      <a href="https://atlas21.com/companies-acquire-nearly-100000-bitcoin-in-a-single-month" target="_blank" rel="noopener">atlas21.com - Companies Acquire Nearly 100,000 Bitcoin</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>More on the OP_RETURN Drama</h3>
+    <p>Brought Greg Maxwell back into the public eye. Now he&rsquo;s weighing in on other topics too.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>CIA&rsquo;s Deputy Director on Bitcoin</h3>
+    <p>&quot;It represents another field of technological competition where we need to make sure the United States is well positioned relative to China and other adversaries.&quot; The CIA views Bitcoin (crypto) as &quot;another tool in the toolbox&quot; for the US.</p>
+    <div class="links">
+      <a href="https://atlas21.com/the-cia-views-bitcoin-as-a-useful-tool-in-its-rivalry-with-china/" target="_blank" rel="noopener">atlas21.com - CIA Views Bitcoin as Useful Tool</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Arizona Strategic Bitcoin Reserve - Concerning Details</h3>
+    <p>It prohibits the purchase of Bitcoin or other cryptocurrencies. But allows for claiming ownership of &quot;abandoned&quot; digital assets if the owner fails to respond to notifications within three years.</p>
+    <div class="links">
+      <a href="https://atlas21.com/arizona-grabs-abandoned-bitcoins-the-state-reserve-is-born" target="_blank" rel="noopener">atlas21.com - Arizona Grabs Abandoned Bitcoins</a>
+      <a href="https://bitcoinmagazine.com/news/arizona-becomes-second-state-to-establish-strategic-bitcoin-reserve" target="_blank" rel="noopener">bitcoinmagazine.com - Arizona Strategic Bitcoin Reserve</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>Mastercard: &quot;90% of Central Banks Engaged in CBDC Work&quot;</h3>
+    <div class="links">
+      <a href="https://www.mastercard.us/en-us/business/issuers/grow-your-business/crypto/central-bank-digital-currencies.html" target="_blank" rel="noopener">mastercard.us - Central Bank Digital Currencies</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>NerdQAxe++ Released</h3>
+    <p>~4.8 TH/s on stock settings, with potential to exceed 5 TH/s via tuning/overclocking. ~76 W at the wall (stock), translating to ~15.8 J/TH efficiency.</p>
+    <img src="https://github.com/user-attachments/assets/e81b386f-5332-46c0-9df2-efc8f963d064" alt="NerdQAxe++" loading="lazy">
+    <div class="links">
+      <a href="https://www.solosatoshi.com/product/nerdqaxe-solo-miner-4xbm1370-5-th-s/" target="_blank" rel="noopener">solosatoshi.com - NerdQAxe++ Product Page</a>
+      <a href="https://www.solosatoshi.com/the-nerdqaxe-the-powerhouse-of-open-source-bitcoin-mining/" target="_blank" rel="noopener">solosatoshi.com - NerdQAxe Overview</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>The U.S. Has Most Hash Rate - Around ~70%</h3>
+    <p>Survey results indicate that the U.S. has solidified its position as the largest global mining hub (75.4% of reported activity). Sustainable energy sources collectively represent the majority of the electricity mix (52.4%), while natural gas constitutes the single largest source (38.2%).</p>
+    <div class="links">
+      <a href="https://www.jbs.cam.ac.uk/wp-content/uploads/2025/04/2025-04-cambridge-digital-mining-industry-report.pdf" target="_blank" rel="noopener">jbs.cam.ac.uk - Cambridge Digital Mining Industry Report (PDF)</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>Metaplanet - High Standard for Bitcoin Holdings Disclosure</h3>
+    <p>Metaplanet setting a high standard for disclosure and transparency of their Bitcoin holdings.</p>
+    <img src="https://github.com/user-attachments/assets/84a37ea8-ada6-4716-81a2-8c6c3d31149b" alt="Metaplanet Bitcoin holdings" loading="lazy">
+    <div class="links">
+      <a href="https://metaplanet.jp/en" target="_blank" rel="noopener">metaplanet.jp</a>
+      <a href="https://metaplanet.mempool.space/" target="_blank" rel="noopener">metaplanet.mempool.space</a>
+      <a href="https://bitcointreasuries.net/entities/metaplanet" target="_blank" rel="noopener">bitcointreasuries.net - Metaplanet</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>CBDC White Paper - RiskRecon Concerns</h3>
+    <p>After a read of the Mastercard CBDC white paper, the mention and promotion of &quot;RiskRecon&quot; (a Mastercard product) stands out. It&rsquo;s an automated supplier risk management tool which would be handy for controlling where people can spend their money.</p>
+    <img src="https://github.com/user-attachments/assets/e50297a5-555c-4571-9703-24f64baaa1aa" alt="RiskRecon in CBDC white paper" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Lightning Blinder by Super Testnet</h3>
+    <div class="links">
+      <a href="https://primal.net/e/nevent1qvzqqqqqqypzqgvra9r4sjqapufyl0vnc4kv4fz70e29em4c655y37vz206f0wt4qqswz92zn8k7xd2rtcl32mmuu3y4nszztvzquenwlcppcfw700rrsygpmpaky" target="_blank" rel="noopener">primal.net - Lightning Blinder post</a>
+      <a href="https://github.com/supertestnet/lightning_blinder" target="_blank" rel="noopener">github.com - lightning_blinder</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Arkade - Ark Virtualisation Layer</h3>
+    <div class="links">
+      <a href="https://x.com/tierotiero/status/1927724597266571282" target="_blank" rel="noopener">x.com - tierotiero on Arkade</a>
+      <a href="https://arkadeos.com/news" target="_blank" rel="noopener">arkadeos.com - News</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Chaincode&rsquo;s Quantum Computing and Bitcoin Report</h3>
+    <img src="https://github.com/user-attachments/assets/4876aef5-21b9-4c4e-98d2-7e29c6a3bfe7" alt="Chaincode quantum computing report" loading="lazy">
+    <div class="links">
+      <a href="https://chaincode.com/bitcoin-post-quantum.pdf" target="_blank" rel="noopener">chaincode.com - Bitcoin Post-Quantum Report (PDF)</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Liana Wallet Demo</h3>
+    <div class="links">
+      <a href="https://github.com/wizardsardine/liana" target="_blank" rel="noopener">github.com - Liana</a>
+      <a href="https://wizardsardine.com/liana/" target="_blank" rel="noopener">wizardsardine.com/liana</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Square Bitcoin in the POS Terminal</h3>
+    <div class="links">
+      <a href="https://x.com/pete_rizzo_/status/1927796735805399126" target="_blank" rel="noopener">x.com - Pete Rizzo on Square BTC</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Citrea Major Improvements</h3>
+    <p>Citrea introduces the next iteration in the BitVM series with alleged major improvements thanks to inspiration from Jeremy Rubin.</p>
+    <div class="links">
+      <a href="https://x.com/citrea_xyz/status/1930272109818769715" target="_blank" rel="noopener">x.com - Citrea announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Beware the CGT Loan Trap</h3>
+    <p>When you provide Bitcoin as collateral for a loan, this action itself might trigger a capital gains tax (CGT) event - not just when you sell Bitcoin. The trigger for CGT is a &quot;change in beneficial ownership.&quot; Red flags: legal terms stating a change of beneficial ownership when providing collateral, pooled collateral where your Bitcoin goes into a shared pool, and re-hypothecation where the platform can lend out your collateral.</p>
+    <div class="links">
+      <a href="https://primal.net/btcschellingpt/beware-the-cgt-loan-trap" target="_blank" rel="noopener">primal.net - Beware the CGT Loan Trap</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Reminder: Book Club - The Sovereign Individual</h3>
+    <p>The Sovereign Individual by James Dale Davidson, William Rees-Mogg. Preface by Peter Thiel. Sunday 22nd June, 12:00 PM to 2:00 PM AWST at Akiras Global Cuisine &amp; Cafe Culture, 4/298 Mill Point Road, South Perth.</p>
+    <div class="links">
+      <a href="https://www.audible.com.au/pd/1797103385" target="_blank" rel="noopener">audible.com.au - The Sovereign Individual</a>
+      <a href="https://www.meetup.com/en-AU/bitcoin-perth/events/307778585/" target="_blank" rel="noopener">meetup.com - Book Club Event</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; June 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/23" target="_blank">GitHub Issue #23</a></p>
+  </footer>
+</div>
+</body>
+</html>

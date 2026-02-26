@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — October 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">October 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">October 2025 &middot; First Thursday of the month</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">17 topics</div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Flat Cost to Store Blockchain</h3>
+    <p>Chart showing the flat cost to store the Bitcoin blockchain over time.</p>
+    <img src="https://github.com/user-attachments/assets/fac155e3-cae4-4338-b038-fc06bcbaebda" alt="Flat cost to store blockchain chart" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Every Transaction a JPEG?</h3>
+    <p>What happens if you force the data in any bitcoin transaction into JPEG format? Steps: go to Mempool.space, click any transaction, click &quot;Transaction hex&quot;, lay it out as 6-byte chunks in a rectangular aspect ratio (such as 3:2), and use an online tool to render the JPEG.</p>
+    <div class="links">
+      <a href="https://x.com/Truthcoin/status/1964006982722941300" target="_blank" rel="noopener">Truthcoin thread on X</a>
+      <a href="https://www.pob.studio/tx/0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b?c=mythic" target="_blank" rel="noopener">Genesis block transaction as art</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/b2102cd5-e507-4899-a728-cda6cf01a88b" alt="Transaction rendered as JPEG" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Luke Says Something Smart?</h3>
+    <p>Upcoming &quot;knotzi / ossifier war&quot; discussion with Luke Dashjr&rsquo;s commentary.</p>
+    <div class="links">
+      <a href="https://x.com/LukeDashjr/status/1964857030155325616" target="_blank" rel="noopener">Luke Dashjr post on X</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/4fca9070-6be2-40ee-afd1-ef37ce6f25ec" alt="Luke Dashjr screenshot 1" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/ab5060a8-fd60-497b-912c-acbebb0f829d" alt="Luke Dashjr screenshot 2" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Time is a Flat Circle?</h3>
+    <p>Revisiting the 2014 &quot;Stoned Computer&quot; incident, highlighting how history repeats itself in Bitcoin drama.</p>
+    <div class="links">
+      <a href="https://x.com/GrassFedBitcoin/status/1965104846396346717" target="_blank" rel="noopener">GrassFedBitcoin thread</a>
+      <a href="https://x.com/peterktodd/status/1965483876731801873" target="_blank" rel="noopener">Peter Todd response</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/7f7a473f-88fd-4e3a-994b-069d5b67f9f6" alt="Stoned Computer incident" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Meme</h3>
+    <img src="https://github.com/user-attachments/assets/0e30728f-b0bf-4157-a878-ca23f3f4a22c" alt="Bitcoin meme" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Macadamia Wallet Brings Bitcoin (ecash) to iMessage</h3>
+    <p>Sending ecash often involves long strings of characters (similar to sending a Lightning invoice). The iMessage extension introduced by Macadamia Wallet makes it simple to send ecash tokens.</p>
+    <div class="links">
+      <a href="https://x.com/macadamiacash/status/1970481871466455066" target="_blank" rel="noopener">Macadamia Cash announcement</a>
+      <a href="https://atlas21.com/macadamia-wallet-brings-bitcoin-to-imessage/" target="_blank" rel="noopener">Atlas21 coverage</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Nicolas Dorier Explains Why OP_RETURN Changes Are Necessary for BTCPay Server</h3>
+    <p>Nicolas Dorier (creator of BTCPay Server) explains why most deployed BTCPay Servers could &quot;get bricked&quot; without OP_RETURN changes. The UTXO set has grown from 4GB in 2022 to 12GB now. 20GB SSD hosted servers are the most popular choice for BTCPay Servers, and old instances will soon run out of space. The nice thing about OP_RETURN is that it&rsquo;s only stored in blocks, meaning nodes can safely discard it, keeping UTXO set growth stable or even shrinking.</p>
+    <div class="links">
+      <a href="https://x.com/NicolasDorier/status/1963873106453512352" target="_blank" rel="noopener">Nicolas Dorier thread on X</a>
+      <a href="https://x.com/NicolasDorier/status/898378514256207872" target="_blank" rel="noopener">Famous &quot;This is lies&quot; tweet</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/00e3063c-19d4-4802-ae62-96f9312a88d8" alt="Nicolas Dorier famous tweet" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitchat Plays a Role in Nepal&rsquo;s Change of Government</h3>
+    <p>Bitchat gained popularity in Nepal as protests erupted and the government blocked 26 major social media platforms. Users began recommending Bitchat across platforms like Reddit as a possible solution for a nationwide internet blackout. Unlike mainstream chat platforms, Bitchat&rsquo;s hyper-local Bluetooth mesh approach becomes crucial when services are either blocked or surveilled.</p>
+    <div class="links">
+      <a href="https://www.forbes.com/sites/digital-assets/2025/09/11/jack-dorseys-bitchat-gains-traction-during-nepals-unrest/" target="_blank" rel="noopener">Forbes: Bitchat gains traction during Nepal&rsquo;s unrest</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Airdrop Season?</h3>
+    <div class="links">
+      <a href="https://x.com/theragetech/status/1971318744917090526" target="_blank" rel="noopener">The Rage Tech on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Bitcoin Cycle - History Does Not Repeat, But It Rhymes</h3>
+    <p>Michael Terpin&rsquo;s Bitcoin Supercycle thesis and analysis of Bitcoin price cycles.</p>
+    <div class="links">
+      <a href="https://www.amazon.com.au/Bitcoin-Supercycle-Understanding-Cypto-Clock/dp/151078215X" target="_blank" rel="noopener">Bitcoin Supercycle book</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/204d2453-52d4-4f25-87b6-910c6807f56f" alt="Bitcoin cycle chart" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@tahitilooksnice</div>
+    <h3>Perth BitDevs Promo</h3>
+    <img src="https://github.com/user-attachments/assets/49f5ee16-33ef-4898-a4ac-d3bfef0f4e66" alt="Perth BitDevs promo image" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>A Bitcoin Scripting Proposal BIP Quartet (from Rusty Russell)</h3>
+    <p>Rusty Russell&rsquo;s BIP quartet, starting with the Varops Budget for Script Runtime Constraint. The first BIP introduces a systematic cost framework for evaluating script operations based on stack data interactions using worst-case behavior. This generalises the Taproot-style sigops approach to non-signature operations. The motivation: one of the other BIPs proposes re-enabling opcodes disabled by Satoshi in version 0.3.1 due to vulnerabilities. The varops budget would allow these opcodes to be safely re-enabled, returning Bitcoin Script to its original, intended glory.</p>
+    <p>Bitcoin currently has a limit of 80,000 sigops per block (a consensus rule). Taproot changed this by introducing per-script sigops budgets calculated as 50 + witness_size_in_bytes, with each signature operation consuming 50 from the budget.</p>
+    <div class="links">
+      <a href="https://github.com/rustyrussell/bips/pull/1" target="_blank" rel="noopener">Rusty Russell&rsquo;s BIP quartet PR</a>
+      <a href="https://bitcoinmagazine.com/technical/the-great-script-restoration-a-path-forward-for-bitcoin" target="_blank" rel="noopener">Bitcoin Magazine: The Great Script Restoration</a>
+      <a href="https://bitcoin.stackexchange.com/questions/117356/what-is-sigop-signature-operation" target="_blank" rel="noopener">What is a sigop?</a>
+      <a href="https://github.com/bitcoin/bips/blob/master/bip-0141.mediawiki#sigops" target="_blank" rel="noopener">BIP-141: Sigops</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Does Global Liquidity Affect Bitcoin Price?</h3>
+    <p>Bitcoin tracks extremely closely to Global Liquidity on the larger view. Michael Howell (Capital Wars) is one of the best sources about global liquidity. But Bitcoin can crash when global liquidity is slowing but still rising - rate of change matters greatly. A divergence is happening which can pull up BTC price, but it is also common for BTC to diverge at the end of the cycle. Howell predicts an extension of the global liquidity cycle to Q1/Q2 of next year. Best used for overall direction, not exact prices.</p>
+    <div class="links">
+      <a href="https://open.substack.com/pub/capitalwars/p/the-grand-alignment-how-global-liquidity" target="_blank" rel="noopener">Capital Wars: The Grand Alignment</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/46efe174-4e66-48cf-884a-308d53110129" alt="Global liquidity vs Bitcoin chart" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@btc-alchemist</div>
+    <h3>Penlock.io</h3>
+    <p>Secret-split a BIP39 seed phrase without an electronic device.</p>
+    <div class="links">
+      <a href="https://v1.penlock.io/en/" target="_blank" rel="noopener">penlock.io</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Core Reverses Deprecation Warning for datacarrier and datacarriersize</h3>
+    <p>PR opened by Mike Schmidt (executive director of Brink) to remove the deprecation for the datacarrier and datacarriersize options. Key arguments: many current Bitcoin Core users want to continue using this option, the deprecation intent is unclear to users, and there are minimal downsides to removing deprecation. This was merged.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/commit/cc4a2cc6bdc40af7a17c0eea1000109e02f3fe80" target="_blank" rel="noopener">Merged commit</a>
+      <a href="https://github.com/bitcoin/bitcoin/pull/32714" target="_blank" rel="noopener">Related PR discussion</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>UBI Pilot with USDC</h3>
+    <p>A new universal basic income program with the participation of Coinbase will distribute USDC to low-income residents of New York. Selected participants will receive $12,000 in stablecoins. Coinbase and GiveDirectly are joining forces for the pilot.</p>
+    <img src="https://github.com/user-attachments/assets/17e5c6de-b6a2-4004-be46-ad56197e088a" alt="UBI pilot info" loading="lazy">
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; October 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/27" target="_blank">GitHub Issue #27</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — June 2024</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+  <header>
+    <div class="badge">June 2024</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 6 June 2024 &middot; 6:00 PM AWST &middot; Phat Brew Brewery, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">16 topics</div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Axiom of Resistance</h3>
+    <p>What Bitcoin actually fixes - a deep look at the axiom of resistance from the libbitcoin wiki.</p>
+    <div class="links">
+      <a href="https://github.com/libbitcoin/libbitcoin-system/wiki/Axiom-of-Resistance" target="_blank" rel="noopener">libbitcoin wiki - Axiom of Resistance</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Super TestNet at It Again</h3>
+    <p>Another invention from Super TestNet - continuing to push the boundaries of what&rsquo;s possible on Bitcoin.</p>
+    <div class="links">
+      <a href="https://stacker.news/items/529905" target="_blank" rel="noopener">stacker.news - Super TestNet project</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Coldcard Q and MK4 Firmware Upgrade</h3>
+    <p>New firmware updates for the Coldcard Q and MK4 hardware wallets.</p>
+    <div class="links">
+      <a href="https://x.com/COLDCARDwallet/status/1787564608313541010" target="_blank" rel="noopener">x.com/COLDCARDwallet - Firmware upgrade</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>KeyChat - Signal on Nostr?</h3>
+    <p>KeyChat brings Signal-like encrypted messaging to Nostr. A new approach to private communication using the Nostr protocol.</p>
+    <div class="links">
+      <a href="https://www.keychat.io/" target="_blank" rel="noopener">keychat.io</a>
+      <a href="https://primal.net/e/note1kr8nvdlhz207rq6z300xy6qylf9mmpgjxgfq6925vkez4f3ej3gqh5f0te" target="_blank" rel="noopener">primal.net - KeyChat note</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Pertsev Ruling - Tornado Cash</h3>
+    <p>The Pertsev ruling on Tornado Cash and its chilling effect on open-source privacy tool development.</p>
+    <div class="links">
+      <a href="https://x.com/arbedout/status/1790363082172019195?s=46" target="_blank" rel="noopener">x.com/arbedout - Tornado Cash ruling</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@btc-alchemist</div>
+    <h3>Silent Payments: BIP352</h3>
+    <p>Overview of Silent Payments (BIP-352) - reusable payment codes without on-chain linkability. Web app demo and SeedSigner implementation.</p>
+    <div class="links">
+      <a href="https://www.athena-alpha.com/silent-payments/" target="_blank" rel="noopener">athena-alpha.com - Silent Payments overview</a>
+      <a href="https://app.silentium.dev/" target="_blank" rel="noopener">app.silentium.dev - Silent Payments web app</a>
+      <a href="https://x.com/KeithMukai/status/1790913869453418718" target="_blank" rel="noopener">x.com/KeithMukai - SeedSigner implementation</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Silent Payments BIP Reference</h3>
+    <p>Direct link to the BIP-352 specification.</p>
+    <div class="links">
+      <a href="https://bips.dev/352/" target="_blank" rel="noopener">bips.dev/352 - BIP-352 spec</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bitcoin Game Theory - Trump and the Great Wedge</h3>
+    <p>Bitcoin game theory discussion around Trump&rsquo;s political positioning and Bitcoin as a political wedge issue.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Scaling Bitcoin - Why Bitcoin Banks Are Not Enough</h3>
+    <p>Discussion on Bitcoin scaling challenges and why simply relying on custodial &ldquo;Bitcoin banks&rdquo; is insufficient.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Upgrades, Ossification, etc.</h3>
+    <p>Similar angle on the ongoing debate around Bitcoin protocol upgrades and ossification.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>The Great Script Restoration Project</h3>
+    <p>A path forward for Bitcoin through restoring disabled opcodes - re-enabling powerful scripting capabilities that were originally part of Bitcoin.</p>
+    <div class="links">
+      <a href="https://bitcoinmagazine.com/technical/the-great-script-restoration-a-path-forward-for-bitcoin" target="_blank" rel="noopener">Bitcoin Magazine - Great Script Restoration</a>
+      <a href="https://primal.net/p/npub179e9tp4yqtqx4myp35283fz64gxuzmr6n3yxnktux5pnd5t03eps0elz4s" target="_blank" rel="noopener">primal.net - Author profile</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>ROASTr</h3>
+    <p>ROASTr - a new tool in the Bitcoin/Lightning ecosystem.</p>
+    <div class="links">
+      <a href="https://stacker.news/items/524728" target="_blank" rel="noopener">stacker.news - ROASTr</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Corny Chat - Nostr Client with V4V</h3>
+    <p>Corny Chat: a Nostr client with baked-in Value for Value (V4V) payments via Lightning.</p>
+    <div class="links">
+      <a href="https://primal.net/e/note1s6m4j4ufnhj66x2zms69rw0wjhawnau6xv7x7gz0dxrrsyldlurqzmeqdj" target="_blank" rel="noopener">primal.net - Corny Chat announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>NerdAXE Released</h3>
+    <p>NerdAXE - a new open-source Bitcoin mining device has been released.</p>
+    <div class="links">
+      <a href="https://x.com/BitMaker_/status/1793762401743229038" target="_blank" rel="noopener">x.com/BitMaker_ - NerdAXE release</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Bitmain Fuckery?</h3>
+    <p>Allegations and analysis of potential anti-competitive behavior from Bitmain, including academic research on the topic.</p>
+    <div class="links">
+      <a href="https://x.com/GrassFedBitcoin/status/1796311998466003418" target="_blank" rel="noopener">x.com/GrassFedBitcoin - Bitmain discussion</a>
+      <a href="https://arxiv.org/pdf/1604.00575" target="_blank" rel="noopener">arxiv.org - Related research paper</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@anonymous</div>
+    <h3>Wasabi Wallet Update</h3>
+    <p>Wasabi Wallet 2.0.8 release with new features and improvements to the privacy-focused Bitcoin wallet.</p>
+    <div class="links">
+      <a href="https://blog.wasabiwallet.io/wasabi-wallet-2-0-8-release-post/" target="_blank" rel="noopener">blog.wasabiwallet.io - v2.0.8 release notes</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; June 2024<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/9" target="_blank">GitHub Issue #9</a></p>
+  </footer>
+</div>
+</body>
+</html>

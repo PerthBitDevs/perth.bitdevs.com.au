@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — September 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">September 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 4th September, 6pm &middot; Phat Brew Club, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">16 topics</div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Glock: Garbled Locks for Bitcoin</h3>
+    <p>&quot;Fully general off-chain contracting, converted into on-chain verification with just a signature.&quot;</p>
+    <div class="links">
+      <a href="https://groups.google.com/g/bitcoindev/c/g_-Tfmjz0pw" target="_blank" rel="noopener">Bitcoin-dev mailing list</a>
+      <a href="https://primal.net/e/nevent1qqsqkgaxwc4new9ahfxfje50epr92fepsprwmwu5pylpel8cmk7ywsg6fflqy" target="_blank" rel="noopener">Primal announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BitMEX Research: Unstoppable JPGs In Private Keys</h3>
+    <p>BitMEX Research explores information theory and explains how images can be included in fake Bitcoin addresses and why it&rsquo;s unfeasible to prevent this. A Bitcoin private key is just a random 256-bit number, mathematically equivalent to a 16x16 pixel black-and-white image. They created a Bitcoin private key by creating such an image and demonstrated a transaction with an &quot;unstoppable image&quot; inside the private keys - deliberately vulnerable private keys that can be calculated from the data available on the blockchain.</p>
+    <div class="links">
+      <a href="https://x.com/BitMEXResearch/status/1960328464008978669" target="_blank" rel="noopener">BitMEX Research thread on X</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/ff9518cf-d7d5-47a8-af64-eb4bf65ee11d" alt="16x16 pixel private key image" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/32802759-dc66-48fa-bbeb-7c56766122c9" alt="Claude Shannon" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>&quot;Silence Developer, a Podcaster is Talking&quot;</h3>
+    <p>A meme highlighting the tension between developers and podcasters in the Bitcoin space.</p>
+    <div class="links">
+      <a href="https://x.com/MrHodl/status/1960012198798827837" target="_blank" rel="noopener">Original post on X</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/722aa2a9-d734-4b7d-8fab-bb920f8f57ce" alt="Silence developer meme" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Google to Restrict Android Sideloading via Developer ID Verification</h3>
+    <p>Starting September 2026, developers who distribute apps outside the Play Store will need to complete identity verification before users on certified Android devices can install their APKs. This means providing personal information like name, address, email, phone number, and possibly a government-issued ID. These rules apply only to certified Android devices that ship with Google Play Services. Starting first in Brazil, Indonesia, Singapore, and Thailand, rolling out globally in 2027 and beyond.</p>
+    <div class="links">
+      <a href="https://www.theverge.com/news/765881/google-android-apps-side-loading-developer-verification" target="_blank" rel="noopener">The Verge: Google Android sideloading restrictions</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Transaction Fees at Their Lowest Since 2011</h3>
+    <p>The 14-day simple moving average of daily Bitcoin transaction fees has dropped to approximately 3.5 BTC per day, a level not seen since 2011. The sub-1 sat/vbyte summer is obviously a big part of this.</p>
+    <div class="links">
+      <a href="https://bitcoinnews.com/mining/bitcoin-transaction-fees-lowest-since-2011" target="_blank" rel="noopener">Bitcoin News coverage</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Minimum Relay Feerate Debate Continues</h3>
+    <p>The change has been merged. The default minimum relay feerate and incremental relay feerate have been changed to 100 satoshis per kvB. They can still be changed using their respective configuration options, but it is recommended to change both together. Other minimum feerates (e.g. the dust feerate, the minimum returned by the fee estimator, and all feerates used by the wallet) remain unchanged.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/commit/c99f5c5e1b42b9fe76b859967ba59f5af9db7676" target="_blank" rel="noopener">Merged commit</a>
+      <a href="https://delvingbitcoin.org/t/changing-the-minimum-relay-feerate/1886" target="_blank" rel="noopener">Delving Bitcoin discussion</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>UAE Confirmed Holding 6,300 BTC From State-Controlled Mining</h3>
+    <p>Unlike the US and UK, the UAE&rsquo;s holdings do not come from police asset seizures but from mining operations with Citadel Mining. So far, they have mined approximately 9,300 BTC and are still holding approximately 6,300 BTC.</p>
+    <div class="links">
+      <a href="https://info.arkm.com/research/uae-has-700m-in-bitcoin-from-mining" target="_blank" rel="noopener">Arkham Intelligence research</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Sharing Block Templates</h3>
+    <p>Proposal for miners to share templates for network efficiency. The protocol specifies that shortly after a connection is initiated, the node sends a sendtemplate message. The peer can request a template with a gettemplate message, and the node replies with a template containing short transaction identifiers using the same format as BIP152 compact block messages.</p>
+    <div class="links">
+      <a href="https://bitcoinops.org/en/newsletters/2025/08/22/" target="_blank" rel="noopener">Bitcoin Optech newsletter</a>
+      <a href="https://mailing-list.bitcoindevs.xyz/bitcoindev/aJvZwR_bPeT4LaH6@erisian.com.au/" target="_blank" rel="noopener">Mailing list post</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>A Win for Differential Fuzzing</h3>
+    <p>Bruno Garcia posted to Delving Bitcoin about recent progress of bitcoinfuzz, a library for fuzz testing Bitcoin software. Accomplishments include the discovery of over 35 bugs in projects such as btcd, rust-bitcoin, rust-miniscript, Embit, Bitcoin Core, Core Lightning, and LND. Differential fuzzing detects bugs by providing the same input to similar applications and observing differences in their execution. Discussion topic: Why does this matter for Bitcoin applications?</p>
+    <div class="links">
+      <a href="https://delvingbitcoin.org/t/the-state-of-bitcoinfuzz/1946" target="_blank" rel="noopener">Delving Bitcoin: The state of bitcoinfuzz</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Recycled FUD?</h3>
+    <p>Old article about Bitcoin blockchain potentially hosting CSAM imagery resurfaces, highlighting recycled fear, uncertainty, and doubt.</p>
+    <div class="links">
+      <a href="https://www.ibtimes.co.uk/bitcoin-blockchain-could-become-safe-haven-hosting-child-sexual-abuse-images-1494134" target="_blank" rel="noopener">IBTimes article (2015)</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/065b38e5-bf60-43bb-80eb-08ffb58283fc" alt="Recycled FUD article" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>Hash Rate in Home Heating Appliances</h3>
+    <p>Exploring the potential for comfort heating energy to contribute to Bitcoin mining hash rate. Residential heating alone accounts for roughly 25% of global energy consumption in colder regions. If all comfort heating energy (~1,500 TWh) were redirected into Bitcoin mining, it could theoretically push hash rate to ~5,370 EH/s.</p>
+    <div class="links">
+      <a href="https://fountain.fm/episode/MtZOjUFFv8hogbRdXgz2" target="_blank" rel="noopener">Podcast episode on Fountain</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Retire Off Bitcoin Calculator</h3>
+    <p>A calculator created by Mark Moss to plan for retirement over 5 years with 1 bitcoin. Uses an advanced strategy of never selling bitcoin and borrowing against it for retirement income. Buyer beware: you can just sell some bitcoin to live off. Beware of loans and bigger drawdowns than expected - loan ratio should always be much lower than you expect price to go. Loans based on 10% interest rates.</p>
+    <div class="links">
+      <a href="https://www.1markmoss.com/5yr-retire-value63261144" target="_blank" rel="noopener">Mark Moss Bitcoin Retirement Calculator</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/1d2f1fd4-cbc6-4afe-8a56-c9ea355882ba" alt="Retire off Bitcoin calculator screenshot" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>The Number of Bitcoiners in USA May 4x Tomorrow!</h3>
+    <p>There are an estimated 50M Americans that own Bitcoin (about 15%). Strategy (MSTR) has qualified for the S&amp;P 500. Around 60% of Americans own stocks, so a max of 200M could own the S&amp;P 500. Not quite self-custody bitcoiners, but a step in the right direction. However this is at the discretion of a committee to decide. Greater ownership leads to better policies for bitcoin and reduced risks like Chokepoint.</p>
+    <div class="links">
+      <a href="https://www.coindesk.com/markets/2025/09/01/strategy-qualifies-for-s-and-p-500-inclusion-decision-could-come-on-friday" target="_blank" rel="noopener">CoinDesk: Strategy qualifies for S&amp;P 500</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/f284ad02-7a6c-43d8-94fe-ac8055a2e2c0" alt="Strategy S&P 500 chart" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Federal Reserve Board Announces Payments Innovation Conference</h3>
+    <p>The Fed will host a conference to discuss payments innovation including the convergence of traditional and decentralized finance, emerging stablecoin use cases, AI and payments intersection, and tokenization of financial products. Separately, Tether announced its intention to issue USDT on RGB, a next-generation protocol for issuing and transacting digital assets on Bitcoin and the Lightning Network.</p>
+    <div class="links">
+      <a href="https://www.federalreserve.gov/newsevents/pressreleases/other20250903a.htm" target="_blank" rel="noopener">Federal Reserve press release</a>
+      <a href="https://www.prnewswire.com/apac/news-releases/tether-announces-plan-to-bring-usd-to-rgb-advancing-native-stablecoins-on-bitcoin-and-lightning-302541085.html" target="_blank" rel="noopener">Tether on RGB announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Core vs Knots Kicking Off</h3>
+    <p>Major changes in Bitcoin Core v30 include: (1) OP_RETURN data limit expansion - removes the 80-83 byte limit, allowing up to 4MB constrained by block size, allows multiple OP_RETURN outputs per transaction, and marks -datacarrier and -datacarriersize arguments as deprecated. (2) Reducing the minimum relay fee to allow sub 1 sat/vByte transactions to be relayed by default.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/pull/32406" target="_blank" rel="noopener">Bitcoin Core PR #32406</a>
+      <a href="https://github.com/bitcoin/bitcoin/pull/6650" target="_blank" rel="noopener">Block data obfuscation on disk</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bitcoin Transaction Fees - Additional Context</h3>
+    <p>Additional chart showing the historic low in Bitcoin transaction fees.</p>
+    <img src="https://github.com/user-attachments/assets/cdb260df-0e27-485a-8d4d-d7a74452678a" alt="Bitcoin transaction fees historical chart" loading="lazy">
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; September 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/26" target="_blank">GitHub Issue #26</a></p>
+  </footer>
+</div>
+</body>
+</html>

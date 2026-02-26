@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — August 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">August 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 7th August, 6pm &middot; Phat Brew Club, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">17 topics</div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>RGB Production</h3>
+    <p>RGB protocol reaching production status, enabling smart contracts on Bitcoin and Lightning Network.</p>
+    <div class="links">
+      <a href="https://x.com/lnp_bp/status/1943318227854950809" target="_blank" rel="noopener">LNP/BP announcement on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>White Noise Brings Anonymous Messaging to Nostr</h3>
+    <p>Started by Max Hillebrand, former contributor to Wasabi Wallet. Uses MLS (Messaging Layer Security) encryption standard developed by the IETF. Unlike Nostr DMs and public posts today, which leak metadata about who is communicating with whom, White Noise promises to obfuscate sender and recipient using the MLS encryption scheme. MLS provides Forward Secrecy (ephemeral keys ensure past messages remain unreadable if current keys are compromised) and Post-Compromise Security (TreeKEM key rotation protects future messages after a compromise).</p>
+    <div class="links">
+      <a href="https://bitcoinmagazine.com/news/white-noise-anonymous-nostr-dms-and-encrypted-group-chat" target="_blank" rel="noopener">Bitcoin Magazine coverage</a>
+      <a href="https://github.com/nostr-protocol/nips/blob/001c516f7294308143515a494a35213fc45978df/EE.md" target="_blank" rel="noopener">NIP-EE specification</a>
+      <a href="https://njump.me/nevent1qqstqdxw4py38aa3m302yg99v9ud5w85kshv2ppfz0fwa8qka979z4cpzamhxue69uhhyetvv9ujuurjd9kkzmpwdejhgtczyp6awd7rguj8zq5ugjrkkvcdy2zz3zjzw7d4jx3w6nd2r3kq0ma0wqcyqqqqqqgwfx067" target="_blank" rel="noopener">Nostr event</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>80K Old Coins Move</h3>
+    <p>8x 10K BTC transactions moved from older P2PKH addresses to newer P2WPKH (SegWit) addresses. Some speculate it may be &quot;a hack&quot; - Conor Grogan from Coinbase believes the transfer could be the largest hack in history because of a Bitcoin Cash test transaction that preceded the transfers. But others point out: &quot;Given how slowly these sends transpired, it&rsquo;s hard to be convinced it&rsquo;s a hack, I&rsquo;d imagine they would be a bit faster with moving these funds.&quot;</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Jack Dorsey Launches Bitchat</h3>
+    <p>Bitchat is a decentralized messaging app that runs entirely over Bluetooth mesh networks without internet infrastructure. The system provides encrypted, ephemeral communication with no central servers, accounts, or data storage. Messages hop between devices within 30 meter ranges, making it perfect for conferences, protests, or disaster areas where internet access is unavailable or untrusted.</p>
+    <div class="links">
+      <a href="https://github.com/permissionlesstech/bitchat/blob/main/WHITEPAPER.md" target="_blank" rel="noopener">Protocol whitepaper</a>
+      <a href="https://atlas21.com/jack-dorsey-launches-bitchat-decentralized-messaging-without-internet/" target="_blank" rel="noopener">Atlas21 coverage</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Key Delegation</h3>
+    <p>Chain code delegation proposal for private access control for Bitcoin keys.</p>
+    <div class="links">
+      <a href="https://delvingbitcoin.org/t/chain-code-delegation-private-access-control-for-bitcoin-keys/1837" target="_blank" rel="noopener">Delving Bitcoin discussion</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Australian Law Review re Warrant Canaries</h3>
+    <p>Discussion of Australian law regarding warrant canaries and their legal implications.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>&quot;Fuck Around and Find Out&quot; - Let&rsquo;s Play With Bitchat!</h3>
+    <p>Live hands-on session with Bitchat at the meetup.</p>
+    <div class="links">
+      <a href="https://github.com/permissionlesstech/bitchat" target="_blank" rel="noopener">github.com/permissionlesstech/bitchat</a>
+      <a href="https://bitchat.free/" target="_blank" rel="noopener">bitchat.free</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Samourai Wallet Devs Plead Guilty</h3>
+    <p>Samourai Wallet developers pleaded guilty to conspiring to operate an unlicensed money transmitting business. The conspiracy to commit money laundering charges were dropped as part of the plea deal - they were facing up to 20 years for those charges. Both Rodriguez and Hill face a maximum prison sentence of five years, a $250,000 fine each, and are required to pay a total of $6,367,139.69 between them. They both acknowledged that they knew some bitcoin moving through the service was derived from criminal activity.</p>
+    <div class="links">
+      <a href="https://bitcoinmagazine.com/takes/samourai-wallet-gives-in-guilty-pleas" target="_blank" rel="noopener">Bitcoin Magazine: Samourai Wallet gives in</a>
+      <a href="https://bitcoinmagazine.com/news/samourai-wallet-developers-plead-guilty" target="_blank" rel="noopener">Bitcoin Magazine: Developers plead guilty</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>It&rsquo;s a Sub 1-sat/vByte Summer</h3>
+    <p>OpenTimestamps got 0.12 sat/vB, a 4KB file got 0.11 sat/vB, mononaut got 0.1 sat/vB, and a 346KB inscription got 0.1 sat/vB. Mempool even added a decimal point to fee rates. The policy change PR to reduce the current 1 sat/vByte limit to 0.1 sat/vByte is kicking off again on Bitcoin Core PRs, and it&rsquo;s having a severe impact on Compact Block Reconstruction.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/pull/33106" target="_blank" rel="noopener">Bitcoin Core PR #33106: Reduce min relay feerate</a>
+      <a href="https://delvingbitcoin.org/t/stats-on-compact-block-reconstructions/1052" target="_blank" rel="noopener">Impact on Compact Block Reconstruction</a>
+      <a href="https://github.com/ChicagoBitdevs/ChicagoBitdevs.github.io/issues/139" target="_blank" rel="noopener">Chicago BitDevs discussion</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Block Open Sources Fee Estimation Library: Augur</h3>
+    <p>Block built Augur, an open-source Bitcoin fee estimator that relies on real-time mempool data instead of historical blocks. Augur uses statistical modeling of historical mempool data to predict transaction confirmation times: it collects and buckets mempool transactions by fee rate, calculates transaction inflow rates at different fee levels, simulates mempool progression based on historical patterns, and produces fee rate estimates with multiple confidence levels.</p>
+    <div class="links">
+      <a href="https://github.com/block/bitcoin-augur" target="_blank" rel="noopener">GitHub: bitcoin-augur</a>
+      <a href="https://engineering.block.xyz/blog/augur-an-open-source-bitcoin-fee-estimation-library" target="_blank" rel="noopener">Block Engineering blog post</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Is That a Cashu Wallet in Your WhatsApp?</h3>
+    <p>Beacon: a Cashu wallet integration for WhatsApp.</p>
+    <div class="links">
+      <a href="https://github.com/humansinstitute/beacon-app" target="_blank" rel="noopener">GitHub: beacon-app</a>
+      <a href="https://primal.net/e/nevent1qqsqygt7lvmxul9auhafkfuktpsvlv4gwsdlsx055rha2eenqp7s4wgc38ltr" target="_blank" rel="noopener">Primal announcement</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Utreexo BIPs (x3)</h3>
+    <p>Three new BIPs proposed for Utreexo: the specification of the Utreexo accumulator, the specification of Bitcoin block and transaction validation using the Utreexo accumulator, and the peer-to-peer networking changes required to enable Utreexo nodes. Utreexo is a consensus-compatible (non-soft fork) way to send and verify transactions without storing the full UTXO set.</p>
+    <div class="links">
+      <a href="https://groups.google.com/g/bitcoindev/c/W1lxBraKG_E" target="_blank" rel="noopener">Mailing list discussion</a>
+      <a href="https://github.com/utreexo/biptreexo" target="_blank" rel="noopener">GitHub: biptreexo</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Quantum Summit at Presidio Bitcoin</h3>
+    <p>Discussion of the Quantum Summit at Presidio Bitcoin and other quantum computing developments, including Jameson Lopp&rsquo;s Quantum Migration proposal.</p>
+    <div class="links">
+      <a href="https://github.com/jlopp/bips/blob/quantum_migration/bip-post-quantum-migration.mediawiki" target="_blank" rel="noopener">Lopp&rsquo;s Quantum Migration BIP proposal</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Simplicity Launches on Liquid Mainnet</h3>
+    <p>Simplicity is a completely new smart contract language designed as a clean-slate vision that&rsquo;s more expressive than Bitcoin Script. It gives developers much more flexibility but deliberately avoids the complexities and security pitfalls of platforms like Ethereum. By excluding recursion, unbounded loops, and mutable global state, every execution path and fee cost can be proven in advance. Launching on Liquid provides a production environment where real money is at stake, without affecting Bitcoin&rsquo;s main chain.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>How Good Are The Widely Used Coinjoin Implementations - Peter Todd</h3>
+    <p>Peter Todd&rsquo;s analysis of widely used coinjoin implementations and their effectiveness.</p>
+    <div class="links">
+      <a href="https://petertodd.org/2025/coinjoin-comparison" target="_blank" rel="noopener">petertodd.org: Coinjoin Comparison</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@humansinstitute</div>
+    <h3>Roman Storm Verdict</h3>
+    <p>Split verdict in the Tornado Cash case. Roman Storm was not detained pending appeal on the unlicensed money transmitter charge.</p>
+    <div class="links">
+      <a href="https://www.therage.co/roman-storm-trial-split-verdict-tornado-cash/" target="_blank" rel="noopener">The Rage: Roman Storm trial split verdict</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@3Jack1</div>
+    <h3>Largest Hedge Fund in the World Recommends 15% Bitcoin Ownership</h3>
+    <p>What do financial professionals recommend for Bitcoin ownership? BlackRock suggests 1-2%, financial advisors recommend 1-2% (clients only own 0.5-1%), Ray Dalio (Bridgewater) recommends 15% in gold or Bitcoin, and Ric Edelman suggests 10% conservative / 25% moderate / 40% aggressive. Dalio says: &quot;If you were neutral on everything and optimizing your portfolio for the best return-to-risk ratio, you would have about 15% of your money in gold or bitcoin.&quot;</p>
+    <div class="links">
+      <a href="https://www.businessinsider.com/ray-dalio-gold-bitcoin-allocation-investing-us-debt-crisis-deficit-2025-7" target="_blank" rel="noopener">Business Insider: Ray Dalio allocation</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; August 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/25" target="_blank">GitHub Issue #25</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — December 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&#8592; All Events</a>
+  <header>
+    <div class="badge">December 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">December 2025 &middot; First Thursday of the month</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">16 topics</div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Lava Service Changes Custody Arrangements</h3>
+    <p>Lava offered self-custody loans using DLC (discrete log contracts). An update changed this from a non-custodial setup to a fully trusted and custodial model, with Lava now having full control over users&rsquo; funds. This fundamental change was not clearly communicated to users in the upgrade process. Lava stated they no longer use DLCs because the technology doesn&rsquo;t meet their security standards, citing client-side key risk, hot keys, and oracle manipulation vulnerabilities.</p>
+    <div class="links">
+      <a href="https://x.com/OwenKemeys/status/1986206658486227396" target="_blank" rel="noopener">Owen Kemeys: Upgrade notice screenshots</a>
+      <a href="https://bitcoinmagazine.com/business/lava-abandons-self-custody-amidst-fund-raise-sparking-controversy" target="_blank" rel="noopener">Bitcoin Magazine: Lava abandons self-custody</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>BIP-444 On-chain Bets with Rob Hamilton</h3>
+    <p>Discussion of on-chain betting mechanisms related to BIP-444 outcomes.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>On-chain Examination of Lava&rsquo;s Custody Change</h3>
+    <p>On-chain analysis of Lava&rsquo;s custody transition. The &quot;upgrade&quot; address reveals that originally loans were self-custodial with collateral locked in a 2-of-2 multisig. Post-&quot;upgrade,&quot; funds are held in a pooled single-sig address that regularly consolidates to Kraken.</p>
+    <div class="links">
+      <a href="https://mempool.space/address/bc1qhavljty0tj7cakjg9kh5yzgk9cr54hf7updxge" target="_blank" rel="noopener">Upgrade address on mempool.space</a>
+      <a href="https://x.com/gringokiwi/status/1986816075896652117" target="_blank" rel="noopener">gringokiwi analysis on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Samourai Wallet Dev (Keonne Rodriguez) Sentenced to 5 Years</h3>
+    <p>Keonne Rodriguez has been sentenced to 5 years in prison and fined $250,000 for conspiracy to operate an unlicensed money transmitting business. This was the maximum sentence possible.</p>
+    <div class="links">
+      <a href="https://www.therage.co/keonne-rodriguez-samourai-sentenced" target="_blank" rel="noopener">The Rage: Keonne Rodriguez sentenced</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Interface to Bitcoin Core&rsquo;s Consensus Code Exposed as C Header API</h3>
+    <p>Bitcoin Core&rsquo;s consensus code is now exposed as a C header API, making it accessible to other implementations and languages.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/pull/30595" target="_blank" rel="noopener">Bitcoin Core PR #30595</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Mononaut Surveys the Bitcoin Blockchain to Quantify BIP-444 Impact</h3>
+    <p>A series of tweets where the impact of each BIP-444 rule is assessed by considering how many and which Bitcoin transactions would be affected.</p>
+    <div class="links">
+      <a href="https://x.com/mononautical/status/1988449182462660964" target="_blank" rel="noopener">Mononaut BIP-444 analysis thread</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Spiral Resources to Help Orange Pill Merchants</h3>
+    <p>&quot;Help anyone make the case to merchants that only bitcoin can defeat credit card fees.&quot; Spiral (of Block) has released resources for merchant adoption.</p>
+    <div class="links">
+      <a href="https://www.bitcoinmerchantcommunity.org/" target="_blank" rel="noopener">bitcoinmerchantcommunity.org</a>
+      <a href="https://x.com/spiralbtc/status/1988639112601989299" target="_blank" rel="noopener">Spiral announcement on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Ordiknots - Embed Data in &quot;BIP-444 Friendly&quot; Techniques</h3>
+    <p>A tongue-in-cheek project from Taproot Wizards showing how to embed data in a manner that would still be permissible were BIP-444 changes to be activated. Data embedding is possible via P2WSH CHECKMULTISIG and chained OP_RETURN.</p>
+    <div class="links">
+      <a href="https://github.com/taproot-wizards/ordiknots" target="_blank" rel="noopener">GitHub: taproot-wizards/ordiknots</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Dickbutt &quot;Knotwork&quot; Example (from Ordiknots)</h3>
+    <p>&quot;It&rsquo;s a 2785 byte JPEG of a dickbutt, securely embedded in 88 fake pubkeys via a bunch of P2WSH multisigs. Yes, it&rsquo;s completely standard. Yes, it gets the witness discount. No, BIP-444 doesn&rsquo;t fix this.&quot;</p>
+    <div class="links">
+      <a href="https://x.com/mononautical/status/1990443531476037654" target="_blank" rel="noopener">Mononaut thread on X</a>
+    </div>
+    <img src="https://github.com/user-attachments/assets/720bfddd-3512-433c-b77f-2ba1600f95a3" alt="Dickbutt knotwork" loading="lazy">
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bringing Zero Knowledge Proofs to Cashu</h3>
+    <p>&quot;This would allow arbitrary ecash spending conditions without revealing the script to the mint, maintaining excellent user privacy.&quot;</p>
+    <div class="links">
+      <a href="https://blog.cashu.space/bringing-zero-knowledge-proofs-to-cashu/" target="_blank" rel="noopener">Cashu blog: ZK proofs for Cashu</a>
+      <a href="https://x.com/CashuBTC/status/1990753938287813061" target="_blank" rel="noopener">CashuBTC announcement on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Valid Pubkeys Can Still Carry Data</h3>
+    <p>A script that can convert any data (e.g. a Dickbutt image) into valid secp256k1 compressed public keys. This means any checks to see if keys are valid is incapable of preventing the keys from being data-carrying.</p>
+    <div class="links">
+      <a href="https://gist.github.com/djkazic/122c4b808bc8d8e5c3f06d7ca39825a7" target="_blank" rel="noopener">Data-to-valid-pubkeys script</a>
+      <a href="https://x.com/ProofOfCash/status/1990913642003312827" target="_blank" rel="noopener">ProofOfCash thread on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bitcoin Core Security Audit</h3>
+    <p>Security assessment report for Bitcoin Core published by OSTIF.</p>
+    <div class="links">
+      <a href="https://ostif.org/wp-content/uploads/2025/11/25-05-2133-REP-bitcoincore-security-assessment-V1.3.pdf" target="_blank" rel="noopener">Security assessment PDF</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Historical Examples of the White Paper Being Inscribed On-chain</h3>
+    <div class="links">
+      <a href="https://x.com/zndtoshi/status/1991509035888283810" target="_blank" rel="noopener">zndtoshi thread on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Bitcoin Knots Commit</h3>
+    <p>Notable commit in the Bitcoin Knots repository.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoinknots/bitcoin/commit/6323b42e07f9be8939f0ae1f85165d5b492ad83c" target="_blank" rel="noopener">Bitcoin Knots commit</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>Cluster Mempool Merged</h3>
+    <p>The cluster mempool implementation has been merged into Bitcoin Core, a long-anticipated improvement to mempool management.</p>
+    <div class="links">
+      <a href="https://github.com/bitcoin/bitcoin/pull/33629" target="_blank" rel="noopener">Bitcoin Core PR #33629</a>
+      <a href="https://x.com/murchandamus/status/1854678133896626293" target="_blank" rel="noopener">Murch announcement on X</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@NoSandMan</div>
+    <h3>xgrind</h3>
+    <div class="links">
+      <a href="https://github.com/djkazic/xgrind" target="_blank" rel="noopener">GitHub: djkazic/xgrind</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; December 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/29" target="_blank">GitHub Issue #29</a></p>
+  </footer>
+</div>
+</body>
+</html>

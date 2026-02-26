@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — February 2025</title>
+<link rel="icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(28px,5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .event-meta{color:var(--txD);font-size:15px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin:32px 0}
+  .topic{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+  .topic::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+  .topic h3{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);margin-bottom:8px;letter-spacing:-.01em;line-height:1.35}
+  .topic p{color:var(--txM);font-size:15px;line-height:1.6;margin-bottom:8px}
+  .topic p:last-child{margin-bottom:0}
+  .topic a{color:var(--or);text-decoration:none;word-break:break-all}
+  .topic a:hover{text-decoration:underline}
+  .topic strong{color:var(--tx)}
+  .topic img{max-width:100%;border-radius:8px;margin:12px 0;border:1px solid var(--bd)}
+  .topic .author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:8px}
+  .links{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+  .links a{font-family:'JetBrains Mono',monospace;font-size:13px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .topic-count{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);text-align:center;margin-bottom:24px}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}.topic{padding:16px 18px}.topic h3{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+  <header>
+    <div class="badge">February 2025</div>
+    <h1>Perth BitDevs</h1>
+    <div class="event-meta">Thursday 6th February, 6pm &middot; Phat Brew, City West</div>
+  </header>
+  <div class="divider"></div>
+  <div class="section-label">Topics Discussed</div>
+  <div class="topic-count">13 topics</div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Bitcoin Telehash Fundraiser Finds a Block</h3>
+    <p>Block found live during the first-ever Bitcoin &quot;telehash&quot; fundraiser, raising US$330K for the 256 Foundation. They were self-hosted solo mining on a FutureBit Apollo, with a bunch of miners donating their hash. 350 entities and 1.12 EH/s at peak. A FutureBit Apollo has a nominal hashrate of 3 TH/s.</p>
+    <img src="https://github.com/user-attachments/assets/e41863c3-5061-460c-ac41-e58b60b9e727" alt="Telehash fundraiser block" loading="lazy">
+    <div class="links">
+      <a href="https://mempool.space/block/0000000000000000000269d52c24ea451225613aab095d90d771d4e29aa96cdd" target="_blank" rel="noopener">mempool.space - The mined block</a>
+      <a href="https://www.nobsbitcoin.com/the-first-ever-bitcoin-hashrate-fundraiser-actually-found-a-block-2/" target="_blank" rel="noopener">nobsbitcoin.com - First Ever Bitcoin Hashrate Fundraiser Found a Block</a>
+      <a href="https://theminermag.com/news/2025-01-30/bitcoin-foundation-solo-mining/" target="_blank" rel="noopener">theminermag.com - Bitcoin Foundation Solo Mining</a>
+      <a href="https://www.futurebit.io/apollo-btc" target="_blank" rel="noopener">futurebit.io - FutureBit Apollo</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Czech National Bank Explores Bitcoin Investment</h3>
+    <p>The Czech National Bank approved a proposal to further explore investing in Bitcoin on 30/01/2025. The Czech Republic is a member of the EU but NOT a member of the eurozone - they use their own currency, Czech koruna (CZK). The ECB/Christine Lagarde responded: &quot;I am confident that bitcoins won&rsquo;t enter the reserves of any of the central banks of the General Council.&quot;</p>
+    <div class="links">
+      <a href="https://www.cnb.cz/en/cnb-news/press-releases/CNB-to-assess-options-for-broadening-investment-to-include-other-asset-classes/" target="_blank" rel="noopener">cnb.cz - CNB Press Release</a>
+      <a href="https://www.reuters.com/markets/europe/ecbs-lagarde-slaps-down-czech-proposal-bitcoin-reserves-2025-01-30/" target="_blank" rel="noopener">reuters.com - ECB&rsquo;s Lagarde Slaps Down Czech Proposal</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>US States Bitcoin Strategic Reserve Proposals</h3>
+    <p>Lots of activity in the US regarding states putting Bitcoin Strategic Reserve-like proposals forward. Here&rsquo;s the state of play both domestically and internationally (confirmed stances/positions only, no rumoured positions such as Singapore, UAE etc).</p>
+    <img src="https://github.com/user-attachments/assets/dc7efcd4-50b5-4ddb-a991-58ef27a9b1d4" alt="US states Bitcoin reserve proposals map" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/8daf79e9-3140-4577-96b2-113d63108bb1" alt="International Bitcoin reserve positions" loading="lazy">
+    <div class="links">
+      <a href="https://xcancel.com/Eric_BIGfund/status/1885357195476218231#m" target="_blank" rel="noopener">US state proposals overview</a>
+      <a href="https://xcancel.com/Eric_BIGfund/status/1886494320804442195#m" target="_blank" rel="noopener">International positions overview</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Tether News Roundup</h3>
+    <p>Tether reports US$13 billion in net profits for 2024. Tether has exposure to US Treasuries to the tune of US$113 billion, making it one of the largest (~top 10) holders of US Treasuries in the world. Additionally, Tether and Lightning Labs (creators of LND) are teaming up to bring USDT to the Lightning network.</p>
+    <div class="links">
+      <a href="https://tether.io/news/tether-hits-13-billion-profits-for-2024-and-all-time-highs-in-u-s-treasury-holdings-usdt-circulation-and-reserve-buffer-in-q4-2024-attestation/" target="_blank" rel="noopener">tether.io - Tether Q4 2024 Attestation</a>
+      <a href="https://lightning.engineering/posts/2025-01-30-Tether-on-Lightning/" target="_blank" rel="noopener">lightning.engineering - Tether on Lightning</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Ark Wallet SDK Now Available</h3>
+    <p>The Ark Wallet SDK is a TypeScript library for building Bitcoin wallets with support for both on-chain and off-chain transactions via the Ark protocol. The Ark protocol is a Bitcoin Layer-2 solution that allows users to transact off-chain using Virtual Transaction Outputs (VTXOs) which are batched by a server into regular on-chain transactions, with users maintaining the ability to exit unilaterally to the main chain at any time.</p>
+    <div class="links">
+      <a href="https://blog.arklabs.to/introducing-the-ark-wallet-sdk-d1c77ce61cfc" target="_blank" rel="noopener">arklabs.to - Introducing the Ark Wallet SDK</a>
+      <a href="https://www.nobsbitcoin.com/ark-labs-releases-ark-wallet-sdk/" target="_blank" rel="noopener">nobsbitcoin.com - Ark Labs Releases Ark Wallet SDK</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Ross Is Free!!</h3>
+    <p>Ross Ulbricht has been freed by presidential pardon.</p>
+    <img src="https://github.com/user-attachments/assets/e629a74d-3b43-4517-9a09-6cda00970d8a" alt="Ross Ulbricht freed" loading="lazy">
+    <img src="https://github.com/user-attachments/assets/0dc89f3d-044b-40ab-83e0-bdf5c90023cc" alt="Ross Ulbricht freed" loading="lazy">
+    <div class="links">
+      <a href="https://freeross.org" target="_blank" rel="noopener">freeross.org</a>
+      <a href="https://www.nobsbitcoin.com/donald-trump-frees-ross/" target="_blank" rel="noopener">nobsbitcoin.com - Donald Trump Frees Ross</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Ledger Co-Founder Kidnapped and Freed</h3>
+    <p>David Balland, co-founder of Ledger, was kidnapped from his home in France early Tuesday and released Wednesday night following a police operation. Jameson Lopp has been keeping a record of such public attacks. Unfortunately we&rsquo;re going to see this happen more frequently, so ensure that your security protocol considers such physical attacks.</p>
+    <div class="links">
+      <a href="https://www.nobsbitcoin.com/ledger-co-founder-freed-after-ransom-kidnapping/" target="_blank" rel="noopener">nobsbitcoin.com - Ledger Co-Founder Freed After Kidnapping</a>
+      <a href="https://github.com/jlopp/physical-bitcoin-attacks" target="_blank" rel="noopener">github.com/jlopp - Physical Bitcoin Attacks Database</a>
+      <a href="https://www.youtube.com/watch?v=HUgPhPkS2yc" target="_blank" rel="noopener">YouTube - Physical Security in Bitcoin Primer</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Coinbase Onchain Reputation API</h3>
+    <p>The public surveillance tool provides a &quot;reputation score&quot; between -100 and +100 for wallet addresses, ENS, and Basename IDs, offering a &quot;directional indication of its reputation&quot; to &quot;evaluate transaction trustworthiness.&quot; The API returns metadata with detail on the nature of the risk. This looks to be trying to incentivise individuals to reveal their private information so that Coinbase can build a digital panopticon.</p>
+    <div class="links">
+      <a href="https://docs.cdp.coinbase.com/reputation/docs/welcome" target="_blank" rel="noopener">docs.cdp.coinbase.com - Reputation API Docs</a>
+      <a href="https://www.onchainscore.xyz" target="_blank" rel="noopener">onchainscore.xyz</a>
+      <a href="https://www.nobsbitcoin.com/879835/" target="_blank" rel="noopener">nobsbitcoin.com - Coinbase Onchain Reputation</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@murray-mc</div>
+    <h3>Trade Wars, Triffin&rsquo;s Dilemma &amp; De-dollarisation</h3>
+    <p>Trade wars and Triffin&rsquo;s dilemma are getting profile, along with old favourites around de-dollarisation, reserve currency and reserve assets, plus Fed interest rates and &quot;money printing.&quot; Myth busting: Collateral vs Currency, &quot;de-dollarisation&quot; vs &quot;defending a currency,&quot; &quot;QE and Fed rates vs money printing,&quot; &quot;Reserve Assets&quot; vs &quot;Reserve Currency,&quot; and &quot;Sovereign Funds.&quot;</p>
+    <div class="links">
+      <a href="https://x.com/jackmallers/status/1886505780930613546" target="_blank" rel="noopener">x.com - Jack Mallers on trade wars</a>
+      <a href="https://youtu.be/KyWMTd31Rx0" target="_blank" rel="noopener">YouTube - Related discussion (1)</a>
+      <a href="https://youtu.be/KNa-fewraJA" target="_blank" rel="noopener">YouTube - Related discussion (2)</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Sparrow v2.1.1 Released</h3>
+    <p>Huge number of changes, Craig Raw has been head down smashing out code. Most notably, improved support for hardware wallets with a new hardware wallet interface, Lark, which replaces HWI.</p>
+    <div class="links">
+      <a href="https://github.com/sparrowwallet/sparrow/releases/tag/2.1.1" target="_blank" rel="noopener">github.com - Sparrow v2.1.1 Release</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>DeepSeek Broke US Capital Markets (Briefly)</h3>
+    <p>DeepSeek-R1 is a model with performance on par with OpenAI-o1 that excels at reasoning and thinking. Created by a small Chinese company &quot;as a side project&quot; to their quant trading activities. Reportedly trained on a miniscule budget of ~US$6M relative to training costs of other foundation models ($100&rsquo;s M). They released both a web version and open-sourced models capable of running on powerful consumer hardware: the 32B and 70B models are on par with OpenAI-o1-mini.</p>
+    <div class="links">
+      <a href="https://chat.deepseek.com" target="_blank" rel="noopener">chat.deepseek.com - DeepSeek Web Version</a>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="author">@deadmanoz</div>
+    <h3>Possible Demos</h3>
+    <p>Bitaxe, Seedhammer, Seedsigners.</p>
+  </div>
+
+  <div class="topic">
+    <div class="author">@Turboesky</div>
+    <h3>Recovering a Non-Responsive Bitaxe Hex</h3>
+    <p>Attempting to recover a non-responsive Bitaxe Hex following a failed update. The guide uses Python command line and the goal is to get it hashing from a phone hotspot.</p>
+    <div class="links">
+      <a href="https://tinychiphub.com/blogs/technical/how-to-restore-your-bitaxe-to-factory-build-a-step-by-step-guide" target="_blank" rel="noopener">tinychiphub.com - How to Restore Your Bitaxe to Factory Build</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Perth BitDevs &middot; February 2025<br>
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/19" target="_blank">GitHub Issue #19</a></p>
+  </footer>
+</div>
+</body>
+</html>
