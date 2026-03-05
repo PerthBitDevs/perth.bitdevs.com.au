@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIPEs v2 — Covenants &amp; ZKP Without Consensus Changes — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:#b36a0f;--orB:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.badge{padding:3px 12px;background:var(--orG);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer}
+.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto}
+.si{max-width:660px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.st{font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.cl{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.ct{color:var(--txM);font-size:15px;line-height:1.6}
+.ct strong{color:var(--tx)}
+.ct code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--or);background:var(--orB);padding:2px 6px;border-radius:4px}
+.box{border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.box .bl{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cols{display:flex;gap:12px}
+.cols>div{flex:1}
+.flow{display:flex;flex-direction:column;gap:0;margin-bottom:12px}
+.flow-step{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;position:relative}
+.flow-step .num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:4px}
+.flow-step .ft{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.flow-step .fd{color:var(--txM);font-size:14px;line-height:1.5}
+.flow-arrow{text-align:center;color:var(--or);font-size:22px;line-height:1;padding:4px 0;opacity:.6}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.compare-item{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.compare-item .ci-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:4px}
+.compare-item .ci-title{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.compare-item .ci-desc{color:var(--txM);font-size:14px;line-height:1.5}
+.use-case{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:10px;border-left:3px solid var(--or)}
+.use-case .uc-title{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--or);margin-bottom:6px}
+.use-case .uc-desc{color:var(--txM);font-size:15px;line-height:1.6}
+.use-case .uc-desc strong{color:var(--tx)}
+.signal-bar{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center;margin-bottom:12px}
+.signal-bar .big{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800;color:var(--or)}
+.signal-bar .sub{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:4px}
+.link-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.link-pill{display:inline-block;padding:4px 12px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:12px;text-decoration:none;transition:border-color .2s}
+.link-pill:hover{border-color:var(--or)}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols{flex-direction:column}.compare-grid{grid-template-columns:1fr}h2.st{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">COVENANTS</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/" style="text-decoration:none">&larr; Topics</a>
+</div>
+
+<div class="content"><div class="si">
+
+<!-- Slide 1: The Problem -->
+<div class="slide" data-name="The Problem">
+  <h2 class="st">Programmability Without Soft Forks</h2>
+  <div class="box" style="background:var(--rdG);border:1px solid var(--rd)">
+    <div class="bl" style="color:var(--rd)">THE IMPASSE</div>
+    <div class="ct">Bitcoin developers have wanted <strong>covenants</strong> &mdash; spending conditions that restrict <em>where</em> coins can go next &mdash; for years. But every proposal requires a consensus change: <code>OP_CTV</code>, <code>OP_CAT</code>, <code>OP_VAULT</code> (now superseded by <code>OP_CHECKCONTRACTVERIFY</code>), <code>TXHASH</code>. The soft fork process has ground to a halt. No covenant opcode has come close to activation.</div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--or)">WHAT ARE COVENANTS?</div>
+    <div class="ct">Normal Bitcoin scripts control <strong>who</strong> can spend (via signatures). Covenants add a second dimension: <strong>what the spending transaction must look like</strong>. They can enforce that coins move to a specific address, wait a timelock, or follow a multi-step withdrawal protocol &mdash; all without trusting anyone.</div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--pu)">ENTER [alloc] init</div>
+    <div class="ct"><strong><a href="https://www.allocinit.xyz" style="color:var(--or);text-decoration:none">[alloc] init</a></strong> is a cryptography R&D company that asked: what if we could enforce arbitrary spending conditions <strong>purely through cryptography</strong>, without touching Bitcoin's consensus rules at all? Their answer is <strong>PIPEs v2</strong> &mdash; a protocol that uses <strong>witness encryption</strong> to lock private keys behind cryptographic statements, making covenants enforceable by math alone.</div>
+  </div>
+  <div class="signal-bar">
+    <div class="big">Zero Soft Forks Required</div>
+    <div class="sub">Programmability lives in cryptography, not Script</div>
+  </div>
+</div>
+
+<!-- Slide 2: How PIPEs Work — Visual Walkthrough -->
+<div class="slide" data-name="How It Works">
+  <h2 class="st">How It Works: Alice's Vault</h2>
+
+  <div class="card" style="border-left:3px solid var(--or);margin-bottom:16px">
+    <div class="cl" style="color:var(--or)">SCENARIO</div>
+    <div class="ct">Alice wants to protect her 1 BTC with a vault. The rule: coins can <strong>only</strong> move to a staging address, with a 144-block (~1 day) timelock before final withdrawal. If she sees theft during the delay, she can claw back. <strong>No soft fork needed.</strong></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:8px">
+    <div style="background:var(--or);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px">Generate a Fresh Key Pair</div>
+      <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:32px;flex-shrink:0">🔑</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--or);margin-bottom:4px">sk &nbsp;=&nbsp; a3f8...9c01 &nbsp;&nbsp; pk &nbsp;=&nbsp; bc1p...vault</div>
+          <div style="color:var(--txM);font-size:14px">A brand-new Taproot key pair. The address <code>bc1p...vault</code> looks like any other Bitcoin address.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div style="text-align:center;color:var(--or);font-size:23px;opacity:.5;margin:2px 0 2px 20px">&darr;</div>
+
+  <!-- STEP 2 -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:8px">
+    <div style="background:var(--or);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px">Encrypt the Private Key Under the Vault Rule</div>
+      <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="font-size:32px;flex-shrink:0">🔒</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--pu);background:var(--puG);border:1px solid var(--pu);border-radius:6px;padding:8px 12px;flex:1">
+            WE.Encrypt( <span style="color:var(--or)">sk</span>, "<span style="color:var(--tx)">output[0] must pay to staging address + 144-block relative timelock</span>" )
+          </div>
+        </div>
+        <div style="color:var(--txM);font-size:14px;line-height:1.5">The private key <code>sk</code> is now locked inside a ciphertext. The <strong>only way to get it out</strong> is to provide a transaction that matches the rule. This is <strong>witness encryption</strong> &mdash; the transaction itself is the "witness" that unlocks the key.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div style="text-align:center;color:var(--or);font-size:23px;opacity:.5;margin:2px 0 2px 20px">&darr;</div>
+
+  <!-- STEP 3 -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:8px">
+    <div style="background:var(--rd);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px">Destroy the Original Private Key</div>
+      <div style="background:var(--rdG);border:1px solid var(--rd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:32px;flex-shrink:0">🗑️</div>
+        <div style="color:var(--txM);font-size:14px;line-height:1.5">The original <code>sk</code> is securely deleted. From this point, <strong>nobody holds the private key</strong> &mdash; it exists only inside the encrypted ciphertext. The vault rule is now irreversibly enforced by math.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrow -->
+  <div style="text-align:center;color:var(--or);font-size:23px;opacity:.5;margin:2px 0 2px 20px">&darr;</div>
+
+  <!-- STEP 4 -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:8px">
+    <div style="background:var(--or);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px">Send 1 BTC to the Vault Address</div>
+      <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+        <div style="font-size:32px;flex-shrink:0">📦</div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--or);margin-bottom:4px">1.0 BTC &rarr; bc1p...vault</div>
+          <div style="color:var(--txM);font-size:14px">A completely normal Taproot transaction. Miners, nodes, block explorers &mdash; <strong>nobody can tell this UTXO has a covenant.</strong> It looks like every other P2TR output.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div style="border-top:2px dashed var(--bd2);margin:18px 0;position:relative">
+    <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);letter-spacing:.06em">LATER &mdash; TIME TO SPEND</span>
+  </div>
+
+  <!-- STEP 5a: Valid -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:12px">
+    <div style="background:var(--gn);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--gn);margin-bottom:6px">Valid Spend &mdash; Follows the Rule ✓</div>
+      <div style="background:var(--gnG);border:1px solid var(--gn);border-radius:10px;padding:14px 16px">
+        <div style="display:flex;align-items:stretch;gap:10px;margin-bottom:10px">
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">ALICE BUILDS TX</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tx)">output[0] &rarr; staging addr</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tx)">timelock: 144 blocks</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--gn);font-size:22px;flex-shrink:0">&rarr;</div>
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">DECRYPTION</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">tx matches rule ✓</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">sk recovered!</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--gn);font-size:22px;flex-shrink:0">&rarr;</div>
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">RESULT</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">sign tx with sk</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">broadcast ✓</div>
+          </div>
+        </div>
+        <div style="color:var(--txM);font-size:14px;text-align:center">The transaction satisfies the encrypted rule, so the key is released. Alice signs and broadcasts. <strong>Nodes see a normal Taproot spend.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5b: Invalid -->
+  <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:14px">
+    <div style="background:var(--rd);color:#fff;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:800;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">✗</div>
+    <div style="flex:1">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--rd);margin-bottom:6px">Invalid Spend &mdash; Breaks the Rule ✗</div>
+      <div style="background:var(--rdG);border:1px solid var(--rd);border-radius:10px;padding:14px 16px">
+        <div style="display:flex;align-items:stretch;gap:10px;margin-bottom:10px">
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">ATTACKER BUILDS TX</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tx)">output[0] &rarr; attacker addr</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tx)">no timelock</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--rd);font-size:22px;flex-shrink:0">&rarr;</div>
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">DECRYPTION</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--rd)">tx doesn't match ✗</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--rd)">sk NOT recovered</div>
+          </div>
+          <div style="display:flex;align-items:center;color:var(--rd);font-size:22px;flex-shrink:0">&rarr;</div>
+          <div style="background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;flex:1">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);margin-bottom:4px">RESULT</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--rd)">can't sign</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--rd)">coins safe 🛡️</div>
+          </div>
+        </div>
+        <div style="color:var(--txM);font-size:14px;text-align:center">Wrong destination, no timelock &mdash; the math doesn't unlock. <strong>Without the key, no valid signature is possible.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom takeaway -->
+  <div class="box" style="background:var(--puG);border:1px solid var(--pu)">
+    <div class="bl" style="color:var(--pu)">THE KEY IDEA</div>
+    <div class="ct">The private key is <strong>locked inside a math puzzle</strong>. The only way to extract it is to build a transaction that follows the rules. Bitcoin nodes never know &mdash; they just see a valid signature on a normal Taproot spend.</div>
+  </div>
+</div>
+
+<!-- Slide 3: What This Enables -->
+<div class="slide" data-name="Use Cases">
+  <h2 class="st">What This Enables</h2>
+  <div class="use-case">
+    <div class="uc-title">VAULTS</div>
+    <div class="uc-desc">Lock coins so they can only be spent through a <strong>two-step withdrawal</strong>: first to an intermediate "unvaulting" address with a timelock, then to the final destination. If the vault owner detects theft during the timelock, they can <strong>claw back</strong> the funds. All enforced cryptographically &mdash; no <code>OP_VAULT</code> opcode needed.</div>
+  </div>
+  <div class="use-case">
+    <div class="uc-title">NON-CUSTODIAL DELEGATION</div>
+    <div class="uc-desc">Delegate spending authority for specific purposes <strong>without handing over the private key</strong>. For example, allow a cold wallet to authorize a hot wallet to spend only to pre-approved addresses, or only up to a certain amount per day. The delegation is enforced by the cryptographic lock, not by trust.</div>
+  </div>
+  <div class="use-case">
+    <div class="uc-title">PESSIMISTIC ZK VERIFICATION</div>
+    <div class="uc-desc">Require a <strong>zero-knowledge proof</strong> to spend coins &mdash; in a single transaction. The statement S can be "a valid ZK proof of computation X exists." This enables on-chain verification of arbitrary computation (rollup settlement, bridge proofs, etc.) <strong>without</strong> any new opcodes like <code>OP_ZKP_VERIFY</code>.</div>
+  </div>
+  <div class="use-case">
+    <div class="uc-title">ARBITRARY SPENDING POLICIES</div>
+    <div class="uc-desc">Since the encrypted statement can be <strong>any NP statement</strong>, PIPEs can enforce virtually any spending condition imaginable: rate limiting, whitelisted destinations, multi-party approval schemes, hash-locked contracts, and combinations thereof. The expressiveness is limited only by what can be stated mathematically.</div>
+  </div>
+  <div class="box" style="background:var(--gnG);border:1px solid var(--gn)">
+    <div class="bl" style="color:var(--gn)">NO CONSENSUS CHANGES</div>
+    <div class="ct">All of these features work <strong>on Bitcoin today</strong>. The enforcement mechanism is cryptographic, not script-level. Bitcoin nodes see a normal P2TR (Taproot) spend with a valid signature &mdash; they have no idea covenant logic was enforced behind the scenes.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Implications & Trade-offs -->
+<div class="slide" data-name="Trade-offs">
+  <h2 class="st">Implications &amp; Trade-offs</h2>
+  <div class="cols">
+    <div>
+      <div class="box" style="background:var(--gnG);border:1px solid var(--gn)">
+        <div class="bl" style="color:var(--gn)">STRENGTHS</div>
+        <div class="ct">
+          <strong>No soft fork risk</strong> &mdash; ships as application-layer software, not consensus code.<br><br>
+          <strong>Arbitrary expressiveness</strong> &mdash; any NP statement can be a spending condition.<br><br>
+          <strong>Composable</strong> &mdash; combine vaults, delegation, and ZK proofs in the same UTXO.<br><br>
+          <strong>Opt-in</strong> &mdash; only users who create PIPEs are affected; no protocol-wide impact.
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="box" style="background:var(--rdG);border:1px solid var(--rd)">
+        <div class="bl" style="color:var(--rd)">CHALLENGES</div>
+        <div class="ct">
+          <strong>Novel cryptography</strong> &mdash; witness encryption (and AADP specifically) relies on assumptions much newer and less studied than ECDSA/Schnorr.<br><br>
+          <strong>Key destruction is critical</strong> &mdash; the original private key must be securely deleted after encryption. Secure deletion is an unsolved problem; there's no way for third parties to verify it happened.<br><br>
+          <strong>No miner enforcement</strong> &mdash; if the key leaks or the crypto breaks, miners see a valid Taproot spend. There is no consensus safety net.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--yl)">CRITICAL DIFFERENCE FROM SOFT FORK COVENANTS</div>
+    <div class="ct">With <code>OP_CTV</code> or <code>OP_VAULT</code>, <strong>miners enforce</strong> the covenant &mdash; invalid transactions are rejected at the consensus layer. With PIPEs, enforcement is <strong>purely cryptographic</strong>. If the underlying crypto is broken or the private key leaks, there's no consensus safety net. The security guarantee comes from <strong>mathematical hardness</strong>, not from the network.</div>
+  </div>
+  <div class="compare-grid">
+    <div class="compare-item">
+      <div class="ci-label" style="color:var(--bl)">SOFT FORK COVENANTS</div>
+      <div class="ci-title">OP_CTV / OP_CAT / OP_VAULT</div>
+      <div class="ci-desc">Consensus-enforced, requires network upgrade, limited expressiveness per opcode, battle-tested security model</div>
+    </div>
+    <div class="compare-item">
+      <div class="ci-label" style="color:var(--or)">PIPEs v2</div>
+      <div class="ci-title">Witness Encryption Covenants</div>
+      <div class="ci-desc">Cryptography-enforced, no upgrade needed, arbitrary expressiveness, novel security assumptions</div>
+    </div>
+  </div>
+  <div class="link-row">
+    <a class="link-pill" href="https://blockspace.media/insight/allocinit-releases-whitepaper-for-pipes-v2-to-add-covenants-zk-proofs-to-bitcoin/" target="_blank">Blockspace article</a>
+    <a class="link-pill" href="https://www.allocinit.xyz/uploads/pipesv2.pdf" target="_blank">PIPEs v2 Whitepaper</a>
+    <a class="link-pill" href="https://www.allocinit.xyz/uploads/aadp.pdf" target="_blank">AADP Paper</a>
+    <a class="link-pill" href="https://www.allocinit.xyz" target="_blank">[alloc] init</a>
+  </div>
+</div>
+
+</div></div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');const names=Array.from(slides).map(s=>s.dataset.name);let cur=0;
+function render(){slides.forEach((s,i)=>s.classList.toggle('active',i===cur));document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;document.getElementById('prevBtn').disabled=cur===0;const nb=document.getElementById('nextBtn');nb.disabled=cur===slides.length-1;nb.className=cur===slides.length-1?'nav-btn':'nav-btn next'}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}function goTo(i){cur=i;render()}document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});render();
+</script>
+</body>
+</html>

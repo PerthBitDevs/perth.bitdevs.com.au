@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIP-110 Update: Bugs, Defections &amp; the OP_RETURN War — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:#b36a0f;--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--rdG);border:1px solid var(--rd);border-radius:16px;color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.badge-group{display:flex;align-items:center;gap:8px}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--rd);background:var(--rdG);color:var(--rd);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+
+/* Content */
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+
+/* Slide Title */
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--rd),#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Cards */
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--or);background:rgba(247,147,26,.08);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+
+/* Warning Box */
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Info Box */
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Green Box */
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Yellow Box */
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Cyan Box */
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Bug Diagram */
+.bug-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:12px}
+.bug-step{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+.bug-step:last-child{margin-bottom:0}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--bg);background:var(--rd);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-body{flex:1}
+.step-title{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.step-desc{color:var(--txM);font-size:14px;line-height:1.5}
+.step-desc code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--rd);background:var(--rdD);padding:1px 5px;border-radius:3px}
+
+/* Signal bar */
+.signal-bar{margin-top:12px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.signal-bar .big{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:800}
+.signal-bar .sub{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:4px}
+
+/* Defection cards */
+.defection{display:flex;gap:12px;align-items:flex-start;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:10px;border-left:3px solid var(--rd)}
+.defection-icon{font-size:23px;flex-shrink:0;margin-top:2px}
+.defection-body{flex:1}
+.defection-name{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.defection-name a{color:var(--bl);text-decoration:none}
+.defection-quote{color:var(--txM);font-size:14px;line-height:1.5;font-style:italic}
+
+/* Two-column grid */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+
+/* Timeline */
+.timeline{display:flex;flex-direction:column;gap:4px}
+.tl-item{display:flex;gap:14px;align-items:flex-start}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;min-width:16px;padding-top:2px}
+.tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tl-line{width:2px;flex:1;min-height:24px;background:var(--bd);margin-top:4px}
+.tl-body{padding-bottom:12px}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;margin-bottom:3px}
+.tl-text{color:var(--txM);font-size:14px;line-height:1.5}
+.tl-text strong{color:var(--tx)}
+
+/* Stat Row */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center}
+.stat .val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800}
+.stat .label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.04em;margin-top:4px}
+
+/* Verdict box */
+.verdict-box{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(234,179,8,.08));border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:18px 20px;margin-bottom:12px;text-align:center}
+.verdict-title{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:800;color:var(--rd);margin-bottom:10px}
+.verdict-text{color:var(--txM);font-size:15px;line-height:1.7}
+
+/* Links section */
+.links{margin-top:12px}
+.links a{display:block;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:13px;text-decoration:none;padding:4px 0;border-bottom:1px solid rgba(59,130,246,.1)}
+.links a:hover{color:#60a5fa}
+
+/* Footer */
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--rd);background:var(--rdG);color:var(--rd)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* Responsive */
+@media(max-width:600px){.cols{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}.bug-step{flex-direction:column;gap:6px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">BIP-110</div>
+    <div class="update-tag">MAR UPDATE</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- ============================================================ -->
+<!-- Slide 1: Consensus Bugs Found                                -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Consensus Bugs">
+  <h2 class="slide-title">Consensus-Breaking Bugs in the Release Candidate</h2>
+
+  <div class="warn-box">
+    <div class="warn-label">CRITICAL: SCRIPT-EXECUTION CACHE POISONING</div>
+    <div class="card-text">A serious consensus bug was found in Bitcoin Knots' BIP-110 implementation by <strong>@l0rinc</strong>. A reorg that moves a <strong>funding transaction</strong> across the activation boundary can <strong>poison the script-execution cache</strong>, causing a node to accept blocks containing BIP-110-invalid transactions.</div>
+  </div>
+
+  <div class="bug-diagram">
+    <div class="card-label" style="color:var(--rd);margin-bottom:14px">HOW THE CACHE POISONING ATTACK WORKS</div>
+    <div class="bug-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Grandfathering exemption for pre-activation UTXOs</div>
+        <div class="step-desc">BIP-110 exempts UTXOs created <strong>before</strong> activation height <code>H</code> from the new rules. Spending these uses <strong>relaxed per-input flags</strong>. But the cache key is computed from <strong>tx-wide strict flags</strong>.</div>
+      </div>
+    </div>
+    <div class="bug-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Funding tx confirmed at height H-1 (pre-activation)</div>
+        <div class="step-desc">A funding transaction creates a UTXO at height <code>H-1</code>. Because it's pre-activation, spending this UTXO is <strong>grandfathered</strong> &mdash; validated with relaxed flags. The result is cached under the <strong>strict-flag key</strong>.</div>
+      </div>
+    </div>
+    <div class="bug-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Reorg moves the funding tx to height H (post-activation)</div>
+        <div class="step-desc">A competing chain reorganizes the tip. The funding tx is now confirmed at <code>H</code> or later &mdash; the UTXO is no longer grandfathered. Spending it should now use <strong>strict BIP-110 rules</strong>.</div>
+      </div>
+    </div>
+    <div class="bug-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Cache serves stale relaxed-flag result</div>
+        <div class="step-desc">The node encounters the same spending tx. It looks up the cache using strict flags as the key and finds a <strong>cached "valid" result</strong> from when relaxed flags were used. It <strong>skips re-validation</strong> and accepts the block.</div>
+      </div>
+    </div>
+    <div class="bug-step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">Consensus split</div>
+        <div class="step-desc">The poisoned node disagrees with correctly-implementing nodes. This is a <strong>chain split</strong> &mdash; the most dangerous class of bug in Bitcoin consensus code. The split depends on node-specific cache state, not block data.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">ADDITIONAL BUGS REPORTED</div>
+    <div class="card-text">Beyond the cache poisoning issue, <strong>@kwsantiago</strong> reported additional bugs on PR #238 (mempool enforcement issues, widened cache attack surface), and <strong>@defenwycke</strong> reported further issues. The test suite was already known to be failing on release from the February analysis.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--yl)">WHY THIS MATTERS</div>
+    <div class="card-text">This is exactly the kind of bug that BIP-110 critics warned about: <strong>per-input grandfathering with activation-boundary rules is inherently tricky</strong>. The script-execution cache keys use tx-wide strict flags, but BIP-110's UTXO-age exemption causes validation to use per-input relaxed flags &mdash; a mismatch the cache was never designed for. This bug wasn't caught by Knots' test suite.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/bitcoinknots/bitcoin/pull/238#issuecomment-3896624715" target="_blank">Full disclosure on bitcoinknots/bitcoin PR #238</a>
+    <a href="https://x.com/defenwycke/status/2024543013960094205" target="_blank">@defenwycke: more bugs discovered</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Slide 2: Defections                                          -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Defections">
+  <h2 class="slide-title">Defections from the Defectors</h2>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--rd)">BIP-110 IS BLEEDING SUPPORTERS</div>
+    <div class="card-text">Several prominent BIP-110 supporters have <strong>publicly withdrawn their support</strong> in March 2026. The combination of implementation bugs, lack of miner signaling, and growing recognition of the proposal's technical shortcomings has caused a visible erosion in the coalition.</div>
+  </div>
+
+  <div class="defection">
+    <div class="defection-icon"></div>
+    <div class="defection-body">
+      <div class="defection-name">@lukedewolf <a href="https://x.com/lukedewolf/status/2022820428104843481" target="_blank">&nearr;</a></div>
+      <div class="defection-quote">Publicly withdrew support for BIP-110, citing concerns about the implementation quality and the growing evidence that the approach is technically unsound. Previously an outspoken advocate of the proposal's anti-spam goals.</div>
+    </div>
+  </div>
+
+  <div class="defection">
+    <div class="defection-icon"></div>
+    <div class="defection-body">
+      <div class="defection-name">@hodlonaut <a href="https://x.com/hodlonaut/status/2022284973835768136" target="_blank">&nearr;</a></div>
+      <div class="defection-quote">Withdrew support, signaling a shift among the "Bitcoin maximalist" community members who were among BIP-110's most vocal champions. A notable defection given hodlonaut's prominence in the community.</div>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">PATTERN RECOGNITION</div>
+    <div class="card-text">The defections follow a pattern seen in previous contentious proposals: initial enthusiasm driven by <strong>ideological alignment</strong> ("Bitcoin should be money, not a data layer") gives way to pragmatic retreat once the <strong>technical costs</strong> become apparent. The cache poisoning bug was a turning point &mdash; it made concrete what critics had been arguing abstractly: <strong>consensus changes are hard, and this one wasn't ready</strong>.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="val" style="color:var(--yl)">1</div>
+      <div class="label">BLOCKS SIGNALING</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--yl)">~2%</div>
+      <div class="label">REACHABLE NODES</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--txD)">6mo</div>
+      <div class="label">UNTIL DEADLINE</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--txD)">THE MATH DOESN'T WORK</div>
+    <div class="card-text">With <strong>one signaled block</strong> (0.05% of needed), approximately <strong>6 months</strong> until the September 2026 activation deadline, and supporters actively leaving &mdash; the path to 55% miner support (1,109 of 2,016 blocks in a difficulty period) appears effectively impossible. No major mining pool has indicated willingness to signal. Meanwhile, URSF coordination is actively raising the cost of signaling.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Slide 3: OP_RETURN War & Mempool Report                      -->
+<!-- ============================================================ -->
+<div class="slide" data-name="OP_RETURN War">
+  <h2 class="slide-title">The OP_RETURN War</h2>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--or)">CONTEXT: WHAT TRIGGERED ALL THIS</div>
+    <div class="card-text">Bitcoin Core v30 removed the long-standing OP_RETURN standardness limit (<code>83-byte</code> scriptPubKey = 80 bytes data + 3 overhead, in place since v0.12.0). BIP-110 was born as a reaction: if Core won't enforce limits, we'll do it at the consensus layer. The debate has since evolved into a broader philosophical war about what Bitcoin's blockspace is "for."</div>
+  </div>
+
+  <div class="cols">
+    <div class="warn-box" style="margin-bottom:0">
+      <div class="warn-label">ANTI-OP_RETURN CAMP</div>
+      <div class="card-text">
+        <strong>Position:</strong> Arbitrary data storage "abuses" Bitcoin. Blockspace should be for financial transactions only. Miners have distorted incentives. The OP_RETURN limit removal "opened the floodgates."
+      </div>
+    </div>
+    <div class="green-box" style="margin-bottom:0">
+      <div class="green-label">PRO-OP_RETURN CAMP</div>
+      <div class="card-text">
+        <strong>Position:</strong> OP_RETURN is the most efficient way to anchor data. Banning it just pushes data into witness/multisig outputs which are worse. Users pay fees &mdash; blockspace is neutral. Censorship-resistance is the point.
+      </div>
+    </div>
+  </div>
+
+  <div class="cyan-box" style="margin-top:12px">
+    <div class="cyan-label">MEMPOOL.SPACE RESEARCH REPORT</div>
+    <div class="card-text">Mempool.space published a <strong>comprehensive research report</strong> analyzing OP_RETURN usage on the Bitcoin blockchain. Key findings:
+      <br><br>
+      <strong>1. OP_RETURN usage is modest:</strong> Despite the rhetoric about "spam flooding the chain," OP_RETURN outputs account for a small fraction of total blockspace.<br><br>
+      <strong>2. Removing limits didn't cause a flood:</strong> The data shows no dramatic increase in OP_RETURN usage after the Core v30 limit removal.<br><br>
+      <strong>3. Data will find a way:</strong> When OP_RETURN was more restricted, data embedding moved to less efficient methods (bare multisig, witness data) &mdash; using <em>more</em> blockspace, not less.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--bl)">MURCH'S ANALYSIS</div>
+    <div class="card-text"><strong>@murchandamus</strong> (Bitcoin Core contributor) published a detailed analysis of the OP_RETURN debate, arguing that the data empirically shows restricting OP_RETURN is counterproductive: it doesn't reduce data on chain, it just makes data storage <strong>less efficient and harder to prune</strong>. OP_RETURN outputs are provably unspendable and can be safely pruned; data hidden in other output types cannot.</div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">THE "MECHANIC" MOMENT &amp; MINISCRIPT FUND FREEZING</div>
+    <div class="card-text"><strong>@GrassFedBitcoin</strong>, a prominent BIP-110 advocate, was discovered to not understand that the proposal's own rules would ban <code>OP_IF / OP_NOTIF</code> in tapscripts. Meanwhile, <strong>Rob1Ham</strong> demonstrated on the BIP PR that the Miniscript compiler uses <code>OP_IF</code> for taproot descriptors unless spending conditions are manually separated &mdash; meaning BIP-110 could <strong>freeze funds</strong> in standard wallet outputs (e.g. Liana). BullishNode further noted that <strong>5 of BIP-110's 7 rules are unrelated to OP_RETURN</strong>, undermining the stated motivation.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">BIP-110 SPEC AMENDED (PR #2115, MARCH 2026)</div>
+    <div class="card-text">Rule 3 now <strong>exempts P2A (Pay to Anchor)</strong> &mdash; acknowledging the rules were overbroad and could break CPFP fee bumping. Rule 2 was clarified to limit "script argument witness items" (a narrower, defined term). An <strong>EXPIRED terminal state</strong> was added to the deployment state machine.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://research.mempool.space/opreturn-report/" target="_blank">Mempool.space: OP_RETURN Research Report</a>
+    <a href="https://x.com/murchandamus/status/2022930707820269670" target="_blank">@murchandamus analysis thread</a>
+    <a href="https://x.com/GrassFedBitcoin/status/2022190679334805726" target="_blank">@GrassFedBitcoin OP_IF moment</a>
+    <a href="https://x.com/OrangeSurfBTC/status/2023094750019264757" target="_blank">@OrangeSurfBTC: OP_RETURN since v30</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Slide 4: URSF, Prediction Markets, Fake Signaling            -->
+<!-- ============================================================ -->
+<div class="slide" data-name="URSF & Markets">
+  <h2 class="slide-title">URSF, Prediction Markets &amp; Fake Signaling</h2>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--pu)">SUPERTESTNET &amp; THE URSF CONCEPT</div>
+    <div class="card-text"><strong>SuperTestnet</strong> proposed a <strong>User Resisted Soft Fork (URSF)</strong> &mdash; a mechanism where nodes would actively <strong>reject blocks that signal for BIP-110</strong>. The idea inverts the UASF concept: instead of users forcing activation, users would resist activation by orphaning signaling blocks.
+      <br><br>
+      This is notable because it introduces an explicit counter-mechanism: if enough economic nodes run URSF software, miners who signal for BIP-110 risk having their blocks rejected by a portion of the network. It raises the cost of signaling from zero to potentially losing block rewards.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--gn)">PREDICTION MARKETS</div>
+      <div class="card-text">Predyx prediction market for "Will BIP-110 activate by Sept 1, 2026?" shows odds well below 10%. Markets are pricing BIP-110 activation as <strong>extremely unlikely</strong> &mdash; consistent with zero miner signaling and eroding support.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--yl)">FAKE SIGNALING?</div>
+      <div class="card-text"><strong>@GhostofMapl</strong> raised concerns about potentially <strong>fake BIP-110 signaling nodes</strong> &mdash; nodes that appear to run Knots but may be artificially inflating the node count to create an appearance of grassroots support. If true, the already-irrelevant ~2% node figure is even more overstated.</div>
+    </div>
+  </div>
+
+  <div class="warn-box" style="margin-top:12px">
+    <div class="warn-label">PROCESS &amp; GOVERNANCE CONCERNS</div>
+    <div class="card-text"><strong>gmaxwell</strong> alleged the BIP was submitted on behalf of <strong>Ocean Mining via a proxy account</strong>, that Luke-Jr assigned the BIP number out of process, and that legal representatives associated with Ocean were making coercive contacts with miners. <strong>jlopp</strong> identified a double-spend attack vector: embed controversial data &rarr; trigger chain invalidation &rarr; RBF the now-unconfirmed transaction. The PR was <strong>locked by jonatack</strong> for moderation.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">URSF: A PRECEDENT-SETTING IDEA</div>
+    <div class="card-text">While the URSF likely won't be needed (BIP-110 appears to be dying on its own), the <em>concept</em> is significant. It establishes a template for the community to actively resist unwanted consensus changes, not just passively refuse to upgrade. In a world where soft forks can be activated by miners alone (as BIP-110 proposes with just 55% threshold), URSF provides the counter-balance.</div>
+  </div>
+
+  <div class="signal-bar">
+    <div class="big" style="color:var(--rd)">&lt;10%</div>
+    <div class="sub">Prediction market probability of BIP-110 activation</div>
+    <div class="sub" style="margin-top:8px;color:var(--txM)">Predyx market &mdash; real money on the line, not Twitter polls</div>
+  </div>
+
+  <div class="links">
+    <a href="https://x.com/SuperTestnet/status/2023826645162095090" target="_blank">@SuperTestnet: URSF proposal</a>
+    <a href="https://beta.predyx.com/market/will-bip-110-activate-and-be-enforced-on-bitcoin-by-sept-1-2026-1770282509" target="_blank">Predyx: BIP-110 Activation Market</a>
+    <a href="https://x.com/GhostofMapl/status/2026456593785606400" target="_blank">@GhostofMapl: Fake signaling nodes?</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- Slide 5: Where Things Stand                                  -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Status">
+  <h2 class="slide-title">Where Things Stand Now</h2>
+
+  <div class="yellow-box">
+    <div class="yellow-label">BREAKING: FIRST BIP-110 SIGNALED BLOCK MINED</div>
+    <div class="card-text">After months of zero signaling, the <strong>first block signaling for BIP-110 has been mined</strong> (<a href="https://x.com/boomer_btc/status/2028186827102793876" target="_blank">source</a>). While symbolically notable, a single block is statistically insignificant &mdash; activation requires <strong>1,109 of 2,016 blocks (55%)</strong> in a difficulty period. One block = 0.05% of a difficulty period (~0.09% of the threshold).</div>
+  </div>
+
+  <div class="cyan-box">
+    <div class="cyan-label">URSF COORDINATION HAS STARTED</div>
+    <div class="card-text">The URSF concept has moved from theory to practice. A <strong>Telegram coordination group</strong> has been created (<a href="https://t.me/+svDDMRJtO8UzMzNk" target="_blank">join link</a>) to organize users running URSF software that would <strong>reject blocks signaling for BIP-110</strong>. This raises the cost of signaling from zero to potentially losing block rewards.</div>
+  </div>
+
+  <div class="verdict-box">
+    <div class="verdict-title">BIP-110: ONE BLOCK DOESN'T CHANGE THE MATH</div>
+    <div class="verdict-text">One signaled block after months of zero. Consensus bugs in the only implementation. Spec still being amended (P2A exemption, EXPIRED state). Supporters defecting. URSF coordination starting. Prediction markets pricing activation below 10%. Process concerns from gmaxwell. 5 of 7 rules unrelated to the stated OP_RETURN motivation. The math still doesn't work.</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--bl);box-shadow:0 0 8px var(--bl)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--bl)">Feb 2026</div><div class="tl-text">Perth BitDevs covered BIP-110 basics: 7 rules, deployment timeline, governance theatre of running Knots nodes. <strong>Zero blocks signaling</strong> at that point.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--rd);box-shadow:0 0 8px var(--rd)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--rd)">Mar 2026</div><div class="tl-text"><strong>Cache poisoning bug</strong> found. <strong>Supporters defecting</strong>. Mempool.space report undermines the "spam" narrative. URSF proposed as counter-mechanism. Prediction markets say &lt;10%. <strong>First signaled block mined</strong> &mdash; but just one.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--txD);box-shadow:0 0 8px var(--txD)"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--txD)">Sep 2026</div><div class="tl-text"><strong>Activation deadline</strong> at block 965,664. Without 55% miner signaling in any difficulty period before then, BIP-110 expires &mdash; a quiet death by timeout.</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-label" style="color:var(--yl)">LESSONS FOR THE ECOSYSTEM</div>
+    <div class="card-text">
+      <strong>1. Consensus changes are hard for a reason.</strong> The cache poisoning bug illustrates why Bitcoin's conservative approach to protocol changes exists. Even well-intentioned proposals can introduce catastrophic bugs.<br><br>
+      <strong>2. "Running a node" isn't governance.</strong> BIP-110 demonstrated the gap between social media activism (running Knots, posting support) and actual protocol governance (miner signaling, economic node enforcement).<br><br>
+      <strong>3. Data finds a way.</strong> The mempool.space report confirmed what technologists argued: restricting OP_RETURN doesn't reduce on-chain data, it just makes it less efficient and harder to prune.<br><br>
+      <strong>4. Prediction markets are signal.</strong> When real money is on the line, the market's assessment of BIP-110's chances was far more accurate than Twitter sentiment.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--txD)">PREVIOUSLY ON PERTH BITDEVS</div>
+    <div class="card-text">For the full BIP-110 background (the 7 rules, deployment mechanism, governance analysis, and arguments against), see the <a href="/2026-02/bip-110.html">February 2026 BIP-110 presentation</a>.</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});
+render();
+</script>
+</body>
+</html>

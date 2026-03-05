@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIBRE Resurrected — Fast Block Relay for Mining Decentralization</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06080d;
+    --sf: #0d1117;
+    --sf2: #151b25;
+    --bd: #1c2432;
+    --bdh: #2a3545;
+    --tx: #e2e8f0;
+    --txM: #94a3b8;
+    --txD: #506078;
+    --or: #f7931a;
+    --orD: rgba(247,147,26,.10);
+    --tl: #14b8a6;
+    --tlD: rgba(20,184,166,.12);
+    --tlG: rgba(20,184,166,.30);
+    --tlB: rgba(20,184,166,.50);
+    --bl: #3b82f6;
+    --blD: rgba(59,130,246,.12);
+    --rd: #ef4444;
+    --rdD: rgba(239,68,68,.12);
+    --yl: #eab308;
+    --ylD: rgba(234,179,8,.12);
+    --gn: #22c55e;
+    --gnD: rgba(34,197,94,.12);
+    --pu: #a855f7;
+    --puD: rgba(168,85,247,.12);
+    --cy: #06b6d4;
+    --cyD: rgba(6,182,212,.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--tx);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+  }
+
+  /* Back link */
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--txD);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--tl); }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+    position: relative;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--tlD) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid rgba(20,184,166,.25);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tl);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--tl);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 .accent { color: var(--tl); }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--txM);
+    margin-top: 14px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Network visualization canvas */
+  .network-viz {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    margin: 0 auto 48px;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--bd);
+    background: var(--sf);
+  }
+
+  .network-viz canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .viz-legend {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: flex;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    letter-spacing: 0.04em;
+  }
+
+  .viz-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .viz-legend .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .viz-stat {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .viz-stat .number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--tl);
+    line-height: 1;
+  }
+
+  .viz-stat .label {
+    font-size: 10px;
+    color: var(--txD);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Section cards */
+  .section {
+    border: 1px solid var(--bd);
+    border-radius: 16px;
+    background: var(--sf);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 0;
+  }
+
+  .section:hover {
+    border-color: var(--bdh);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .section-title-block { flex: 1; }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--txD);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .section-toggle {
+    font-size: 18px;
+    color: var(--txD);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .section.open .section-toggle {
+    transform: rotate(180deg);
+  }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .section.open .section-body {
+    max-height: 2000px;
+  }
+
+  .section-content {
+    padding: 0 28px 28px;
+    display: grid;
+    gap: 20px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txM);
+  }
+
+  .section-desc strong {
+    color: var(--tx);
+    font-weight: 600;
+  }
+
+  /* Section color variants */
+  .section--problem .section-num { background: var(--rdD); color: var(--rd); }
+  .section--problem { border-color: rgba(239,68,68,.12); }
+  .section--problem:hover { border-color: rgba(239,68,68,.25); }
+
+  .section--how .section-num { background: var(--tlD); color: var(--tl); }
+  .section--how { border-color: rgba(20,184,166,.15); }
+  .section--how:hover { border-color: rgba(20,184,166,.30); }
+
+  .section--network .section-num { background: var(--blD); color: var(--bl); }
+  .section--network { border-color: rgba(59,130,246,.12); }
+  .section--network:hover { border-color: rgba(59,130,246,.25); }
+
+  .section--why .section-num { background: var(--ylD); color: var(--yl); }
+  .section--why { border-color: rgba(234,179,8,.12); }
+  .section--why:hover { border-color: rgba(234,179,8,.25); }
+
+  /* Stack connectors */
+  .connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    position: relative;
+  }
+
+  .connector .line {
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--bdh), var(--bd));
+    position: relative;
+  }
+
+  .connector .line::before,
+  .connector .line::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 6px;
+    border: 2px solid var(--bdh);
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .connector .line::before { top: -3px; }
+  .connector .line::after { bottom: -3px; }
+
+  /* Tech cards inside sections */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+  }
+
+  .tech-card {
+    padding: 18px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--bd);
+    background: var(--sf2);
+  }
+
+  .tech-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tech-card p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--txM);
+  }
+
+  .tech-card--teal h4 { color: var(--tl); }
+  .tech-card--teal { border-color: rgba(20,184,166,.15); }
+
+  .tech-card--blue h4 { color: var(--bl); }
+  .tech-card--blue { border-color: rgba(59,130,246,.12); }
+
+  .tech-card--orange h4 { color: var(--or); }
+  .tech-card--orange { border-color: rgba(247,147,26,.12); }
+
+  /* Comparison layout */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: center;
+  }
+
+  .compare-box {
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--bd);
+    background: var(--sf2);
+  }
+
+  .compare-box h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .compare-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--txM);
+  }
+
+  .compare-box--bad { border-color: rgba(239,68,68,.15); }
+  .compare-box--bad h4 { color: var(--rd); }
+
+  .compare-box--good { border-color: rgba(20,184,166,.2); }
+  .compare-box--good h4 { color: var(--tl); }
+
+  .compare-vs {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--txD);
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .stat-card {
+    text-align: center;
+    padding: 20px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--bd);
+    background: var(--sf2);
+  }
+
+  .stat-card .number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .stat-card .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .stat-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  .stat-card--teal .number, .stat-card--teal .unit { color: var(--tl); }
+  .stat-card--blue .number, .stat-card--blue .unit { color: var(--bl); }
+  .stat-card--orange .number, .stat-card--orange .unit { color: var(--or); }
+  .stat-card--green .number, .stat-card--green .unit { color: var(--gn); }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--bd);
+  }
+
+  .tl-item {
+    position: relative;
+    padding-bottom: 20px;
+  }
+
+  .tl-item:last-child { padding-bottom: 0; }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--bdh);
+    background: var(--bg);
+  }
+
+  .tl-item.active::before {
+    border-color: var(--tl);
+    background: var(--tl);
+    box-shadow: 0 0 12px var(--tlG);
+  }
+
+  .tl-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--txD);
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .tl-item.active .tl-year { color: var(--tl); }
+
+  .tl-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--txM);
+  }
+
+  .tl-text strong { color: var(--tx); }
+
+  /* Protocol flow diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 24px 0;
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    text-align: center;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--bd);
+    background: var(--sf2);
+    min-width: 120px;
+  }
+
+  .flow-step .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--txD);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .flow-step .step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .flow-step .step-detail {
+    font-size: 11px;
+    color: var(--txM);
+    margin-top: 4px;
+  }
+
+  .flow-step--teal { border-color: rgba(20,184,166,.25); }
+  .flow-step--teal .step-label { color: var(--tl); }
+
+  .flow-step--blue { border-color: rgba(59,130,246,.2); }
+  .flow-step--blue .step-label { color: var(--bl); }
+
+  .flow-step--orange { border-color: rgba(247,147,26,.2); }
+  .flow-step--orange .step-label { color: var(--or); }
+
+  .flow-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--txD);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* FIBRE highlight callout */
+  .fibre-callout {
+    position: relative;
+    margin: 0;
+  }
+
+  .fibre-callout .section {
+    border: 2px solid var(--tl);
+    box-shadow: 0 0 40px var(--tlD), inset 0 0 60px rgba(20,184,166,.02);
+  }
+
+  .fibre-callout .section:hover {
+    box-shadow: 0 0 60px var(--tlG), inset 0 0 60px rgba(20,184,166,.04);
+  }
+
+  .fibre-badge {
+    position: absolute;
+    top: -12px;
+    right: 28px;
+    background: var(--tl);
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  /* Insight box */
+  .insight-box {
+    margin-top: 48px;
+    padding: 28px 32px;
+    border: 1px solid var(--bd);
+    border-left: 3px solid var(--tl);
+    border-radius: 12px;
+    background: var(--sf);
+  }
+
+  .insight-box h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--tl);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .insight-box p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--txM);
+  }
+
+  .insight-box p strong {
+    color: var(--tx);
+  }
+
+  /* Node map placeholder */
+  .node-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .node-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--sf2);
+    border: 1px solid var(--bd);
+  }
+
+  .node-chip .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: nodePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes nodePulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
+    50% { opacity: 0.5; box-shadow: none; }
+  }
+
+  .node-chip .region {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    margin-left: auto;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .node-chip--teal .dot { color: var(--tl); background: var(--tl); }
+  .node-chip--blue .dot { color: var(--bl); background: var(--bl); }
+  .node-chip--green .dot { color: var(--gn); background: var(--gn); }
+  .node-chip--orange .dot { color: var(--or); background: var(--or); }
+
+  /* Footer */
+  .footer {
+    margin-top: 56px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--txD);
+    letter-spacing: 0.04em;
+  }
+
+  .footer a {
+    color: var(--tl);
+    text-decoration: none;
+  }
+
+  .footer a:hover { text-decoration: underline; }
+
+  /* Warning box */
+  .warning-box {
+    padding: 16px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(239,68,68,.2);
+    background: var(--rdD);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--txM);
+  }
+
+  .warning-box strong { color: var(--rd); }
+
+  /* Code inline */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--sf2);
+    color: var(--tl);
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .section-header { padding: 18px 20px; }
+    .section-content { padding: 0 20px 20px; }
+    .tech-grid { grid-template-columns: 1fr; }
+    .compare-row { grid-template-columns: 1fr; gap: 12px; }
+    .compare-vs { padding: 4px 0; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .flow-diagram { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); padding: 4px 0; }
+    .network-viz { height: 240px; }
+    .node-list { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <a class="back-link" href="/2026-03/">&larr; Topics</a>
+
+  <header>
+    <div class="badge"><span></span>Mining</div>
+    <h1>FIBRE <span class="accent">Resurrected</span><br>Fast Block Relay</h1>
+    <p class="subtitle">The Fast Internet Bitcoin Relay Engine is back. A patched Bitcoin Core client using UDP and Forward Error Correction to propagate blocks across the planet in tens of milliseconds — reducing centralization pressure on miners.</p>
+  </header>
+
+  <!-- Network Visualization -->
+  <div class="network-viz">
+    <canvas id="networkCanvas"></canvas>
+    <div class="viz-legend">
+      <span><span class="dot" style="background:var(--tl)"></span> FIBRE node</span>
+      <span><span class="dot" style="background:rgba(20,184,166,.3)"></span> Block propagation</span>
+    </div>
+    <div class="viz-stat">
+      <div class="number">~30</div>
+      <div class="label">ms avg propagation</div>
+    </div>
+  </div>
+
+  <!-- SECTIONS -->
+  <div class="section section--problem open" onclick="this.classList.toggle('open')">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-title-block">
+        <div class="section-title">The Problem: Latency Creates Centralization</div>
+        <div class="section-subtitle">Why block propagation speed matters for mining decentralization</div>
+      </div>
+      <span class="section-toggle">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <p class="section-desc">
+          When a miner finds a block, every millisecond it takes to reach other miners matters. <strong>A miner who hears about a new block late is wasting hashrate mining on a stale tip.</strong> This creates orphan blocks, which represent lost revenue. The economics are simple: miners with better network connectivity have a structural advantage.
+        </p>
+
+        <div class="warning-box">
+          <strong>The centralization feedback loop:</strong> Large pools with more hashrate find more blocks. They hear about their own blocks instantly (zero latency to self). Smaller miners and solo operators, especially those far from major data centers, are systematically disadvantaged. This pushes miners toward fewer, larger pools — concentrating control over transaction selection.
+        </div>
+
+        <div class="compare-row">
+          <div class="compare-box compare-box--bad">
+            <h4>Without Fast Relay</h4>
+            <p>Block propagation takes <strong>seconds</strong> via the regular P2P network. TCP handshakes, serialization overhead, and geographic distance add up. Miners far from the block source waste hashrate on stale work. Orphan rate increases with distance.</p>
+          </div>
+          <div class="compare-vs">vs</div>
+          <div class="compare-box compare-box--good">
+            <h4>With FIBRE</h4>
+            <p>Block data reaches the other side of the planet in <strong>tens of milliseconds</strong> — approaching the speed-of-light bound in fiber optic cable. The latency advantage of large, well-connected pools is dramatically reduced. Geographic location matters far less.</p>
+          </div>
+        </div>
+
+        <p class="section-desc">
+          The orphan rate equation is straightforward: if a block takes 5 seconds to propagate and blocks arrive every 600 seconds on average, roughly <strong>0.83%</strong> of all mining work is wasted on stale blocks. Reduce propagation to 50ms and that drops to <strong>0.008%</strong>. That difference directly impacts which miners remain profitable and which are squeezed out.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="line"></div></div>
+
+  <!-- HOW FIBRE WORKS — highlighted -->
+  <div class="fibre-callout">
+    <span class="fibre-badge">Core Innovation</span>
+    <div class="section section--how open" onclick="this.classList.toggle('open')">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <div class="section-title-block">
+          <div class="section-title">How FIBRE Works</div>
+          <div class="section-subtitle">UDP + Forward Error Correction + Compact Blocks</div>
+        </div>
+        <span class="section-toggle">&#9662;</span>
+      </div>
+      <div class="section-body">
+        <div class="section-content">
+          <p class="section-desc">
+            FIBRE is a <strong>patchset applied to Bitcoin Core</strong> that replaces the standard TCP-based block relay with a purpose-built UDP protocol optimized for minimum latency. Three key technologies work together to make sub-100ms global propagation possible:
+          </p>
+
+          <div class="tech-grid">
+            <div class="tech-card tech-card--teal">
+              <h4>UDP Transport</h4>
+              <p>TCP requires a three-way handshake before data flows, and its congestion control algorithms throttle throughput. <strong>FIBRE uses UDP</strong> to start sending block data immediately — no waiting for acknowledgments. Lost packets are handled at a higher level by FEC, not by TCP retransmission.</p>
+            </div>
+            <div class="tech-card tech-card--blue">
+              <h4>Forward Error Correction (FEC)</h4>
+              <p>Instead of waiting for lost packets to be detected and retransmitted (adding round-trips), FIBRE sends <strong>redundant coded data</strong> alongside the block. The receiver can reconstruct the full block even if some packets are lost in transit. This eliminates the need for retransmission round-trips entirely.</p>
+            </div>
+            <div class="tech-card tech-card--orange">
+              <h4>Compact Blocks (BIP 152)</h4>
+              <p>Most transactions in a new block are already in the receiver's mempool. <strong>Compact blocks</strong> send only short transaction IDs — the receiver reconstructs the full block locally. This reduces the data that needs to travel over the wire from ~1-2 MB to just <strong>a few KB</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Protocol Flow -->
+          <div class="flow-diagram">
+            <div class="flow-step flow-step--orange">
+              <div class="step-num">Step 1</div>
+              <div class="step-label">New Block Found</div>
+              <div class="step-detail">Miner discovers valid block</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step flow-step--teal">
+              <div class="step-num">Step 2</div>
+              <div class="step-label">Compact + FEC Encode</div>
+              <div class="step-detail">Compact block + redundant data</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step flow-step--blue">
+              <div class="step-num">Step 3</div>
+              <div class="step-label">UDP Blast</div>
+              <div class="step-detail">Sent immediately, no handshake</div>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step flow-step--teal">
+              <div class="step-num">Step 4</div>
+              <div class="step-label">Reconstruct</div>
+              <div class="step-detail">FEC + mempool = full block</div>
+            </div>
+          </div>
+
+          <p class="section-desc">
+            The combination is powerful: compact blocks minimize the data sent, FEC eliminates retransmission delays, and UDP removes connection setup overhead. The result is propagation that approaches the <strong>theoretical speed-of-light limit</strong> through fiber optic cable. FIBRE is distributed as a patchset that anyone can compile and run against Bitcoin Core, connecting to public or private relay nodes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="line"></div></div>
+
+  <div class="section section--network" onclick="this.classList.toggle('open')">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <div class="section-title-block">
+        <div class="section-title">The FIBRE Network</div>
+        <div class="section-subtitle">Global nodes, real-world propagation statistics</div>
+      </div>
+      <span class="section-toggle">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <p class="section-desc">
+          The resurrected FIBRE network consists of geographically distributed nodes running the patched Bitcoin Core client. Nodes connect to both public relay infrastructure and the regular Bitcoin P2P network, ensuring blocks propagate through the fastest available path. <strong>Anyone can join</strong> by compiling the FIBRE patchset and connecting to the network.
+        </p>
+
+        <div class="stats-row">
+          <div class="stat-card stat-card--teal">
+            <div class="number">~30<span class="unit">ms</span></div>
+            <div class="label">Avg Propagation</div>
+          </div>
+          <div class="stat-card stat-card--blue">
+            <div class="number">6<span class="unit">+</span></div>
+            <div class="label">Global Nodes</div>
+          </div>
+          <div class="stat-card stat-card--orange">
+            <div class="number">&lt;100<span class="unit">ms</span></div>
+            <div class="label">Worst Case Target</div>
+          </div>
+          <div class="stat-card stat-card--green">
+            <div class="number">~3<span class="unit">KB</span></div>
+            <div class="label">Typical Block Data Sent</div>
+          </div>
+        </div>
+
+        <p class="section-desc" style="margin-top:8px">
+          <strong>Node distribution spans key mining regions:</strong> nodes are positioned to minimize the maximum latency between any two points on the network. The public dashboard at <code>stats.bitcoinfibre.org</code> provides live propagation metrics.
+        </p>
+
+        <div class="node-list">
+          <div class="node-chip node-chip--teal"><span class="dot"></span> US East <span class="region">NA</span></div>
+          <div class="node-chip node-chip--blue"><span class="dot"></span> US West <span class="region">NA</span></div>
+          <div class="node-chip node-chip--green"><span class="dot"></span> Europe <span class="region">EU</span></div>
+          <div class="node-chip node-chip--orange"><span class="dot"></span> Asia-Pacific <span class="region">APAC</span></div>
+          <div class="node-chip node-chip--teal"><span class="dot"></span> South America <span class="region">SA</span></div>
+          <div class="node-chip node-chip--blue"><span class="dot"></span> Additional Nodes <span class="region">GLOBAL</span></div>
+        </div>
+
+        <div class="timeline" style="margin-top:16px">
+          <div class="tl-item">
+            <div class="tl-year">2013</div>
+            <div class="tl-text"><strong>Bitcoin Relay Network</strong> by Matt Corallo — the original fast relay, using TCP and optimized serialization. Reduced propagation from 10+ seconds to roughly 1-2 seconds.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2016</div>
+            <div class="tl-text"><strong>FIBRE v1 launched</strong> — Corallo introduces UDP + FEC. Propagation drops to tens of milliseconds. Ran successfully for several years.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-year">2019-2024</div>
+            <div class="tl-text"><strong>FIBRE goes dormant.</strong> The original network winds down. Compact blocks (BIP 152) deployed in Core improves baseline P2P relay, but gap remains vs. dedicated relay.</div>
+          </div>
+          <div class="tl-item active">
+            <div class="tl-year">2025</div>
+            <div class="tl-text"><strong>FIBRE resurrected.</strong> New maintainers update the patchset for modern Bitcoin Core, deploy fresh infrastructure, and launch the public stats dashboard. The network is live and accepting connections.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="line"></div></div>
+
+  <div class="section section--why" onclick="this.classList.toggle('open')">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <div class="section-title-block">
+        <div class="section-title">Why This Matters for Bitcoin</div>
+        <div class="section-subtitle">Mining decentralization is censorship resistance</div>
+      </div>
+      <span class="section-toggle">&#9662;</span>
+    </div>
+    <div class="section-body">
+      <div class="section-content">
+        <p class="section-desc">
+          Bitcoin's censorship resistance ultimately depends on <strong>mining being sufficiently decentralized</strong>. If a small number of pools control the majority of hashrate, they can be coerced into censoring transactions. Today, the top 3-4 pools control well over 50% of hashrate. Network latency is one of the structural forces pushing miners toward these large, well-connected pools.
+        </p>
+
+        <div class="tech-grid">
+          <div class="tech-card tech-card--teal">
+            <h4>Levels the Playing Field</h4>
+            <p>A solo miner in rural Australia and a pool operator in Virginia both receive new blocks at nearly the same time. <strong>Geography stops being a competitive disadvantage.</strong> Smaller pools and solo miners can compete on more equal footing.</p>
+          </div>
+          <div class="tech-card tech-card--blue">
+            <h4>Reduces Orphan Cost</h4>
+            <p>Faster propagation means fewer orphans across the network. This isn't just good for decentralization — it reduces wasted energy and <strong>improves the economic efficiency</strong> of mining overall.</p>
+          </div>
+          <div class="tech-card tech-card--orange">
+            <h4>Complements Other Efforts</h4>
+            <p>FIBRE works alongside Stratum V2 (miner-chosen transactions), compact blocks in Core, and Erlay (efficient tx relay). <strong>Each reduces a different centralization vector.</strong> Fast block relay specifically addresses the propagation latency vector.</p>
+          </div>
+        </div>
+
+        <div class="section-desc" style="margin-top: 8px">
+          <strong>The argument is economic:</strong> if block propagation is slow, miners pay a "latency tax" proportional to their distance from other miners. Rational miners minimize this tax by colocating with the largest pools or joining them directly. FIBRE makes this tax negligible for everyone, removing one of the structural incentives toward centralization. It doesn't solve mining centralization alone, but it eliminates one of the quieter, more insidious forces driving it.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Insight -->
+  <div class="insight-box">
+    <h3>FIBRE is Infrastructure, Not a Product</h3>
+    <p>
+      FIBRE is a <strong>public good for Bitcoin's decentralization</strong>. It's a patchset anyone can compile and a network anyone can join. The resurrection means this critical infrastructure — dormant for years while mining centralization continued to worsen — is operational again. The source code is available, the nodes are running, and the stats dashboard is public. <strong>If you run mining infrastructure, connecting to the FIBRE network is one of the simplest things you can do to contribute to decentralization.</strong>
+    </p>
+  </div>
+
+  <div class="footer">
+    Source: <a href="https://lclhost.org/blog/fibre-resurrected/" target="_blank">lclhost.org/blog/fibre-resurrected</a> &middot; Dashboard: <a href="https://stats.bitcoinfibre.org/public-dashboards/ad821364f8044d6991e4047d527bc01e" target="_blank">stats.bitcoinfibre.org</a> &middot; Original: <a href="https://bitcoinfibre.org" target="_blank">bitcoinfibre.org</a>
+  </div>
+
+</div>
+
+<script>
+// Network visualization
+(function() {
+  const canvas = document.getElementById('networkCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes, particles;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    W = rect.width;
+    H = rect.height;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initNodes();
+  }
+
+  function initNodes() {
+    nodes = [];
+    // Place nodes roughly corresponding to world regions
+    const positions = [
+      { x: 0.20, y: 0.35, label: 'US-E' },
+      { x: 0.12, y: 0.40, label: 'US-W' },
+      { x: 0.48, y: 0.30, label: 'EU' },
+      { x: 0.70, y: 0.35, label: 'APAC' },
+      { x: 0.82, y: 0.50, label: 'AU' },
+      { x: 0.30, y: 0.65, label: 'SA' },
+      { x: 0.58, y: 0.55, label: 'AF' },
+      { x: 0.75, y: 0.25, label: 'JP' },
+    ];
+    positions.forEach(p => {
+      nodes.push({
+        x: p.x * W,
+        y: p.y * H,
+        label: p.label,
+        r: 5,
+        pulse: Math.random() * Math.PI * 2,
+      });
+    });
+    particles = [];
+  }
+
+  function spawnParticle() {
+    if (nodes.length < 2) return;
+    const from = nodes[Math.floor(Math.random() * nodes.length)];
+    let to;
+    do { to = nodes[Math.floor(Math.random() * nodes.length)]; } while (to === from);
+    particles.push({
+      fromX: from.x, fromY: from.y,
+      toX: to.x, toY: to.y,
+      t: 0,
+      speed: 0.008 + Math.random() * 0.012,
+      alpha: 0.7 + Math.random() * 0.3,
+    });
+  }
+
+  function draw(time) {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw connections (thin lines between all nodes)
+    ctx.strokeStyle = 'rgba(20,184,166,0.06)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+
+    // Draw particles
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.t += p.speed;
+      if (p.t > 1) {
+        particles.splice(i, 1);
+        continue;
+      }
+      const x = p.fromX + (p.toX - p.fromX) * p.t;
+      const y = p.fromY + (p.toY - p.fromY) * p.t;
+      const alpha = p.alpha * (p.t < 0.1 ? p.t / 0.1 : p.t > 0.9 ? (1 - p.t) / 0.1 : 1);
+
+      // Trail
+      const trailLen = 0.08;
+      const t2 = Math.max(0, p.t - trailLen);
+      const x2 = p.fromX + (p.toX - p.fromX) * t2;
+      const y2 = p.fromY + (p.toY - p.fromY) * t2;
+      const grad = ctx.createLinearGradient(x2, y2, x, y);
+      grad.addColorStop(0, 'rgba(20,184,166,0)');
+      grad.addColorStop(1, 'rgba(20,184,166,' + alpha * 0.6 + ')');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+
+      // Head
+      ctx.fillStyle = 'rgba(20,184,166,' + alpha + ')';
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Draw nodes
+    nodes.forEach(n => {
+      n.pulse += 0.02;
+      const glow = 0.3 + 0.2 * Math.sin(n.pulse);
+
+      // Glow
+      ctx.fillStyle = 'rgba(20,184,166,' + glow * 0.3 + ')';
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, 16, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Core
+      ctx.fillStyle = 'rgba(20,184,166,' + (0.8 + glow * 0.2) + ')';
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Label
+      ctx.fillStyle = 'rgba(148,163,184,0.6)';
+      ctx.font = '9px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.label, n.x, n.y + 20);
+    });
+
+    // Spawn particles
+    if (Math.random() < 0.06) spawnParticle();
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw(0);
+})();
+
+// Esc key navigation
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') window.location.href = '/2026-03/';
+});
+</script>
+</body>
+</html>

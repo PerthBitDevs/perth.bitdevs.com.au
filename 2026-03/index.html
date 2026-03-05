@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs — March 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--pu:#a855f7;--pud:rgba(168,85,247,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12);--tl:#14b8a6;--tld:rgba(20,184,166,.12)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  header{text-align:center;margin-bottom:48px}
+  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,5.5vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{color:var(--txD);font-size:16px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin-bottom:32px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .section-gap{margin-bottom:40px}
+  .cards{display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+  a.card{display:block;text-decoration:none;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 22px;transition:all .2s ease;position:relative;overflow:hidden;cursor:pointer}
+  a.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:12px 0 0 12px;transition:opacity .2s ease;opacity:.6}
+  a.card:hover{border-color:var(--bdh);background:var(--sf2);transform:translateY(-1px);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+  a.card:hover::before{opacity:1}
+  .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;gap:8px}
+  .card-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .card-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:10px;text-transform:uppercase;white-space:nowrap}
+  .card-arrow{font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--txD);transition:all .2s ease;flex-shrink:0}
+  a.card:hover .card-arrow{color:var(--or);transform:translateX(3px)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:-.01em;line-height:1.35}
+  .card-desc{color:var(--txM);font-size:15px;line-height:1.55}
+  .card-meta{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .card-meta-item{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);display:flex;align-items:center;gap:5px}
+  .card-meta-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .card--or::before{background:var(--or)}.card--or .card-tag{color:var(--or);background:var(--orD)}
+  .card--bl::before{background:var(--bl)}.card--bl .card-tag{color:var(--bl);background:var(--bld)}
+  .card--gn::before{background:var(--gn)}.card--gn .card-tag{color:var(--gn);background:var(--gnd)}
+  .card--pu::before{background:var(--pu)}.card--pu .card-tag{color:var(--pu);background:var(--pud)}
+  .card--rd::before{background:var(--rd)}.card--rd .card-tag{color:var(--rd);background:var(--rdd)}
+  .card--cy::before{background:var(--cy)}.card--cy .card-tag{color:var(--cy);background:var(--cyd)}
+  .card--pk::before{background:var(--pk)}.card--pk .card-tag{color:var(--pk);background:var(--pkd)}
+  .card--yl::before{background:var(--yl)}.card--yl .card-tag{color:var(--yl);background:var(--yld)}
+  .card--tl::before{background:var(--tl)}.card--tl .card-tag{color:var(--tl);background:var(--tld)}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}footer a:hover{text-decoration:underline}
+  .back{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}a.card{padding:16px}.card-title{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+
+  <a class="back" href="/">&larr; All Events</a>
+
+  <header>
+    <div class="badge">March 2026</div>
+    <h1>Perth BitDevs</h1>
+    <div class="subtitle">Interactive topic explainers</div>
+  </header>
+
+  <div style="background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.25);border-radius:10px;padding:14px 18px;margin-bottom:32px;font-size:15px;color:var(--txM);line-height:1.6">
+    <strong style="color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em">NOTE</strong>&ensp;The topic summaries for this month were generated with the assistance of AI and may contain errors. This is the first time this process has been trialled and is still a work in progress.
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Governance &amp; Drama</div>
+  <div class="cards section-gap">
+
+    <a class="card card--rd" href="bip-110-update.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BIP-110</span><span class="card-tag">Update</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">BIP-110 Update — Bugs, Defections &amp; the OP_RETURN War</div>
+      <div class="card-desc">Consensus-breaking cache poisoning bug found, prominent supporters defecting, mempool.space OP_RETURN report, prediction markets giving &lt;10% odds, fake signaling nodes.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--rd)"></span>5 slides</span></div>
+    </a>
+
+    <a class="card card--rd" href="contiguous-data.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">OP_RETURN War</span><span class="card-tag">Data Embedding</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Contiguous Data Without OP_RETURN — Kixunil's Proof</div>
+      <div class="card-desc">66KB contiguous TIFF image embedded in a single Bitcoin transaction. No OP_RETURN, no Taproot, no policy compliance. The raw tx binary IS the image file. Another nail in BIP-110's coffin.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--rd)"></span>4 slides</span></div>
+    </a>
+
+    <a class="card card--bl" href="gloria-zhao-steps-down.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Governance</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Gloria Zhao Steps Down as Bitcoin Core Maintainer</div>
+      <div class="card-desc">503 commits over 5+ years. Key architect of Package Relay (BIP 331) and V3 Transactions (BIP 431). Maintainer activity visualization and the bus factor question.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--bl)"></span>4 slides</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Bitcoin Core</div>
+  <div class="cards section-gap">
+
+    <a class="card card--bl" href="bitcoin-core-v31.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">v31</span><span class="card-tag">Feature Freeze</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Bitcoin Core v31 Feature Freeze &amp; Cluster Mempool</div>
+      <div class="card-desc">Cluster mempool headline feature with SFL algorithm. Embedded ASMap, private broadcast, new tx output index, IPC mining interface, kernel progress. WA's own fanquake at the helm.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--bl)"></span>Visual explainer</span></div>
+    </a>
+
+    <a class="card card--bl" href="p2p-protocol-bips.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">P2P Protocol</span><span class="card-tag">BIP-434</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">P2P Protocol BIPs — Stale Tip Relay &amp; Peer Feature Negotiation</div>
+      <div class="card-desc">New P2P message for stale block headers to speed up reorg handling. BIP-434 decouples feature negotiation from protocol version bumps.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--bl)"></span>4 slides</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Cryptography</div>
+  <div class="cards section-gap">
+
+    <a class="card card--pu" href="quantum-resistance.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Quantum</span><span class="card-tag">BIP-360</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Quantum Resistance — BIP-360 P2MR &amp; Algorithmic Agility</div>
+      <div class="card-desc">BIP-360 finalized as Pay to Merkle Root. Heilman's algorithmic agility framework via RFC 7696. BitMex quantum freeze analysis. Defense in depth.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--pu)"></span>5 slides</span></div>
+    </a>
+
+    <a class="card card--pu" href="nested-musig2.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Cryptography</span><span class="card-tag">MuSig2</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Nested MuSig2 Security Proof</div>
+      <div class="card-desc">Chaincode Labs paper by Nadav Kohen. First formal proof that nesting MuSig2 aggregate keys is secure. Reduces to AOMDL assumption. Compatible with all existing MuSig2 deployments.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--pu)"></span>4 slides</span></div>
+    </a>
+
+    <a class="card card--or" href="pipes-v2.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Covenants</span><span class="card-tag">ZKP</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Bitcoin PIPEs v2 — Covenants &amp; ZKP Without Consensus Changes</div>
+      <div class="card-desc">Witness encryption locks private keys behind cryptographic statements. Vaults, delegation, ZK verification — no soft fork needed. By [alloc] init.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--or)"></span>4 slides</span></div>
+    </a>
+
+    <a class="card card--or" href="binohash.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Bitcoin Script</span><span class="card-tag">Robin Linus</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Binohash — Transaction Introspection via DER Encoding</div>
+      <div class="card-desc">Robin Linus exploits ECDSA's variable-length DER encoding as a side channel to read transaction data in Script. No soft fork required. Mainnet proof-of-concept deployed.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--or)"></span>4 slides</span></div>
+    </a>
+
+    <a class="card card--pu" href="pq-signatures-liquid.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Quantum</span><span class="card-tag">Liquid</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Post-Quantum Signatures on Liquid — SHRINCS via Simplicity</div>
+      <div class="card-desc">Blockstream deploys quantum-resistant transaction signing on Liquid using Simplicity smart contracts. 324-byte stateful signatures. No consensus changes needed. A testbed for BIP-360.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--pu)"></span>3 slides</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Mining</div>
+  <div class="cards section-gap">
+
+    <a class="card card--tl" href="fibre-resurrected.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Mining</span><span class="card-tag">Block Relay</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">FIBRE Resurrected — Fast Block Relay for Mining Decentralization</div>
+      <div class="card-desc">UDP + Forward Error Correction for near-lightspeed block propagation. Averaging ~30ms globally. Reducing centralization pressure from latency advantages.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--tl)"></span>Visual explainer</span></div>
+    </a>
+
+    <a class="card card--tl" href="nversion-nonce-space.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Mining</span><span class="card-tag">BIP Proposal</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">24-bit nVersion Nonce Space — Matt Corallo BIP</div>
+      <div class="card-desc">Expand nVersion nonce bits from 16 to 24. Takes header entropy from 48 to 56 bits (256× more). Unblocks BIP-54 Great Consensus Cleanup by eliminating need for coinbase nLockTime nonce rolling.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--tl)"></span>4 slides</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Privacy</div>
+  <div class="cards section-gap">
+
+    <a class="card card--cy" href="sloth-messaging.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Privacy</span><span class="card-tag">Nostr</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Sloth — Secure Group Messaging over Nostr</div>
+      <div class="card-desc">MLS protocol (RFC 9420) meets Nostr decentralized relay network via Marmot. Forward secrecy, post-compromise security, no central servers. Successor to White Noise.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--cy)"></span>4 slides</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Security</div>
+  <div class="cards section-gap">
+
+    <a class="card card--rd" href="phishing-attacks.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Security</span><span class="card-tag">Phishing</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Phishing Attacks — Cake Wallet &amp; Sparrow Impersonation</div>
+      <div class="card-desc">Active phishing campaigns targeting Bitcoin wallets via SEO poisoning and fake websites. Verification best practices and the broader supply chain attack pattern.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--rd)"></span>3 slides</span></div>
+    </a>
+
+    <a class="card card--cy" href="cake-wallet-lightning.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Wallets</span><span class="card-tag">Lightning</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Cake Wallet Adds Lightning Network Support</div>
+      <div class="card-desc">Privacy-focused multi-asset wallet gains instant Bitcoin payments via Lightning. Combined with Monero support and no-KYC exchange, creates a strong privacy-preserving payment experience.</div>
+      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--cy)"></span>2 slides</span></div>
+    </a>
+
+  </div>
+
+  <footer>
+    <p>
+      Perth BitDevs &middot; March 2026<br>
+      <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/32" target="_blank">GitHub Issue #32</a>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

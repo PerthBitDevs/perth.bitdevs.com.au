@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cluster Mempool Step-by-Step Example</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  --bg: #0c0c11;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --surface: #15151f;
+  --border: #2a2a3d;
+  --border-bright: #3d3d5c;
+  --text: #c8c8d8;
+  --text-dim: #6e6e8a;
+  --text-bright: #eeeef4;
+  --white: #ffffff;
+  --orange: #f7931a;
+  --orange2: #ffaa33;
+  --orange-bg: rgba(247,147,26,0.08);
+  --cyan: #22ccee;
+  --cyan-bg: rgba(34,204,238,0.07);
+  --green: #33dd88;
+  --green-bg: rgba(51,221,136,0.07);
+  --red: #ee4455;
+  --red-bg: rgba(238,68,85,0.07);
+  --pink: #ee55aa;
+  --pink-bg: rgba(238,85,170,0.07);
+  --yellow: #eebb33;
+  --yellow-bg: rgba(238,187,51,0.07);
+  --purple: #9977ff;
+  --purple-bg: rgba(153,119,255,0.07);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16.5px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle grid bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(247,147,26,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247,147,26,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 48px 28px 140px;
+}
+
+/* Top header */
+.header {
+  margin-bottom: 56px;
+}
+
+.header h1 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 12px;
+}
+
+.header h2 {
+  font-family: 'Source Serif 4', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.header p {
+  color: var(--text-dim);
+  font-size: 17px;
+  max-width: 640px;
+}
+
+/* Section phases */
+.phase {
+  margin-bottom: 64px;
+}
+
+.phase-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border);
+}
+
+.phase-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bg);
+  background: var(--orange);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.phase-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+/* Diagram canvas */
+.canvas {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  margin: 20px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.canvas::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0.3;
+}
+
+.canvas-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Step stepper */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+
+.step-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.step-btn:hover { border-color: var(--border-bright); color: var(--text); }
+.step-btn.active { border-color: var(--orange); color: var(--orange); background: var(--orange-bg); }
+
+.step-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.step-arrow:hover { border-color: var(--orange); color: var(--orange); }
+.step-arrow:disabled { opacity: 0.25; cursor: default; }
+
+/* Narration box */
+.narration {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 60px;
+  transition: opacity 0.2s;
+}
+
+.narration strong { color: var(--white); }
+.narration code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--cyan);
+  border: 1px solid var(--border);
+}
+.narration .bad { color: var(--red); font-weight: 600; }
+.narration .good { color: var(--green); font-weight: 600; }
+.narration .hl { color: var(--orange); font-weight: 600; }
+
+/* Verdict boxes */
+.verdict {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin: 16px 0;
+}
+.verdict.bad { border-color: var(--red); background: var(--red-bg); }
+.verdict.good { border-color: var(--green); background: var(--green-bg); }
+.verdict.mid { border-color: var(--yellow); background: var(--yellow-bg); }
+.verdict.info { border-color: var(--cyan); background: var(--cyan-bg); }
+
+.verdict-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.verdict.bad .verdict-label { color: var(--red); }
+.verdict.good .verdict-label { color: var(--green); }
+.verdict.mid .verdict-label { color: var(--yellow); }
+.verdict.info .verdict-label { color: var(--cyan); }
+
+/* SVG styling */
+svg { display: block; }
+svg text { font-family: 'JetBrains Mono', monospace; }
+
+/* Feerate diagram (chart area) */
+.chart-area {
+  margin: 16px 0;
+}
+
+/* Comparison grid */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+@media (max-width: 700px) {
+  .compare-grid { grid-template-columns: 1fr; }
+}
+
+.compare-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--surface);
+}
+
+.compare-card h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.compare-card.old { border-color: var(--red); }
+.compare-card.old h4 { color: var(--red); }
+.compare-card.css { border-color: var(--yellow); }
+.compare-card.css h4 { color: var(--yellow); }
+.compare-card.sfl { border-color: var(--green); }
+.compare-card.sfl h4 { color: var(--green); }
+
+.compare-card .line {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.compare-card .line .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* Spacer */
+.spacer { height: 32px; }
+
+/* Table */
+.tx-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin: 16px 0;
+}
+.tx-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.tx-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+.tx-table tr:hover td { background: rgba(247,147,26,0.03); }
+
+/* Colors for each tx */
+.tx-a { color: #ff6666; }
+.tx-b { color: #ff9944; }
+.tx-c { color: #eebb33; }
+.tx-d { color: #66dd66; }
+.tx-e { color: #44bbee; }
+.tx-f { color: #9977ff; }
+.tx-g { color: #ee55aa; }
+.tx-h { color: #77ddbb; }
+
+.speaker-note {
+  margin: 10px 0 14px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--orange);
+  background: rgba(247,147,26,0.06);
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.speaker-note strong {
+  color: var(--orange);
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a href="bitcoin-core-v31.html" class="back-link" style="font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--text-dim);text-decoration:none;display:inline-block;margin-bottom:16px;">&larr; Bitcoin Core v31</a>
+
+<div class="header">
+  <h1>BitDevs Perth · Worked Example</h1>
+  <h2>One Cluster, Three Approaches</h2>
+  <p>A step-by-step walkthrough of 8 transactions through the old mempool, cluster mempool with CSS, and cluster mempool with SFL — showing where the approaches align and where their policy/computation behavior differs.</p>
+</div>
+
+<!-- ============================== -->
+<!-- PHASE 1: MEET THE TRANSACTIONS -->
+<!-- ============================== -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">1</div>
+    <div class="phase-title">Meet the Cluster</div>
+  </div>
+
+  <p>Here are 8 unconfirmed transactions that form a single connected cluster. The sizes and fees are intentionally stylized to make the policy differences easy to see.</p>
+  <p class="speaker-note"><strong>Presenter takeaway:</strong> Start by grounding the audience in the graph and the totals: 8 txs, 21,550 vB, 33,400 sats.</p>
+
+  <table class="tx-table">
+    <thead>
+      <tr><th>Tx</th><th>Fee (sats)</th><th>Size (vB)</th><th>Feerate (s/vB)</th><th>Spends from</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="tx-a">A</td><td>500</td><td>250</td><td>2.0</td><td>—</td><td>Root parent, low fee</td></tr>
+      <tr><td class="tx-b">B</td><td>400</td><td>200</td><td>2.0</td><td>—</td><td>Independent root</td></tr>
+      <tr><td class="tx-c">C</td><td>6,000</td><td>200</td><td>30.0</td><td>A</td><td>High-fee child of A</td></tr>
+      <tr><td class="tx-d">D</td><td>10,000</td><td>200</td><td>50.0</td><td>A</td><td>Very high-fee child of A</td></tr>
+      <tr><td class="tx-e">E</td><td>200</td><td>10,000</td><td>0.02</td><td>A</td><td>Huge low-fee child (bloat)</td></tr>
+      <tr><td class="tx-f">F</td><td>300</td><td>10,000</td><td>0.03</td><td>E</td><td>Another huge low-fee tx</td></tr>
+      <tr><td class="tx-g">G</td><td>15,000</td><td>200</td><td>75.0</td><td>B, D</td><td>Premium tx, spends B and D</td></tr>
+      <tr><td class="tx-h">H</td><td>1,000</td><td>500</td><td>2.0</td><td>C</td><td>Modest child of C</td></tr>
+    </tbody>
+  </table>
+
+  <div class="canvas">
+    <div class="canvas-label">Transaction dependency graph</div>
+    <svg viewBox="0 0 880 530" style="width:100%;max-width:880px;">
+      <defs>
+        <marker id="ar" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <polygon points="0 0, 7 2.5, 0 5" fill="#6e6e8a"/>
+        </marker>
+        <marker id="ar-r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+          <polygon points="0 0, 7 2.5, 0 5" fill="#ee4455"/>
+        </marker>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="g"/>
+          <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!--
+        LAYER ORDER (SVG paints back-to-front):
+          1. Background annotations (tinted regions)
+          2. Edge lines
+          3. Node boxes (filled rects that cover edges)
+          4. Node text labels (always on top)
+          5. Annotation text
+          6. Legend
+
+        Layout (3 rows, generous spacing):
+          Row 0 (y=20):   A (x=70)                                 B (x=600)
+          Row 1 (y=175):  C (x=5)    E (x=205)   D (x=405)        G (x=605)
+          Row 2 (y=330):  H (x=5)    F (x=205)
+          Node size: 170w × 72h (room for name + 2 attribute lines)
+      -->
+
+      <!-- ═══ LAYER 1: Background annotations ═══ -->
+      <rect x="198" y="165" width="184" height="247" rx="10" fill="rgba(238,68,85,0.05)" stroke="none"/>
+
+      <!-- ═══ LAYER 2: Edge lines ═══ -->
+      <g id="edges">
+        <!-- A → C -->
+        <line x1="140" y1="92" x2="95" y2="173" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- A → E -->
+        <line x1="170" y1="92" x2="275" y2="173" stroke="#ee4455" stroke-width="1.5" stroke-dasharray="5" marker-end="url(#ar-r)"/>
+        <!-- A → D -->
+        <line x1="220" y1="92" x2="460" y2="173" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- E → F -->
+        <line x1="290" y1="247" x2="290" y2="328" stroke="#ee4455" stroke-width="1.5" stroke-dasharray="5" marker-end="url(#ar-r)"/>
+        <!-- C → H -->
+        <line x1="90" y1="247" x2="90" y2="328" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- B → G -->
+        <line x1="685" y1="92" x2="685" y2="173" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- D → G (horizontal) -->
+        <line x1="575" y1="210" x2="603" y2="210" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+      </g>
+
+      <!-- ═══ LAYER 3: Node filled boxes (cover edges) ═══ -->
+      <g id="node-boxes">
+        <!-- A -->
+        <rect x="55" y="20" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#ff6666" stroke-width="2"/>
+        <!-- B -->
+        <rect x="600" y="20" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#ff9944" stroke-width="2"/>
+        <!-- C -->
+        <rect x="5" y="175" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#eebb33" stroke-width="2"/>
+        <!-- E -->
+        <rect x="205" y="175" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#ee4455" stroke-width="2" stroke-dasharray="4"/>
+        <!-- D -->
+        <rect x="405" y="175" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#66dd66" stroke-width="2"/>
+        <!-- G -->
+        <rect x="605" y="175" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#ee55aa" stroke-width="2" filter="url(#glow)"/>
+        <!-- H -->
+        <rect x="5" y="330" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#77ddbb" stroke-width="2"/>
+        <!-- F -->
+        <rect x="205" y="330" width="170" height="72" rx="7" fill="var(--bg3)" stroke="#ee4455" stroke-width="2" stroke-dasharray="4"/>
+      </g>
+
+      <!-- ═══ LAYER 4: Node text (always on top) ═══ -->
+      <g id="node-labels">
+        <!-- A labels -->
+        <text x="140" y="42" text-anchor="middle" fill="#ff6666" font-size="17" font-weight="700">A</text>
+        <text x="140" y="59" text-anchor="middle" fill="var(--text-dim)" font-size="10">500 sats · 250 vB</text>
+        <text x="140" y="76" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">2.0 s/vB</text>
+
+        <!-- B labels -->
+        <text x="685" y="42" text-anchor="middle" fill="#ff9944" font-size="17" font-weight="700">B</text>
+        <text x="685" y="59" text-anchor="middle" fill="var(--text-dim)" font-size="10">400 sats · 200 vB</text>
+        <text x="685" y="76" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">2.0 s/vB</text>
+
+        <!-- C labels -->
+        <text x="90" y="197" text-anchor="middle" fill="#eebb33" font-size="17" font-weight="700">C</text>
+        <text x="90" y="214" text-anchor="middle" fill="var(--text-dim)" font-size="10">6,000 sats · 200 vB</text>
+        <text x="90" y="231" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">30.0 s/vB</text>
+
+        <!-- E labels -->
+        <text x="290" y="197" text-anchor="middle" fill="#44bbee" font-size="17" font-weight="700">E</text>
+        <text x="290" y="214" text-anchor="middle" fill="#ee4455" font-size="10">200 sats · 10,000 vB</text>
+        <text x="290" y="231" text-anchor="middle" fill="#ee4455" font-size="11" font-weight="600">0.02 s/vB</text>
+
+        <!-- D labels -->
+        <text x="490" y="197" text-anchor="middle" fill="#66dd66" font-size="17" font-weight="700">D</text>
+        <text x="490" y="214" text-anchor="middle" fill="var(--text-dim)" font-size="10">10,000 sats · 200 vB</text>
+        <text x="490" y="231" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">50.0 s/vB</text>
+
+        <!-- G labels -->
+        <text x="690" y="197" text-anchor="middle" fill="#ee55aa" font-size="17" font-weight="700">G</text>
+        <text x="690" y="214" text-anchor="middle" fill="var(--text-dim)" font-size="10">15,000 sats · 200 vB</text>
+        <text x="690" y="231" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">75.0 s/vB</text>
+
+        <!-- H labels -->
+        <text x="90" y="352" text-anchor="middle" fill="#77ddbb" font-size="17" font-weight="700">H</text>
+        <text x="90" y="369" text-anchor="middle" fill="var(--text-dim)" font-size="10">1,000 sats · 500 vB</text>
+        <text x="90" y="386" text-anchor="middle" fill="var(--text)" font-size="11" font-weight="600">2.0 s/vB</text>
+
+        <!-- F labels -->
+        <text x="290" y="352" text-anchor="middle" fill="#9977ff" font-size="17" font-weight="700">F</text>
+        <text x="290" y="369" text-anchor="middle" fill="#ee4455" font-size="10">300 sats · 10,000 vB</text>
+        <text x="290" y="386" text-anchor="middle" fill="#ee4455" font-size="11" font-weight="600">0.03 s/vB</text>
+      </g>
+
+      <!-- ═══ LAYER 5: Annotation text ═══ -->
+      <g id="annotations">
+        <!-- Bloat path label -->
+        <text x="415" y="370" fill="#ee4455" font-size="12" font-style="italic">← E + F: 20,000 vB of bloat</text>
+        <text x="415" y="388" fill="#ee4455" font-size="12" font-style="italic">   at ~0.025 sat/vB average</text>
+
+        <!-- Value path box -->
+        <rect x="405" y="278" width="370" height="64" rx="6" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.2)" stroke-width="1"/>
+        <text x="420" y="298" fill="#33dd88" font-size="12" font-weight="600">Value path: A → D → G  (+B → G)</text>
+        <text x="420" y="316" fill="#33dd88" font-size="12">25,900 sats / 850 vB = 30.5 s/vB combined</text>
+        <text x="420" y="332" fill="var(--text-dim)" font-size="11">This is the most profitable set for a miner</text>
+      </g>
+
+      <!-- ═══ LAYER 6: Legend ═══ -->
+      <g id="legend">
+        <rect x="5" y="430" width="870" height="80" rx="8" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+        <text x="25" y="452" fill="var(--text-dim)" font-size="10" letter-spacing="2">KEY</text>
+        <!-- solid border -->
+        <rect x="25" y="465" width="24" height="14" rx="3" fill="none" stroke="#6e6e8a" stroke-width="1.5"/>
+        <text x="58" y="477" fill="var(--text)" font-size="11">Normal tx</text>
+        <!-- dashed border -->
+        <rect x="155" y="465" width="24" height="14" rx="3" fill="none" stroke="#ee4455" stroke-width="1.5" stroke-dasharray="3"/>
+        <text x="188" y="477" fill="#ee4455" font-size="11">Bloat tx</text>
+        <!-- glow -->
+        <rect x="275" y="465" width="24" height="14" rx="3" fill="none" stroke="#ee55aa" stroke-width="1.5" filter="url(#glow)"/>
+        <text x="308" y="477" fill="#ee55aa" font-size="11">Premium tx</text>
+        <!-- solid arrow -->
+        <line x1="415" y1="473" x2="438" y2="473" stroke="#6e6e8a" stroke-width="1.5" marker-end="url(#ar)"/>
+        <text x="448" y="477" fill="var(--text)" font-size="11">Dependency</text>
+        <!-- dashed arrow -->
+        <line x1="555" y1="473" x2="578" y2="473" stroke="#ee4455" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#ar-r)"/>
+        <text x="588" y="477" fill="#ee4455" font-size="11">Bloat dependency</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="verdict info">
+    <div class="verdict-label">The scenario</div>
+    <p>Transaction G is a premium 75 sat/vB tx, but it depends on two parents — B (independent root) and D (which depends on A). Meanwhile, someone has attached massive low-fee txs E and F as children of A, dragging down A's descendant feerate. This is a realistic pattern: a value path (A→D→G) polluted by a bloat path (A→E→F). How does each approach handle it?</p>
+  </div>
+
+  <p>Total cluster: <strong>8 txs, 21,550 vB, 33,400 sats</strong>. Let's assume there's only space for about 1,250 vB in the next block (to force interesting choices). Which transactions get included?</p>
+</div>
+
+
+<!-- ============================== -->
+<!-- PHASE 2: OLD MEMPOOL -->
+<!-- ============================== -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">2</div>
+    <div class="phase-title">Old Mempool: Ancestor &amp; Descendant Feerate</div>
+  </div>
+
+  <p>The pre-v31 mempool uses two separate orderings. Let's compute both and see where they diverge.</p>
+  <p class="speaker-note"><strong>Presenter takeaway:</strong> Mining and eviction both look reasonable locally, but they optimize different metrics and can send conflicting signals.</p>
+
+  <div class="stepper" id="old-stepper">
+    <button class="step-arrow" onclick="oldStep(-1)" id="old-prev" disabled>◀</button>
+    <button class="step-btn active" onclick="oldGo(0)">Ancestor FR</button>
+    <button class="step-btn" onclick="oldGo(1)">Descendant FR</button>
+    <button class="step-btn" onclick="oldGo(2)">Mining picks</button>
+    <button class="step-btn" onclick="oldGo(3)">Eviction picks</button>
+    <button class="step-btn" onclick="oldGo(4)">The conflict</button>
+    <button class="step-arrow" onclick="oldStep(1)" id="old-next">▶</button>
+  </div>
+
+  <div class="narration" id="old-narration"></div>
+
+  <div class="canvas">
+    <div class="canvas-label" id="old-canvas-label">Ancestor feerate computation</div>
+    <svg id="old-svg" viewBox="0 0 820 200" style="width:100%;max-width:820px;">
+    </svg>
+  </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- PHASE 3: CLUSTER MEMPOOL + CSS -->
+<!-- ============================== -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">3</div>
+    <div class="phase-title">Cluster Mempool with CSS (Candidate-Set Search)</div>
+  </div>
+
+  <p>Now let's see what cluster mempool does. First, it identifies the connected component as a single cluster and attempts to find the optimal linearization using the CSS/LIMO algorithm.</p>
+  <p class="speaker-note"><strong>Presenter takeaway:</strong> CSS can find the right ordering here, but does so with search that can become expensive on harder clusters.</p>
+
+  <div class="stepper" id="css-stepper">
+    <button class="step-arrow" onclick="cssStep(-1)" id="css-prev" disabled>◀</button>
+    <button class="step-btn active" onclick="cssGo(0)">Identify cluster</button>
+    <button class="step-btn" onclick="cssGo(1)">Ancestor heuristic</button>
+    <button class="step-btn" onclick="cssGo(2)">Search iteration</button>
+    <button class="step-btn" onclick="cssGo(3)">Linearization</button>
+    <button class="step-btn" onclick="cssGo(4)">Chunk &amp; mine</button>
+    <button class="step-arrow" onclick="cssStep(1)" id="css-next">▶</button>
+  </div>
+
+  <div class="narration" id="css-narration"></div>
+
+  <div class="canvas">
+    <div class="canvas-label" id="css-canvas-label">Cluster identification</div>
+    <svg id="css-svg" viewBox="0 0 820 200" style="width:100%;max-width:820px;">
+    </svg>
+  </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- PHASE 4: CLUSTER MEMPOOL + SFL -->
+<!-- ============================== -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">4</div>
+    <div class="phase-title">Cluster Mempool with SFL (Spanning-Forest Linearization)</div>
+  </div>
+
+  <p>SFL starts from a different place. Instead of searching through candidate subsets, it maintains a <em>spanning forest</em> of active dependency edges and iteratively merges or splits chunks.</p>
+  <p class="speaker-note"><strong>Presenter takeaway:</strong> SFL reaches the same ordering here via local updates, which is why it scales better as clusters evolve.</p>
+
+  <div class="stepper" id="sfl-stepper">
+    <button class="step-arrow" onclick="sflStep(-1)" id="sfl-prev" disabled>◀</button>
+    <button class="step-btn active" onclick="sflGo(0)">Initial state</button>
+    <button class="step-btn" onclick="sflGo(1)">Merge 1</button>
+    <button class="step-btn" onclick="sflGo(2)">Merge 2</button>
+    <button class="step-btn" onclick="sflGo(3)">Merge 3</button>
+    <button class="step-btn" onclick="sflGo(4)">Split</button>
+    <button class="step-btn" onclick="sflGo(5)">More merges</button>
+    <button class="step-btn" onclick="sflGo(6)">Final</button>
+    <button class="step-arrow" onclick="sflStep(1)" id="sfl-next">▶</button>
+  </div>
+
+  <div class="narration" id="sfl-narration"></div>
+
+  <div class="canvas">
+    <div class="canvas-label" id="sfl-canvas-label">SFL: Initial state — every tx is its own chunk</div>
+    <svg id="sfl-svg" viewBox="0 0 820 340" style="width:100%;max-width:820px;">
+    </svg>
+  </div>
+</div>
+
+
+<!-- ============================== -->
+<!-- PHASE 5: COMPARISON -->
+<!-- ============================== -->
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-num">5</div>
+    <div class="phase-title">Side-by-Side Verdict</div>
+  </div>
+
+  <p>Given a block with only ~1,250 vB of space, all three approaches include the same template here; the differences are in ranking coherence and computation:</p>
+  <p class="speaker-note"><strong>Presenter takeaway:</strong> In this toy case, throughput is equal (31,900 sats), but cluster mempool provides one consistent policy view for mining and eviction.</p>
+
+  <div class="compare-grid">
+    <div class="compare-card old">
+      <h4>OLD MEMPOOL</h4>
+      <div class="line"><span>Mines (anc FR):</span> <span class="val">G+B+D+A, then C</span></div>
+      <div class="line"><span>Evicts first:</span> <span class="val" style="color:var(--red)">E (which also removes F)</span></div>
+      <div class="line"><span>Evict order:</span> <span class="val">E+F, then recompute</span></div>
+      <div class="line"><span>Problem:</span> <span class="val" style="color:var(--red)">dual metrics can</span></div>
+      <div class="line"><span></span> <span class="val" style="color:var(--red)">send mixed signals</span></div>
+      <div class="spacer"></div>
+      <div class="line"><span>Template (1250 vB):</span></div>
+      <div class="line"><span>G+B+D+A</span> <span class="val">850 vB</span></div>
+      <div class="line"><span>+ C</span> <span class="val">1050 vB</span></div>
+      <div class="line"><span>+ H</span> <span class="val">not possible (would exceed 1250 vB)</span></div>
+      <div class="line"><span>Revenue:</span> <span class="val">~31,900 sats</span></div>
+      <div class="line"><span>Missed:</span> <span class="val" style="color:var(--red)">single coherent ranking</span></div>
+    </div>
+
+    <div class="compare-card css">
+      <h4>CSS LINEARIZATION</h4>
+      <div class="line"><span>Finds chunk 1:</span> <span class="val">{A,B,D,G}</span></div>
+      <div class="line"><span>Chunk 1 FR:</span> <span class="val">30.5 s/vB</span></div>
+      <div class="line"><span>Finds chunk 2:</span> <span class="val">{C}</span></div>
+      <div class="line"><span>Chunk 2 FR:</span> <span class="val">30.0 s/vB</span></div>
+      <div class="line"><span>Search work:</span> <span class="val" style="color:var(--yellow)">moderate</span></div>
+      <div class="spacer"></div>
+      <div class="line"><span>Template (1250 vB):</span></div>
+      <div class="line"><span>Chunk 1: A,B,D,G</span> <span class="val">850 vB</span></div>
+      <div class="line"><span>Chunk 2: C</span> <span class="val">1050 vB</span></div>
+      <div class="line"><span>Chunk 3: H</span> <span class="val">not included (size limit)</span></div>
+      <div class="line"><span>Revenue:</span> <span class="val" style="color:var(--green)">~31,900 sats</span></div>
+      <div class="line"><span>Result:</span> <span class="val" style="color:var(--green)">Optimal under 1,250 vB cap</span></div>
+    </div>
+
+    <div class="compare-card sfl">
+      <h4>SFL LINEARIZATION</h4>
+      <div class="line"><span>Finds chunk 1:</span> <span class="val">{A,B,D,G}</span></div>
+      <div class="line"><span>Chunk 1 FR:</span> <span class="val">30.5 s/vB</span></div>
+      <div class="line"><span>Finds chunk 2:</span> <span class="val">{C}</span></div>
+      <div class="line"><span>Chunk 2 FR:</span> <span class="val">30.0 s/vB</span></div>
+      <div class="line"><span>Merge/split ops:</span> <span class="val" style="color:var(--green)">~6 steps</span></div>
+      <div class="spacer"></div>
+      <div class="line"><span>Template (1250 vB):</span></div>
+      <div class="line"><span>Chunk 1: A,B,D,G</span> <span class="val">850 vB</span></div>
+      <div class="line"><span>Chunk 2: C</span> <span class="val">1050 vB</span></div>
+      <div class="line"><span>Chunk 3: H</span> <span class="val">not included (size limit)</span></div>
+      <div class="line"><span>Revenue:</span> <span class="val" style="color:var(--green)">~31,900 sats</span></div>
+      <div class="line"><span>Result:</span> <span class="val" style="color:var(--green)">Optimal under 1,250 vB cap</span></div>
+    </div>
+  </div>
+
+  <div class="verdict bad">
+    <div class="verdict-label">Old mempool tension</div>
+    <p>The old mempool's eviction logic scores A using all descendants, including 20kvB of low-fee bloat (E+F): (500+6000+10000+200+300+15000+1000) / (250+200+200+10000+10000+200+500) = <strong>1.55 sat/vB</strong>. In this exact graph, eviction still removes <strong>E+F first</strong> (0.025 sat/vB), which is sensible. But the key issue remains: mining and eviction evaluate value differently, so transaction importance can look contradictory depending on direction.</p>
+  </div>
+
+  <div class="verdict mid">
+    <div class="verdict-label">CSS — correct but costly in hard cases</div>
+    <p>CSS finds the same optimal answer as SFL for this cluster. The difference shows up in the <em>computational path</em>. CSS's branch-and-bound search explores candidate subsets exponentially. For this 8-tx cluster it's fine — but with clusters up to 64 txs, especially those with many cross-dependencies, CSS can hit its iteration limit and return a suboptimal linearization. In 2023 simulations, some clusters caused 9ms of CPU per incoming transaction.</p>
+  </div>
+
+  <div class="verdict good">
+    <div class="verdict-label">SFL — correct and graceful</div>
+    <p>SFL arrives at the optimal answer through a series of simple, local merge/split operations on the spanning forest. Each step is O(cluster-size) work. It's <strong>incremental</strong>: if a new transaction arrives and changes the cluster, SFL starts from the previous (nearly-optimal) state and typically needs only a few operations to re-optimise. CSS would need to re-search from scratch. This is why SFL is replacing CSS in PR #32545.</p>
+  </div>
+
+  <div class="verdict info">
+    <div class="verdict-label">The optimal chunking for this cluster</div>
+    <p style="font-family:'JetBrains Mono',monospace; font-size:16px; line-height:2;">
+      <strong>Chunk 1:</strong> <span class="tx-a">A</span> + <span class="tx-b">B</span> + <span class="tx-d">D</span> + <span class="tx-g">G</span> → 850 vB, 25,900 sats = <span class="good">30.5 s/vB</span><br>
+      <strong>Chunk 2:</strong> <span class="tx-c">C</span> → 200 vB, 6,000 sats = <span class="good">30.0 s/vB</span><br>
+      <strong>Chunk 3:</strong> <span class="tx-h">H</span> → 500 vB, 1,000 sats = 2.0 s/vB<br>
+      <strong>Chunk 4:</strong> <span class="tx-e">E</span> + <span class="tx-f">F</span> → 20,000 vB, 500 sats = <span class="bad">0.025 s/vB</span><br>
+      <em style="color:var(--text-dim);">Monotonically decreasing feerate ✓ — low-fee bloat ends up in the final chunk</em>
+    </p>
+  </div>
+</div>
+
+</div><!-- end wrap -->
+
+<script>
+// ==============================
+// OLD MEMPOOL STEP DATA
+// ==============================
+const oldSteps = [
+  {
+    label: 'Ancestor feerate computation',
+    narration: `<strong>Ancestor feerate</strong> = (sum of fees of tx + all ancestors) / (sum of sizes of tx + all ancestors). This is what the mining algorithm uses to pick transactions.<br><br>
+    <span class="hl">G</span>'s ancestors are {A, B, D} → fee = 15000+500+400+10000 = 25,900 sats, size = 200+250+200+200 = 850 vB → <strong>anc FR = 30.5 s/vB</strong>. Highest in the cluster!<br>
+    <span class="hl">D</span>'s ancestor set is {A} → (10000+500)/(200+250) = <strong>23.3 s/vB</strong><br>
+    <span class="hl">C</span>'s ancestor set is {A} → (6000+500)/(200+250) = <strong>14.4 s/vB</strong><br>
+    Most others are low. The miner would correctly start by pulling in G and its ancestors.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">ANCESTOR FEERATE (used for MINING)</text>
+      <g transform="translate(0,40)">
+        ${bar(0,'G','30.5',30.5,75,'#ee55aa')}
+        ${bar(1,'D','23.3',23.3,50,'#66dd66')}
+        ${bar(2,'C','14.4',14.4,30,'#eebb33')}
+        ${bar(3,'A','2.0',2.0,2,'#ff6666')}
+        ${bar(4,'B','2.0',2.0,2,'#ff9944')}
+        ${bar(5,'H','7.9',7.9,7.9,'#77ddbb')}
+        ${bar(6,'F','0.05',0.05,0.05,'#9977ff')}
+        ${bar(7,'E','0.07',0.068,0.068,'#44bbee')}
+      </g>
+    `
+  },
+  {
+    label: 'Descendant feerate computation',
+    narration: `<strong>Descendant feerate</strong> = (sum of fees of tx + all descendants) / (sum of sizes of tx + all descendants). This is what the eviction algorithm uses — evict the tx with the <em>lowest</em> descendant feerate.<br><br>
+    <span class="hl">A</span>'s descendants are {C, D, E, F, G, H} → fee = 500+6000+10000+200+300+15000+1000 = 33,000 sats, size = 250+200+200+10000+10000+200+500 = 21,350 vB → <strong>desc FR = 1.55 s/vB</strong><br><br>
+    The bloat txs <span class="bad">E (10kvB) and F (10kvB)</span> massively dilute A's descendant feerate. A looks low-value to the eviction algorithm — even though mining strongly values it via G's ancestor set.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">DESCENDANT FEERATE (used for EVICTION — low = evict first)</text>
+      <g transform="translate(0,40)">
+        ${bar(0,'G','75.0',75,75,'#ee55aa')}
+        ${bar(1,'D','62.5',62.5,62.5,'#66dd66')}
+        ${bar(2,'B','38.5',38.5,38.5,'#ff9944')}
+        ${bar(3,'C','10.0',10,10,'#eebb33')}
+        ${bar(4,'H','2.0',2.0,2,'#77ddbb')}
+        ${barBad(5,'A','1.55',1.55,'#ff6666')}
+        ${barBad(6,'F','0.03',0.03,'#9977ff')}
+        ${barBad(7,'E','0.025',0.025,'#44bbee')}
+      </g>
+    `
+  },
+  {
+    label: 'Mining: ancestor feerate ordering',
+    narration: `The miner runs the <strong>ancestor-feerate greedy algorithm</strong>. It picks the tx with the highest ancestor feerate, includes it and all its ancestors, updates the remaining ancestor feerates, and repeats.<br><br>
+    <strong>Step 1:</strong> Pick G (anc FR 30.5) → include {A, B, D, G} = 850 vB, 25,900 sats<br>
+    <strong>Step 2:</strong> Recalculate. C now has anc FR = 6000/200 = 30.0 (A already included) → include {C} = 200 vB<br>
+    <strong>Step 3:</strong> H has anc FR = 1000/500 = 2.0 → include {H} = 500 vB<br>
+    Running total: 1,550 vB. With 1,250 vB block, we'd get A+B+D+G (850) + C (1050) = <strong>31,900 sats in 1,050 vB</strong>.<br><br>
+    This is actually <span class="good">pretty good</span>! The mining side works reasonably well here. The problem is elsewhere…`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">MINING ORDER (ancestor feerate greedy)</text>
+      <g transform="translate(0,35)">
+        <rect x="40" y="10" width="510" height="40" rx="4" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="50" y="35" fill="#33dd88" font-size="12" font-weight="600">A</text>
+        <text x="110" y="35" fill="#33dd88" font-size="12" font-weight="600">B</text>
+        <text x="180" y="35" fill="#33dd88" font-size="12" font-weight="600">D</text>
+        <text x="260" y="35" fill="#33dd88" font-size="12" font-weight="600">G</text>
+        <text x="380" y="35" fill="#eebb33" font-size="12" font-weight="600">C</text>
+        <text x="460" y="35" fill="var(--text-dim)" font-size="12">H</text>
+        <text x="520" y="35" fill="var(--text-dim)" font-size="12">…</text>
+        <text x="50" y="65" fill="var(--text-dim)" font-size="10">← 850 vB, 30.5 s/vB →</text>
+        <text x="370" y="65" fill="var(--text-dim)" font-size="10">← 30 →</text>
+        <text x="460" y="65" fill="var(--text-dim)" font-size="10">2.0</text>
+        <line x1="360" y1="10" x2="360" y2="50" stroke="var(--border)" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="440" y1="10" x2="440" y2="50" stroke="var(--border)" stroke-width="1" stroke-dasharray="3"/>
+      </g>
+      <g transform="translate(0,110)">
+        <text x="40" y="15" fill="var(--text-dim)" font-size="11">Block fills: A+B+D+G (850 vB) + C (200 vB) = 1050 vB ✓</text>
+        <text x="40" y="35" fill="var(--text)" font-size="11">Revenue: 25,900 + 6,000 = 31,900 sats</text>
+        <text x="40" y="55" fill="#33dd88" font-size="11">Mining side works OK — but it's not chunk-aware</text>
+      </g>
+    `
+  },
+  {
+    label: 'Eviction: descendant feerate ordering',
+    narration: `Now suppose the mempool is full and needs to evict. It picks the tx with the <strong>lowest descendant feerate</strong> and removes it along with all its descendants.<br><br>
+    E has desc FR 0.025, F has 0.03, but <span class="bad">A has desc FR 1.55</span> — third-lowest!<br><br>
+    <strong>Step 1:</strong> Evict E → removes E and F (descendant removal). That's 20,000 vB freed. Fine so far.<br>
+    <strong>Step 2:</strong> Recompute after removing E+F. A's descendant feerate becomes (500+6000+10000+15000+1000)/(250+200+200+200+500) = <span class="hl">24.1 s/vB</span>, so A is no longer near the bottom.<br><br>
+    This toy graph avoids catastrophic eviction, but it still highlights policy tension: initial descendant scoring undervalues A while mining highly values A as part of G's best ancestor set.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">EVICTION ORDER (lowest descendant feerate first)</text>
+      <g transform="translate(0,35)">
+        <rect x="40" y="10" width="510" height="40" rx="4" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.3)" stroke-width="1"/>
+        <text x="50" y="35" fill="#ee4455" font-size="12" font-weight="600">E (removes F)</text>
+        <text x="140" y="35" fill="#ee4455" font-size="12" font-weight="600">recompute after package removal</text>
+        <text x="340" y="35" fill="var(--text-dim)" font-size="12">H</text>
+        <text x="400" y="35" fill="var(--text-dim)" font-size="12">B</text>
+        <text x="460" y="35" fill="var(--text-dim)" font-size="12">C</text>
+        <text x="520" y="35" fill="var(--text-dim)" font-size="12">…</text>
+        <line x1="120" y1="10" x2="120" y2="50" stroke="var(--border)" stroke-width="1" stroke-dasharray="3"/>
+        <line x1="320" y1="10" x2="320" y2="50" stroke="var(--border)" stroke-width="1" stroke-dasharray="3"/>
+        <text x="50" y="65" fill="#ee4455" font-size="10">0.025 s/vB</text>
+        <text x="140" y="65" fill="#ee4455" font-size="10">A jumps to ~24.1 s/vB after E+F are gone</text>
+      </g>
+      <g transform="translate(0,115)">
+        <rect x="40" y="0" width="530" height="50" rx="6" fill="rgba(238,68,85,0.08)" stroke="var(--red)" stroke-width="1"/>
+        <text x="55" y="20" fill="#ee4455" font-size="12" font-weight="600">⚠ CONFLICT</text>
+        <text x="55" y="38" fill="var(--text)" font-size="11">Removing E+F re-ranks scores sharply, showing metric instability</text>
+      </g>
+    `
+  },
+  {
+    label: 'The fundamental conflict',
+    narration: `This is the core problem that cluster mempool solves. The old mempool has <span class="bad">two orderings that can diverge sharply</span>:<br><br>
+    • Mining says: <span class="good">"A is essential — it's part of the most valuable ancestor set"</span><br>
+    • Eviction says: <span class="bad">"A looks weak initially because 20kvB of low-fee descendants drag it down"</span><br><br>
+    There is no single coherent view of "how valuable is transaction A?" The answer depends on which direction you look. Cluster mempool fixes this by computing <strong>one unified ranking</strong> — chunk feerate — that serves both mining and eviction.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">TWO VIEWS OF TRANSACTION A</text>
+      <g transform="translate(0,40)">
+        <rect x="40" y="0" width="340" height="70" rx="6" fill="rgba(51,221,136,0.05)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="55" y="22" fill="#33dd88" font-size="12" font-weight="600">MINING VIEW (looking backward)</text>
+        <text x="55" y="42" fill="var(--text)" font-size="12">A is a cheap 250vB root that unlocks</text>
+        <text x="55" y="58" fill="var(--text)" font-size="12">D (50 s/vB) and G (75 s/vB)</text>
+
+        <rect x="420" y="0" width="370" height="70" rx="6" fill="rgba(238,68,85,0.05)" stroke="rgba(238,68,85,0.3)" stroke-width="1"/>
+        <text x="435" y="22" fill="#ee4455" font-size="12" font-weight="600">EVICTION VIEW (looking forward)</text>
+        <text x="435" y="42" fill="var(--text)" font-size="12">A is burdened with 20kvB of bloat (E+F)</text>
+        <text x="435" y="58" fill="var(--text)" font-size="12">Desc feerate: 1.55 s/vB — looks awful</text>
+      </g>
+      <g transform="translate(0,130)">
+        <rect x="40" y="0" width="750" height="50" rx="6" fill="var(--orange-bg)" stroke="var(--orange)" stroke-width="1"/>
+        <text x="55" y="20" fill="var(--orange)" font-size="12" font-weight="600">CLUSTER MEMPOOL SOLUTION</text>
+        <text x="55" y="38" fill="var(--text)" font-size="12">Chunk feerate: A is grouped with {B,D,G} at 30.5 s/vB, creating one consistent valuation across policy operations</text>
+      </g>
+    `
+  }
+];
+
+function bar(i, label, frStr, fr, maxFr, color) {
+  const w = Math.max(4, (fr / 80) * 550);
+  const y = i * 20;
+  return `
+    <text x="10" y="${y+14}" fill="${color}" font-size="12" font-weight="600">${label}</text>
+    <rect x="40" y="${y+2}" width="${w}" height="14" rx="2" fill="${color}" opacity="0.25"/>
+    <rect x="40" y="${y+2}" width="${w}" height="14" rx="2" fill="none" stroke="${color}" stroke-width="1"/>
+    <text x="${45+w}" y="${y+14}" fill="var(--text-dim)" font-size="10">${frStr} s/vB</text>
+  `;
+}
+
+function barBad(i, label, frStr, fr, color) {
+  const w = Math.max(4, (fr / 80) * 550);
+  const y = i * 20;
+  return `
+    <text x="10" y="${y+14}" fill="${color}" font-size="12" font-weight="600">${label}</text>
+    <rect x="40" y="${y+2}" width="${Math.max(w,6)}" height="14" rx="2" fill="#ee4455" opacity="0.2"/>
+    <rect x="40" y="${y+2}" width="${Math.max(w,6)}" height="14" rx="2" fill="none" stroke="#ee4455" stroke-width="1.5" stroke-dasharray="3"/>
+    <text x="${50+Math.max(w,6)}" y="${y+14}" fill="#ee4455" font-size="10" font-weight="600">${frStr} s/vB ← EVICT</text>
+  `;
+}
+
+let oldIdx = 0;
+function oldGo(i) {
+  oldIdx = i;
+  renderOld();
+}
+function oldStep(d) {
+  oldIdx = Math.max(0, Math.min(oldSteps.length-1, oldIdx+d));
+  renderOld();
+}
+function renderOld() {
+  document.getElementById('old-narration').innerHTML = oldSteps[oldIdx].narration;
+  document.getElementById('old-canvas-label').textContent = oldSteps[oldIdx].label;
+  document.getElementById('old-svg').innerHTML = oldSteps[oldIdx].svg;
+  document.getElementById('old-prev').disabled = oldIdx === 0;
+  document.getElementById('old-next').disabled = oldIdx === oldSteps.length-1;
+  document.querySelectorAll('#old-stepper .step-btn').forEach((b,j) => b.classList.toggle('active', j===oldIdx));
+}
+renderOld();
+
+
+// ==============================
+// CSS STEP DATA
+// ==============================
+const cssSteps = [
+  {
+    label: 'Step 1: Identify the cluster',
+    narration: `Cluster mempool first partitions the mempool into <strong>connected components</strong>. All 8 transactions are connected (A links to B's cluster via D→G←B), so they form <strong>one cluster</strong> of 8 txs, 21,550 vB.<br><br>This is well within the limits (64 txs, 101 kvB). The cluster is now ready to be linearized.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">CLUSTER IDENTIFICATION</text>
+      <rect x="30" y="35" width="760" height="140" rx="10" fill="rgba(247,147,26,0.04)" stroke="var(--orange)" stroke-width="2" stroke-dasharray="8"/>
+      <text x="50" y="58" fill="var(--orange)" font-size="11" font-weight="600">CLUSTER #1 — 8 txs, 21,550 vB, 33,400 sats</text>
+      ${clusterNodes(70)}
+      <text x="550" y="165" fill="var(--text-dim)" font-size="10">All connected → single cluster</text>
+    `
+  },
+  {
+    label: 'Step 2: Ancestor-set heuristic (LIMO seed)',
+    narration: `CSS starts with an <strong>ancestor-feerate-based heuristic</strong> to get a good initial linearization (the LIMO algorithm). It picks the tx with the best ancestor feerate first:<br><br>
+    <strong>Round 1:</strong> Best ancestor set = {A,B,D,G} with anc FR 30.5 → move to front<br>
+    <strong>Round 2:</strong> From remaining {C,E,F,H}: best = C at 30.0 s/vB<br>
+    <strong>Round 3:</strong> H at 2.0 s/vB<br>
+    <strong>Round 4:</strong> low-fee tail E/F sits at ~0.025 s/vB as a package<br><br>
+    Initial linearization: <span class="hl">[A,B,D,G | C | H | E,F]</span>. This is already pretty good! But CSS now needs to <em>verify</em> it's optimal by searching for better candidate sets.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">LIMO INITIAL LINEARIZATION</text>
+      <g transform="translate(0,40)">
+        <rect x="30" y="0" width="280" height="44" rx="5" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.4)" stroke-width="1.5"/>
+        <text x="45" y="18" fill="#33dd88" font-size="11" font-weight="600">CHUNK 1: 30.5 s/vB</text>
+        <text x="45" y="35" fill="var(--text)" font-size="13">A  B  D  G</text>
+
+        <rect x="325" y="0" width="100" height="44" rx="5" fill="rgba(238,187,51,0.06)" stroke="rgba(238,187,51,0.4)" stroke-width="1.5"/>
+        <text x="340" y="18" fill="#eebb33" font-size="11" font-weight="600">C: 30.0</text>
+        <text x="340" y="35" fill="var(--text)" font-size="13">C</text>
+
+        <rect x="440" y="0" width="80" height="44" rx="5" fill="rgba(119,221,187,0.06)" stroke="rgba(119,221,187,0.4)" stroke-width="1.5"/>
+        <text x="455" y="18" fill="#77ddbb" font-size="11" font-weight="600">H: 2.0</text>
+        <text x="455" y="35" fill="var(--text)" font-size="13">H</text>
+
+        <rect x="535" y="0" width="80" height="44" rx="5" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.4)" stroke-width="1.5"/>
+        <text x="550" y="18" fill="#ee4455" font-size="11" font-weight="600">E/F: 0.025</text>
+        <text x="550" y="35" fill="var(--text)" font-size="13">E</text>
+
+        <rect x="630" y="0" width="80" height="44" rx="5" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.4)" stroke-width="1.5"/>
+        <text x="645" y="18" fill="#ee4455" font-size="11" font-weight="600">tail</text>
+        <text x="645" y="35" fill="var(--text)" font-size="13">F</text>
+
+        <text x="30" y="65" fill="var(--text-dim)" font-size="10">← high feerate                                                                    low feerate →</text>
+      </g>
+      <g transform="translate(0,120)">
+        <text x="30" y="15" fill="var(--text)" font-size="12">Lowest-fee tail remains at the end ✓</text>
+        <text x="30" y="35" fill="var(--text-dim)" font-size="11">But is this truly optimal? CSS now verifies with search…</text>
+      </g>
+    `
+  },
+  {
+    label: 'Step 3: Branch-and-bound search',
+    narration: `CSS uses <strong>SearchCandidateFinder</strong> to explore possible topologically-valid subsets, looking for any subset with higher feerate than the current best chunk. It builds a search tree:<br><br>
+    Each node in the tree represents a partial candidate set. CSS branches on "include tx X" or "exclude tx X". For each branch, it computes an upper bound on the best achievable feerate and prunes branches that can't beat the current best.<br><br>
+    For our 8-tx cluster: the search space is manageable (~2⁸ = 256 leaves at worst). CSS quickly confirms {A,B,D,G} at 30.5 s/vB is optimal for the first chunk.<br><br>
+    <span class="hl">But imagine a cluster with 40+ txs and complex cross-dependencies.</span> The search tree explodes. Some clusters from 2023 caused CSS to burn 9ms per transaction — far above the target of ~50μs. The work limit had to be reduced to <code>5 × ACCEPTABLE_ITERS</code>, meaning hard clusters get <span class="bad">suboptimal linearizations</span>.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">CSS SEARCH TREE (simplified)</text>
+      <g transform="translate(30,35)">
+        <!-- Root -->
+        <rect x="320" y="0" width="120" height="28" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+        <text x="380" y="19" text-anchor="middle" fill="var(--text)" font-size="10">{} — start</text>
+
+        <!-- Level 1 -->
+        <line x1="350" y1="28" x2="180" y2="55" stroke="var(--border)" stroke-width="1"/>
+        <line x1="410" y1="28" x2="560" y2="55" stroke="var(--border)" stroke-width="1"/>
+
+        <rect x="110" y="55" width="140" height="28" rx="4" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="180" y="74" text-anchor="middle" fill="#33dd88" font-size="10">inc A → try {A,...}</text>
+
+        <rect x="490" y="55" width="140" height="28" rx="4" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+        <text x="560" y="74" text-anchor="middle" fill="var(--text-dim)" font-size="10">exc A → try without</text>
+
+        <!-- Level 2 (left branch) -->
+        <line x1="150" y1="83" x2="80" y2="110" stroke="var(--border)" stroke-width="1"/>
+        <line x1="210" y1="83" x2="280" y2="110" stroke="var(--border)" stroke-width="1"/>
+
+        <rect x="20" y="110" width="120" height="28" rx="4" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="80" y="129" text-anchor="middle" fill="#33dd88" font-size="10">{A,B} → 30.5?</text>
+
+        <rect x="220" y="110" width="120" height="28" rx="4" fill="rgba(51,221,136,0.06)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="280" y="129" text-anchor="middle" fill="#33dd88" font-size="10">{A,D} → 23.3</text>
+
+        <!-- Found -->
+        <line x1="80" y1="138" x2="80" y2="155" stroke="#33dd88" stroke-width="1"/>
+        <rect x="10" y="155" width="140" height="28" rx="4" fill="rgba(51,221,136,0.1)" stroke="#33dd88" stroke-width="1.5"/>
+        <text x="80" y="174" text-anchor="middle" fill="#33dd88" font-size="10" font-weight="600">{A,B,D,G} = 30.5 ✓</text>
+
+        <!-- Pruned branches -->
+        <line x1="560" y1="83" x2="560" y2="105" stroke="#ee4455" stroke-width="1" stroke-dasharray="3"/>
+        <text x="560" y="118" text-anchor="middle" fill="#ee4455" font-size="10">pruned (bound &lt; 30.5)</text>
+
+        <line x1="280" y1="138" x2="280" y2="155" stroke="#ee4455" stroke-width="1" stroke-dasharray="3"/>
+        <text x="280" y="168" text-anchor="middle" fill="#ee4455" font-size="10">pruned</text>
+      </g>
+    `
+  },
+  {
+    label: 'Step 4: Final linearization',
+    narration: `CSS confirms the LIMO heuristic got it right. The optimal linearization is:<br><br>
+    <span class="hl">[A, B, D, G | C | H | E,F]</span><br><br>
+    For our 8-tx cluster, CSS did fine — a handful of search iterations. But the key difference from the old mempool: this linearization is used for <strong>everything</strong>. Mining, eviction, relay, and RBF all use the same chunk ordering. No more conflicting views of transaction value.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">CSS FINAL LINEARIZATION — SAME AS LIMO INITIAL</text>
+      <g transform="translate(0,40)">
+        <rect x="30" y="0" width="280" height="44" rx="5" fill="rgba(51,221,136,0.08)" stroke="rgba(51,221,136,0.5)" stroke-width="2"/>
+        <text x="45" y="18" fill="#33dd88" font-size="11" font-weight="600">CHUNK 1: 30.5 s/vB ✓ OPTIMAL</text>
+        <text x="45" y="35" fill="var(--text)" font-size="13">A  B  D  G</text>
+
+        <rect x="325" y="0" width="100" height="44" rx="5" fill="rgba(238,187,51,0.08)" stroke="rgba(238,187,51,0.5)" stroke-width="2"/>
+        <text x="340" y="18" fill="#eebb33" font-size="11" font-weight="600">C: 30.0 ✓</text>
+        <text x="340" y="35" fill="var(--text)" font-size="13">C</text>
+
+        <rect x="440" y="0" width="80" height="44" rx="5" fill="rgba(119,221,187,0.06)" stroke="rgba(119,221,187,0.3)" stroke-width="1"/>
+        <text x="455" y="18" fill="#77ddbb" font-size="11">H: 2.0</text>
+        <text x="455" y="35" fill="var(--text)" font-size="13">H</text>
+
+        <rect x="535" y="0" width="80" height="44" rx="5" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.3)" stroke-width="1"/>
+        <text x="550" y="18" fill="#ee4455" font-size="11">E/F: 0.025</text>
+        <text x="550" y="35" fill="var(--text)" font-size="13">E</text>
+
+        <rect x="630" y="0" width="80" height="44" rx="5" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.3)" stroke-width="1"/>
+        <text x="645" y="18" fill="#ee4455" font-size="11">tail</text>
+        <text x="645" y="35" fill="var(--text)" font-size="13">F</text>
+      </g>
+      <g transform="translate(0,100)">
+        <text x="30" y="15" fill="var(--text)" font-size="12">CSS confirmed optimality via search. For 8 txs, this is fast.</text>
+        <text x="30" y="35" fill="var(--yellow)" font-size="12">For 40+ tx clusters with cross-deps, CSS can exhaust its iteration budget.</text>
+      </g>
+    `
+  },
+  {
+    label: 'Step 5: Chunk-based mining & eviction',
+    narration: `With cluster mempool, <strong>chunk feerate</strong> is the universal metric:<br><br>
+    <strong>Mining:</strong> Select chunks high-to-low → {A,B,D,G} first (30.5), then {C} (30.0), then {H} (2.0)...<br>
+    <strong>Eviction:</strong> Remove chunks low-to-high → {E,F} package first (0.025), then {H} (2.0)...<br>
+    <strong>Relay:</strong> Announce transactions by their chunk feerate<br>
+    <strong>RBF:</strong> Replacement must improve the feerate diagram<br><br>
+    <span class="good">A is never evicted before G.</span> They're in the same chunk. If you evict chunk {A,B,D,G}, you're evicting at 30.5 s/vB — one of the last things to go. The bloat txs E and F are evicted first, exactly as they should be.`,
+    svg: `
+      <text x="10" y="20" fill="var(--text-dim)" font-size="11" letter-spacing="1">UNIFIED CHUNK ORDERING</text>
+      <g transform="translate(0,35)">
+        <rect x="30" y="0" width="760" height="44" rx="5" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+
+        <rect x="35" y="5" width="240" height="34" rx="4" fill="rgba(51,221,136,0.08)" stroke="rgba(51,221,136,0.3)" stroke-width="1"/>
+        <text x="48" y="27" fill="#33dd88" font-size="11" font-weight="600">A B D G — 30.5 s/vB</text>
+
+        <rect x="285" y="5" width="110" height="34" rx="4" fill="rgba(238,187,51,0.08)" stroke="rgba(238,187,51,0.3)" stroke-width="1"/>
+        <text x="298" y="27" fill="#eebb33" font-size="11" font-weight="600">C — 30.0</text>
+
+        <rect x="405" y="5" width="90" height="34" rx="4" fill="rgba(119,221,187,0.06)" stroke="rgba(119,221,187,0.3)" stroke-width="1"/>
+        <text x="418" y="27" fill="#77ddbb" font-size="11">H — 2.0</text>
+
+        <rect x="505" y="5" width="190" height="34" rx="4" fill="rgba(238,68,85,0.06)" stroke="rgba(238,68,85,0.3)" stroke-width="1"/>
+        <text x="518" y="27" fill="#ee4455" font-size="11">E+F package — 0.025</text>
+
+        <text x="30" y="65" fill="#33dd88" font-size="10">← MINE FIRST</text>
+        <text x="680" y="65" fill="#ee4455" font-size="10">EVICT FIRST →</text>
+      </g>
+      <g transform="translate(0,110)">
+        <text x="30" y="15" fill="#33dd88" font-size="12" font-weight="600">✓ A is protected — same chunk as G</text>
+        <text x="30" y="35" fill="#33dd88" font-size="12" font-weight="600">✓ E, F evicted first — they're the lowest-value chunks</text>
+        <text x="30" y="55" fill="#33dd88" font-size="12" font-weight="600">✓ One ordering for everything — no more conflicts</text>
+      </g>
+    `
+  }
+];
+
+function clusterNodes(y) {
+  return `
+    <text x="60" y="${y+12}" fill="#ff6666" font-size="13" font-weight="600">A</text>
+    <text x="120" y="${y+12}" fill="#ff9944" font-size="13" font-weight="600">B</text>
+    <text x="170" y="${y+12}" fill="#eebb33" font-size="13" font-weight="600">C</text>
+    <text x="220" y="${y+12}" fill="#66dd66" font-size="13" font-weight="600">D</text>
+    <text x="280" y="${y+12}" fill="#44bbee" font-size="13" font-weight="600">E</text>
+    <text x="340" y="${y+12}" fill="#9977ff" font-size="13" font-weight="600">F</text>
+    <text x="400" y="${y+12}" fill="#ee55aa" font-size="13" font-weight="600">G</text>
+    <text x="460" y="${y+12}" fill="#77ddbb" font-size="13" font-weight="600">H</text>
+    <line x1="73" y1="${y+6}" x2="107" y2="${y+6}" stroke="var(--text-dim)" stroke-width="1"/>
+    <text x="80" y="${y+32}" fill="var(--text-dim)" font-size="9">A→C, A→D, A→E, E→F, B→G, D→G, C→H</text>
+  `;
+}
+
+let cssIdx = 0;
+function cssGo(i) { cssIdx = i; renderCss(); }
+function cssStep(d) { cssIdx = Math.max(0, Math.min(cssSteps.length-1, cssIdx+d)); renderCss(); }
+function renderCss() {
+  document.getElementById('css-narration').innerHTML = cssSteps[cssIdx].narration;
+  document.getElementById('css-canvas-label').textContent = cssSteps[cssIdx].label;
+  document.getElementById('css-svg').innerHTML = cssSteps[cssIdx].svg;
+  document.getElementById('css-prev').disabled = cssIdx === 0;
+  document.getElementById('css-next').disabled = cssIdx === cssSteps.length-1;
+  document.querySelectorAll('#css-stepper .step-btn').forEach((b,j) => b.classList.toggle('active', j===cssIdx));
+}
+renderCss();
+
+
+// ==============================
+// SFL STEP DATA
+// ==============================
+const sflSteps = [
+  {
+    label: 'SFL: Initial state — every tx is its own chunk',
+    narration: `SFL begins with <strong>all dependency edges inactive</strong>. Each transaction is its own singleton chunk. The chunk feerates are just the individual transaction feerates.<br><br>
+    8 chunks: G (75), D (50), C (30), A (2.0), B (2.0), H (2.0), F (0.03), E (0.02)<br><br>
+    Now we look for <strong>merge opportunities</strong>: any inactive dependency where the child chunk has a higher feerate than the parent chunk.`,
+    svg: sflSvg(0)
+  },
+  {
+    label: 'SFL: Merge — D(50) into A(2.0)',
+    narration: `<strong>Merge rule:</strong> look for an inactive dependency where the <em>child</em> chunk has higher feerate than the <em>parent</em> chunk. If found, activate the edge (merge them).<br><br>
+    Edge A→D: child chunk {D} has feerate 50 s/vB, parent chunk {A} has feerate 2.0 s/vB. Child > parent → <span class="hl">MERGE!</span><br><br>
+    Activate A→D. New chunk: <strong>{A, D}</strong> with combined feerate = (500+10000)/(250+200) = <span class="good">23.3 s/vB</span>.<br><br>
+    Similarly, edge A→C: child {C} at 30 > parent {A} at 2.0. And A→E: child {E} at 0.02 < parent {A} at 2.0 — <strong>no merge</strong> (child is worse). E stays separate!`,
+    svg: sflSvg(1)
+  },
+  {
+    label: 'SFL: Merge — C(30) into {A,D}(23.3)',
+    narration: `Edge A→C: child chunk {C} at 30 s/vB > parent chunk {A,D} at 23.3 s/vB → <span class="hl">MERGE!</span><br><br>
+    Activate A→C. New chunk: <strong>{A, C, D}</strong> with feerate = (500+6000+10000)/(250+200+200) = <span class="good">25.4 s/vB</span>.`,
+    svg: sflSvg(2)
+  },
+  {
+    label: 'SFL: Merge — G(75) needs both B and D',
+    narration: `Edge D→G: child chunk {G} at 75 s/vB > parent chunk {A,C,D} at 25.4 → <span class="hl">MERGE!</span><br>
+    Activate D→G. But G also depends on B (edge B→G). G's chunk {A,C,D,G} at (500+6000+10000+15000)/(250+200+200+200) = 37.1 s/vB is higher than B's chunk {B} at 2.0 s/vB.<br><br>
+    Edge B→G: child chunk now contains G and has feerate 37.1 > parent {B} at 2.0 → <span class="hl">MERGE!</span><br>
+    Activate B→G. New chunk: <strong>{A, B, C, D, G}</strong> at (500+400+6000+10000+15000)/(250+200+200+200+200) = <span class="good">30.5 s/vB</span>.`,
+    svg: sflSvg(3)
+  },
+  {
+    label: 'SFL: Split — C drags down the chunk',
+    narration: `Now check the <strong>split rule</strong>: for any active edge, would deactivating it create two chunks where the parent-side has <em>higher</em> feerate than the child-side?<br><br>
+    Consider active edge A→C within chunk {A,B,C,D,G}. If we split here:<br>
+    • Parent-side sub-chunk (containing A): {A,B,D,G} = (500+400+10000+15000)/(250+200+200+200) = <span class="good">30.5 s/vB</span><br>
+    • Child-side sub-chunk: {C} = 30.0 s/vB<br><br>
+    Parent (30.5) > child (30.0) → <span class="hl">SPLIT!</span> Deactivate A→C.<br><br>
+    This is the key insight: C is slightly dragging down the chunk. Removing it gives {A,B,D,G} a higher feerate. C becomes its own chunk at 30.0 — still very good, just marginally lower.`,
+    svg: sflSvg(4)
+  },
+  {
+    label: 'SFL: Check remaining edges',
+    narration: `Continue checking for merge/split opportunities:<br><br>
+    <strong>Edge C→H:</strong> child {H} at 2.0 < parent {C} at 30.0 → no merge. H stays separate.<br>
+    <strong>Edge A→E:</strong> child {E} at 0.02 < parent chunk {A,B,D,G} at 30.5 → no merge. E stays separate.<br>
+    <strong>Edge E→F:</strong> child {F} at 0.03 > parent {E} at 0.02 → merge. New chunk {E,F} has (200+300)/(10000+10000) = 0.025 s/vB.<br><br>
+    Split check on E→F: parent-side {E} = 0.02, child-side {F} = 0.03. Parent < child → no split. So {E,F} remains merged and stays as the last chunk.`,
+    svg: sflSvg(5)
+  },
+  {
+    label: 'SFL: Final linearization — optimal!',
+    narration: `No more merges or splits apply. <strong>SFL has converged.</strong> The final chunks, from highest to lowest feerate:<br><br>
+    <span class="good">Chunk 1: {A, B, D, G}</span> — 850 vB — 30.5 s/vB<br>
+    <span class="good">Chunk 2: {C}</span> — 200 vB — 30.0 s/vB<br>
+    Chunk 3: {H} — 500 vB — 2.0 s/vB<br>
+    Chunk 4: {E, F} — 20,000 vB — 0.025 s/vB<br><br>
+    This is the <strong>same optimal answer</strong> CSS found — but SFL got here through a series of local merge/split operations, never needing to enumerate candidate subsets. The critical advantage: if a <em>new transaction</em> arrives and changes this cluster, SFL starts from this already-good state and only needs a few operations to re-optimise. CSS would restart its search from scratch.`,
+    svg: sflSvg(6)
+  }
+];
+
+function sflSvg(step) {
+  // Node positions
+  const nodes = [
+    {id:'A', x:60, y:40, fee:500, size:250, fr:'2.0', color:'#ff6666'},
+    {id:'B', x:580, y:40, fee:400, size:200, fr:'2.0', color:'#ff9944'},
+    {id:'C', x:60, y:140, fee:6000, size:200, fr:'30.0', color:'#eebb33'},
+    {id:'D', x:260, y:140, fee:10000, size:200, fr:'50.0', color:'#66dd66'},
+    {id:'E', x:160, y:240, fee:200, size:10000, fr:'0.02', color:'#44bbee'},
+    {id:'F', x:160, y:310, fee:300, size:10000, fr:'0.03', color:'#9977ff'},
+    {id:'G', x:460, y:140, fee:15000, size:200, fr:'75.0', color:'#ee55aa'},
+    {id:'H', x:60, y:240, fee:1000, size:500, fr:'2.0', color:'#77ddbb'},
+  ];
+
+  // Dependencies: [parentIdx, childIdx]
+  const deps = [
+    [0,2], // A→C
+    [0,3], // A→D
+    [0,4], // A→E
+    [4,5], // E→F
+    [1,6], // B→G
+    [3,6], // D→G
+    [2,7], // C→H
+  ];
+
+  // Active edges and chunk assignments per step
+  const states = [
+    // Step 0: all inactive, each tx is own chunk
+    { active: [false,false,false,false,false,false,false], chunks: [[0],[1],[2],[3],[4],[5],[6],[7]] },
+    // Step 1: merge D into A (edge 1: A→D active)
+    { active: [false,true,false,false,false,false,false], chunks: [[0,3],[1],[2],[4],[5],[6],[7]] },
+    // Step 2: merge C into {A,D} (edge 0: A→C active)
+    { active: [true,true,false,false,false,false,false], chunks: [[0,2,3],[1],[4],[5],[6],[7]] },
+    // Step 3: merge G, then B (edges 5: D→G, 4: B→G active)
+    { active: [true,true,false,false,true,true,false], chunks: [[0,1,2,3,6],[4],[5],[7]] },
+    // Step 4: split C off (edge 0: A→C deactivated)
+    { active: [false,true,false,false,true,true,false], chunks: [[0,1,3,6],[2],[4],[5],[7]] },
+    // Step 5: merge E+F (edge 3: E→F active)
+    { active: [false,true,false,true,true,true,false], chunks: [[0,1,3,6],[2],[4,5],[7]] },
+    // Step 6: final
+    { active: [false,true,false,true,true,true,false], chunks: [[0,1,3,6],[2],[7],[4,5]] },
+  ];
+
+  const st = states[step];
+  let svg = '';
+
+  // Chunk background rectangles
+  const chunkColors = ['rgba(51,221,136,0.08)','rgba(238,187,51,0.08)','rgba(119,221,187,0.06)','rgba(238,68,85,0.06)','rgba(153,119,255,0.06)'];
+  const chunkStrokes = ['rgba(51,221,136,0.4)','rgba(238,187,51,0.4)','rgba(119,221,187,0.3)','rgba(238,68,85,0.3)','rgba(153,119,255,0.3)'];
+
+  // Calculate chunk bounding boxes
+  st.chunks.forEach((chunk, ci) => {
+    if (chunk.length > 1) {
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      chunk.forEach(ni => {
+        const n = nodes[ni];
+        minX = Math.min(minX, n.x - 5);
+        minY = Math.min(minY, n.y - 5);
+        maxX = Math.max(maxX, n.x + 105);
+        maxY = Math.max(maxY, n.y + 50);
+      });
+      const pad = 12;
+      svg += `<rect x="${minX-pad}" y="${minY-pad}" width="${maxX-minX+pad*2}" height="${maxY-minY+pad*2}" rx="10" fill="${chunkColors[ci%chunkColors.length]}" stroke="${chunkStrokes[ci%chunkStrokes.length]}" stroke-width="1.5" stroke-dasharray="6"/>`;
+    }
+  });
+
+  // Draw edges
+  deps.forEach(([pi, ci], di) => {
+    const p = nodes[pi], c = nodes[ci];
+    const active = st.active[di];
+    const stroke = active ? '#f7931a' : 'var(--border)';
+    const width = active ? 2.5 : 1;
+    const dash = active ? '' : 'stroke-dasharray="4"';
+    svg += `<line x1="${p.x+50}" y1="${p.y+38}" x2="${c.x+50}" y2="${c.y}" stroke="${stroke}" stroke-width="${width}" ${dash}/>`;
+  });
+
+  // Draw nodes
+  nodes.forEach((n, i) => {
+    svg += `<rect x="${n.x}" y="${n.y}" width="100" height="38" rx="5" fill="var(--bg3)" stroke="${n.color}" stroke-width="1.5"/>`;
+    svg += `<text x="${n.x+20}" y="${n.y+16}" fill="${n.color}" font-size="14" font-weight="700">${n.id}</text>`;
+    svg += `<text x="${n.x+20}" y="${n.y+30}" fill="var(--text-dim)" font-size="9">${n.fr} s/vB</text>`;
+  });
+
+  // Step-specific annotations
+  if (step === 1) {
+    svg += `<text x="310" y="115" fill="var(--orange)" font-size="12" font-weight="600">← MERGED: A+D = 23.3 s/vB</text>`;
+  }
+  if (step === 2) {
+    svg += `<text x="50" y="115" fill="var(--orange)" font-size="12" font-weight="600">↑ +C = 25.4 s/vB</text>`;
+  }
+  if (step === 3) {
+    svg += `<text x="360" y="90" fill="var(--orange)" font-size="12" font-weight="600">All merged: A+B+C+D+G = 30.5 s/vB</text>`;
+  }
+  if (step === 4) {
+    svg += `<text x="30" y="125" fill="var(--red)" font-size="11" font-weight="600">SPLIT! C (30.0) off from {A,B,D,G} (30.5)</text>`;
+    svg += `<text x="30" y="140" fill="var(--text-dim)" font-size="10">Parent-side higher → split improves both</text>`;
+  }
+  if (step >= 5) {
+    svg += `<text x="200" y="290" fill="var(--orange)" font-size="10">E+F merged: 0.025 s/vB</text>`;
+  }
+  if (step === 6) {
+    svg += `<text x="440" y="280" fill="#33dd88" font-size="13" font-weight="600">CONVERGED ✓</text>`;
+    svg += `<text x="440" y="298" fill="var(--text-dim)" font-size="11">No more merges or splits apply</text>`;
+    svg += `<text x="440" y="316" fill="var(--text-dim)" font-size="11">Chunks are optimal linearization</text>`;
+  }
+
+  // Legend
+  svg += `<rect x="620" y="240" width="180" height="80" rx="6" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>`;
+  svg += `<line x1="635" y1="262" x2="665" y2="262" stroke="var(--orange)" stroke-width="2.5"/>`;
+  svg += `<text x="670" y="266" fill="var(--text)" font-size="10">active (merged)</text>`;
+  svg += `<line x1="635" y1="282" x2="665" y2="282" stroke="var(--border)" stroke-width="1" stroke-dasharray="4"/>`;
+  svg += `<text x="670" y="286" fill="var(--text-dim)" font-size="10">inactive (separate)</text>`;
+  svg += `<rect x="635" y="296" width="30" height="12" rx="3" fill="rgba(51,221,136,0.08)" stroke="rgba(51,221,136,0.4)" stroke-width="1" stroke-dasharray="4"/>`;
+  svg += `<text x="670" y="306" fill="var(--text-dim)" font-size="10">chunk boundary</text>`;
+
+  return svg;
+}
+
+let sflIdx = 0;
+function sflGo(i) { sflIdx = i; renderSfl(); }
+function sflStep(d) { sflIdx = Math.max(0, Math.min(sflSteps.length-1, sflIdx+d)); renderSfl(); }
+function renderSfl() {
+  document.getElementById('sfl-narration').innerHTML = sflSteps[sflIdx].narration;
+  document.getElementById('sfl-canvas-label').textContent = sflSteps[sflIdx].label;
+  document.getElementById('sfl-svg').innerHTML = sflSteps[sflIdx].svg;
+  document.getElementById('sfl-prev').disabled = sflIdx === 0;
+  document.getElementById('sfl-next').disabled = sflIdx === sflSteps.length-1;
+  document.querySelectorAll('#sfl-stepper .step-btn').forEach((b,j) => b.classList.toggle('active', j===sflIdx));
+}
+renderSfl();
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    const d = e.key === 'ArrowRight' ? 1 : -1;
+    // Find which stepper is in view
+    const steppers = [
+      { el: document.getElementById('old-stepper'), fn: oldStep },
+      { el: document.getElementById('css-stepper'), fn: cssStep },
+      { el: document.getElementById('sfl-stepper'), fn: sflStep },
+    ];
+    // Use the one closest to viewport center
+    let best = steppers[0], bestDist = Infinity;
+    steppers.forEach(s => {
+      const rect = s.el.getBoundingClientRect();
+      const dist = Math.abs(rect.top + rect.height/2 - window.innerHeight/2);
+      if (dist < bestDist) { bestDist = dist; best = s; }
+    });
+    best.fn(d);
+  }
+  if (e.key === 'Escape') {
+    window.location.href = 'bitcoin-core-v31.html';
+  }
+});
+</script>
+</body>
+</html>

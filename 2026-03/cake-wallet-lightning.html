@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cake Wallet Adds Lightning — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--cyG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--cyD);border:1px solid var(--cy);border-radius:16px;color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--cy);background:var(--cyG);color:var(--cy);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cy);background:var(--cyD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.warn-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.red-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.red-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.feature-card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.feature-title{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;margin-bottom:4px}
+.feature-desc{color:var(--txM);font-size:13px;line-height:1.5}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--cy);background:var(--cyG);color:var(--cy)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols,.feature-grid{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">WALLETS</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: The Announcement -->
+<div class="slide" data-name="The News">
+  <h2 class="slide-title">Cake Wallet Adds Lightning</h2>
+  <p class="subtitle">Privacy-focused multi-asset wallet gains instant Bitcoin payments</p>
+
+  <div class="cyan-box">
+    <div class="cyan-label">WHAT HAPPENED</div>
+    <div class="card-text"><strong>Cake Wallet</strong> &mdash; best known as a <strong>Monero-first, privacy-focused</strong> mobile wallet &mdash; has added native <strong>Lightning Network</strong> support. Users can now send and receive Bitcoin via Lightning directly within the app.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">WHY CAKE WALLET MATTERS</div>
+    <div class="card-text">Cake Wallet occupies a unique position in the wallet ecosystem:
+      <br><br>
+      &bull; <strong>Multi-asset</strong> &mdash; supports Bitcoin, Monero, Ethereum, Litecoin, and more<br>
+      &bull; <strong>Privacy-focused</strong> &mdash; built-in exchange with no KYC, Tor support, coin control<br>
+      &bull; <strong>Open source</strong> &mdash; fully auditable codebase<br>
+      &bull; <strong>Non-custodial</strong> &mdash; users hold their own keys<br>
+      &bull; <strong>Cross-platform</strong> &mdash; iOS, Android, desktop
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">THE PRIVACY + LIGHTNING COMBINATION</div>
+    <div class="card-text">Lightning already offers better payment privacy than on-chain Bitcoin (no public ledger of payments, onion-routed HTLCs). Combined with Cake Wallet's privacy-first design philosophy and built-in exchange features, this creates one of the strongest <strong>privacy-preserving Bitcoin payment</strong> experiences available in a mobile wallet.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Context & Security -->
+<div class="slide" data-name="Context">
+  <h2 class="slide-title">Context &amp; Security Note</h2>
+
+  <div class="red-box">
+    <div class="red-label">IRONIC TIMING: CAKE WALLET PHISHING</div>
+    <div class="card-text">This announcement comes while <strong>active phishing campaigns</strong> are targeting Cake Wallet users via SEO poisoning and fake websites (covered in our <a href="phishing-attacks.html">Phishing Attacks topic</a>). The Lightning addition will likely increase Cake Wallet's profile, potentially making it an even more attractive phishing target. <strong>Always verify downloads</strong> from the official site.</div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-title" style="color:var(--gn)">Instant Payments</div>
+      <div class="feature-desc">Sub-second Bitcoin transactions. No waiting for block confirmations. Ideal for point-of-sale and day-to-day spending.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title" style="color:var(--pu)">Low Fees</div>
+      <div class="feature-desc">Lightning fees are typically fractions of a cent, compared to on-chain fees that can spike to dollars during congestion.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title" style="color:var(--cy)">Privacy by Default</div>
+      <div class="feature-desc">Lightning payments are onion-routed. Intermediary nodes see forwarded amounts but don't know the full path, total payment amount, or their position in the route.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-title" style="color:var(--or)">Multi-Asset Wallet</div>
+      <div class="feature-desc">BTC on-chain + Lightning + Monero + exchange &mdash; all in one app. Reduces the need for multiple wallet applications.</div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">THE WALLET LANDSCAPE IS CONSOLIDATING</div>
+    <div class="card-text">Cake Wallet joins a growing list of wallets adding Lightning: <strong>Phoenix</strong> (Acinq), <strong>Breez</strong>, <strong>Zeus</strong>, <strong>Mutiny</strong> (now defunct), <strong>BlueWallet</strong>. The trend is clear &mdash; Lightning is becoming a standard feature rather than a specialist capability. Wallets without Lightning support are increasingly at a disadvantage.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://x.com/cakewallet/status/2028531059160182943" target="_blank">@cakewallet announcement &rarr;</a>
+    <a href="https://cakewallet.com" target="_blank">cakewallet.com (official site &mdash; verify before downloading!) &rarr;</a>
+    <a href="phishing-attacks.html">Perth BitDevs: Phishing Attacks (Cake Wallet warning) &rarr;</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});
+render();
+</script>
+</body>
+</html>

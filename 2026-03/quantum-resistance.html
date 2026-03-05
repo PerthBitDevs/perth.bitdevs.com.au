@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Resistance — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:#b36a0f;--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--puG);border:1px solid var(--pu);border-radius:16px;color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--pu);background:var(--puG);color:var(--pu);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(168,85,247,.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--pu);border-radius:10px 0 0 10px;opacity:.5}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--pu);background:var(--puD);padding:2px 6px;border-radius:4px}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.3);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.pu-box{background:var(--puG);border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.pu-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.gn-box{background:var(--gnG);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.gn-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:6px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center}
+.stat .val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800}
+.stat .lbl{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;margin-top:4px}
+.timeline{display:flex;flex-direction:column;gap:4px}
+.tl-item{display:flex;gap:14px;align-items:flex-start}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;min-width:16px;padding-top:2px}
+.tl-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tl-line{width:2px;flex:1;min-height:24px;background:var(--bd);margin-top:4px}
+.tl-body{padding-bottom:12px}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;margin-bottom:3px}
+.tl-text{color:var(--txM);font-size:14px;line-height:1.55}
+.merkle-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:12px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txM);line-height:2}
+.merkle-diagram .node{display:inline-block;background:var(--puG);border:1px solid rgba(168,85,247,.3);border-radius:6px;padding:4px 10px;color:var(--pu);font-weight:700;font-size:12px}
+.merkle-diagram .node-gn{display:inline-block;background:var(--gnG);border:1px solid rgba(34,197,94,.3);border-radius:6px;padding:4px 10px;color:var(--gn);font-weight:700;font-size:12px}
+.merkle-diagram .node-bl{display:inline-block;background:var(--blG);border:1px solid rgba(59,130,246,.3);border-radius:6px;padding:4px 10px;color:var(--bl);font-weight:700;font-size:12px}
+.merkle-diagram .node-or{display:inline-block;background:var(--orG);border:1px solid rgba(247,147,26,.3);border-radius:6px;padding:4px 10px;color:var(--or);font-weight:700;font-size:12px}
+.merkle-diagram .arrow{color:var(--txD);font-size:16px}
+.algo-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:14px}
+.algo-table th{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--pu);text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.algo-table td{padding:8px 10px;border-bottom:1px solid var(--bd);color:var(--txM)}
+.algo-table td:first-child{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--tx);font-size:13px}
+.algo-table tr:last-child td{border-bottom:none}
+.links{margin-top:12px}
+.links a{display:block;color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:13px;text-decoration:none;padding:4px 0;opacity:.7;transition:opacity .15s}
+.links a:hover{opacity:1}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--pu);background:var(--puG);color:var(--pu)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}.merkle-diagram{font-size:11px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">QUANTUM RESISTANCE</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- ====== SLIDE 1: The Quantum Threat ====== -->
+<div class="slide" data-name="The Threat">
+  <h2 class="slide-title">The Quantum Threat to Bitcoin</h2>
+
+  <div class="warn-box">
+    <div class="warn-label">SHOR'S ALGORITHM</div>
+    <div class="card-text">A sufficiently powerful quantum computer running <strong>Shor's algorithm</strong> can solve the Elliptic Curve Discrete Logarithm Problem (ECDLP) in polynomial time. This means it could <strong>derive any private key from its public key</strong> -- breaking ECDSA and Schnorr signatures entirely.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--rd)">VULNERABLE</div>
+      <div class="card-text">
+        <strong>ECDSA signatures</strong> (secp256k1)<br>
+        <strong>Schnorr signatures</strong> (BIP-340)<br>
+        <strong>Exposed public keys</strong> (P2PK, reused P2PKH/P2WPKH)<br>
+        Any UTXO where the public key is known
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--gn)">SAFE</div>
+      <div class="card-text">
+        <strong>SHA-256</strong> (Grover only halves security: 256 &rarr; 128-bit)<br>
+        <strong>RIPEMD-160</strong> (hash-locked addresses)<br>
+        <strong>HASH160-protected UTXOs</strong> (pubkey not yet revealed)<br>
+        Mining proof-of-work
+      </div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="val" style="color:var(--rd)">~4M</div>
+      <div class="lbl">BTC IN EXPOSED UTXOS</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--pu)">~20%</div>
+      <div class="lbl">OF SUPPLY VULNERABLE</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--or)">~1.1M</div>
+      <div class="lbl">SATOSHI'S COINS (P2PK)</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">TWO ATTACK TYPES</div>
+    <div class="card-text"><strong>Long-exposure attack:</strong> Derive keys from already-exposed public keys (P2PK outputs, address reuse). Attacker has unlimited time. <strong>Short-exposure attack:</strong> Extract key from a broadcast transaction's witness <em>before it confirms</em>. Requires extreme speed -- minutes, not days.</div>
+  </div>
+</div>
+
+<!-- ====== SLIDE 2: BIP-360 P2MR ====== -->
+<div class="slide" data-name="BIP-360: P2MR">
+  <h2 class="slide-title">BIP-360: Pay to Merkle Root</h2>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--pu)">THE EVOLUTION</div>
+    <div class="card-text">BIP-360 went through three name changes reflecting its expanding scope:<br><br>
+      <code>P2QRH</code> Pay-to-Quantum-Resistant-Hash -- original, narrowly focused on post-quantum<br>
+      <code>P2TSH</code> Pay-to-Tapscript-Hash -- broadened to general script commitments<br>
+      <code>P2MR</code> <strong>Pay-to-Merkle-Root</strong> -- final form, emphasizing the core mechanism
+    </div>
+  </div>
+
+  <div class="merkle-diagram">
+    <div class="node">MERKLE ROOT</div><br>
+    <span class="arrow">&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</span><br>
+    <div class="node-gn">BRANCH</div>&nbsp;&nbsp;&nbsp;&nbsp;<div class="node-gn">BRANCH</div><br>
+    <span class="arrow">&darr;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&darr;</span><br>
+    <div class="node-bl">LEAF: SCRIPT A</div>&nbsp;<div class="node-or">LEAF: SCRIPT B</div>&nbsp;<div class="node-bl">LEAF: SCRIPT C</div>&nbsp;<div class="node-or">LEAF: SCRIPT D</div><br>
+    <div style="margin-top:8px;color:var(--txD);font-size:12px">Each leaf is a tapscript spending condition (currently Schnorr; PQ algorithms via future BIPs)</div>
+  </div>
+
+  <div class="cols">
+    <div class="pu-box" style="margin-bottom:0">
+      <div class="pu-label">HOW IT WORKS</div>
+      <div class="card-text">Outputs commit to a <strong>Merkle root</strong> of a script tree (SegWit v2, <code>bc1z</code> addresses). Structurally identical to Taproot's script tree, but with <strong>no key-path spend</strong>. Only the spent leaf script, its Merkle proof, and a compact control block are revealed on-chain.</div>
+    </div>
+    <div class="info-box" style="margin-bottom:0">
+      <div class="info-label">VS TAPROOT</div>
+      <div class="card-text">Taproot uses a <strong>key-path + script-path</strong> model. P2MR has <strong>no key-path spending</strong> -- all spending goes through script leaves. This removes the exposed public key from the output, making it quantum-safe by default.</div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="gn-box">
+    <div class="gn-label">SCOPE &amp; FUTURE PQ INTEGRATION</div>
+    <div class="card-text">BIP-360 defines <strong>only the output type</strong> -- it does not introduce any new opcodes or PQ signature algorithms. Leaf scripts currently use existing tapscript opcodes (<code>OP_CHECKSIG</code> with Schnorr). Future companion BIPs can add PQ signature opcodes via the <strong><code>OP_SUCCESSx</code></strong> upgrade path already built into tapscript, without changing the P2MR output structure.</div>
+  </div>
+</div>
+
+<!-- ====== SLIDE 3: Algorithmic Agility ====== -->
+<div class="slide" data-name="Algorithmic Agility">
+  <h2 class="slide-title">Algorithmic Agility Framework</h2>
+
+  <div class="card">
+    <div class="card-label" style="color:var(--cy)">ETHAN HEILMAN'S PROPOSAL (FEB 2026)</div>
+    <div class="card-text">Quoting <strong>RFC 7696</strong>: <em>"Protocol designers need to assume that advances in computing power will eventually make any algorithm obsolete."</em><br><br>Heilman's goal: <strong>Bitcoin should enable self-custody for a human lifetime (~75 years)</strong>. Someone should be able to bury an HD seed in a coffee can and dig it up in 75 years -- even if Schnorr has been broken.</div>
+  </div>
+
+  <div class="pu-box">
+    <div class="pu-label">THE DSA1 / DSA2 DESIGN</div>
+    <div class="card-text" style="font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8">
+      <strong style="color:var(--gn)">Leaf 1 (DSA1):</strong> &lt;SCHNORR_PUBKEY&gt; CHECKSIG_DSA1 <span style="color:var(--txD)">&mdash; everyday signatures</span><br>
+      <strong style="color:var(--bl)">Leaf 2 (DSA2):</strong> &lt;SLH_DSA_PUBKEY&gt; CHECKSIG_DSA2 <span style="color:var(--txD)">&mdash; emergency backup only</span><br><br>
+      <span style="color:var(--txM);font-family:'DM Sans',sans-serif">User normally spends via <strong style="color:var(--tx)">Leaf 1</strong> (Schnorr &mdash; fast, cheap, ~64 bytes).<br>
+      If Schnorr breaks, user switches to <strong style="color:var(--tx)">Leaf 2</strong> (SLH-DSA) to migrate funds.<br>
+      Attacker <strong style="color:var(--tx)">cannot learn the SLH-DSA pubkey</strong> &mdash; it's hidden in the Merkle tree.</span>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--gn)">WHY SLH-DSA AS BACKUP?</div>
+      <div class="card-text">
+        <strong>Hash-based security</strong> -- relies only on hash functions, "most likely secure long term"<br><br>
+        <strong>Different assumptions</strong> -- ECDLP (Schnorr) and hash preimage (SLH-DSA) unlikely to break simultaneously<br><br>
+        <strong>NIST standard</strong> (FIPS 205) -- ecosystem of HSMs, hardware acceleration, library support
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--yl)">TRADE-OFFS</div>
+      <div class="card-text">
+        <strong>~10 vbytes extra</strong> -- P2MR is ~37 witness bytes larger than P2TR (modest cost)<br><br>
+        <strong>SLH-DSA sigs are ~8 KB</strong> -- expensive, but only used for emergency migrations<br><br>
+        <strong>No key-path spending</strong> -- all P2MR spends go through script leaves
+      </div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="info-box">
+    <div class="info-label">THE COFFEE-CAN SCENARIO</div>
+    <div class="card-text">Even if DSA3 (a hasty replacement for Schnorr) is <em>also</em> broken, the buried seed is still safe &mdash; because <strong>DSA2 (SLH-DSA) is unbroken</strong>. When the seed is dug up, DSA2 can migrate funds to DSA3+DSA2. This buys time for non-hash-based PQ algorithms (ML-DSA, FALCON) to mature before being deployed as a new everyday algorithm.</div>
+  </div>
+</div>
+
+<!-- ====== SLIDE 4: The Quantum Freeze ====== -->
+<div class="slide" data-name="Quantum Freeze">
+  <h2 class="slide-title">Mitigating the Quantum Freeze</h2>
+
+  <div class="gn-box">
+    <div class="gn-label">BITMEX RESEARCH: AN OPTIMISTIC OUTLOOK</div>
+    <div class="card-text">BitMex Research (Feb 2026) analyzed recovery methods for coins frozen by a quantum threat. Their key finding: <strong>"almost every quasi frozen coin"</strong> can be recovered via four proposed methods. The article focuses not on the damage of a freeze, but on <strong>how to get coins back</strong>.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="val" style="color:var(--pu)">~20M</div>
+      <div class="lbl">BTC NEEDING RECOVERY</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--rd)">1.7M</div>
+      <div class="lbl">BTC IN P2PK (8.6%)</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--gn)">~18M</div>
+      <div class="lbl">BTC WITH 3+ RECOVERY PATHS</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--bl)">1. COMMITMENT RECOVERY</div>
+      <div class="card-text">
+        Two-tx process: publish a <strong>hash commitment</strong> in <code>OP_RETURN</code>, wait 100 blocks, then reveal the private key. Quantum safe because private key is proven before any signature hits the chain. <strong>Single use</strong> &mdash; the private key is exposed on-chain.
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--gn)">2. SEED PHRASE COMMITMENT</div>
+      <div class="card-text">
+        Same two-tx structure, but commits the <strong>BIP-39 seed phrase</strong> instead. SHA-512 derivation is quantum safe. Works even with <strong>address reuse and Taproot</strong> outputs. Trade-off: the seed phrase is exposed on-chain after reveal.
+      </div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--yl)">3. PRE-QDAY COMMITMENT</div>
+      <div class="card-text">
+        For <strong>P2PK outputs</strong> (1.7M BTC). Must happen before QDay. BitMex notes it's <strong>"pretty pointless"</strong> since funds could just be swept to safe addresses instead &mdash; but it enables a <strong>"plausible deniability"</strong> scenario (e.g. Satoshi). Can use a Merkle root to cover thousands of outputs in one tx.
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--pu)">4. ZKP SEED PHRASE (STARK)</div>
+      <div class="card-text">
+        The most innovative method: a <strong>zero-knowledge proof</strong> that proves seed knowledge <strong>without revealing it</strong>. Single tx, no pre-QDay action needed, <strong>reusable</strong>, and fully preserves privacy. Limitation: not everyone uses BIP-39 seed phrases.
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">WHAT REMAINS UNRECOVERABLE?</div>
+    <div class="card-text">"Only in scenarios when both a seed phrase wasn't used <strong>and</strong> the public key was exposed when the coins were received, would the coins be potentially totally unrecoverable." &mdash; P2PK outputs without seed phrases and without pre-QDay commitments are the only truly lost case.</div>
+  </div>
+</div>
+
+<!-- ====== SLIDE 5: Where We Stand ====== -->
+<div class="slide" data-name="Where We Stand">
+  <h2 class="slide-title">Where We Stand</h2>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--gn);box-shadow:0 0 8px var(--gn)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--gn)">2024</div><div class="tl-text"><strong style="color:var(--tx)">NIST finalizes ML-DSA, ML-KEM, SLH-DSA</strong> -- first round of post-quantum standards published (FIPS 203, 204, 205). BIP-360 development begins as P2QRH.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--bl);box-shadow:0 0 8px var(--bl)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--bl)">2025</div><div class="tl-text"><strong style="color:var(--tx)">BIP-360 evolves through P2QRH &rarr; P2TSH &rarr; P2MR</strong>. Heilman proposes algorithmic agility framework on bitcoin-dev. Active discussion of quantum preparedness strategies.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--pu);box-shadow:0 0 8px var(--pu)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--pu)">2026 (Now)</div><div class="tl-text"><strong style="color:var(--tx)">BIP-360 PR #1670 finalized</strong>. Community debate on timeline urgency, migration strategies, and whether to pursue a soft fork activation path. No consensus on activation yet.</div></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot-col"><div class="tl-dot" style="background:var(--yl);box-shadow:0 0 8px var(--yl)"></div><div class="tl-line"></div></div>
+      <div class="tl-body"><div class="tl-year" style="color:var(--yl)">2030s?</div><div class="tl-text"><strong style="color:var(--tx)">Cryptographically Relevant Quantum Computer (CRQC)</strong> -- most estimates place a Shor-capable machine at 2030-2040, though pessimistic estimates say as early as late 2020s. Uncertainty is the core problem.</div></div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="pu-box">
+    <div class="pu-label">KEY TAKEAWAY</div>
+    <div class="card-text">Bitcoin's quantum defense strategy is <strong>defense in depth</strong>: BIP-360 provides the output format, algorithmic agility provides the cryptographic flexibility, and freeze planning provides the emergency backstop. <strong>The biggest risk isn't that quantum computers arrive -- it's that we aren't ready when they do.</strong></div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/pull/1670" target="_blank">BIP-360 PR #1670 &rarr;</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" target="_blank">BIP-360 Full Text &rarr;</a>
+    <a href="https://groups.google.com/g/bitcoindev/c/7jkVS1K9WLo" target="_blank">Heilman: Algorithmic Agility Discussion &rarr;</a>
+    <a href="https://www.bitmex.com/blog/Mitigating-The-Impact-Of-The-Quantum-Freeze" target="_blank">BitMex: Mitigating the Quantum Freeze &rarr;</a>
+    <a href="https://datatracker.ietf.org/doc/html/rfc7696" target="_blank">RFC 7696: Cryptographic Algorithm Agility &rarr;</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});
+render();
+</script>
+</body>
+</html>

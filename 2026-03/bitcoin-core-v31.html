@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitcoin Core v31 Feature Freeze — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060a14;
+    --sf: #0d1220;
+    --sf2: #131a2b;
+    --bd: #1c2744;
+    --bdh: #2a3d5e;
+    --tx: #e2e8f0;
+    --txM: #94a3b8;
+    --txD: #506078;
+    --or: #f7931a;
+    --orG: rgba(247,147,26,.15);
+    --bl: #3b82f6;
+    --blD: rgba(59,130,246,.10);
+    --blG: rgba(59,130,246,.25);
+    --blB: #2563eb;
+    --gn: #22c55e;
+    --gnD: rgba(34,197,94,.10);
+    --gnG: rgba(34,197,94,.25);
+    --cy: #06b6d4;
+    --cyD: rgba(6,182,212,.10);
+    --cyG: rgba(6,182,212,.25);
+    --pu: #a855f7;
+    --puD: rgba(168,85,247,.10);
+    --puG: rgba(168,85,247,.25);
+    --pk: #ec4899;
+    --pkD: rgba(236,72,153,.10);
+    --pkG: rgba(236,72,153,.25);
+    --yl: #eab308;
+    --ylD: rgba(234,179,8,.10);
+    --ylG: rgba(234,179,8,.25);
+    --tl: #14b8a6;
+    --tlD: rgba(20,184,166,.10);
+    --tlG: rgba(20,184,166,.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--tx);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--blD) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .back-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--txD);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .back-link:hover { color: var(--txM); }
+
+  .top-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--bd);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--bl);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .top-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--bl);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(26px, 4.5vw, 40px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 .version {
+    background: linear-gradient(135deg, var(--bl) 0%, #60a5fa 50%, var(--bl) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--txM);
+    margin-top: 14px;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+    position: relative;
+    z-index: 1;
+  }
+
+  .subtitle .local {
+    color: var(--or);
+    font-weight: 600;
+  }
+
+  /* Release stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--bl);
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Value map */
+  .value-map {
+    background: var(--sf);
+    border: 1px solid var(--bd);
+    border-radius: 14px;
+    padding: 24px 28px 20px;
+    margin-bottom: 24px;
+  }
+
+  .value-map-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--txD);
+    margin: 0 0 16px 0;
+  }
+
+  .value-map-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .value-map-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .vm-feature {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: 160px;
+  }
+
+  .vm-arrow {
+    color: var(--txD);
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .vm-value {
+    color: var(--txM);
+  }
+
+  .vm-source {
+    font-size: 10px;
+    color: var(--txD);
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .vm-source a {
+    color: var(--txD);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .vm-source a:hover {
+    color: var(--tx);
+  }
+
+  /* Feature cards */
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .feature {
+    border: 1px solid var(--bd);
+    border-radius: 14px;
+    background: var(--sf);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .feature:hover {
+    border-color: var(--bdh);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  }
+
+  .feature-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .feature-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+
+  .feature-title-block {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .feature-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-sub {
+    font-size: 13px;
+    color: var(--txM);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .feature-toggle {
+    font-size: 16px;
+    color: var(--txD);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .feature.open .feature-toggle {
+    transform: rotate(180deg);
+  }
+
+  .feature-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature.open .feature-body {
+    max-height: 2400px;
+  }
+
+  .feature-content {
+    padding: 0 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .feature-content .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--bd) 30%, var(--bd) 70%, transparent 100%);
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--txM);
+  }
+
+  .feature-desc strong {
+    color: var(--tx);
+    font-weight: 600;
+  }
+
+  .feature-desc code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--sf2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--bl);
+  }
+
+  /* Cluster mempool highlight */
+  .feature--cluster {
+    border: 2px solid var(--bl);
+    box-shadow: 0 0 40px var(--blD), inset 0 0 60px rgba(59,130,246,0.02);
+    overflow: visible;
+  }
+
+  .feature--cluster:hover {
+    box-shadow: 0 0 60px var(--blG), inset 0 0 60px rgba(59,130,246,0.03);
+  }
+
+  .cluster-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--bl);
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  /* Color coding per feature */
+  .feature--cluster .feature-icon { background: var(--blD); color: var(--bl); }
+  .feature--asmap .feature-icon { background: var(--gnD); color: var(--gn); }
+  .feature--private .feature-icon { background: var(--cyD); color: var(--cy); }
+  .feature--txindex .feature-icon { background: var(--puD); color: var(--pu); }
+  .feature--ipc .feature-icon { background: var(--ylD); color: var(--yl); }
+  .feature--kernel .feature-icon { background: var(--pkD); color: var(--pk); }
+
+  .feature--asmap { border-left: 3px solid var(--gn); }
+  .feature--private { border-left: 3px solid var(--cy); }
+  .feature--txindex { border-left: 3px solid var(--pu); }
+  .feature--ipc { border-left: 3px solid var(--yl); }
+  .feature--kernel { border-left: 3px solid var(--pk); }
+
+  /* PR chips */
+  .pr-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pr-chip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--sf2);
+    border: 1px solid var(--bd);
+    transition: border-color 0.2s;
+  }
+
+  .pr-chip:hover {
+    border-color: var(--bdh);
+  }
+
+  .pr-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .pr-chip--blue .pr-num { background: var(--blD); color: var(--bl); }
+  .pr-chip--green .pr-num { background: var(--gnD); color: var(--gn); }
+  .pr-chip--cyan .pr-num { background: var(--cyD); color: var(--cy); }
+  .pr-chip--purple .pr-num { background: var(--puD); color: var(--pu); }
+  .pr-chip--yellow .pr-num { background: var(--ylD); color: var(--yl); }
+  .pr-chip--pink .pr-num { background: var(--pkD); color: var(--pk); }
+
+  .pr-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pr-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--tx);
+    line-height: 1.4;
+  }
+
+  .pr-desc {
+    font-size: 12px;
+    color: var(--txM);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .pr-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    text-decoration: none;
+    margin-top: 4px;
+    display: inline-block;
+  }
+
+  .pr-link:hover { color: var(--bl); }
+
+  /* Diagram box */
+  .diagram-box {
+    background: var(--sf2);
+    border: 1px solid var(--bd);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .diagram-box h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+
+  /* Chunk visualization */
+  .chunk-viz {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+
+  .chunk-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .chunk-bar {
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    transition: all 0.3s;
+  }
+
+  .chunk-label {
+    font-size: 10px;
+    color: var(--txD);
+    width: 80px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .flow-step {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .flow-arrow {
+    font-size: 18px;
+    color: var(--txD);
+    padding: 0 6px;
+  }
+
+  /* Info grid */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .info-card {
+    padding: 14px 16px;
+    background: var(--sf2);
+    border: 1px solid var(--bd);
+    border-radius: 10px;
+  }
+
+  .info-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .info-card .value {
+    font-size: 13px;
+    color: var(--txM);
+    line-height: 1.5;
+  }
+
+  .info-card .value strong {
+    color: var(--tx);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--bd);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -21px;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--bl);
+    background: var(--bg);
+  }
+
+  .tl-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--txD);
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .tl-text {
+    font-size: 13px;
+    color: var(--txM);
+    line-height: 1.5;
+  }
+
+  .tl-text strong { color: var(--tx); }
+
+  /* Insight box */
+  .insight-box {
+    margin-top: 40px;
+    padding: 24px 28px;
+    border: 1px solid var(--bd);
+    border-left: 3px solid var(--or);
+    border-radius: 12px;
+    background: var(--sf);
+  }
+
+  .insight-box h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--or);
+    margin-bottom: 10px;
+  }
+
+  .insight-box p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--txM);
+  }
+
+  .insight-box p strong { color: var(--tx); }
+
+  /* WA badge */
+  .wa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--orG);
+    color: var(--or);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--txD);
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+  }
+
+  .footer a {
+    color: var(--bl);
+    text-decoration: none;
+  }
+
+  .footer a:hover { text-decoration: underline; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .feature-header { padding: 16px 18px; }
+    .feature-content { padding: 0 18px 18px; }
+    .info-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 20px; }
+    .flow { flex-direction: column; gap: 8px; }
+    .flow-arrow { transform: rotate(90deg); }
+    .pr-chip { flex-direction: column; gap: 6px; }
+    .value-map-row { flex-wrap: wrap; }
+    .vm-feature { min-width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<div class="container">
+
+  <a class="back-link" href="/2026-03/">&larr; Topics</a>
+
+  <header>
+    <div class="top-badge"><span></span>Perth BitDevs &mdash; March 2026</div>
+    <h1>Bitcoin Core <span class="version">v31</span><br>Feature Freeze</h1>
+    <p class="subtitle">
+      From fanquake (Michael Ford), who is originally from WA: "We've past feature freeze for Bitcoin Core v31, which should be released in early April." The headline feature: <strong>Cluster Mempool</strong> &mdash; years in the making and now merged.
+    </p>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value">5</div>
+        <div class="stat-label">Headline Features</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">v31</div>
+        <div class="stat-label">Next Release</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">Apr '26</div>
+        <div class="stat-label">Expected Release</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- VALUE MAP -->
+  <div class="value-map">
+    <h3 class="value-map-title">What This Means for Users</h3>
+    <div class="value-map-grid">
+      <div class="value-map-row">
+        <span class="vm-feature" style="color:var(--bl)">Cluster Mempool</span>
+        <span class="vm-arrow">&rarr;</span>
+        <span class="vm-value">Improved block template creation, tx eviction, and mempool behavior</span>
+      </div>
+      <div class="value-map-row">
+        <span class="vm-feature" style="color:var(--gn)">Embedded ASMap</span>
+        <span class="vm-arrow">&rarr;</span>
+        <span class="vm-value">Protections against eclipse attacks, out of the box</span>
+      </div>
+      <div class="value-map-row">
+        <span class="vm-feature" style="color:var(--cy)">Private Broadcast</span>
+        <span class="vm-arrow">&rarr;</span>
+        <span class="vm-value">Improvements to transacting privately</span>
+      </div>
+      <div class="value-map-row">
+        <span class="vm-feature" style="color:var(--yl)">IPC Mining Interface</span>
+        <span class="vm-arrow">&rarr;</span>
+        <span class="vm-value">Better interfacing for Stratum V2 mining</span>
+      </div>
+      <div class="value-map-row">
+        <span class="vm-feature" style="color:var(--pk)">libbitcoinkernel</span>
+        <span class="vm-arrow">&rarr;</span>
+        <span class="vm-value">Further modularization of the consensus engine library</span>
+      </div>
+    </div>
+    <div class="vm-source">Framing via <a href="https://x.com/bitschmidty/status/2026270728698393081" target="_blank">@bitschmidty</a></div>
+  </div>
+
+  <!-- FEATURE CARDS -->
+  <div class="features">
+
+    <!-- 1. CLUSTER MEMPOOL (highlighted, open by default) -->
+    <div class="feature feature--cluster open" onclick="this.classList.toggle('open')">
+      <span class="cluster-badge">Headline Feature</span>
+      <div class="feature-header">
+        <span class="feature-icon">CM</span>
+        <div class="feature-title-block">
+          <div class="feature-title">Cluster Mempool</div>
+          <div class="feature-sub">Complete redesign of mempool data structures using transaction clusters and optimal linearization</div>
+        </div>
+        <span class="feature-toggle">&#9662;</span>
+      </div>
+      <div class="feature-body">
+        <div class="feature-content">
+          <div class="feature-desc">
+            <strong>Cluster Mempool is the most significant mempool overhaul in Bitcoin Core's history.</strong> The existing mempool tracks individual transactions with ancestor/descendant limits, which leads to suboptimal fee-rate ordering, makes RBF (Replace-By-Fee) reasoning fragile, and limits the ability to construct optimal block templates.
+          </div>
+
+          <div class="feature-desc">
+            The new approach organizes the mempool into <strong>clusters</strong> &mdash; connected components of transactions related by parent-child dependencies. Each cluster is then <strong>linearized</strong>: its transactions are ordered so that parents always come before children, and the resulting sequence is split into <strong>chunks</strong> of decreasing feerate. This chunked linearization allows the node to quickly identify the most profitable set of transactions for block building, reason precisely about eviction, and handle RBF correctly.
+          </div>
+
+          <div class="diagram-box">
+            <h4 style="color:var(--bl)">How Chunks Work</h4>
+            <div class="chunk-viz">
+              <div class="chunk-row">
+                <span class="chunk-label">Chunk 1</span>
+                <div class="chunk-bar" style="width:70%;background:linear-gradient(90deg,var(--bl),#60a5fa)">50 sat/vB</div>
+              </div>
+              <div class="chunk-row">
+                <span class="chunk-label">Chunk 2</span>
+                <div class="chunk-bar" style="width:50%;background:linear-gradient(90deg,#2563eb,var(--bl))">30 sat/vB</div>
+              </div>
+              <div class="chunk-row">
+                <span class="chunk-label">Chunk 3</span>
+                <div class="chunk-bar" style="width:30%;background:linear-gradient(90deg,#1d4ed8,#2563eb)">12 sat/vB</div>
+              </div>
+              <div style="font-size:12px;color:var(--txD);margin-top:8px;text-align:center">
+                Chunks are topologically-valid groups, sorted by decreasing feerate.<br>
+                Block building simply takes chunks from the top until the block is full.
+              </div>
+            </div>
+          </div>
+
+          <a href="cluster-mempool-example.html" style="display:block;text-align:center;margin:20px 0 24px;padding:14px 28px;background:var(--blD);border:1px solid var(--bl);border-radius:10px;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;text-decoration:none;letter-spacing:0.03em;transition:all 0.2s" onmouseover="this.style.background='var(--blG)';this.style.color='#fff'" onmouseout="this.style.background='var(--blD)';this.style.color='var(--bl)'">Interactive Worked Example: One Cluster, Three Approaches &rarr;</a>
+
+          <div class="diagram-box">
+            <h4 style="color:var(--bl)">Spanning-Forest Linearization (SFL)</h4>
+            <div class="feature-desc" style="margin-bottom:14px">
+              The algorithm that makes cluster mempool practical. SFL computes a near-optimal linearization by constructing a <strong>spanning forest</strong> of the transaction dependency graph. Instead of trying every possible ordering (exponential), SFL exploits the tree structure to find high-feerate topological orderings efficiently.
+            </div>
+            <div class="flow">
+              <div class="flow-step" style="background:var(--blD);color:var(--bl)">Cluster<br>Graph</div>
+              <span class="flow-arrow">&rarr;</span>
+              <div class="flow-step" style="background:var(--blD);color:var(--bl)">Spanning<br>Forest</div>
+              <span class="flow-arrow">&rarr;</span>
+              <div class="flow-step" style="background:var(--blD);color:var(--bl)">Optimal<br>Ordering</div>
+              <span class="flow-arrow">&rarr;</span>
+              <div class="flow-step" style="background:var(--blD);color:var(--bl)">Feerate<br>Chunks</div>
+            </div>
+            <div style="font-size:13px;color:var(--txD);margin-top:12px;text-align:center;font-family:'JetBrains Mono',monospace">
+              Developed by sipa (Pieter Wuille) &mdash; one of Bitcoin Core's most prolific contributors
+            </div>
+          </div>
+
+          <div class="pr-list">
+            <div class="pr-chip pr-chip--blue">
+              <span class="pr-num">#32545</span>
+              <div class="pr-info">
+                <div class="pr-title">Replace Cluster Linearization Algorithm with SFL</div>
+                <div class="pr-desc">Implements spanning-forest linearization, replacing the previous LIMO algorithm. SFL produces better linearizations and is conceptually simpler, building on tree-structure properties of dependency graphs.</div>
+                <a class="pr-link" href="https://github.com/bitcoin/bitcoin/pull/32545" target="_blank">github.com/bitcoin/bitcoin/pull/32545</a>
+              </div>
+            </div>
+            <div class="pr-chip pr-chip--blue">
+              <span class="pr-num">#34259</span>
+              <div class="pr-info">
+                <div class="pr-title">Find Minimal Chunks in SFL</div>
+                <div class="pr-desc">Enables splitting chunks into smaller equal-feerate parts, giving the block-building algorithm more flexibility for bin-packing optimization. Without this, some wasted block space is inevitable when large chunks don't quite fit.</div>
+                <a class="pr-link" href="https://github.com/bitcoin/bitcoin/pull/34259" target="_blank">github.com/bitcoin/bitcoin/pull/34259</a>
+              </div>
+            </div>
+            <div class="pr-chip pr-chip--blue">
+              <span class="pr-num">#34023</span>
+              <div class="pr-info">
+                <div class="pr-title">Optimized SFL Cluster Linearization</div>
+                <div class="pr-desc">Significant performance improvement to the SFL implementation, making it practical for the real-time demands of mempool processing and block template construction.</div>
+                <a class="pr-link" href="https://github.com/bitcoin/bitcoin/pull/34023" target="_blank">github.com/bitcoin/bitcoin/pull/34023</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-box">
+            <h4 style="color:var(--bl)">Why It Took Years</h4>
+            <div class="timeline">
+              <div class="tl-item">
+                <div class="tl-date">2021-2022</div>
+                <div class="tl-text">Initial research into <strong>cluster-based mempool organization</strong> by sipa and others. Core insight: grouping related transactions and linearizing them solves multiple longstanding problems simultaneously.</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-date">2023</div>
+                <div class="tl-text">Formal specification of <strong>cluster linearization</strong> algorithms. Extensive discussion on Delving Bitcoin. The LIMO algorithm was the first candidate.</div>
+              </div>
+              <div class="tl-item">
+                <div class="tl-date">2024</div>
+                <div class="tl-text">Groundwork PRs merged: cluster data structures, linearization framework. <strong>Spanning-Forest Linearization (SFL)</strong> proposed as a superior replacement for LIMO.</div>
+              </div>
+              <div class="tl-item" style="margin-bottom:0">
+                <div class="tl-date">2025-2026</div>
+                <div class="tl-text"><strong>Merged for v31.</strong> SFL algorithm, minimal chunk finding, and optimized implementation all land. The complete cluster mempool is now part of Bitcoin Core.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="label" style="color:var(--bl)">What It Fixes</div>
+              <div class="value"><strong>Ancestor/descendant limits</strong> that artificially constrained mempool packages. CPFP fee-bumping now works naturally across whole clusters.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--bl)">Block Building</div>
+              <div class="value"><strong>Near-optimal block templates</strong> with correct feerate ordering. Miners extract more fees, users get fairer fee markets.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--bl)">RBF Improvement</div>
+              <div class="value">Replacement transactions can now be evaluated against the <strong>entire cluster's linearization</strong>, not just direct ancestors.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--bl)">Eviction Logic</div>
+              <div class="value">When the mempool is full, <strong>lowest-feerate chunks</strong> are evicted &mdash; a principled approach replacing the old ancestor-score heuristic.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. EMBEDDED ASMAP -->
+    <div class="feature feature--asmap" onclick="this.classList.toggle('open')">
+      <div class="feature-header">
+        <span class="feature-icon">AS</span>
+        <div class="feature-title-block">
+          <div class="feature-title">Embedded ASMap</div>
+          <div class="feature-sub">Groundwork toward shipping AS (Autonomous System) mappings in the binary for better peer diversity</div>
+        </div>
+        <span class="feature-toggle">&#9662;</span>
+      </div>
+      <div class="feature-body">
+        <div class="feature-content">
+          <div class="feature-desc">
+            <strong>ASMap</strong> is a mapping from IP address ranges to Autonomous System Numbers (ASNs). An Autonomous System is a network operated by a single entity &mdash; think ISPs, cloud providers, hosting companies. Bitcoin Core uses this data to ensure it connects to peers across <strong>diverse</strong> network operators, making <strong>eclipse attacks</strong> (where an attacker surrounds your node with their own peers) significantly harder.
+          </div>
+          <div class="feature-desc">
+            Previously, users had to manually download and configure ASMap files. v31 includes <strong>groundwork toward embedding a curated ASMap directly in the Bitcoin Core binary</strong> (PRs #33770, #28792), so that in a future release every node will benefit from AS-aware peer selection without any extra setup.
+          </div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="label" style="color:var(--gn)">Eclipse Attack Defense</div>
+              <div class="value">Ensures your node connects to peers across <strong>multiple ASNs</strong>, not just different IPs that might all be on the same network.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--gn)">Zero Configuration</div>
+              <div class="value">Previously required manual ASMap download and <code style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">-asmap=</code> flag. Now works by default for all users.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. PRIVATE BROADCAST -->
+    <div class="feature feature--private" onclick="this.classList.toggle('open')">
+      <div class="feature-header">
+        <span class="feature-icon">PB</span>
+        <div class="feature-title-block">
+          <div class="feature-title">Private Transaction Broadcast</div>
+          <div class="feature-sub">Broadcast your own transactions via short-lived Tor/I2P connections to prevent IP linkage</div>
+        </div>
+        <span class="feature-toggle">&#9662;</span>
+      </div>
+      <div class="feature-body">
+        <div class="feature-content">
+          <div class="feature-desc">
+            <strong>Continuing the work we discussed at Perth BitDevs in February.</strong> When your node broadcasts a transaction you created, network observers can use timing analysis to link that transaction to your IP address. The fix: broadcast locally-submitted transactions only via <strong>short-lived, disposable Tor or I2P connections</strong>.
+          </div>
+          <div class="feature-desc">
+            Each transaction broadcast creates a fresh anonymous connection, sends the transaction, and tears it down immediately. No persistent channel to fingerprint. This is a 12-year-old problem (GitHub issue #3828, filed in 2014) that is finally being addressed with concrete code.
+          </div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="label" style="color:var(--cy)">How It Works</div>
+              <div class="value"><strong>Fresh Tor/I2P circuit</strong> per transaction. Connect, broadcast, disconnect. No reuse, no fingerprinting surface.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--cy)">Feb 2026 Connection</div>
+              <div class="value">We covered <strong>PR #29415</strong> in the February meetup. The v31 inclusion represents the culmination of that work.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. IPC MINING INTERFACE -->
+    <div class="feature feature--ipc" onclick="this.classList.toggle('open')">
+      <div class="feature-header">
+        <span class="feature-icon">IPC</span>
+        <div class="feature-title-block">
+          <div class="feature-title">IPC Mining Interface Improvements</div>
+          <div class="feature-sub">Better inter-process communication for the mining interface, enabling external mining software to use libbitcoinkernel</div>
+        </div>
+        <span class="feature-toggle">&#9662;</span>
+      </div>
+      <div class="feature-body">
+        <div class="feature-content">
+          <div class="feature-desc">
+            The <strong>IPC (Inter-Process Communication) mining interface</strong> allows external processes to interact with Bitcoin Core's block template construction and validation logic. This is a key piece of the <strong>libbitcoinkernel</strong> project: as consensus-critical code gets extracted into a standalone library, the IPC layer provides a clean boundary between the kernel and the rest of the node.
+          </div>
+          <div class="feature-desc">
+            Improvements in v31 make the mining interface more robust and feature-complete, providing a path for future Stratum V2 integration (not yet implemented). External mining software can communicate with the kernel process without being tightly coupled to Bitcoin Core's internal architecture. This separation also improves security: the mining interface runs with <strong>minimal privileges</strong>, reducing attack surface.
+          </div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="label" style="color:var(--yl)">For Mining Software</div>
+              <div class="value">External mining software can request <strong>block templates</strong> and submit blocks via a stable IPC interface.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--yl)">For Kernel Separation</div>
+              <div class="value">Clean process boundary enables the <strong>kernel to run isolated</strong> from networking, wallet, and GUI code.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. BITCOIN KERNEL PROGRESS -->
+    <div class="feature feature--kernel" onclick="this.classList.toggle('open')">
+      <div class="feature-header">
+        <span class="feature-icon">LBK</span>
+        <div class="feature-title-block">
+          <div class="feature-title">More Bitcoin Kernel Progress</div>
+          <div class="feature-sub">Continued extraction of consensus logic into libbitcoinkernel &mdash; a standalone, reusable consensus engine</div>
+        </div>
+        <span class="feature-toggle">&#9662;</span>
+      </div>
+      <div class="feature-body">
+        <div class="feature-content">
+          <div class="feature-desc">
+            <strong>libbitcoinkernel</strong> is an ongoing, multi-year effort to extract Bitcoin Core's consensus-critical code into a standalone C++ library. The goal: any software can validate Bitcoin blocks and transactions by linking against this library, without needing to embed all of Bitcoin Core. This benefits alternative node implementations, testing infrastructure, and research projects.
+          </div>
+          <div class="feature-desc">
+            v31 continues this work with further decoupling of consensus code from Bitcoin Core's networking, wallet, and RPC layers. <strong>TheCharlatan</strong> (Sebastian Kung, added as Core maintainer in January 2026) has been a key driver of this effort. The kernel library is becoming increasingly usable as a standalone component.
+          </div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="label" style="color:var(--pk)">Why It Matters</div>
+              <div class="value">Alternative implementations can <strong>share consensus code</strong> instead of reimplementing it, reducing the risk of consensus bugs.</div>
+            </div>
+            <div class="info-card">
+              <div class="label" style="color:var(--pk)">Who's Driving It</div>
+              <div class="value"><strong>TheCharlatan</strong> (new Core maintainer) and others. Funded by Spiral and MIT DCI.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /features -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      Sources: <a href="https://x.com/fanquake/status/2026006073686016084" target="_blank">fanquake tweet</a> &middot;
+      <a href="https://x.com/bitschmidty/status/2026270728698393081" target="_blank">bitschmidty thread</a> &middot;
+      <a href="https://github.com/bitcoin/bitcoin/milestone/74" target="_blank">v31 milestone</a>
+    </div>
+    <div style="margin-top:6px">
+      Cluster mempool: <a href="https://delvingbitcoin.org/t/spanning-forest-cluster-linearization/1419/1" target="_blank">SFL on Delving Bitcoin</a> &middot;
+      PRs <a href="https://github.com/bitcoin/bitcoin/pull/32545" target="_blank">#32545</a> &middot;
+      <a href="https://github.com/bitcoin/bitcoin/pull/34259" target="_blank">#34259</a> &middot;
+      <a href="https://github.com/bitcoin/bitcoin/pull/34023" target="_blank">#34023</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') window.location.href = '/2026-03/';
+});
+</script>
+</body>
+</html>

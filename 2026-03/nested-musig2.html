@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nested MuSig2 Security Proof — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:#b36a0f;--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.06);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',monospace}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.badge{padding:3px 12px;background:var(--puG);border:1px solid var(--pu);border-radius:16px;color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer}.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto}
+.si{max-width:660px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.st{font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.cl{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.ct{color:var(--txM);font-size:15px;line-height:1.6}.ct strong{color:var(--tx)}.ct code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--pu);background:var(--puD);padding:2px 6px;border-radius:4px}
+.box{border-radius:8px;padding:14px 18px;margin-bottom:12px}.box .bl{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cols{display:flex;gap:12px;margin-bottom:12px}.cols>div{flex:1}
+
+/* Tree diagram styles */
+.tree-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:24px 16px;margin-bottom:12px}
+.tree-svg{width:100%;max-width:580px;margin:0 auto;display:block}
+.tree-label{font-family:'JetBrains Mono',monospace;font-size:13px;fill:var(--txM)}
+.tree-label-bright{font-family:'JetBrains Mono',monospace;font-size:13px;fill:var(--tx);font-weight:700}
+.tree-label-accent{font-family:'JetBrains Mono',monospace;font-size:12px;fill:var(--pu);font-weight:700}
+
+/* Step indicator */
+.steps{display:flex;gap:8px;margin-bottom:16px;justify-content:center}
+.step{display:flex;align-items:center;gap:6px}
+.step-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;border:1px solid var(--bd)}
+.step-line{width:24px;height:1px;background:var(--bd)}
+.step-text{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD)}
+
+/* Comparison table */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cmp-cell{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.cmp-cell .num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:4px}
+.cmp-cell .rtitle{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.cmp-cell .rdesc{color:var(--txM);font-size:14px;line-height:1.5}
+
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer}.nav-btn:disabled{opacity:.4;cursor:default}.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols{flex-direction:column}.cmp-grid{grid-template-columns:1fr}h2.st{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">CRYPTOGRAPHY</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/" style="text-decoration:none">&larr; Topics</a>
+</div>
+
+<div class="content"><div class="si">
+
+<!-- Slide 1: MuSig2 Recap -->
+<div class="slide" data-name="MuSig2 Recap">
+  <h2 class="st">MuSig2: Multi-Signatures for Bitcoin</h2>
+  <div class="card">
+    <div class="cl" style="color:var(--pu)">WHAT IS MUSIG2?</div>
+    <div class="ct"><strong>BIP-327</strong> specifies a multi-signature protocol built on BIP-340 Schnorr signatures. It lets <strong>n parties</strong> collaboratively produce a single valid Schnorr signature for a single <strong>aggregate public key</strong> &mdash; indistinguishable from a regular single-signer signature on chain.</div>
+  </div>
+  <div class="cols">
+    <div class="card">
+      <div class="cl" style="color:var(--bl)">THE 2-ROUND PROTOCOL</div>
+      <div class="ct"><strong>Round 1:</strong> Each signer generates nonces and shares commitments.<br><br><strong>Round 2:</strong> Each signer produces a partial signature using their secret key, the aggregate nonce, and the message. Partial signatures are combined into one final Schnorr signature.</div>
+    </div>
+    <div class="card">
+      <div class="cl" style="color:var(--gn)">KEY AGGREGATION</div>
+      <div class="ct">Public keys are aggregated <strong>non-interactively</strong> &mdash; anyone can compute the aggregate key from the set of individual keys. No communication needed.<br><br>The aggregate key is a <strong>standard 32-byte x-only public key</strong>, indistinguishable from a solo key.</div>
+    </div>
+  </div>
+  <div class="box" style="background:var(--puG);border:1px solid var(--pu)">
+    <div class="bl" style="color:var(--pu)">WHY IT MATTERS</div>
+    <div class="ct">MuSig2 gives Bitcoin <strong>privacy</strong> (observers can't tell how many signers were involved), <strong>efficiency</strong> (one signature regardless of signer count), and <strong>fee savings</strong> (smaller on-chain footprint than traditional multisig). It is rapidly becoming the standard for cooperative signing in Taproot-based wallets and Lightning.</div>
+  </div>
+</div>
+
+<!-- Slide 2: The Nesting Problem -->
+<div class="slide" data-name="Nesting Problem">
+  <h2 class="st">The Nesting Problem</h2>
+  <div class="card">
+    <div class="cl" style="color:var(--yl)">THE ASSUMPTION EVERYONE MADE</div>
+    <div class="ct">Since MuSig2 aggregate keys look like ordinary public keys, people naturally proposed using a <strong>MuSig2-aggregated key as a participant</strong> in another MuSig2 session. A 3-of-3 where one "participant" is itself a 2-of-2 MuSig2 group, for example. Many protocols were designed around this assumption.</div>
+  </div>
+
+  <!-- Nested key tree SVG diagram -->
+  <div class="tree-diagram">
+    <svg class="tree-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- Top-level aggregate key -->
+      <rect x="200" y="8" width="120" height="32" rx="6" fill="#1a2332" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="260" y="28" text-anchor="middle" class="tree-label-accent">AGGREGATE KEY</text>
+
+      <!-- Lines from aggregate to participants -->
+      <line x1="230" y1="40" x2="100" y2="80" stroke="#334155" stroke-width="1"/>
+      <line x1="260" y1="40" x2="260" y2="80" stroke="#334155" stroke-width="1"/>
+      <line x1="290" y1="40" x2="420" y2="80" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" opacity=".7"/>
+
+      <!-- Participant A -->
+      <rect x="50" y="80" width="100" height="28" rx="5" fill="#1a2332" stroke="#334155"/>
+      <text x="100" y="98" text-anchor="middle" class="tree-label">Alice (solo)</text>
+
+      <!-- Participant B -->
+      <rect x="210" y="80" width="100" height="28" rx="5" fill="#1a2332" stroke="#334155"/>
+      <text x="260" y="98" text-anchor="middle" class="tree-label">Bob (solo)</text>
+
+      <!-- Participant C = nested MuSig2 (highlighted) -->
+      <rect x="365" y="80" width="110" height="28" rx="5" fill="rgba(168,85,247,.12)" stroke="#a855f7" stroke-width="1.5"/>
+      <text x="420" y="98" text-anchor="middle" class="tree-label-accent">NESTED MUSIG2</text>
+
+      <!-- Lines from nested group to sub-participants -->
+      <line x1="395" y1="108" x2="360" y2="152" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" opacity=".7"/>
+      <line x1="445" y1="108" x2="480" y2="152" stroke="#a855f7" stroke-width="1" stroke-dasharray="4,3" opacity=".7"/>
+
+      <!-- Sub-participant C1 -->
+      <rect x="310" y="152" width="100" height="28" rx="5" fill="#1a2332" stroke="#334155"/>
+      <text x="360" y="170" text-anchor="middle" class="tree-label">Carol (solo)</text>
+
+      <!-- Sub-participant C2 -->
+      <rect x="430" y="152" width="100" height="28" rx="5" fill="#1a2332" stroke="#334155"/>
+      <text x="480" y="170" text-anchor="middle" class="tree-label">Dave (solo)</text>
+
+      <!-- Annotation -->
+      <text x="260" y="210" text-anchor="middle" class="tree-label" style="font-size:12px;fill:var(--txD)">Can Carol &amp; Dave's nested aggregate key safely participate as a single "signer"?</text>
+    </svg>
+  </div>
+
+  <div class="box" style="background:var(--rdG);border:1px solid var(--rd)">
+    <div class="bl" style="color:var(--rd)">THE GAP: NO SECURITY PROOF</div>
+    <div class="ct">Despite widespread use in protocol designs, <strong>no formal security argument</strong> had ever been presented for nesting MuSig2. The original MuSig2 paper proved security when all participant keys are "honestly generated" single keys &mdash; but an aggregate MuSig2 key has a fundamentally different internal structure. Subtle attacks on nonce handling or key cancellation could potentially break the scheme in ways the original proof didn't cover.</div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--txD)">WHAT COULD GO WRONG?</div>
+    <div class="ct">Multi-signature schemes have a history of subtle attacks. <strong>Rogue key attacks</strong> (a malicious participant choosing their key to cancel others), <strong>nonce manipulation</strong> (reusing or biasing nonces to extract secret keys), and <strong>Wagner's algorithm</strong> on Schnorr blind signatures all demonstrate that "it seems like it should work" is not a substitute for a formal security reduction.</div>
+  </div>
+</div>
+
+<!-- Slide 3: NestedMuSig2 Solution -->
+<div class="slide" data-name="NestedMuSig2">
+  <h2 class="st">NestedMuSig2: The Proof</h2>
+  <div class="card">
+    <div class="cl" style="color:var(--pu)">THE PAPER</div>
+    <div class="ct"><strong>Nadav Kohen</strong> (Chaincode Labs) published the first formal security proof for nested MuSig2 as <strong>ePrint 2026/223</strong>. The scheme is called <strong>NestedMuSig2</strong> &mdash; a recursive variant enabling a <strong>tree of nested cosigners</strong> to privately generate aggregate Schnorr signatures.</div>
+  </div>
+  <div class="cmp-grid">
+    <div class="cmp-cell">
+      <div class="num" style="color:var(--pu)">PROPERTY 1</div>
+      <div class="rtitle">Recursive Trees</div>
+      <div class="rdesc">Nesting can be applied <strong>to arbitrary depth</strong>. Any leaf signer can itself be a MuSig2 group, forming a tree of cosigners.</div>
+    </div>
+    <div class="cmp-cell">
+      <div class="num" style="color:var(--bl)">PROPERTY 2</div>
+      <div class="rtitle">Privacy Preserved</div>
+      <div class="rdesc">Nested signers <strong>cannot distinguish</strong> between cosigners using further nesting and those that are not. The tree structure is invisible.</div>
+    </div>
+    <div class="cmp-cell">
+      <div class="num" style="color:var(--gn)">PROPERTY 3</div>
+      <div class="rtitle">Full Compatibility</div>
+      <div class="rdesc">NestedMuSig2 is <strong>compatible with all existing MuSig2 protocols</strong>. No changes required to verifiers or on-chain logic.</div>
+    </div>
+    <div class="cmp-cell">
+      <div class="num" style="color:var(--or)">PROPERTY 4</div>
+      <div class="rtitle">Non-Interactive KeyAgg</div>
+      <div class="rdesc">Public key aggregation remains <strong>non-interactive</strong>. The efficiency and simplicity of MuSig2 key aggregation is fully preserved.</div>
+    </div>
+  </div>
+  <div class="box" style="background:var(--puG);border:1px solid var(--pu)">
+    <div class="bl" style="color:var(--pu)">SECURITY REDUCTION TO AOMDL</div>
+    <div class="ct">The proof reduces the security of NestedMuSig2 to the <strong>Algebraic One-More Discrete Logarithm (AOMDL)</strong> assumption in the random oracle model &mdash; the same assumption underlying the original MuSig2 proof. This means NestedMuSig2 is <strong>exactly as hard to break</strong> as standard MuSig2, which is itself as hard as computing discrete logarithms on the secp256k1 curve.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Implications for Bitcoin -->
+<div class="slide" data-name="Implications">
+  <h2 class="st">What This Enables for Bitcoin</h2>
+  <div class="card">
+    <div class="cl" style="color:var(--gn)">LIGHTNING NETWORK</div>
+    <div class="ct"><strong>Channel opens with nested cosigners.</strong> A Lightning channel between two "participants" where one side is actually a <strong>federated group of custodians</strong>, a <strong>hardware wallet quorum</strong>, or a <strong>multisig treasury</strong>. The counterparty doesn't need to know or care &mdash; it looks like a normal 2-of-2 MuSig2 channel.</div>
+  </div>
+  <div class="cols">
+    <div class="card">
+      <div class="cl" style="color:var(--bl)">FEDERATED CUSTODY</div>
+      <div class="ct">Custodians can internally use MuSig2 for their own key management (e.g. a <strong>3-of-5 internal quorum</strong>) while appearing as a single signer to external protocols. Nested layers of governance become cryptographically invisible.</div>
+    </div>
+    <div class="card">
+      <div class="cl" style="color:var(--yl)">COMPLEX POLICIES</div>
+      <div class="ct">Taproot key-path spends can encode <strong>arbitrarily complex signing trees</strong> without any on-chain footprint. A corporate treasury with departments, sub-teams, and individual signers &mdash; all collapsing into one 32-byte key.</div>
+    </div>
+  </div>
+  <div class="box" style="background:var(--gnG);border:1px solid var(--gn)">
+    <div class="bl" style="color:var(--gn)">BACKWARD COMPATIBLE</div>
+    <div class="ct">Because NestedMuSig2 produces <strong>standard BIP-340 Schnorr signatures</strong> for standard aggregate public keys, it requires <strong>no consensus changes</strong>, no new opcodes, and no changes to existing MuSig2 implementations. Verifiers and the blockchain are completely unaware nesting occurred. Existing wallets, Lightning nodes, and protocols that already support MuSig2 can adopt nesting without any coordination.</div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--txD)">PAPER &amp; AUTHOR</div>
+    <div class="ct"><strong>Nadav Kohen</strong>, Chaincode Labs. <em>"NestedMuSig2"</em> &mdash; ePrint 2026/223.<br>Based on BIP-327 (MuSig2) by Jonas Nick, Tim Ruffing, and Elliott Jin, and BIP-340 (Schnorr) by Pieter Wuille, Jonas Nick, and Tim Ruffing.</div>
+  </div>
+</div>
+
+</div></div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');const names=Array.from(slides).map(s=>s.dataset.name);let cur=0;
+function render(){slides.forEach((s,i)=>s.classList.toggle('active',i===cur));document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;document.getElementById('prevBtn').disabled=cur===0;const nb=document.getElementById('nextBtn');nb.disabled=cur===slides.length-1;nb.className=cur===slides.length-1?'nav-btn':'nav-btn next'}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}function goTo(i){cur=i;render()}document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});render();
+</script>
+</body>
+</html>

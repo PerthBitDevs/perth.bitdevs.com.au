@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marmot + Sloth Visualised — Perth BitDevs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  --bg: #06080d;
+  --bg2: #0a0e16;
+  --sf: #0d1117;
+  --sf2: #151b25;
+  --bd: #1c2432;
+  --bdh: #2a3545;
+  --tx: #e2e8f0;
+  --txM: #94a3b8;
+  --txD: #506078;
+  --or: #f7931a;
+  --orG: rgba(247,147,26,.15);
+  --cy: #06b6d4;
+  --cyG: rgba(6,182,212,.12);
+  --cyD: rgba(6,182,212,.06);
+  --pu: #a855f7;
+  --puG: rgba(168,85,247,.12);
+  --puD: rgba(168,85,247,.06);
+  --gn: #22c55e;
+  --gnG: rgba(34,197,94,.12);
+  --gnD: rgba(34,197,94,.06);
+  --rd: #ef4444;
+  --rdG: rgba(239,68,68,.12);
+  --bl: #3b82f6;
+  --blG: rgba(59,130,246,.12);
+  --yl: #eab308;
+  --ylG: rgba(234,179,8,.12);
+  --pk: #ec4899;
+  --pkG: rgba(236,72,153,.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(6,182,212,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(6,182,212,0.012) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 24px 120px;
+  position: relative;
+  z-index: 1;
+}
+
+a.back { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--txD); text-decoration: none; display: inline-block; margin-bottom: 20px; }
+a.back:hover { color: var(--txM); }
+
+.hero { text-align: center; margin-bottom: 56px; position: relative; }
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 400px;
+  background: radial-gradient(circle, var(--cyD) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-badge { display: inline-flex; gap: 8px; align-items: center; padding: 5px 14px; border: 1px solid var(--bd); border-radius: 100px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--cy); margin-bottom: 16px; position: relative; z-index: 1; }
+.hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--cy); border-radius: 50%; }
+.hero h1 { font-family: 'JetBrains Mono', monospace; font-size: clamp(24px,4vw,36px); font-weight: 800; letter-spacing: -0.03em; position: relative; z-index: 1; }
+.hero h1 .hl { background: linear-gradient(135deg, var(--cy) 0%, #67e8f9 50%, var(--cy) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero p { color: var(--txM); max-width: 600px; margin: 14px auto 0; position: relative; z-index: 1; }
+
+/* Sections */
+.section { margin-bottom: 64px; }
+.section-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--bd); }
+.section-num { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--bg); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 5px; flex-shrink: 0; }
+.section-title { font-family: 'JetBrains Mono', monospace; font-size: 17px; font-weight: 700; color: #fff; }
+
+/* Canvas areas */
+.canvas {
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 16px 0;
+  position: relative;
+  overflow: hidden;
+}
+.canvas::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cy), transparent);
+  opacity: 0.3;
+}
+.canvas-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txD);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* Narration box */
+.narr {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-left: 3px solid var(--cy);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 14px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 50px;
+  transition: opacity 0.2s;
+}
+.narr strong { color: #fff; }
+.narr code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg); padding: 1px 5px; border-radius: 3px; color: var(--cy); border: 1px solid var(--bd); }
+.narr .hl { color: var(--cy); font-weight: 600; }
+.narr .gn { color: var(--gn); font-weight: 600; }
+.narr .rd { color: var(--rd); font-weight: 600; }
+.narr .pu { color: var(--pu); font-weight: 600; }
+
+/* Stepper buttons */
+.stepper { display: flex; align-items: center; gap: 6px; margin: 14px 0; flex-wrap: wrap; }
+.step-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 5px 12px;
+  border: 1px solid var(--bd);
+  background: var(--sf);
+  color: var(--txD);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.step-btn:hover { border-color: var(--bdh); color: var(--tx); }
+.step-btn.active { border-color: var(--cy); color: var(--cy); background: var(--cyG); }
+.step-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 5px 8px;
+  border: 1px solid var(--bd);
+  background: var(--sf);
+  color: var(--txD);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.step-arrow:hover { border-color: var(--cy); color: var(--cy); }
+.step-arrow:disabled { opacity: .25; cursor: default; }
+
+/* SVG common */
+svg { display: block; }
+svg text { font-family: 'JetBrains Mono', monospace; }
+
+/* Desc text */
+.desc { color: var(--txM); font-size: 14px; line-height: 1.7; margin: 10px 0 16px; }
+.desc strong { color: var(--tx); }
+.desc code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--cy); background: var(--cyD); padding: 1px 5px; border-radius: 3px; }
+
+/* Info cards */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0; }
+@media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+.info-card { background: var(--sf); border: 1px solid var(--bd); border-radius: 8px; padding: 14px 16px; }
+.info-card .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+.info-card .value { color: var(--txM); font-size: 13px; line-height: 1.5; }
+.info-card .value strong { color: var(--tx); }
+
+/* Layer diagram */
+.layers { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+.layer {
+  border: 1px solid var(--bd);
+  padding: 16px 20px;
+  text-align: center;
+  position: relative;
+}
+.layer:first-child { border-radius: 10px 10px 0 0; }
+.layer:last-child { border-radius: 0 0 10px 10px; }
+.layer .layer-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.layer .layer-desc { font-size: 12px; color: var(--txM); margin-top: 4px; }
+.layer-connector {
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txD);
+  padding: 2px 0;
+  letter-spacing: 2px;
+}
+
+/* Verdict/callout */
+.callout {
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+.callout.cy { border-color: var(--cy); background: var(--cyG); }
+.callout.gn { border-color: var(--gn); background: var(--gnG); }
+.callout.rd { border-color: var(--rd); background: var(--rdG); }
+.callout.pu { border-color: var(--pu); background: var(--puG); }
+.callout .callout-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout.cy .callout-label { color: var(--cy); }
+.callout.gn .callout-label { color: var(--gn); }
+.callout.rd .callout-label { color: var(--rd); }
+.callout.pu .callout-label { color: var(--pu); }
+.callout .callout-text { font-size: 13px; color: var(--txM); line-height: 1.6; }
+.callout .callout-text strong { color: var(--tx); }
+
+/* Epoch bar */
+.epoch-bar { display: flex; gap: 3px; margin: 12px 0; }
+.epoch-cell {
+  flex: 1;
+  padding: 8px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+/* Relay nodes */
+.relay-net { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 14px 0; }
+.relay-box {
+  width: 100px;
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.3s;
+  background: var(--sf);
+}
+.relay-box .r-name { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+.relay-box .r-status { font-family: 'JetBrains Mono', monospace; font-size: 9px; }
+.relay-box.active { border-color: var(--cy); box-shadow: 0 0 12px var(--cyD); }
+.relay-box.active .r-name { color: var(--cy); }
+.relay-box.down { border-color: var(--rd); opacity: .5; }
+.relay-box.down .r-name { color: var(--rd); }
+
+/* Message packet */
+.packet {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.pkt-layer {
+  padding: 10px 14px;
+  border: 1px solid;
+  text-align: center;
+  min-width: 80px;
+}
+.pkt-layer:first-child { border-radius: 8px 0 0 8px; }
+.pkt-layer:last-child { border-radius: 0 8px 8px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<a class="back" href="sloth-messaging.html">&larr; Sloth Slides</a>
+
+<div class="hero">
+  <div class="hero-badge">Interactive Explainer</div>
+  <h1>How <span class="hl">Marmot + Sloth</span> Work</h1>
+  <p>A technical walkthrough of MLS ratchet trees, Nostr relay transport, key rotations, epoch transitions, and the encryption layers that make decentralised group messaging possible.</p>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 1: THE ARCHITECTURE STACK -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--cy)">1</div>
+    <div class="section-title">The Architecture Stack</div>
+  </div>
+
+  <div class="desc">Sloth is a messaging client. <strong>Marmot</strong> is the protocol layer that bridges two standards: <strong>MLS (RFC 9420)</strong> for group encryption, and <strong>Nostr</strong> for decentralised transport. Here's how they stack:</div>
+
+  <div class="layers">
+    <div class="layer" style="background:var(--cyD);border-color:var(--cy)">
+      <div class="layer-name" style="color:var(--cy)">Sloth Client (UI)</div>
+      <div class="layer-desc">Mobile/desktop app. Contact management, chat interface, group creation.</div>
+    </div>
+    <div class="layer-connector">&darr; API &darr;</div>
+    <div class="layer" style="background:var(--puD);border-color:var(--pu)">
+      <div class="layer-name" style="color:var(--pu)">Marmot Protocol (SDK)</div>
+      <div class="layer-desc">MLS &harr; Nostr translation. Group management, key scheduling, relay coordination, epoch reconciliation.</div>
+    </div>
+    <div class="layer-connector">&darr; calls &darr;</div>
+    <div class="layer" style="background:var(--sf)">
+      <div class="layer-name" style="color:var(--txM)">MLS Library (OpenMLS) &nbsp;&nbsp;|&nbsp;&nbsp; Nostr Client Library &nbsp;&nbsp;|&nbsp;&nbsp; Key Store</div>
+      <div class="layer-desc">TreeKEM ratchet tree &nbsp;&middot;&nbsp; WebSocket connections to relays &nbsp;&middot;&nbsp; Encrypted local key storage</div>
+    </div>
+  </div>
+
+  <div class="callout cy">
+    <div class="callout-label">Key insight</div>
+    <div class="callout-text">MLS (RFC 9420) was designed assuming a <strong>central Delivery Service</strong> and <strong>central Authentication Service</strong>. Marmot replaces both with Nostr: <strong>relays handle delivery</strong> (with multiple relays for redundancy), and <strong>Nostr secp256k1 keypairs handle identity</strong> &mdash; no phone numbers, no emails, no PKI.</div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 2: MLS RATCHET TREE     -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--cy)">2</div>
+    <div class="section-title">The MLS Ratchet Tree (TreeKEM)</div>
+  </div>
+
+  <div class="desc">The core data structure. Each <strong>leaf</strong> is a group member's public key. <strong>Intermediate nodes</strong> hold derived key pairs. The <strong>root</strong> derives the group's shared secret. When a member updates their key, only <strong>O(log n)</strong> nodes need updating &mdash; not O(n).</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Ratchet Tree &mdash; 4-Member Group</div>
+    <svg id="tree-svg" width="100%" height="260" viewBox="0 0 720 260"></svg>
+  </div>
+
+  <div class="stepper" id="tree-stepper">
+    <button class="step-arrow" onclick="treeStep(-1)" id="tree-prev">&larr;</button>
+    <button class="step-btn active" onclick="treeGoTo(0)">Initial</button>
+    <button class="step-btn" onclick="treeGoTo(1)">Bob Updates</button>
+    <button class="step-btn" onclick="treeGoTo(2)">Add Eve</button>
+    <button class="step-btn" onclick="treeGoTo(3)">Remove Carol</button>
+    <button class="step-arrow" onclick="treeStep(1)" id="tree-next">&rarr;</button>
+  </div>
+
+  <div class="narr" id="tree-narr"></div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="label" style="color:var(--gn)">Forward Secrecy</div>
+      <div class="value">After each key update (Commit), old keys are <strong>deleted</strong>. Compromising current keys cannot decrypt past epochs.</div>
+    </div>
+    <div class="info-card">
+      <div class="label" style="color:var(--gn)">Post-Compromise Security</div>
+      <div class="value">If a member's key is stolen, the next key update by <strong>any member</strong> heals the tree. The attacker is locked out of future epochs.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 3: NOSTR RELAY NETWORK  -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--pu)">3</div>
+    <div class="section-title">Nostr Relay Network</div>
+  </div>
+
+  <div class="desc">Nostr relays are <strong>dumb pipes</strong>. They store and forward signed JSON events over WebSocket without understanding the content. Marmot publishes MLS messages as Nostr events to <strong>multiple relays</strong> simultaneously for redundancy.</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Multi-Relay Message Delivery</div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:16px">
+      <div style="text-align:center;min-width:80px">
+        <div style="width:56px;height:56px;border-radius:50%;border:2px solid var(--cy);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--cy);background:var(--cyD)">A</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cy)">Alice (sender)</div>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:200px" id="relay-area">
+        <div class="relay-net" id="relay-net"></div>
+      </div>
+
+      <div style="text-align:center;min-width:80px">
+        <div style="width:56px;height:56px;border-radius:50%;border:2px solid var(--gn);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--gn);background:var(--gnD)">B</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gn)">Bob (receiver)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stepper" id="relay-stepper">
+    <button class="step-arrow" onclick="relayStep(-1)" id="relay-prev">&larr;</button>
+    <button class="step-btn active" onclick="relayGoTo(0)">Normal</button>
+    <button class="step-btn" onclick="relayGoTo(1)">Relay Down</button>
+    <button class="step-btn" onclick="relayGoTo(2)">Gift Wrap</button>
+    <button class="step-btn" onclick="relayGoTo(3)">Censored</button>
+    <button class="step-arrow" onclick="relayStep(1)" id="relay-next">&rarr;</button>
+  </div>
+
+  <div class="narr" id="relay-narr"></div>
+
+  <div class="callout pu">
+    <div class="callout-label">Why Multi-Relay Matters</div>
+    <div class="callout-text">Signal has <strong>one set of servers</strong>. Block them and you block Signal for an entire country. Marmot publishes to <strong>multiple independent relays</strong>. An attacker must block <em>all</em> relays in the group's relay set &mdash; and any member can add a new relay at any time.</div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 4: ENCRYPTION LAYERS    -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--gn)">4</div>
+    <div class="section-title">Encryption Layers</div>
+  </div>
+
+  <div class="desc">Every Marmot message has <strong>three encryption layers</strong>. Even if one layer is broken, the others still protect the message.</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Message Encryption Stack</div>
+
+    <div class="packet" style="justify-content:center">
+      <div class="pkt-layer" style="border-color:var(--gn);background:var(--gnD);color:var(--gn)">
+        Layer 3<br><strong>TLS 1.3</strong><br><span style="font-size:11px;color:var(--txD)">Transport</span>
+      </div>
+      <div class="pkt-layer" style="border-color:var(--pu);background:var(--puD);color:var(--pu)">
+        Layer 2<br><strong>Gift Wrap</strong><br><span style="font-size:11px;color:var(--txD)">NIP-59</span>
+      </div>
+      <div class="pkt-layer" style="border-color:var(--cy);background:var(--cyD);color:var(--cy)">
+        Layer 1<br><strong>MLS Epoch Key</strong><br><span style="font-size:11px;color:var(--txD)">TreeKEM derived</span>
+      </div>
+      <div class="pkt-layer" style="border-color:var(--or);background:var(--orG);color:var(--or)">
+        Plaintext<br><strong>Message</strong><br><span style="font-size:11px;color:var(--txD)">"Hello group"</span>
+      </div>
+    </div>
+
+    <div style="margin-top:16px">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="label" style="color:var(--cy)">Layer 1: MLS Application Message</div>
+          <div class="value">Content encrypted with the group's <strong>current epoch secret</strong>, derived from the ratchet tree. Only group members holding the epoch key can decrypt.</div>
+        </div>
+        <div class="info-card">
+          <div class="label" style="color:var(--pu)">Layer 2: Nostr Gift Wrap (NIP-59)</div>
+          <div class="value">The encrypted MLS payload is wrapped in a Nostr event signed by a <strong>random ephemeral key</strong>. Relays see a random pubkey &mdash; they can't identify the sender.</div>
+        </div>
+        <div class="info-card">
+          <div class="label" style="color:var(--gn)">Layer 3: TLS 1.3</div>
+          <div class="value">The WebSocket connection to each relay uses <strong>TLS</strong>. Network observers see only encrypted traffic to a relay, not the event content.</div>
+        </div>
+        <div class="info-card">
+          <div class="label" style="color:var(--rd)">What Relays See</div>
+          <div class="value"><strong>Nothing useful.</strong> A random pubkey, encrypted blob content, and a kind number. No sender identity, no message content, no group membership information.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 5: FULL PROTOCOL FLOW   -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--or)">5</div>
+    <div class="section-title">Full Protocol Flow</div>
+  </div>
+
+  <div class="desc">Walk through a complete Marmot group lifecycle: from publishing key packages, to group creation, messaging, key rotation, and member removal. Each step advances the group's <strong>epoch</strong>.</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Marmot Group Lifecycle</div>
+    <svg id="flow-svg" width="100%" height="340" viewBox="0 0 720 340"></svg>
+  </div>
+
+  <div class="stepper" id="flow-stepper">
+    <button class="step-arrow" onclick="flowStep(-1)" id="flow-prev">&larr;</button>
+    <button class="step-btn active" onclick="flowGoTo(0)">KeyPackages</button>
+    <button class="step-btn" onclick="flowGoTo(1)">Create Group</button>
+    <button class="step-btn" onclick="flowGoTo(2)">Welcome</button>
+    <button class="step-btn" onclick="flowGoTo(3)">Messaging</button>
+    <button class="step-btn" onclick="flowGoTo(4)">Key Rotation</button>
+    <button class="step-btn" onclick="flowGoTo(5)">Remove Member</button>
+    <button class="step-arrow" onclick="flowStep(1)" id="flow-next">&rarr;</button>
+  </div>
+
+  <div class="narr" id="flow-narr"></div>
+
+  <div class="canvas">
+    <div class="canvas-label">Epoch Timeline</div>
+    <div class="epoch-bar" id="epoch-bar"></div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-top:8px;text-align:center">Each epoch has a unique group secret. Old epoch keys are deleted &rarr; forward secrecy.</div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 6: KEY ROTATION DEEP DIVE -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--gn)">6</div>
+    <div class="section-title">Key Rotation &amp; Epoch Transitions</div>
+  </div>
+
+  <div class="desc">Key rotation is how MLS achieves <strong>forward secrecy</strong> and <strong>post-compromise security</strong>. Any member can trigger a rotation at any time by issuing an <code>Update</code> proposal and <code>Commit</code>.</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Key Update Flow (TreeKEM)</div>
+    <svg id="keyrot-svg" width="100%" height="280" viewBox="0 0 720 280"></svg>
+  </div>
+
+  <div class="stepper" id="keyrot-stepper">
+    <button class="step-arrow" onclick="keyrotStep(-1)" id="keyrot-prev">&larr;</button>
+    <button class="step-btn active" onclick="keyrotGoTo(0)">Before</button>
+    <button class="step-btn" onclick="keyrotGoTo(1)">New Leaf Key</button>
+    <button class="step-btn" onclick="keyrotGoTo(2)">Path Update</button>
+    <button class="step-btn" onclick="keyrotGoTo(3)">Encrypt for Siblings</button>
+    <button class="step-btn" onclick="keyrotGoTo(4)">New Epoch</button>
+    <button class="step-arrow" onclick="keyrotStep(1)" id="keyrot-next">&rarr;</button>
+  </div>
+
+  <div class="narr" id="keyrot-narr"></div>
+
+  <div class="callout gn">
+    <div class="callout-label">Post-Compromise Security in Action</div>
+    <div class="callout-text">Imagine an attacker steals Bob's leaf private key during <strong>Epoch 3</strong>. They can decrypt messages in that epoch. But when <em>any</em> member (Alice, Carol, or even Bob himself) issues an Update Commit, the tree is re-keyed. The attacker's stolen key is now <strong>useless</strong> &mdash; they're locked out of Epoch 4 onward. This is dramatically better than Signal's group encryption (sender keys) which has no per-update tree healing.</div>
+  </div>
+</div>
+
+<!-- ================================ -->
+<!-- SECTION 7: IDENTITY & NOSTR KEYS -->
+<!-- ================================ -->
+<div class="section">
+  <div class="section-hdr">
+    <div class="section-num" style="background:var(--yl)">7</div>
+    <div class="section-title">Identity: Nostr Keys as MLS Credentials</div>
+  </div>
+
+  <div class="desc">Standard MLS uses X.509 certificates for identity. Marmot replaces this with <strong>Nostr secp256k1 keypairs</strong>. Your <code>npub</code> is your credential. Trust comes from the <strong>Nostr social graph</strong> (follows, NIP-05 verification), not a certificate authority.</div>
+
+  <div class="canvas">
+    <div class="canvas-label">Key Relationships</div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <div style="flex:1;min-width:200px;border:1px solid var(--yl);border-radius:8px;padding:14px;background:var(--ylG)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--yl);margin-bottom:8px">NOSTR IDENTITY KEY</div>
+        <div style="font-size:14px;color:var(--txM);line-height:1.5">
+          <strong style="color:var(--tx)">secp256k1 keypair</strong><br>
+          nsec (private) &rarr; npub (public)<br>
+          Long-term identity. Same key used for Nostr social posts, follows, etc.<br>
+          <span style="color:var(--txD)">This is NOT your Bitcoin key (different derivation paths).</span>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:200px;border:1px solid var(--cy);border-radius:8px;padding:14px;background:var(--cyD)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--cy);margin-bottom:8px">MLS SIGNING KEY</div>
+        <div style="font-size:14px;color:var(--txM);line-height:1.5">
+          <strong style="color:var(--tx)">Linked to Nostr key</strong><br>
+          Signs MLS Proposals and Commits.<br>
+          Proves group operations came from a specific Nostr identity.<br>
+          <span style="color:var(--txD)">May be derived from or associated with the Nostr key.</span>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:200px;border:1px solid var(--pu);border-radius:8px;padding:14px;background:var(--puD)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--pu);margin-bottom:8px">MLS HPKE KEY (per epoch)</div>
+        <div style="font-size:14px;color:var(--txM);line-height:1.5">
+          <strong style="color:var(--tx)">Ephemeral, rotated each epoch</strong><br>
+          Used in the ratchet tree for key encapsulation.<br>
+          Updated during Commits &rarr; provides forward secrecy.<br>
+          <span style="color:var(--txD)">Old HPKE keys are deleted after epoch transition.</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD)">
+      KeyPackage = MLS signing key + HPKE init key + Nostr npub credential + capabilities &rarr; published to relays
+    </div>
+  </div>
+
+  <div class="callout cy">
+    <div class="callout-label">Secp256k1 Alignment</div>
+    <div class="callout-text">Both Nostr and Bitcoin use <strong>secp256k1</strong>. While you should <em>never</em> use the same key for both (different threat models), the cryptographic alignment means the ecosystem of tools, libraries, and mental models transfers directly. If you understand Bitcoin key management, you understand Nostr/Sloth key management.</div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// =====================
+// SECTION 2: TREE VIZ
+// =====================
+const treeSteps = [
+  {
+    title: 'Initial Tree — Epoch 1',
+    narr: 'Four members form a group. Each leaf holds a member\'s <strong>HPKE public key</strong>. Intermediate nodes hold derived key pairs computed from their children. The <span class="hl">root node</span> derives the <strong>group epoch secret</strong> that encrypts all messages. Every member knows the private keys along their <em>direct path</em> from leaf to root, plus all public keys in the tree.',
+    nodes: [
+      { id: 'root', x: 360, y: 30, label: 'Root', color: '#06b6d4', glow: true },
+      { id: 'n1', x: 200, y: 100, label: 'N1', color: '#94a3b8' },
+      { id: 'n2', x: 520, y: 100, label: 'N2', color: '#94a3b8' },
+      { id: 'alice', x: 120, y: 190, label: 'Alice', color: '#06b6d4', leaf: true },
+      { id: 'bob', x: 280, y: 190, label: 'Bob', color: '#22c55e', leaf: true },
+      { id: 'carol', x: 440, y: 190, label: 'Carol', color: '#a855f7', leaf: true },
+      { id: 'dave', x: 600, y: 190, label: 'Dave', color: '#eab308', leaf: true },
+    ],
+    edges: [['root','n1'],['root','n2'],['n1','alice'],['n1','bob'],['n2','carol'],['n2','dave']],
+    highlights: []
+  },
+  {
+    title: 'Bob Updates His Key — Epoch 2',
+    narr: 'Bob generates a <strong>new leaf key pair</strong>, then computes new keys for every node on his direct path: <span class="hl">N1</span> and <span class="hl">Root</span>. He encrypts each new path secret for the <strong>sibling node</strong> at each level: the new N1 secret is encrypted for Alice (sibling at level 1), and the new Root secret is encrypted for N2 (sibling at level 2). That\'s only <strong>2 encryptions</strong> for a 4-person group &mdash; O(log n). Bob publishes this as a <code>Commit</code> message via Nostr relays. All members process it and advance to Epoch 2.',
+    nodes: [
+      { id: 'root', x: 360, y: 30, label: 'Root\'', color: '#f7931a', glow: true },
+      { id: 'n1', x: 200, y: 100, label: 'N1\'', color: '#f7931a' },
+      { id: 'n2', x: 520, y: 100, label: 'N2', color: '#94a3b8' },
+      { id: 'alice', x: 120, y: 190, label: 'Alice', color: '#06b6d4', leaf: true },
+      { id: 'bob', x: 280, y: 190, label: 'Bob\'', color: '#f7931a', leaf: true, glow: true },
+      { id: 'carol', x: 440, y: 190, label: 'Carol', color: '#a855f7', leaf: true },
+      { id: 'dave', x: 600, y: 190, label: 'Dave', color: '#eab308', leaf: true },
+    ],
+    edges: [['root','n1'],['root','n2'],['n1','alice'],['n1','bob'],['n2','carol'],['n2','dave']],
+    highlights: ['bob','n1','root'],
+    arrows: [
+      { from: 'bob', to: 'alice', label: 'enc(N1\' secret)', color: '#f7931a' },
+      { from: 'n1', to: 'n2', label: 'enc(Root\' secret)', color: '#f7931a' },
+    ]
+  },
+  {
+    title: 'Add Eve — Epoch 3',
+    narr: 'To add Eve, an existing member fetches her <code>KeyPackage</code> from Nostr relays (she pre-published it). They create an <strong>Add Proposal</strong>, then <strong>Commit</strong> it. The tree extends: a new leaf is added for Eve, and new intermediate nodes are created. A <strong>Welcome message</strong> is encrypted specifically to Eve\'s KeyPackage HPKE key, containing the full ratchet tree state and current epoch secret. Eve decrypts it and joins at Epoch 3.',
+    nodes: [
+      { id: 'root', x: 360, y: 20, label: 'Root\'\'', color: '#06b6d4', glow: true },
+      { id: 'n1', x: 180, y: 80, label: 'N1', color: '#94a3b8' },
+      { id: 'n2', x: 540, y: 80, label: 'N2\'', color: '#94a3b8' },
+      { id: 'alice', x: 100, y: 170, label: 'Alice', color: '#06b6d4', leaf: true },
+      { id: 'bob', x: 260, y: 170, label: 'Bob', color: '#22c55e', leaf: true },
+      { id: 'n3', x: 440, y: 150, label: 'N3', color: '#94a3b8' },
+      { id: 'n4', x: 640, y: 150, label: 'N4', color: '#94a3b8' },
+      { id: 'carol', x: 380, y: 230, label: 'Carol', color: '#a855f7', leaf: true },
+      { id: 'dave', x: 500, y: 230, label: 'Dave', color: '#eab308', leaf: true },
+      { id: 'eve', x: 640, y: 230, label: 'Eve', color: '#ec4899', leaf: true, glow: true },
+    ],
+    edges: [['root','n1'],['root','n2'],['n1','alice'],['n1','bob'],['n2','n3'],['n2','n4'],['n3','carol'],['n3','dave'],['n4','eve']],
+    highlights: ['eve','n4','n2','root']
+  },
+  {
+    title: 'Remove Carol — Epoch 4',
+    narr: 'A member issues a <strong>Remove Proposal</strong> for Carol, then <strong>Commits</strong> it. Carol\'s leaf is blanked &mdash; her key material is erased from the tree. The nodes on Carol\'s direct path (<span class="rd">N3, N2, Root</span>) are all re-keyed, deriving new secrets that Carol cannot compute. She is <strong>cryptographically excluded</strong>: even if she retained old key material, she cannot derive the new epoch secret. All remaining members process the Commit and advance to Epoch 4.',
+    nodes: [
+      { id: 'root', x: 360, y: 20, label: 'Root\'\'\'', color: '#06b6d4', glow: true },
+      { id: 'n1', x: 180, y: 80, label: 'N1', color: '#94a3b8' },
+      { id: 'n2', x: 540, y: 80, label: 'N2\'\'', color: '#f7931a' },
+      { id: 'alice', x: 100, y: 170, label: 'Alice', color: '#06b6d4', leaf: true },
+      { id: 'bob', x: 260, y: 170, label: 'Bob', color: '#22c55e', leaf: true },
+      { id: 'n3', x: 440, y: 150, label: 'N3\'', color: '#f7931a' },
+      { id: 'n4', x: 640, y: 150, label: 'N4', color: '#94a3b8' },
+      { id: 'carol', x: 380, y: 230, label: '[blank]', color: '#ef4444', leaf: true, blank: true },
+      { id: 'dave', x: 500, y: 230, label: 'Dave', color: '#eab308', leaf: true },
+      { id: 'eve', x: 640, y: 230, label: 'Eve', color: '#ec4899', leaf: true },
+    ],
+    edges: [['root','n1'],['root','n2'],['n1','alice'],['n1','bob'],['n2','n3'],['n2','n4'],['n3','carol'],['n3','dave'],['n4','eve']],
+    highlights: ['carol','n3','n2','root']
+  }
+];
+
+let treeCur = 0;
+function drawTree(step) {
+  const s = treeSteps[step];
+  const svg = document.getElementById('tree-svg');
+  let html = '';
+
+  // Edges
+  s.edges.forEach(([from, to]) => {
+    const fn = s.nodes.find(n => n.id === from);
+    const tn = s.nodes.find(n => n.id === to);
+    if (fn && tn) {
+      const highlighted = s.highlights.includes(from) && s.highlights.includes(to);
+      html += `<line x1="${fn.x}" y1="${fn.y+16}" x2="${tn.x}" y2="${tn.y-16}" stroke="${highlighted ? '#f7931a' : '#1c2432'}" stroke-width="${highlighted ? 2.5 : 1.5}" />`;
+    }
+  });
+
+  // Arrows (for update visualization)
+  if (s.arrows) {
+    s.arrows.forEach(a => {
+      const fn = s.nodes.find(n => n.id === a.from);
+      const tn = s.nodes.find(n => n.id === a.to);
+      if (fn && tn) {
+        const mx = (fn.x + tn.x) / 2;
+        const my = (fn.y + tn.y) / 2 - 12;
+        html += `<line x1="${fn.x}" y1="${fn.y}" x2="${tn.x}" y2="${tn.y}" stroke="${a.color}" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowhead)" />`;
+        html += `<text x="${mx}" y="${my}" text-anchor="middle" font-size="9" fill="${a.color}">${a.label}</text>`;
+      }
+    });
+  }
+
+  // Arrowhead marker
+  html += '<defs><marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#f7931a"/></marker></defs>';
+
+  // Nodes
+  s.nodes.forEach(n => {
+    const r = n.leaf ? 24 : 18;
+    const opacity = n.blank ? 0.3 : 1;
+    const glowFilter = n.glow ? `filter: drop-shadow(0 0 8px ${n.color});` : '';
+    html += `<g style="opacity:${opacity};${glowFilter}">`;
+    html += `<circle cx="${n.x}" cy="${n.y}" r="${r}" fill="rgba(${hexToRgb(n.color)},0.12)" stroke="${n.color}" stroke-width="${n.glow ? 2.5 : 1.5}" />`;
+    html += `<text x="${n.x}" y="${n.y + 4}" text-anchor="middle" font-size="${n.leaf ? 11 : 10}" font-weight="${n.leaf ? 600 : 500}" fill="${n.color}">${n.label}</text>`;
+    html += '</g>';
+
+    // Key icon below leaves
+    if (n.leaf && !n.blank) {
+      html += `<text x="${n.x}" y="${n.y + r + 16}" text-anchor="middle" font-size="9" fill="#506078">pk: ${n.label.replace("'","").substring(0,3).toLowerCase()}...</text>`;
+    }
+  });
+
+  svg.innerHTML = html;
+  document.getElementById('tree-narr').innerHTML = s.narr;
+
+  // Update stepper
+  document.querySelectorAll('#tree-stepper .step-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === step);
+  });
+  document.getElementById('tree-prev').disabled = step === 0;
+  document.getElementById('tree-next').disabled = step === treeSteps.length - 1;
+}
+
+function treeStep(d) { treeCur = Math.max(0, Math.min(treeSteps.length-1, treeCur+d)); drawTree(treeCur); }
+function treeGoTo(i) { treeCur = i; drawTree(treeCur); }
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `${r},${g},${b}`;
+}
+
+// =====================
+// SECTION 3: RELAY VIZ
+// =====================
+const relaySteps = [
+  {
+    relays: [
+      { name: 'relay-1.io', status: 'active', statusText: 'connected' },
+      { name: 'relay-2.xyz', status: 'active', statusText: 'connected' },
+      { name: 'relay-3.dev', status: 'active', statusText: 'connected' },
+      { name: 'relay-4.net', status: 'active', statusText: 'connected' },
+    ],
+    narr: '<strong>Normal operation.</strong> Alice\'s Sloth client publishes the MLS message as a Nostr event to <span class="hl">all four relays</span> in the group\'s relay set. Bob\'s client subscribes to the same relays and receives the event from whichever relay delivers first. Redundancy means no single relay is critical.'
+  },
+  {
+    relays: [
+      { name: 'relay-1.io', status: 'active', statusText: 'connected' },
+      { name: 'relay-2.xyz', status: 'down', statusText: 'OFFLINE' },
+      { name: 'relay-3.dev', status: 'active', statusText: 'connected' },
+      { name: 'relay-4.net', status: 'down', statusText: 'OFFLINE' },
+    ],
+    narr: '<strong>Relay failures.</strong> Two relays go offline. With a centralized service like Signal, this would be catastrophic. With Marmot, <span class="gn">messages still flow through the remaining relays</span>. Bob receives the event from relay-1 or relay-3. When the offline relays recover, they can catch up on missed events.'
+  },
+  {
+    relays: [
+      { name: 'relay-1.io', status: 'active', statusText: 'gift-wrapped' },
+      { name: 'relay-2.xyz', status: 'active', statusText: 'gift-wrapped' },
+      { name: 'relay-3.dev', status: 'active', statusText: 'gift-wrapped' },
+      { name: 'relay-4.net', status: 'active', statusText: 'gift-wrapped' },
+    ],
+    narr: '<strong>Gift wrapping (NIP-59).</strong> The MLS-encrypted payload is wrapped inside a <span class="pu">kind 1059 gift wrap event</span> signed by a <strong>random ephemeral key</strong>. The relay sees: a random pubkey it doesn\'t recognize, encrypted content it can\'t read, and a destination tag. It cannot determine <em>who sent the message</em> or <em>what group it belongs to</em>. This is Marmot\'s metadata protection layer.'
+  },
+  {
+    relays: [
+      { name: 'relay-1.io', status: 'down', statusText: 'CENSORED' },
+      { name: 'relay-2.xyz', status: 'down', statusText: 'CENSORED' },
+      { name: 'relay-3.dev', status: 'active', statusText: 'connected' },
+      { name: 'relay-4.net', status: 'active', statusText: 'connected' },
+    ],
+    narr: '<strong>Censorship scenario.</strong> A government blocks relay-1 and relay-2. With Signal, this would cut off the entire country. With Marmot, <span class="gn">any member can add a new relay to the group\'s relay set</span>. The attacker must play whack-a-mole against an open, permissionless network. Anyone can run a new relay at any time &mdash; it\'s just a WebSocket server.'
+  }
+];
+
+let relayCur = 0;
+function drawRelays(step) {
+  const s = relaySteps[step];
+  const net = document.getElementById('relay-net');
+  net.innerHTML = s.relays.map(r =>
+    `<div class="relay-box ${r.status}">
+      <div class="r-name">${r.name}</div>
+      <div class="r-status" style="color:${r.status==='active'?'var(--gn)':'var(--rd)'}">${r.statusText}</div>
+    </div>`
+  ).join('');
+  document.getElementById('relay-narr').innerHTML = s.narr;
+  document.querySelectorAll('#relay-stepper .step-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === step);
+  });
+  document.getElementById('relay-prev').disabled = step === 0;
+  document.getElementById('relay-next').disabled = step === relaySteps.length - 1;
+}
+
+function relayStep(d) { relayCur = Math.max(0, Math.min(relaySteps.length-1, relayCur+d)); drawRelays(relayCur); }
+function relayGoTo(i) { relayCur = i; drawRelays(relayCur); }
+
+// =====================
+// SECTION 5: FLOW VIZ
+// =====================
+const flowSteps = [
+  {
+    epoch: 0,
+    narr: '<strong>Step 1: KeyPackage Publishing.</strong> Before any group exists, each user pre-publishes <code>KeyPackage</code> bundles to Nostr relays. A KeyPackage contains: their <span class="hl">MLS HPKE init key</span> (for key encapsulation), their <span class="hl">Nostr npub</span> (as MLS credential), and their <span class="hl">supported capabilities</span> (cipher suites, extensions). This is how others can invite you to groups without you being online.'
+  },
+  {
+    epoch: 1,
+    narr: '<strong>Step 2: Group Creation.</strong> Alice creates an MLS group locally, generating the initial ratchet tree with herself as the only leaf. She fetches Bob\'s and Carol\'s KeyPackages from relays. She creates <strong>Add Proposals</strong> for Bob and Carol, then <strong>Commits</strong> all proposals at once. The tree now has three leaves. The group advances to <span class="hl">Epoch 1</span>.'
+  },
+  {
+    epoch: 1,
+    narr: '<strong>Step 3: Welcome Messages.</strong> Alice generates a <strong>Welcome message</strong> for each new member, encrypted to their KeyPackage HPKE key. The Welcome contains the full ratchet tree state and current epoch secret. She publishes these as Nostr events to the group\'s relay set. Bob and Carol fetch their Welcome messages, decrypt them, and now hold the complete group state. All three members share the <span class="hl">Epoch 1</span> secret.'
+  },
+  {
+    epoch: 1,
+    narr: '<strong>Step 4: Encrypted Messaging.</strong> Messages are encrypted with the current epoch\'s <strong>application key</strong> (derived from the ratchet tree root). Alice encrypts "Hello group" with the Epoch 1 key, wraps it in a gift-wrapped Nostr event, and publishes to relays. Bob and Carol fetch the event, unwrap the gift wrap, decrypt the MLS application message using their copy of the epoch key. <span class="gn">Only group members can decrypt.</span>'
+  },
+  {
+    epoch: 2,
+    narr: '<strong>Step 5: Key Rotation.</strong> Bob issues an <strong>Update Proposal</strong> with a new leaf key pair, then <strong>Commits</strong> it. He recomputes keys along his direct path to the root, encrypting each new path secret for the sibling node at each level (O(log n) encryptions). He publishes the Commit as a Nostr event. All members process it, derive the new root secret, and advance to <span class="hl">Epoch 2</span>. Old Epoch 1 keys are <span class="rd">deleted</span> &mdash; forward secrecy achieved.'
+  },
+  {
+    epoch: 3,
+    narr: '<strong>Step 6: Member Removal.</strong> Alice issues a <strong>Remove Proposal</strong> for Carol, then <strong>Commits</strong>. Carol\'s leaf is blanked. All nodes on Carol\'s direct path are re-keyed with fresh secrets that Carol cannot derive. The Commit is published to relays. Bob processes it and advances to <span class="hl">Epoch 3</span>. Carol can still see the Commit event on relays, but she <span class="rd">cannot decrypt any future messages</span> &mdash; she lacks the new path secrets. Cryptographic exclusion, not access-control exclusion.'
+  }
+];
+
+let flowCur = 0;
+function drawFlow(step) {
+  const s = flowSteps[step];
+  const svg = document.getElementById('flow-svg');
+
+  // Draw the sequence diagram
+  const actors = [
+    { x: 100, label: 'Alice', color: '#06b6d4' },
+    { x: 310, label: 'Nostr Relays', color: '#a855f7' },
+    { x: 520, label: 'Bob', color: '#22c55e' },
+    { x: 650, label: 'Carol', color: '#eab308' },
+  ];
+
+  let html = '';
+
+  // Actor lifelines
+  actors.forEach(a => {
+    html += `<line x1="${a.x}" y1="40" x2="${a.x}" y2="320" stroke="#1c2432" stroke-width="1" stroke-dasharray="4,4" />`;
+    html += `<rect x="${a.x-40}" y="8" width="80" height="26" rx="6" fill="rgba(${hexToRgb(a.color)},0.12)" stroke="${a.color}" stroke-width="1.5" />`;
+    html += `<text x="${a.x}" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="${a.color}">${a.label}</text>`;
+  });
+
+  // Messages per step
+  const msgs = [
+    // Step 0: KeyPackages
+    [
+      { from: 0, to: 1, y: 70, label: 'Publish KeyPackage', color: '#06b6d4' },
+      { from: 2, to: 1, y: 110, label: 'Publish KeyPackage', color: '#22c55e' },
+      { from: 3, to: 1, y: 150, label: 'Publish KeyPackage', color: '#eab308' },
+      { from: 0, to: 1, y: 200, label: 'Fetch Bob KeyPkg', color: '#06b6d4', dashed: true },
+      { from: 0, to: 1, y: 230, label: 'Fetch Carol KeyPkg', color: '#06b6d4', dashed: true },
+    ],
+    // Step 1: Create group
+    [
+      { from: 0, to: 0, y: 70, label: 'Create MLS Group locally', color: '#06b6d4', self: true },
+      { from: 0, to: 0, y: 110, label: 'Add(Bob) + Add(Carol)', color: '#06b6d4', self: true },
+      { from: 0, to: 0, y: 150, label: 'Commit (Epoch 0 -> 1)', color: '#f7931a', self: true },
+      { from: 0, to: 1, y: 200, label: 'Publish Commit event', color: '#f7931a' },
+    ],
+    // Step 2: Welcome
+    [
+      { from: 0, to: 1, y: 70, label: 'Welcome(Bob)', color: '#22c55e' },
+      { from: 0, to: 1, y: 110, label: 'Welcome(Carol)', color: '#eab308' },
+      { from: 1, to: 2, y: 160, label: 'Bob fetches Welcome', color: '#22c55e', dashed: true },
+      { from: 1, to: 3, y: 200, label: 'Carol fetches Welcome', color: '#eab308', dashed: true },
+      { from: 2, to: 2, y: 250, label: 'Decrypt, join Epoch 1', color: '#22c55e', self: true },
+      { from: 3, to: 3, y: 280, label: 'Decrypt, join Epoch 1', color: '#eab308', self: true },
+    ],
+    // Step 3: Messaging
+    [
+      { from: 0, to: 0, y: 70, label: 'Encrypt("Hello group")', color: '#06b6d4', self: true },
+      { from: 0, to: 1, y: 110, label: 'Gift-wrapped MLS event', color: '#a855f7' },
+      { from: 1, to: 2, y: 160, label: 'Event delivered', color: '#a855f7', dashed: true },
+      { from: 1, to: 3, y: 200, label: 'Event delivered', color: '#a855f7', dashed: true },
+      { from: 2, to: 2, y: 250, label: 'Unwrap + Decrypt', color: '#22c55e', self: true },
+      { from: 3, to: 3, y: 280, label: 'Unwrap + Decrypt', color: '#eab308', self: true },
+    ],
+    // Step 4: Key rotation
+    [
+      { from: 2, to: 2, y: 70, label: 'Generate new leaf key', color: '#22c55e', self: true },
+      { from: 2, to: 2, y: 110, label: 'Update + Commit', color: '#f7931a', self: true },
+      { from: 2, to: 1, y: 160, label: 'Publish Commit event', color: '#f7931a' },
+      { from: 1, to: 0, y: 210, label: 'Alice processes Commit', color: '#f7931a', dashed: true },
+      { from: 1, to: 3, y: 250, label: 'Carol processes Commit', color: '#f7931a', dashed: true },
+      { from: 0, to: 0, y: 290, label: 'Advance to Epoch 2', color: '#06b6d4', self: true },
+    ],
+    // Step 5: Remove
+    [
+      { from: 0, to: 0, y: 70, label: 'Remove(Carol) + Commit', color: '#ef4444', self: true },
+      { from: 0, to: 1, y: 120, label: 'Publish Commit event', color: '#ef4444' },
+      { from: 1, to: 2, y: 170, label: 'Bob processes Commit', color: '#f7931a', dashed: true },
+      { from: 1, to: 3, y: 210, label: 'Carol sees Commit', color: '#ef4444', dashed: true },
+      { from: 2, to: 2, y: 260, label: 'Advance to Epoch 3', color: '#22c55e', self: true },
+      { from: 3, to: 3, y: 280, label: 'LOCKED OUT', color: '#ef4444', self: true },
+    ],
+  ];
+
+  const stepMsgs = msgs[step] || [];
+  stepMsgs.forEach(m => {
+    const fx = actors[m.from].x;
+    const tx = actors[m.to].x;
+    if (m.self) {
+      // Self-message (action box)
+      html += `<rect x="${fx-70}" y="${m.y-10}" width="140" height="20" rx="4" fill="rgba(${hexToRgb(m.color)},0.08)" stroke="${m.color}" stroke-width="1" />`;
+      html += `<text x="${fx}" y="${m.y+4}" text-anchor="middle" font-size="9" fill="${m.color}">${m.label}</text>`;
+    } else {
+      // Arrow
+      const dash = m.dashed ? ' stroke-dasharray="4,3"' : '';
+      html += `<line x1="${fx}" y1="${m.y}" x2="${tx}" y2="${m.y}" stroke="${m.color}" stroke-width="1.5"${dash} marker-end="url(#arr-${m.color.replace('#','')})" />`;
+      const mx = (fx + tx) / 2;
+      html += `<text x="${mx}" y="${m.y-6}" text-anchor="middle" font-size="9" fill="${m.color}">${m.label}</text>`;
+      html += `<defs><marker id="arr-${m.color.replace('#','')}" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="${m.color}"/></marker></defs>`;
+    }
+  });
+
+  svg.innerHTML = html;
+  document.getElementById('flow-narr').innerHTML = s.narr;
+
+  // Epoch bar
+  const epochBar = document.getElementById('epoch-bar');
+  const epochs = ['Epoch 0', 'Epoch 1', 'Epoch 2', 'Epoch 3'];
+  epochBar.innerHTML = epochs.map((e, i) => {
+    const active = i <= s.epoch;
+    const current = i === s.epoch;
+    const bg = current ? 'var(--cy)' : active ? 'var(--cyG)' : 'var(--sf)';
+    const color = current ? '#fff' : active ? 'var(--cy)' : 'var(--txD)';
+    const border = current ? '2px solid var(--cy)' : active ? '1px solid var(--cy)' : '1px solid var(--bd)';
+    return `<div class="epoch-cell" style="background:${bg};color:${color};border:${border}">${e}</div>`;
+  }).join('');
+
+  document.querySelectorAll('#flow-stepper .step-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === step);
+  });
+  document.getElementById('flow-prev').disabled = step === 0;
+  document.getElementById('flow-next').disabled = step === flowSteps.length - 1;
+}
+
+function flowStep(d) { flowCur = Math.max(0, Math.min(flowSteps.length-1, flowCur+d)); drawFlow(flowCur); }
+function flowGoTo(i) { flowCur = i; drawFlow(flowCur); }
+
+// =====================
+// SECTION 6: KEYROT VIZ
+// =====================
+const keyrotSteps = [
+  {
+    narr: '<strong>Before update.</strong> A 4-member group at Epoch N. Bob decides to rotate his key &mdash; either periodically (for forward secrecy) or because he suspects compromise. Each node shows its current key generation. The <span class="hl">root secret</span> derives the epoch\'s encryption key.',
+    highlights: [],
+    labels: { alice: 'K_a', bob: 'K_b', n1: 'K_n1', n2: 'K_n2', carol: 'K_c', dave: 'K_d', root: 'K_root' },
+    colors: { alice: '#06b6d4', bob: '#22c55e', n1: '#94a3b8', n2: '#94a3b8', carol: '#a855f7', dave: '#eab308', root: '#06b6d4' }
+  },
+  {
+    narr: '<strong>Step 1: New leaf key.</strong> Bob generates a <span class="gn">fresh HPKE key pair</span> locally. His old key pair is marked for deletion. The new public key will be shared with the group via the Commit message.',
+    highlights: ['bob'],
+    labels: { alice: 'K_a', bob: "K_b'", n1: 'K_n1', n2: 'K_n2', carol: 'K_c', dave: 'K_d', root: 'K_root' },
+    colors: { alice: '#06b6d4', bob: '#f7931a', n1: '#94a3b8', n2: '#94a3b8', carol: '#a855f7', dave: '#eab308', root: '#06b6d4' }
+  },
+  {
+    narr: '<strong>Step 2: Path update.</strong> Bob computes new key pairs for every node on his <span class="hl">direct path</span> from leaf to root: <strong>N1</strong> and <strong>Root</strong>. Each new node key is derived from the updated child. The path now has fresh, uncompromised key material.',
+    highlights: ['bob', 'n1', 'root'],
+    labels: { alice: 'K_a', bob: "K_b'", n1: "K_n1'", n2: 'K_n2', carol: 'K_c', dave: 'K_d', root: "K_root'" },
+    colors: { alice: '#06b6d4', bob: '#f7931a', n1: '#f7931a', n2: '#94a3b8', carol: '#a855f7', dave: '#eab308', root: '#f7931a' }
+  },
+  {
+    narr: '<strong>Step 3: Encrypt for siblings.</strong> Bob encrypts each new path secret for the <strong>co-path node</strong> (sibling) at each level. He encrypts K_n1\' for <span class="hl">Alice</span> (sibling of Bob at level 1) and K_root\' for <span class="hl">N2</span> (sibling of N1 at level 2). That\'s <strong>2 encryptions</strong> total &mdash; O(log 4) = O(2). Alice can then derive K_root\' from K_n1\'. Carol and Dave derive K_root\' from the encrypted N2 path secret. The Commit containing these encrypted path secrets is published to Nostr relays.',
+    highlights: ['bob', 'n1', 'root'],
+    labels: { alice: 'K_a', bob: "K_b'", n1: "K_n1'", n2: 'K_n2', carol: 'K_c', dave: 'K_d', root: "K_root'" },
+    colors: { alice: '#06b6d4', bob: '#f7931a', n1: '#f7931a', n2: '#94a3b8', carol: '#a855f7', dave: '#eab308', root: '#f7931a' },
+    encArrows: true
+  },
+  {
+    narr: '<strong>Step 4: New epoch.</strong> All members process the Commit: Alice decrypts K_n1\' (she\'s the sibling), derives K_root\'. Carol and Dave decrypt via N2. Everyone now holds the new <span class="gn">Epoch N+1</span> secret. Old epoch keys are <span class="rd">securely deleted</span>. An attacker who recorded all encrypted traffic from Epoch N <strong>cannot decrypt it</strong> after the keys are gone &mdash; that\'s forward secrecy. An attacker who stole Bob\'s old key is <strong>locked out</strong> of Epoch N+1 &mdash; that\'s post-compromise security.',
+    highlights: [],
+    labels: { alice: 'K_a', bob: "K_b'", n1: "K_n1'", n2: 'K_n2', carol: 'K_c', dave: 'K_d', root: "K_root'" },
+    colors: { alice: '#06b6d4', bob: '#22c55e', n1: '#22c55e', n2: '#94a3b8', carol: '#a855f7', dave: '#eab308', root: '#22c55e' }
+  }
+];
+
+let keyrotCur = 0;
+function drawKeyrot(step) {
+  const s = keyrotSteps[step];
+  const svg = document.getElementById('keyrot-svg');
+  const positions = {
+    root: { x: 360, y: 30 },
+    n1: { x: 200, y: 100 },
+    n2: { x: 520, y: 100 },
+    alice: { x: 120, y: 200 },
+    bob: { x: 280, y: 200 },
+    carol: { x: 440, y: 200 },
+    dave: { x: 600, y: 200 },
+  };
+  const edges = [['root','n1'],['root','n2'],['n1','alice'],['n1','bob'],['n2','carol'],['n2','dave']];
+  const leafNodes = ['alice','bob','carol','dave'];
+
+  let html = '';
+
+  // Edges
+  edges.forEach(([from, to]) => {
+    const f = positions[from], t = positions[to];
+    const highlighted = s.highlights.includes(from) && s.highlights.includes(to);
+    html += `<line x1="${f.x}" y1="${f.y+16}" x2="${t.x}" y2="${t.y-(leafNodes.includes(to)?24:16)}" stroke="${highlighted ? '#f7931a' : '#1c2432'}" stroke-width="${highlighted ? 2.5 : 1.5}" />`;
+  });
+
+  // Encryption arrows
+  if (s.encArrows) {
+    // Bob -> Alice (encrypt K_n1' for Alice)
+    html += `<path d="M ${positions.bob.x} ${positions.bob.y-30} Q ${(positions.bob.x+positions.alice.x)/2} ${positions.bob.y-70} ${positions.alice.x} ${positions.alice.y-30}" fill="none" stroke="#f7931a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#kr-arr)" />`;
+    html += `<text x="${(positions.bob.x+positions.alice.x)/2}" y="${positions.bob.y-58}" text-anchor="middle" font-size="9" fill="#f7931a">enc(K_n1') for Alice</text>`;
+    // N1 -> N2 (encrypt K_root' for N2)
+    html += `<path d="M ${positions.n1.x+20} ${positions.n1.y-10} Q ${360} ${positions.n1.y-40} ${positions.n2.x-20} ${positions.n2.y-10}" fill="none" stroke="#f7931a" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#kr-arr)" />`;
+    html += `<text x="360" y="${positions.n1.y-32}" text-anchor="middle" font-size="9" fill="#f7931a">enc(K_root') for N2</text>`;
+    html += `<defs><marker id="kr-arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#f7931a"/></marker></defs>`;
+  }
+
+  // Nodes
+  Object.keys(positions).forEach(id => {
+    const p = positions[id];
+    const isLeaf = leafNodes.includes(id);
+    const r = isLeaf ? 24 : 18;
+    const color = s.colors[id];
+    const label = s.labels[id];
+    const isHighlighted = s.highlights.includes(id);
+    const glow = isHighlighted ? `filter: drop-shadow(0 0 8px ${color});` : '';
+    html += `<g style="${glow}">`;
+    html += `<circle cx="${p.x}" cy="${p.y}" r="${r}" fill="rgba(${hexToRgb(color)},0.12)" stroke="${color}" stroke-width="${isHighlighted ? 2.5 : 1.5}" />`;
+    html += `<text x="${p.x}" y="${p.y+4}" text-anchor="middle" font-size="${isLeaf ? 11 : 10}" font-weight="600" fill="${color}">${isLeaf ? id.charAt(0).toUpperCase()+id.slice(1) : id.toUpperCase()}</text>`;
+    html += `</g>`;
+    // Key label below
+    html += `<text x="${p.x}" y="${p.y+r+14}" text-anchor="middle" font-size="9" fill="${isHighlighted ? '#f7931a' : '#506078'}">${label}</text>`;
+  });
+
+  svg.innerHTML = html;
+  document.getElementById('keyrot-narr').innerHTML = s.narr;
+  document.querySelectorAll('#keyrot-stepper .step-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === step);
+  });
+  document.getElementById('keyrot-prev').disabled = step === 0;
+  document.getElementById('keyrot-next').disabled = step === keyrotSteps.length - 1;
+}
+
+function keyrotStep(d) { keyrotCur = Math.max(0, Math.min(keyrotSteps.length-1, keyrotCur+d)); drawKeyrot(keyrotCur); }
+function keyrotGoTo(i) { keyrotCur = i; drawKeyrot(keyrotCur); }
+
+// =====================
+// KEYBOARD NAV
+// =====================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    window.location.href = 'sloth-messaging.html';
+  }
+});
+
+// =====================
+// INIT ALL
+// =====================
+drawTree(0);
+drawRelays(0);
+drawFlow(0);
+drawKeyrot(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>24-bit nVersion Nonce Space — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--tlG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--tlD);border:1px solid var(--tl);border-radius:16px;color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--tl);background:var(--tlG);color:var(--tl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tl);background:var(--tlD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.warn-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.teal-box{background:var(--tlG);border:1px solid rgba(20,184,166,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.teal-label{color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center}
+.stat .val{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800}
+.stat .label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.04em;margin-top:4px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bit-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:12px}
+.bit-row{display:flex;gap:2px;margin-bottom:10px;flex-wrap:wrap}
+.bit-cell{font-family:'JetBrains Mono',monospace;font-size:11px;width:22px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:3px;border:1px solid;font-weight:600}
+.bit-cell.fixed{background:rgba(148,163,184,.1);border-color:rgba(148,163,184,.3);color:var(--txM)}
+.bit-cell.nonce{background:var(--tlD);border-color:rgba(20,184,166,.3);color:var(--tl)}
+.bit-cell.signal{background:rgba(247,147,26,.08);border-color:rgba(247,147,26,.3);color:var(--or)}
+.bit-legend{display:flex;gap:16px;flex-wrap:wrap}
+.bit-legend-item{display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD)}
+.bit-legend-swatch{width:14px;height:14px;border-radius:3px;border:1px solid}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--tl);background:var(--tlG);color:var(--tl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols,.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}.bit-cell{width:18px;height:22px;font-size:9px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">MINING</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: The Problem -->
+<div class="slide" data-name="The Problem">
+  <h2 class="slide-title">The Nonce Space Crisis</h2>
+  <p class="subtitle">Modern ASICs are running out of header entropy</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="val" style="color:var(--tl)">~1s</div>
+      <div class="label">32-BIT NONCE EXHAUSTED</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--yl)">16</div>
+      <div class="label">BIP-320 NONCE BITS</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--rd)">7</div>
+      <div class="label">nTIME BITS STOLEN</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--tl)"></div>
+    <div class="card-label" style="color:var(--tl)">HEADER-ONLY MINING</div>
+    <div class="card-text">In header-only mining, ASICs hash only the <strong>80-byte block header</strong> without constructing transactions or recomputing the Merkle tree. A controller prepares the coinbase, Merkle root, and target &mdash; the ASIC just rolls header fields (<code>nNonce</code>, <code>nVersion</code>, <code>nTime</code>). This minimizes logic and bandwidth inside the chip.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">THE ENTROPY PROBLEM</div>
+    <div class="card-text">Modern ASICs exhaust the 32-bit <code>nNonce</code> in roughly <strong>one second</strong>. BIP 320 added 16 bits of <code>nVersion</code> as extra nonce space, but it's <strong>not enough</strong>. Some devices have started stealing 7 bits from <code>nTime</code> for additional nonce space (<a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2 discussion</a>). This creates conflicts with proposals like BIP-54.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">THE BIP-54 CONFLICT</div>
+    <div class="card-text">BIP-54 (the <strong>Great Consensus Cleanup</strong>, by Antoine Poinsot building on Matt Corallo's earlier proposal) wants to fix the timewarp attack by forcing the coinbase transaction's <code>nLockTime</code> to the current block height minus 1. Miners resist this because they use <code>nLockTime</code> as convenient extra nonce space. This BIP directly addresses that conflict.</div>
+  </div>
+</div>
+
+<!-- Slide 2: The Proposal -->
+<div class="slide" data-name="The Proposal">
+  <h2 class="slide-title">Matt Corallo's 24-bit Solution</h2>
+  <p class="subtitle">Expand nVersion nonce space from 16 to 24 bits</p>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--tl)"></div>
+    <div class="card-label" style="color:var(--tl)">THE BIP</div>
+    <div class="card-text"><strong>Matt Corallo</strong> proposes reserving <strong>24 bits</strong> of the <code>nVersion</code> field as extra nonce space for miners, replacing BIP 320's 16 bits. Published on the <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank">bitcoin-dev mailing list</a>.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="val" style="color:var(--yl)">48-bit</div>
+      <div class="label">CURRENT ENTROPY</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--tl)">56-bit</div>
+      <div class="label">PROPOSED ENTROPY</div>
+    </div>
+    <div class="stat">
+      <div class="val" style="color:var(--gn)">256&times;</div>
+      <div class="label">MORE ENTROPY</div>
+    </div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">WHAT THIS MEANS IN PRACTICE</div>
+    <div class="card-text">With 48 bits of header entropy, a modern ASIC exhausts the space in about <strong>~1.5 seconds</strong>, requiring a new job from the pool controller. With 56 bits, that extends to roughly <strong>~2.5 minutes</strong> &mdash; drastically reducing the coordination overhead between ASICs and controllers.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--yl)">BIP 320 (CURRENT)</div>
+      <div class="card-text">16 nonce bits in <code>nVersion</code>. 48 total header bits. ~1.5s grind time. Miners still need <code>nTime</code> or coinbase nonce rolling.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--tl)">NEW PROPOSAL</div>
+      <div class="card-text">24 nonce bits in <code>nVersion</code>. 56 total header bits. ~2.5min grind time. Eliminates need for <code>nTime</code> abuse. Unblocks BIP-54.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Bit Layout -->
+<div class="slide" data-name="Bit Layout">
+  <h2 class="slide-title">nVersion Bit Layout</h2>
+  <p class="subtitle">32 bits: 3 fixed + 24 nonce + 5 signaling</p>
+
+  <div class="bit-diagram">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:10px">nVERSION FIELD (32 BITS) &mdash; PROPOSED LAYOUT</div>
+    <div class="bit-row">
+      <div class="bit-cell fixed">31</div>
+      <div class="bit-cell fixed">30</div>
+      <div class="bit-cell fixed">29</div>
+      <div class="bit-cell nonce">28</div>
+      <div class="bit-cell nonce">27</div>
+      <div class="bit-cell nonce">26</div>
+      <div class="bit-cell nonce">25</div>
+      <div class="bit-cell nonce">24</div>
+      <div class="bit-cell nonce">23</div>
+      <div class="bit-cell nonce">22</div>
+      <div class="bit-cell nonce">21</div>
+      <div class="bit-cell nonce">20</div>
+      <div class="bit-cell nonce">19</div>
+      <div class="bit-cell nonce">18</div>
+      <div class="bit-cell nonce">17</div>
+      <div class="bit-cell nonce">16</div>
+      <div class="bit-cell nonce">15</div>
+      <div class="bit-cell nonce">14</div>
+      <div class="bit-cell nonce">13</div>
+      <div class="bit-cell nonce">12</div>
+      <div class="bit-cell nonce">11</div>
+      <div class="bit-cell nonce">10</div>
+      <div class="bit-cell nonce">9</div>
+      <div class="bit-cell nonce">8</div>
+      <div class="bit-cell nonce">7</div>
+      <div class="bit-cell nonce">6</div>
+      <div class="bit-cell nonce">5</div>
+      <div class="bit-cell signal">4</div>
+      <div class="bit-cell signal">3</div>
+      <div class="bit-cell signal">2</div>
+      <div class="bit-cell signal">1</div>
+      <div class="bit-cell signal">0</div>
+    </div>
+    <div class="bit-legend">
+      <div class="bit-legend-item"><div class="bit-legend-swatch" style="background:rgba(148,163,184,.1);border-color:rgba(148,163,184,.3)"></div>Fixed (3 bits)</div>
+      <div class="bit-legend-item"><div class="bit-legend-swatch" style="background:var(--tlD);border-color:rgba(20,184,166,.3)"></div>Nonce space (24 bits)</div>
+      <div class="bit-legend-item"><div class="bit-legend-swatch" style="background:rgba(247,147,26,.08);border-color:rgba(247,147,26,.3)"></div>Signaling (5 bits)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">SIGNALING STILL WORKS</div>
+    <div class="card-text">The 5 remaining bits still allow <strong>5 concurrent soft fork signals</strong> via BIP-8/BIP-9. In practice, Bitcoin has <strong>never had more than 2 concurrent signals</strong>. The current 29 signaling bits are massively over-provisioned. 5 bits is more than sufficient.</div>
+  </div>
+
+  <div class="teal-box">
+    <div class="teal-label">BACKWARDS COMPATIBLE</div>
+    <div class="card-text">Miners can start using the nonce bits <strong>immediately</strong> without a soft fork or any consensus change. Non-mining nodes don't validate <code>nVersion</code> beyond the basic version number check. BIP 320 already established the precedent of miners freely rolling version bits. This proposal simply expands the range.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Impact -->
+<div class="slide" data-name="Impact">
+  <h2 class="slide-title">Impact &amp; Context</h2>
+
+  <div class="green-box">
+    <div class="green-label">UNBLOCKS BIP-54 (GREAT CONSENSUS CLEANUP)</div>
+    <div class="card-text">The primary resistance to BIP-54's <code>nLockTime</code> fix was: <em>"don't consume coinbase nLockTime as a convenient extra nonce"</em>. With 24-bit nVersion nonce space providing <strong>~2.5 minutes of grind time</strong>, miners no longer need coinbase <code>nLockTime</code> for nonce rolling. This removes the main objection to BIP-54.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--tl)">STRATUM V2 COMPATIBLE</div>
+      <div class="card-text">The <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2 mining protocol</a> already supports nVersion rolling. The expanded range integrates naturally with existing mining infrastructure.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--bl)">NO CONSENSUS CHANGE</div>
+      <div class="card-text">Miners can adopt this <strong>unilaterally</strong>. No soft fork, no node upgrades, no activation mechanism. Just start rolling more bits. This makes deployment trivial.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">MATT CORALLO</div>
+    <div class="card-text">Long-standing Bitcoin Core contributor, key contributor at Spiral (formerly Square Crypto), creator of the <strong>Lightning Development Kit (LDK)</strong>, and developer of the original FIBRE block relay network. When Corallo proposes a mining BIP, the mining industry listens.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">WHY NOW?</div>
+    <div class="card-text">BIP-54 is now <strong>very mature</strong> and close to activation, but has two outstanding criticisms: (1) restricting 64-byte transactions is ugly, and (2) the coinbase <code>nLockTime</code> fix reduces available nonce space. This BIP removes criticism #2, clearing the path for the Great Consensus Cleanup to proceed.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank">Bitcoin-dev mailing list: 24-bit nVersion proposal &rarr;</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0320.mediawiki" target="_blank">BIP 320: nVersion bits for general purpose use &rarr;</a>
+    <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2: nTime rolling discussion &rarr;</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binohash — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.10);--orB:#b36a0f;--bl:#3b82f6;--blG:rgba(59,130,246,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.mono{font-family:'JetBrains Mono',monospace}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--or);background:rgba(247,147,26,.08);padding:2px 6px;border-radius:4px}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+
+/* Diagram styles */
+.der-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:12px}
+.der-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.der-byte{font-family:'JetBrains Mono',monospace;font-size:13px;padding:4px 8px;border-radius:4px;border:1px solid;white-space:nowrap}
+.der-byte.tag{background:rgba(59,130,246,.1);border-color:var(--bl);color:var(--bl)}
+.der-byte.len{background:rgba(168,85,247,.1);border-color:var(--pu);color:var(--pu)}
+.der-byte.val{background:rgba(247,147,26,.08);border-color:var(--orB);color:var(--or)}
+.der-byte.key{background:rgba(34,197,94,.1);border-color:var(--gn);color:var(--gn)}
+.der-arrow{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+.der-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);min-width:80px}
+
+/* Step flow */
+.step-flow{display:flex;flex-direction:column;gap:8px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--or);background:var(--orD);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(247,147,26,.3)}
+.step-body{flex:1;padding-top:3px}
+.step-title{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.step-desc{color:var(--txM);font-size:14px;line-height:1.55}
+.step-desc code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--or);background:rgba(247,147,26,.08);padding:1px 5px;border-radius:3px}
+.step-connector{width:2px;height:12px;background:var(--bd);margin-left:13px}
+
+/* Script block */
+.script-block{background:#0a0e14;border:1px solid var(--bd);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:var(--txM);overflow-x:auto;margin-bottom:12px}
+.script-block .comment{color:var(--txD)}
+.script-block .op{color:var(--or)}
+.script-block .kw{color:var(--bl)}
+.script-block .str{color:var(--gn)}
+
+/* Enables grid */
+.enables-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.enable-card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;position:relative}
+.enable-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
+.enable-icon{font-size:22px;margin-bottom:6px}
+.enable-title{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.enable-desc{color:var(--txM);font-size:13px;line-height:1.5}
+
+/* Info/warn boxes */
+.info-box{background:var(--blG);border:1px solid var(--bl);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.warn-box{background:var(--ylG);border:1px solid var(--yl);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid var(--gn);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.orange-box{background:var(--orD);border:1px solid var(--or);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.orange-label{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+
+/* Comparison row */
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.compare-card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.compare-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;margin-bottom:6px;letter-spacing:.04em}
+
+/* Author badge */
+.author-badge{display:inline-flex;align-items:center;gap:8px;background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:4px 14px 4px 4px;margin-bottom:12px}
+.author-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--or),#fbbf24);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:800;color:var(--bg)}
+.author-name{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txM)}
+.author-name strong{color:var(--tx)}
+
+/* Sig visual */
+.sig-visual{display:flex;align-items:center;gap:3px;flex-wrap:wrap;margin:10px 0}
+.sig-bit{font-family:'JetBrains Mono',monospace;font-size:11px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:3px;border:1px solid}
+.sig-bit.zero{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);color:var(--bl)}
+.sig-bit.one{background:rgba(247,147,26,.1);border-color:rgba(247,147,26,.3);color:var(--or)}
+
+/* Links */
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+
+/* Footer nav */
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.enables-grid,.compare-row{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}.der-row{gap:4px}.sig-bit{width:14px;height:14px;font-size:9px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">BITCOIN SCRIPT</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: The Goal -->
+<div class="slide" data-name="The Goal">
+  <h2 class="slide-title">Transaction Introspection Without Soft Forks</h2>
+  <p class="subtitle">Binohash by Robin Linus — reading transaction data from inside Bitcoin Script</p>
+
+  <div class="author-badge">
+    <div class="author-avatar">RL</div>
+    <div class="author-name"><strong>Robin Linus</strong> &middot; creator of BitVM</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">THE PROBLEM</div>
+    <div class="card-text">Bitcoin Script can verify <strong>signatures</strong>, but it cannot inspect the <strong>transaction itself</strong>. A script has no way to ask "what outputs does this transaction create?" or "what value is being sent where?" This means you can't build <strong>covenants</strong> — rules that constrain how coins can be spent in the future.</div>
+  </div>
+
+  <div class="compare-row">
+    <div class="compare-card">
+      <div class="compare-label" style="color:var(--rd)">WHAT SCRIPT CAN DO</div>
+      <div class="card-text" style="font-size:14px">Verify signatures via <code>OP_CHECKSIG</code>. Confirm "this key authorized this spend." But that's <strong>opaque</strong> — the signed message (the tx) is a black box.</div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-label" style="color:var(--gn)">WHAT WE WANT</div>
+      <div class="card-text" style="font-size:14px">Read the transaction's outputs, amounts, timelocks — <strong>inside Script</strong>. This enables vaults, covenants, bridges, and programmable spending rules without trusting anyone.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">PROPOSED OPCODES (REQUIRE SOFT FORKS)</div>
+    <div class="card-text"><code>OP_CTV</code> (BIP-119), <code>OP_TXHASH</code>, <code>OP_CAT</code>, <code>OP_CHECKSIGFROMSTACK</code> — all require consensus changes that have been debated for years. Binohash achieves a form of transaction introspection <strong>with the existing opcodes</strong>, no fork needed.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Core Primitive -->
+<div class="slide" data-name="FindAndDelete Primitive">
+  <h2 class="slide-title">Core Primitive: FindAndDelete in Legacy OP_CHECKMULTISIG</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">WHAT BINOHASH ACTUALLY USES</div>
+    <div class="card-text">Binohash's main primitive is <strong>not</strong> "one bit per DER length". The core trick is legacy <code>OP_CHECKMULTISIG</code>'s <strong>FindAndDelete</strong> behavior: selected signatures are removed from <code>scriptCode</code> before sighashing, so different selected subsets produce different sighashes.</div>
+  </div>
+
+  <div class="der-diagram">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:10px">SUBSET-SELECTED NONCE SPACE</div>
+    <div class="der-row">
+      <div class="der-byte val">locking script: n embedded sig blobs</div>
+      <div class="der-arrow">→</div>
+      <div class="der-byte len">unlocking script reveals t indices</div>
+      <div class="der-arrow">→</div>
+      <div class="der-byte tag">OP_ROLL + OP_CHECKMULTISIG</div>
+    </div>
+    <div class="der-row" style="margin-top:8px">
+      <div class="der-byte key">FindAndDelete removes selected sigs from scriptCode</div>
+      <div class="der-arrow">→</div>
+      <div class="der-byte val">different subset => different sighash</div>
+    </div>
+    <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px"><div class="der-byte len" style="padding:2px 6px;font-size:11px">C(n,t)</div><span style="font-size:12px;color:var(--txD)">subset count per round</span></div>
+      <div style="display:flex;align-items:center;gap:6px"><div class="der-byte val" style="padding:2px 6px;font-size:11px">log2 C(n,t)</div><span style="font-size:12px;color:var(--txD)">bits of nonce entropy</span></div>
+    </div>
+  </div>
+
+  <div class="orange-box">
+    <div class="orange-label">PAPER PARAMETERS</div>
+    <div class="card-text">Round space: <code>n=120, t=8</code> gives <code>C(120,8) ≈ 2^39.6</code> options per round. Two rounds provide ~<strong>2^79.2</strong> index-space combinations. Those indices are directly readable in Script and form the Binohash digest material.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">IMPORTANT SCOPE</div>
+    <div class="card-text">This relies on <strong>legacy Script semantics</strong> where FindAndDelete exists. SegWit v0 and Tapscript sighashing do not use this same behavior, so this construction targets a narrow script environment.</div>
+  </div>
+</div>
+
+<!-- Slide 3: Protocol Flow -->
+<div class="slide" data-name="Protocol Flow">
+  <h2 class="slide-title">Protocol Flow: Pin, Extract, Extract</h2>
+
+  <div class="step-flow">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Stage 1: Transaction Pinning</div>
+        <div class="step-desc">Use 4 signature puzzles (each <code>W1</code> bits) so mutating the transaction requires expensive re-grinding. This binds later nonce extraction to a specific transaction context.</div>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Stage 2 Round 1: Subset Nonce Extraction</div>
+        <div class="step-desc">Choose a subset of <code>t</code> indices from <code>n</code> embedded signatures. FindAndDelete yields a unique sighash candidate; grind puzzle signature work <code>W2</code> for a valid hit.</div>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Stage 2 Round 2: Independent Extraction</div>
+        <div class="step-desc">Repeat extraction with a second independent signature pool. Concatenate both index sets to form the final digest components.</div>
+      </div>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Output and Verify In Script</div>
+        <div class="step-desc">Script verifies subset membership + puzzle checks and can read the chosen indices directly from witness data. This provides Script-readable transaction digest material without new opcodes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compare-row" style="margin-top:14px">
+    <div class="compare-card">
+      <div class="compare-label" style="color:var(--gn)">SECURITY (PAPER TARGET)</div>
+      <div class="card-text" style="font-size:14px">With <code>W1=W2=42</code> and two rounds, the paper reports roughly <strong>83-84 bits collision resistance</strong> and ~<strong>44.6 bits</strong> honest work.</div>
+    </div>
+    <div class="compare-card">
+      <div class="compare-label" style="color:var(--yl)">COST PROFILE</div>
+      <div class="card-text" style="font-size:14px">Large/complex legacy script, significant grinding, and non-standard relay profile. It is a feasibility result, not a wallet-friendly covenant primitive.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Worked Example -->
+<div class="slide" data-name="Worked Example">
+  <h2 class="slide-title">Worked Example: Toy Two-Round Binohash</h2>
+  <p class="subtitle">Toy parameters for intuition: <code>n=6, t=2</code> per round (not secure)</p>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">TOY SETUP</div>
+    <div class="card-text">Each round selects <strong>2 indices out of 6</strong>. That gives <code>C(6,2)=15</code> possible subsets (~3.91 bits) per round. Two rounds give <code>15 × 15 = 225</code> combinations (~7.81 bits total).</div>
+  </div>
+
+  <div class="der-diagram" style="padding:18px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);margin-bottom:14px;letter-spacing:.04em">ROUND OUTPUTS (TOY)</div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:8px 10px;background:rgba(247,147,26,.05);border-radius:6px;border:1px solid rgba(247,147,26,.15)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);width:64px">Round 1</div>
+      <div class="sig-bit one" style="width:22px;height:22px;font-size:12px">i</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txM);flex:1">selected subset: <span style="color:var(--or);font-weight:700">{1,4}</span> from pool A</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--pu);font-weight:600;width:90px;text-align:right">15 options</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:8px 10px;background:rgba(59,130,246,.04);border-radius:6px;border:1px solid rgba(59,130,246,.12)">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD);width:64px">Round 2</div>
+      <div class="sig-bit zero" style="width:22px;height:22px;font-size:12px">i</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txM);flex:1">selected subset: <span style="color:var(--bl);font-weight:700">{0,5}</span> from pool B</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--pu);font-weight:600;width:90px;text-align:right">15 options</div>
+    </div>
+
+    <div style="border-top:1px solid var(--bd);padding-top:12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD)">TOY DIGEST MATERIAL:</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--or);font-weight:700">[01,04 | 00,05]</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txD)">space = 225 = 2^7.81</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">SCRIPT SHAPE (HIGH LEVEL)</div>
+    <div class="script-block">
+<span class="comment">// Round j: select subset indices with OP_ROLL</span>
+<span class="comment">// OP_CHECKMULTISIGVERIFY triggers FindAndDelete-based sighash variation</span>
+<span class="comment">// Then verify puzzle work for this round:</span>
+<span class="op">OP_SIZE</span> <span class="kw">&lt;target_len&gt;</span> <span class="op">OP_EQUALVERIFY</span> <span class="kw">&lt;puzzle_pk_j&gt;</span> <span class="op">OP_CHECKSIGVERIFY</span>
+<span class="comment">// Repeat for round 2, then use concatenated indices as Binohash output</span>
+    </div>
+  </div>
+
+  <div class="orange-box">
+    <div class="orange-label">PRODUCTION-SCALE NUMBERS (PAPER)</div>
+    <div class="card-text"><code>n=120, t=8</code> per round gives ~<code>2^39.6</code> space per round (~<code>2^79.2</code> two-round). Combined with Stage-1 pinning work, this reaches ~<strong>83-84 bits</strong> collision resistance in the paper's baseline configuration.</div>
+  </div>
+</div>
+
+<!-- Slide 5: Implications -->
+<div class="slide" data-name="Implications">
+  <h2 class="slide-title">What This Enables</h2>
+
+  <div class="green-box">
+    <div class="green-label">COVENANTS WITHOUT SOFT FORKS</div>
+    <div class="card-text">If Script can derive transaction-bound digest material, it can <strong>enforce committed transaction structure</strong>. That is the covenant direction Binohash points to. The mainnet PoC shows this is possible today under constrained, non-standard legacy conditions.</div>
+  </div>
+
+  <div class="enables-grid">
+    <div class="enable-card" style="border-color:var(--or)">
+      <div class="enable-title" style="color:var(--or)">Vaults</div>
+      <div class="enable-desc">Time-locked withdrawal patterns where coins must go to a staging address first, enabling cancellation of unauthorized spends.</div>
+    </div>
+    <div class="enable-card" style="border-color:var(--bl)">
+      <div class="enable-title" style="color:var(--bl)">State Machines</div>
+      <div class="enable-desc">Enforce transaction chains — each output commits to the next valid state, enabling on-chain protocols and contracts.</div>
+    </div>
+    <div class="enable-card" style="border-color:var(--gn)">
+      <div class="enable-title" style="color:var(--gn)">Bridge Constructions</div>
+      <div class="enable-desc">Cross-chain bridges that can verify Bitcoin transaction properties inside Script, relevant to the BitVM ecosystem.</div>
+    </div>
+    <div class="enable-card" style="border-color:var(--pu)">
+      <div class="enable-title" style="color:var(--pu)">Spending Conditions</div>
+      <div class="enable-desc">Restrict outputs to specific addresses or amounts — "these coins can only go to address X with value Y."</div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">PRACTICAL LIMITATIONS</div>
+    <div class="card-text">The paper's baseline construction is still heavy: roughly <strong>8 kB locking script</strong> (including about 240 minimum-sized signatures + 240 HASH160 commitments) and a transaction around <strong>~10 kB</strong>. It works, but is expensive and non-standard.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">PROVEN ON MAINNET</div>
+    <div class="card-text">Robin Linus published a <strong>mainnet proof-of-concept transaction</strong> demonstrating a reduced Binohash instance in production (4-byte output). It validates the protocol mechanics and Script readability of the derived output.</div>
+    <div class="links">
+      <a href="https://mempool.space/tx/203d82a95ac621439e4f35e5d59476e3058579482fe5396244c3b6a36ab95f30" target="_blank">View proof-of-concept tx on mempool.space &rarr;</a>
+      <a href="https://robinlinus.com/binohash.pdf" target="_blank">Read the full paper &rarr;</a>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">MARA SLIPSTREAM SUBMISSION</div>
+    <div class="card-text">The proof-of-concept transaction is <strong>highly non-standard</strong> and would be rejected by default mempool relay policy. It was submitted through <strong>MARA's Slipstream</strong> service, which allows miners to accept non-standard transactions directly. MARA's node was specifically configured to accept this transaction. This highlights an important nuance: non-standard &ne; invalid. The tx is fully consensus-valid, just not relayed by default policy.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">INTERACTIVE EDUCATIONAL SITE</div>
+    <div class="card-text">An interactive educational site has been created to help visualize how Binohash works step by step, including signature-puzzle grinding and protocol flow.</div>
+    <div class="links">
+      <a href="https://binohash.magicinternetmath.com/#/" target="_blank" style="color:var(--bl)">binohash.magicinternetmath.com &rarr;</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">ROBIN LINUS PATTERN</div>
+    <div class="card-text">This follows the same creative DNA as <strong>BitVM</strong> — finding unexpected capabilities hidden in Bitcoin's existing rules. Rather than waiting for new opcodes, Linus exploits what already exists. BitVM used hash locks and Taproot composition; Binohash combines FindAndDelete subset extraction with signature puzzles.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">IN HIS OWN WORDS</div>
+    <div class="card-text" style="font-style:italic">"I hope Core Devs will hate Binohash so much, they will finally get their shit together and enable a softfork."</div>
+    <div class="card-text" style="margin-top:8px"><strong>&mdash; Robin Linus</strong>. The subtext: Binohash is intentionally ugly. It works, but a purpose-built opcode (OP_CTV, OP_CAT) would be orders of magnitude more efficient. The proof of concept is a provocation &mdash; demonstrating demand for introspection primitives.</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>White Noise — Secure Messaging over Nostr — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:#b36a0f;--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.badge{padding:3px 12px;background:var(--cyG);border:1px solid var(--cy);border-radius:16px;color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer}.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto}
+.si{max-width:660px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.st{font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px}
+.cl{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.ct{color:var(--txM);font-size:15px;line-height:1.65}.ct strong{color:var(--tx)}.ct code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cy);background:var(--cyD);padding:2px 6px;border-radius:4px}
+.box{border-radius:8px;padding:14px 18px;margin-bottom:12px}.box .bl{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cols{display:flex;gap:12px}.cols>div{flex:1}
+
+/* Protocol flow diagram */
+.flow{display:flex;align-items:center;justify-content:center;gap:0;margin:16px 0 12px;flex-wrap:wrap}
+.flow-node{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;text-align:center;min-width:100px}
+.flow-node .fn-label{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.04em;margin-bottom:4px}
+.flow-node .fn-desc{color:var(--txM);font-size:13px;line-height:1.4}
+.flow-arrow{font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--txD);padding:0 6px;flex-shrink:0}
+
+/* Comparison table */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.cmp-cell{background:var(--sf);padding:10px 12px;font-size:14px;line-height:1.5}
+.cmp-cell.hdr{background:var(--sf2);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--txD)}
+.cmp-cell .good{color:var(--gn)}.cmp-cell .bad{color:var(--rd)}.cmp-cell .mid{color:var(--yl)}
+
+/* Evolution timeline */
+.evo{display:flex;flex-direction:column;gap:0;margin:8px 0}
+.evo-item{display:flex;gap:14px;align-items:flex-start}
+.evo-dot-col{display:flex;flex-direction:column;align-items:center;min-width:16px;padding-top:3px}
+.evo-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.evo-line{width:2px;flex:1;min-height:20px;background:var(--bd);margin-top:4px}
+.evo-body{padding-bottom:14px}
+.evo-title{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;margin-bottom:3px}
+.evo-text{color:var(--txM);font-size:14px;line-height:1.5}
+
+/* Stat row */
+.stat-row{display:flex;gap:10px;margin-bottom:12px}
+.stat-box{flex:1;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center}
+.stat-box .sv{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800}
+.stat-box .sl{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:4px}
+
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer}.nav-btn:disabled{opacity:.4;cursor:default}.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols{flex-direction:column}.flow{flex-direction:column;gap:4px}.flow-arrow{transform:rotate(90deg)}.cmp-grid{grid-template-columns:1fr}.cmp-cell.hdr:not(:first-child){display:none}h2.st{font-size:22px}.stat-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">PRIVACY</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-03/">← Topics</a>
+</div>
+
+<div class="content"><div class="si">
+
+<!-- Slide 1: The Problem -->
+<div class="slide" data-name="The Problem">
+  <h2 class="st">The Messaging Privacy Problem</h2>
+  <div class="box" style="background:var(--rdG);border:1px solid var(--rd)">
+    <div class="bl" style="color:var(--rd)">THE TRUST TRAP</div>
+    <div class="ct">Every popular messaging app requires you to <strong>trust a central server</strong> with your metadata, social graph, and message delivery. Even end-to-end encrypted apps like Signal require a <strong>phone number for identity</strong> and route all messages through <strong>Signal Foundation servers</strong>. If the server goes down or censors you, you're cut off.</div>
+  </div>
+  <div class="cols">
+    <div class="card">
+      <div class="cl" style="color:var(--rd)">NOSTR DMs TODAY</div>
+      <div class="ct">Current Nostr DMs (<code>NIP-04</code>) use <strong>simple ECDH encryption</strong> with no forward secrecy. If your private key is compromised, <strong>every past message is exposed</strong>. Group chats have no standard at all.</div>
+    </div>
+    <div class="card">
+      <div class="cl" style="color:var(--rd)">SIGNAL'S LIMITS</div>
+      <div class="ct"><strong>Phone number required.</strong> Centralized servers for delivery and key exchange. <strong>US jurisdiction.</strong> No interoperability. Group size limits. If Signal is blocked in your country, you need a VPN.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="cl" style="color:var(--cy)">WHAT WE ACTUALLY NEED</div>
+    <div class="ct">A messaging system with <strong>no central server</strong>, <strong>no phone number identity</strong>, <strong>forward secrecy and post-compromise security</strong> for group messaging, and <strong>censorship resistance</strong> baked in at the transport layer. That's what Marmot + White Noise deliver.</div>
+  </div>
+
+  <a href="marmot-sloth-visualised.html" style="display:block;text-align:center;margin:0;padding:12px 24px;background:var(--cyG);border:1px solid var(--cy);border-radius:10px;color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:.03em;transition:all .2s" onmouseover="this.style.background='rgba(6,182,212,.25)';this.style.color='#fff'" onmouseout="this.style.background='var(--cyG)';this.style.color='var(--cy)'">Interactive Visualisation: How Marmot + White Noise Work &rarr;</a>
+</div>
+
+<!-- Slide 2: Marmot Protocol -->
+<div class="slide" data-name="Marmot Protocol">
+  <h2 class="st">Marmot: MLS Meets Nostr</h2>
+  <div class="card">
+    <div class="cl" style="color:var(--cy)">TWO STANDARDS, ONE PROTOCOL</div>
+    <div class="ct">Marmot combines <strong>MLS (Messaging Layer Security, RFC 9420)</strong> — the IETF standard for efficient, secure group messaging — with <strong>Nostr's decentralized relay network</strong> as the transport layer. The result: cryptographically rigorous group encryption without any central server.</div>
+  </div>
+
+  <div class="flow">
+    <div class="flow-node">
+      <div class="fn-label" style="color:var(--cy)">MLS</div>
+      <div class="fn-desc">Group key<br>management</div>
+    </div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-node">
+      <div class="fn-label" style="color:var(--pu)">NOSTR RELAYS</div>
+      <div class="fn-desc">Decentralized<br>transport</div>
+    </div>
+    <div class="flow-arrow">=</div>
+    <div class="flow-node" style="border-color:var(--cy);background:var(--cyD)">
+      <div class="fn-label" style="color:var(--cy)">MARMOT</div>
+      <div class="fn-desc">Private group<br>messaging</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <div class="cl" style="color:var(--bl)">MLS: THE CRYPTO ENGINE</div>
+      <div class="ct"><strong>RFC 9420</strong> provides a <strong>ratchet tree (TreeKEM)</strong> structure for group key agreement. Instead of pairwise key exchange between every member, keys are arranged in a binary tree. Updating a key requires only <strong>O(log n) operations</strong> instead of O(n), making groups of hundreds or thousands feasible. Every message gets <strong>forward secrecy</strong> and <strong>post-compromise security</strong>.</div>
+    </div>
+    <div class="card">
+      <div class="cl" style="color:var(--pu)">NOSTR: THE TRANSPORT</div>
+      <div class="ct">Nostr relays are <strong>dumb pipes</strong> — they store and forward signed events without understanding the content. Marmot publishes MLS handshake messages and encrypted payloads as <strong>Nostr events</strong>. Any relay can carry them. If one relay censors you, switch to another. <strong>No single point of failure.</strong></div>
+    </div>
+  </div>
+
+  <div class="box" style="background:var(--cyG);border:1px solid var(--cy)">
+    <div class="bl" style="color:var(--cy)">KEY INSIGHT</div>
+    <div class="ct">MLS was designed assuming a <strong>central Delivery Service</strong> for message ordering and a central <strong>Authentication Service</strong> for identity. Marmot replaces both with Nostr: relays handle delivery (with multiple relays for redundancy), and <strong>Nostr keypairs handle identity</strong> — no phone numbers, no emails, no centralized PKI.</div>
+  </div>
+</div>
+
+<!-- Slide 3: White Noise -->
+<div class="slide" data-name="White Noise">
+  <h2 class="st">White Noise: The Implementation</h2>
+
+  <div class="evo">
+    <div class="evo-item">
+      <div class="evo-dot-col"><div class="evo-dot" style="background:var(--txD)"></div><div class="evo-line"></div></div>
+      <div class="evo-body"><div class="evo-title" style="color:var(--txD)">White Noise (original)</div><div class="evo-text">First Flutter app implementing MLS + Nostr messaging. Proved the concept was viable. Now archived at <code>whitenoise-archive</code>.</div></div>
+    </div>
+    <div class="evo-item">
+      <div class="evo-dot-col"><div class="evo-dot" style="background:var(--txM)"></div><div class="evo-line"></div></div>
+      <div class="evo-body"><div class="evo-title" style="color:var(--txM)">Sloth (v3 rewrite)</div><div class="evo-text">Third complete rework of the Flutter app. Added multi-account support, rewrote using <code>flutter_rust_bridge</code> to integrate with the <code>whitenoise-rs</code> Rust crate.</div></div>
+    </div>
+    <div class="evo-item">
+      <div class="evo-dot-col"><div class="evo-dot" style="background:var(--cy);box-shadow:0 0 8px var(--cy)"></div></div>
+      <div class="evo-body"><div class="evo-title" style="color:var(--cy)">White Noise (current)</div><div class="evo-text"><strong style="color:var(--tx)">Flutter/Dart frontend + Rust cryptographic core.</strong> Sloth rewrite renamed back to White Noise. Uses Marmot protocol with OpenMLS + Nostr. Available at <a href="https://whitenoise.chat" target="_blank" style="color:var(--cy)">whitenoise.chat</a>.</div></div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="sv" style="color:var(--cy)">MLS</div>
+      <div class="sl">RFC 9420 COMPLIANT</div>
+    </div>
+    <div class="stat-box">
+      <div class="sv" style="color:var(--pu)">Rust</div>
+      <div class="sl">CRYPTO CORE</div>
+    </div>
+    <div class="stat-box">
+      <div class="sv" style="color:var(--gn)">0</div>
+      <div class="sl">CENTRAL SERVERS</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cl" style="color:var(--cy)">HOW IT WORKS</div>
+    <div class="ct">White Noise uses your <strong>Nostr keypair</strong> as your identity. To start a conversation, you create an MLS group and publish <code>KeyPackage</code> bundles to Nostr relays. Other users fetch your key packages, create <code>Welcome</code> messages, and the group ratchet tree is established — all through Nostr events. Messages are encrypted with the group's current epoch secret and published as Nostr events that only group members can decrypt.</div>
+  </div>
+
+  <div class="box" style="background:var(--puG);border:1px solid var(--pu)">
+    <div class="bl" style="color:var(--pu)">MARMOT PROTOCOL LAYER</div>
+    <div class="ct">Marmot sits between MLS and Nostr, handling the translation: <strong>MLS handshake messages become signed Nostr events</strong>. It manages relay selection, message ordering guarantees, key package distribution, and group state synchronization — all the complexity that makes decentralized MLS actually work.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Why It Matters -->
+<div class="slide" data-name="Why It Matters">
+  <h2 class="st">Why This Matters for Bitcoin</h2>
+
+  <div class="cmp-grid">
+    <div class="cmp-cell hdr">PROPERTY</div>
+    <div class="cmp-cell hdr">SIGNAL</div>
+    <div class="cmp-cell hdr">WHITE NOISE</div>
+    <div class="cmp-cell" style="color:var(--txM)">Identity</div>
+    <div class="cmp-cell"><span class="bad">Phone number</span></div>
+    <div class="cmp-cell"><span class="good">Nostr keypair</span></div>
+    <div class="cmp-cell" style="color:var(--txM)">Server</div>
+    <div class="cmp-cell"><span class="bad">Signal Foundation</span></div>
+    <div class="cmp-cell"><span class="good">Any Nostr relay</span></div>
+    <div class="cmp-cell" style="color:var(--txM)">Forward secrecy</div>
+    <div class="cmp-cell"><span class="good">Yes (1:1)</span></div>
+    <div class="cmp-cell"><span class="good">Yes (groups too)</span></div>
+    <div class="cmp-cell" style="color:var(--txM)">Group encryption</div>
+    <div class="cmp-cell"><span class="mid">Sender keys</span></div>
+    <div class="cmp-cell"><span class="good">MLS TreeKEM</span></div>
+    <div class="cmp-cell" style="color:var(--txM)">Censorship resistant</div>
+    <div class="cmp-cell"><span class="bad">No</span></div>
+    <div class="cmp-cell"><span class="good">Yes (relay diversity)</span></div>
+    <div class="cmp-cell" style="color:var(--txM)">Open protocol</div>
+    <div class="cmp-cell"><span class="mid">Source available</span></div>
+    <div class="cmp-cell"><span class="good">Fully open</span></div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <div class="cl" style="color:var(--or)">SOVEREIGNTY</div>
+      <div class="ct">Bitcoin is about <strong>removing trusted third parties</strong>. If your money doesn't need a bank, why does your messaging need a phone company and a foundation? <strong>Same keypair philosophy</strong> — you control your identity, your keys, your communication.</div>
+    </div>
+    <div class="card">
+      <div class="cl" style="color:var(--gn)">CENSORSHIP RESISTANCE</div>
+      <div class="ct">Coordinating Bitcoin transactions, multisig setups, or community governance requires <strong>private, reliable communication</strong>. A messaging system that can be shut down by blocking one domain is a single point of failure for everything built on top of it.</div>
+    </div>
+  </div>
+
+  <div class="box" style="background:var(--cyG);border:1px solid var(--cy)">
+    <div class="bl" style="color:var(--cy)">THE BIGGER PICTURE</div>
+    <div class="ct">White Noise isn't just "another chat app." It's a demonstration that <strong>MLS group encryption can work on decentralized infrastructure</strong>. The same pattern — IETF-grade cryptography on censorship-resistant transport — could be applied to any communication need in the Bitcoin ecosystem: <strong>multisig coordination, Lightning channel negotiation, coinjoin coordination, or DAO governance</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="cl" style="color:var(--txD)">LINKS</div>
+    <div class="ct">
+      <a href="https://www.whitenoise.chat/" target="_blank" style="color:var(--cy)">whitenoise.chat</a><br>
+      <a href="https://github.com/marmot-protocol/whitenoise" target="_blank" style="color:var(--cy)">github.com/marmot-protocol/whitenoise</a> (Flutter app)<br>
+      <a href="https://github.com/marmot-protocol/whitenoise-rs" target="_blank" style="color:var(--cy)">github.com/marmot-protocol/whitenoise-rs</a> (Rust core)<br>
+      <a href="https://github.com/marmot-protocol/marmot" target="_blank" style="color:var(--cy)">github.com/marmot-protocol/marmot</a> (protocol spec)<br>
+      <a href="https://www.rfc-editor.org/rfc/rfc9420.html" target="_blank" style="color:var(--cy)">RFC 9420 — Messaging Layer Security</a>
+    </div>
+  </div>
+</div>
+
+</div></div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">← Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');const names=Array.from(slides).map(s=>s.dataset.name);let cur=0;
+function render(){slides.forEach((s,i)=>s.classList.toggle('active',i===cur));document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;document.getElementById('prevBtn').disabled=cur===0;const nb=document.getElementById('nextBtn');nb.disabled=cur===slides.length-1;nb.className=cur===slides.length-1?'nav-btn':'nav-btn next'}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}function goTo(i){cur=i;render()}document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-03/'});render();
+</script>
+</body>
+</html>
