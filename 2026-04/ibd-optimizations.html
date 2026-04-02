@@ -121,7 +121,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
     </div>
     <div class="card" style="margin-bottom:0">
       <div class="card-label" style="color:var(--cy)">BULK SERIALIZATION</div>
-      <div class="card-text">PR <code>#31551</code>: Buffered XOR obfuscation for block I/O. Reads <strong>27% faster</strong>, writes <strong>290% faster</strong>. ~6% IBD improvement overall.</div>
+      <div class="card-text">PR <code>#31551</code>: Buffered block/undo serialization for block I/O. Microbenchmarks showed reads <strong>~30% faster</strong> and writes <strong>~168% faster</strong> on macOS, with <strong>~7% faster IBD</strong> overall in GCC full-sync tests.</div>
     </div>
   </div>
 </div>

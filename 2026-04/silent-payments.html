@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silent Payments — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--tlG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--tlD);border:1px solid var(--tl);border-radius:16px;color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--tl);background:var(--tlG);color:var(--tl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--tl),#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--tl);background:var(--tlD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.teal-box{background:var(--tlG);border:1px solid rgba(20,184,166,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.teal-label{color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:14px}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(28,36,50,.5);color:var(--txM)}
+.tbl td strong{color:var(--tx)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .highlight{background:var(--tlD)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:4px;letter-spacing:.04em}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--tl);background:var(--tlG);color:var(--tl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr}.cols{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">PRIVACY</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-04/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: What Are Silent Payments -->
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Silent Payments (BIP-352)</h2>
+  <p class="subtitle">"The first serious contender to improve address derivation since HD wallets" — Craig Raw</p>
+
+  <div class="teal-box">
+    <div class="teal-label">WHAT IS IT</div>
+    <div class="card-text">A protocol that lets anyone pay you at a <strong>static, reusable address</strong> — but every payment generates a <strong>unique taproot output</strong> on chain. No address reuse, no interaction required, no notification transaction. Uses <strong>ECDH</strong> between the sender's input keys and the receiver's published scan + spend keys to derive fresh outputs for every payment.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--tl)">THE ANALOGY</div>
+      <div class="card-text"><strong>HD wallets</strong> (BIP-32, 2013) solved address <em>management</em> — derive many keys from one seed.<br><br><strong>Silent payments</strong> solve address <em>distribution</em> — derive unique outputs from one published key. Both are "many from one" but in opposite directions.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--bl)">DETAILS</div>
+      <div class="card-text"><strong>BIP:</strong> 352<br><strong>Authors:</strong> josibake, Ruben Somsen, Sebastian Falbesoner<br><strong>Address prefix:</strong> <code>sp1</code><br><strong>Key pair:</strong> Scan key + spend key<br><strong>Output type:</strong> Taproot (P2TR)<br><strong>On-chain footprint:</strong> Indistinguishable from normal taproot</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: vs BIP-47 -->
+<div class="slide" data-name="vs BIP-47">
+  <h2 class="slide-title">SP vs BIP-47 Payment Codes</h2>
+
+  <table class="tbl">
+    <tr><th></th><th>BIP-47</th><th>BIP-352 (SP)</th></tr>
+    <tr><td><strong>Notification tx</strong></td><td>Required (on-chain)</td><td><strong style="color:var(--gn)">None</strong></td></tr>
+    <tr><td><strong>Sender linkability</strong></td><td>Notification links sender to receiver</td><td><strong style="color:var(--gn)">No link</strong></td></tr>
+    <tr><td><strong>On-chain metadata</strong></td><td>OP_RETURN in notification</td><td><strong style="color:var(--gn)">Zero</strong></td></tr>
+    <tr><td><strong>Receiver scanning</strong></td><td>Only from known senders</td><td>Must scan <strong>all</strong> txs</td></tr>
+    <tr><td><strong>Output type</strong></td><td>P2PKH/P2WPKH</td><td><strong>Taproot (P2TR)</strong></td></tr>
+    <tr class="highlight"><td><strong>Wallet adoption</strong></td><td>3+ wallets in active use</td><td><strong style="color:var(--gn)">10+ wallets in ~3 years</strong></td></tr>
+  </table>
+
+  <div class="info-box">
+    <div class="info-label">THE TRADE-OFF</div>
+    <div class="card-text">SP's receiver must scan every transaction to detect payments — computationally expensive for full nodes, and challenging for light clients. This is the price paid for zero on-chain footprint. <strong>Silentium</strong> is an experimental light client exploring server-assisted scanning while aiming to preserve output privacy.</div>
+  </div>
+</div>
+
+<!-- Slide 3: Wallet Support -->
+<div class="slide" data-name="Adoption">
+  <h2 class="slide-title">Wallet Adoption</h2>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--gn)">10+</div>
+      <div class="stat-label">WALLETS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--tl)">~3yr</div>
+      <div class="stat-label">SINCE BIP</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">Draft</div>
+      <div class="stat-label">CORE STATUS</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--tl)"></div>
+    <div class="card-label" style="color:var(--tl)">SHIPPING NOW</div>
+      <div class="card-text"><strong>Sparrow</strong> — send support (v2.3.0, Oct 2025), HW wallet send (v2.4.0, Feb 2026). Craig Raw also authored <strong>BIP-392</strong> (SP output script descriptors, assigned Feb 2026) to bring silent payments into the descriptor framework.<br><br><strong>Cake Wallet</strong> — early mobile Silent Payments support (v4.18.0, May 2024). <strong>BitBox02</strong> — firmware send support (Sep 2024) and app support (Oct 2024). <strong>Nunchuk</strong> — send support (Mar 2026). Also: BlueWallet, Wasabi, Dana, BlindBit Desktop, Shakesco.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">BITCOIN CORE — NOT YET</div>
+    <div class="card-text">All 8 prerequisite refactoring PRs are merged, but the core implementation (<strong>PR #28122</strong>), sending (#28201), and receiving (#32966) remain in <strong>draft</strong>. The libsecp256k1 module (PR #1765) is a key blocker. Third-party wallets have outpaced Core — a reversal of the usual pattern.</div>
+  </div>
+</div>
+
+<!-- Slide 4: The Bigger Picture -->
+<div class="slide" data-name="Vision">
+  <h2 class="slide-title">The Bigger Picture</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--tl)"></div>
+    <div class="card-label" style="color:var(--tl)">SP + BIP-353 = PAY USER@DOMAIN</div>
+    <div class="card-text">BIP-353 maps <strong>human-readable names</strong> to payment instructions via DNS. Combined with silent payments: publish <code>user@domain.com</code>, anyone can pay you, every payment generates a unique address, no server interaction needed. This is the <strong>"pay to email" UX</strong> that Bitcoin has always lacked — without custodial intermediaries.</div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">CRAIG RAW'S THESIS</div>
+    <div class="card-text"><em>"Silent payments is not just a new approach to static payment codes. It's the first serious contender to improve the address derivation system since HD wallets in 2013."</em><br><br>HD wallets (2013) were a paradigm shift from single keys. Silent payments could be a similar leap — making <strong>privacy-preserving static addresses</strong> the default rather than the exception. With 10+ wallets already shipping, adoption has been unusually fast for a new payment protocol.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki" target="_blank">BIP-352 Full Text →</a>
+    <a href="https://silentpayments.xyz/" target="_blank">silentpayments.xyz — Explainer →</a>
+    <a href="https://bitcoinops.org/en/topics/silent-payments/" target="_blank">Bitcoin Optech: Silent Payments →</a>
+    <a href="https://x.com/craigraw/status/2039351616550134058" target="_blank">Craig Raw's Tweet →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-04/'});
+render();
+</script>
+</body>
+</html>

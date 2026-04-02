@@ -113,18 +113,18 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   <p class="subtitle">Multi-device stateful PQ signatures &mdash; 2.5 KB, any device from the same seed</p>
 
   <div class="purple-box">
-    <div class="purple-label">WHAT JONAS NICK ANNOUNCED (MARCH 30)</div>
-    <div class="card-text"><strong>SHRIMPS</strong> extends the SHRINCS family to support <strong>multiple devices loaded from the same seed</strong>. Each device can independently create signatures without coordinating state. Signatures are <strong>2.5 KB</strong> &mdash; 3&times; smaller than the NIST standard SLH-DSA.</div>
+    <div class="purple-label">WHAT THE DELVING POST SHOWS (MARCH 27)</div>
+    <div class="card-text"><strong>SHRIMPS</strong> extends the SHRINCS family to support <strong>multiple devices loaded from the same seed</strong>. With a conservative bound of <strong>1,024 device initializations</strong>, the compact path yields <strong>~2,564-byte signatures</strong> at 128-bit security &mdash; about 3&times; smaller than SLH-DSA.</div>
   </div>
 
   <div class="cols">
     <div class="card" style="margin-bottom:0">
-      <div class="card-label" style="color:var(--gn)">HOW (LIKELY)</div>
-      <div class="card-text">Each device gets a <strong>disjoint subset of one-time signature leaves</strong> from the Merkle tree, derived deterministically from seed + device index. No two devices can collide. Tradeoff: deeper tree = larger authentication paths = larger sigs.</div>
+      <div class="card-label" style="color:var(--gn)">HOW IT WORKS</div>
+      <div class="card-text">SHRIMPS combines <strong>two SPHINCS+ instances under one public key</strong>: a compact instance sized for a bounded number of device initializations, and a large fallback instance. A newly initialized device can use the compact path, while later signatures can fall back safely without any cross-device coordination.</div>
     </div>
     <div class="card" style="margin-bottom:0">
-      <div class="card-label" style="color:var(--bl)">WHY 2.5 KB</div>
-      <div class="card-text">Roughly <strong>8&times; larger than SHRINCS</strong> (~324 B). Consistent with needing ~3 additional tree levels to accommodate device partitioning in the Merkle authentication path. The price of multi-device support.</div>
+      <div class="card-label" style="color:var(--bl)">WHY ~2.5 KB</div>
+      <div class="card-text">Bitcoin keys usually sign only a small number of times. With <code>n_dev = 2^10</code> and one compact-path signature per device, SHRIMPS stays around <strong>2.5 KB</strong> while still supporting many backup and secondary devices from the same seed.</div>
     </div>
   </div>
 
@@ -143,7 +143,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
       <tr><th>Scheme</th><th>Sig Size</th><th>Multi-Device</th><th>Assumption</th></tr>
       <tr><td><strong>ECDSA</strong> (current)</td><td>72 B</td><td>Yes (stateless)</td><td>ECDLP (not PQ)</td></tr>
       <tr><td><strong>SHRINCS</strong></td><td>324 B</td><td>No</td><td>Hash</td></tr>
-      <tr class="highlight"><td><strong>SHRIMPS</strong></td><td>2,500 B</td><td>Yes</td><td>Hash</td></tr>
+      <tr class="highlight"><td><strong>SHRIMPS</strong></td><td>~2,564 B</td><td>Yes</td><td>Hash</td></tr>
       <tr><td>ML-DSA (Dilithium)</td><td>2,420 B</td><td>Yes (stateless)</td><td>Lattice</td></tr>
       <tr><td>FN-DSA (FALCON)</td><td>666 B</td><td>Yes (stateless)</td><td>Lattice</td></tr>
       <tr><td>SLH-DSA (SPHINCS+)</td><td>7,856 B</td><td>Yes (stateless)</td><td>Hash</td></tr>
@@ -181,12 +181,13 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   <div class="card">
     <div class="card-accent" style="background:var(--or)"></div>
     <div class="card-label" style="color:var(--or)">EARLY DAYS</div>
-    <div class="card-text">SHRIMPS was announced March 30 &mdash; <strong>no paper or spec published yet</strong>. The construction details above are inferred from the SHRINCS foundation and the tweet's claims. Expect the full details at OPNEXT and in a forthcoming paper.</div>
+    <div class="card-text">Jonas Nick published a detailed <strong>Delving Bitcoin writeup on March 27</strong> covering the construction, parameter choices, and example sizes. A formal paper may still follow, but the mechanism above now comes from that post rather than inference from a tweet.</div>
   </div>
 
   <div class="links">
     <a href="https://eprint.iacr.org/2025/2203" target="_blank">Paper: Hash-based Signatures for Bitcoin (SHRINCS) &rarr;</a>
     <a href="https://delvingbitcoin.org/t/shrincs-324-byte-stateful-post-quantum-signatures-with-static-backups/2158" target="_blank">Delving Bitcoin: SHRINCS discussion &rarr;</a>
+    <a href="https://delvingbitcoin.org/t/shrimps-2-5-kb-post-quantum-signatures-across-multiple-stateful-devices/2355" target="_blank">Delving Bitcoin: SHRIMPS discussion &rarr;</a>
     <a href="/2026-03/pq-signatures-liquid.html">March: PQ Signatures on Liquid &rarr;</a>
   </div>
 </div>

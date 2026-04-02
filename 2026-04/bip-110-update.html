@@ -105,7 +105,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   <div class="stat-row">
     <div class="stat">
       <div class="stat-num" style="color:var(--rd)">3,312</div>
-      <div class="stat-label">"Good" BIP-110 nodes</div>
+      <div class="stat-label">IPv4 BIP-110 nodes</div>
     </div>
     <div class="stat">
       <div class="stat-num" style="color:var(--yl)">3,058</div>
@@ -113,14 +113,14 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
     </div>
     <div class="stat">
       <div class="stat-num" style="color:var(--gn)">254</div>
-      <div class="stat-label">Genuine nodes</div>
+      <div class="stat-label">Genuine IPv4 nodes</div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-accent" style="background:var(--bl)"></div>
     <div class="card-label" style="color:var(--bl)">METHODOLOGY</div>
-    <div class="card-text">Will Clark (Bitcoin Core contributor) ran <strong>dnsseedrs</strong>, an independent network crawler. Of 3,312 listening + connectable BIP-110 nodes, <strong>3,058 cluster into just 12 /16 IP ranges</strong> (~255 nodes each) &mdash; suggesting single-operator control across datacenter IP blocks.</div>
+    <div class="card-text">Will Clark (Bitcoin Core contributor) ran <strong>dnsseedrs</strong>, an independent network crawler. Among the <strong>3,312 IPv4 BIP-110 nodes</strong>, <strong>3,058 cluster into just 12 /16 IP ranges</strong> (~255 nodes each) &mdash; suggesting single-operator control across datacenter IP blocks. The full "good" BIP-110 count is higher once Tor and IPv6 nodes are included.</div>
   </div>
 
   <div class="green-box">
@@ -130,7 +130,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
 
   <div class="signal-bar">
     <div class="big" style="color:var(--rd)">92.3%</div>
-    <div class="sub">of "BIP-110 nodes" are likely fake</div>
+    <div class="sub">of IPv4 BIP-110 nodes are likely Sybils</div>
   </div>
 </div>
 
@@ -141,24 +141,24 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
 
   <div class="card">
     <div class="card-accent" style="background:var(--or)"></div>
-    <div class="card-label" style="color:var(--or)">THE ONLY SIGNALING BLOCK</div>
-    <div class="card-text"><strong>Block 938,903</strong> (March 1) &mdash; mined by Bob Burnett's <strong>Barefoot Mining</strong> on Ocean Pool. Burnett builds his own block templates via Ocean's DATUM protocol. Ocean as a pool did not signal. This was a solo miner running off stranded natural gas at a "wild horse" site.</div>
+    <div class="card-label" style="color:var(--or)">3 BLOCKS IN CURRENT PERIOD</div>
+    <div class="card-text">Period 467 (current): <strong>3 of 1,840 blocks</strong> have signaled BIP-110 (0.2%). The signalers: <strong>OCEAN (234 Alberta)</strong> &mdash; 2 blocks, and <strong>OCEAN (Barefoot Mining)</strong> &mdash; 1 block (Bob Burnett, who builds his own templates via Ocean's DATUM protocol). Previous period (466): <strong>0 of 2,016</strong>. Every major pool &mdash; Foundry, AntPool, F2Pool, ViaBTC, Marathon, Luxor &mdash; shows <strong>0% signaling</strong>.</div>
   </div>
 
   <div class="cols">
     <div class="card" style="margin-bottom:0">
       <div class="card-label" style="color:var(--rd)">NO MAJOR POOL SUPPORT</div>
-      <div class="card-text">F2Pool co-founder Wang Chun publicly condemned BIP-110. Adam Back called it <em>"an intentional literal downgrade"</em> and a <em>"rug-pull."</em> Foundry (~32%), Antpool (~16%), ViaBTC (~10%) &mdash; silence.</div>
+      <div class="card-text">F2Pool co-founder Wang Chun publicly condemned BIP-110. Adam Back called it <em>"an intentional literal downgrade"</em> and a <em>"rug-pull."</em> Foundry (581 blocks, 0%), AntPool (337, 0%), F2Pool (197, 0%), ViaBTC (175, 0%) &mdash; all silent.</div>
     </div>
     <div class="card" style="margin-bottom:0">
-      <div class="card-label" style="color:var(--yl)">PREDICTION MARKETS</div>
-      <div class="card-text">Predyx prices BIP-110 activation by Sept 1, 2026 at <strong>well below 10%</strong>. Activation requires sustained 55% miner signaling. Current signaling: <strong>effectively 0%</strong>.</div>
+      <div class="card-label" style="color:var(--yl)">THE MATH</div>
+      <div class="card-text">Activation requires <strong>55% of blocks</strong> in a 2,016-block period. Current: <strong>0.2%</strong>. The only signalers are solo miners on Ocean with custom templates. At this rate, activation is mathematically impossible.</div>
     </div>
   </div>
 
   <div class="signal-bar" style="margin-top:12px">
-    <div class="big" style="color:var(--txD)">~0%</div>
-    <div class="sub">miner signaling &middot; 55% required &middot; ~5 months until deadline</div>
+    <div class="big" style="color:var(--rd)">0.2%</div>
+    <div class="sub">3 / 1,840 blocks &middot; 55% threshold &middot; all from Ocean solo miners</div>
   </div>
 </div>
 
@@ -176,7 +176,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
     <div class="card-label" style="color:var(--rd)">THE CONVERGENCE</div>
     <div class="card-text">
       &bull; <strong>Fake nodes</strong> &mdash; 92% of BIP-110 nodes are suspected Sybils<br>
-      &bull; <strong>Zero real miner support</strong> &mdash; one solo miner block in 4 months<br>
+      &bull; <strong>No major pool support</strong> &mdash; 3 solo-miner blocks in the current period<br>
       &bull; <strong>Consensus bugs</strong> &mdash; cache poisoning bug found in Knots implementation<br>
       &bull; <strong>Bypassable rules</strong> &mdash; 66KB TIFF embedded without OP_RETURN or Taproot<br>
       &bull; <strong>Prominent defections</strong> &mdash; former supporters walking away<br>
@@ -193,6 +193,39 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
     <a href="https://willcl-ark.github.io/dnsseedrs/#syb" target="_blank">willcl_ark Sybil Dashboard &rarr;</a>
     <a href="https://blog.lopp.net/a-laymans-guide-to-bip-110/" target="_blank">Lopp: A Layman's Guide to BIP-110 &rarr;</a>
     <a href="/2026-03/bip-110-update.html">March BIP-110 Update (bugs, defections, OP_RETURN war) &rarr;</a>
+  </div>
+</div>
+
+<!-- Slide 5: ProductionReady -->
+<div class="slide" data-name="ProductionReady">
+  <h2 class="slide-title">ProductionReady Client</h2>
+  <p class="subtitle">The OP_RETURN war escalates: a 501(c)(3) funding an alternative Bitcoin client</p>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">WHAT IS IT</div>
+    <div class="card-text">A US public charity launched <strong>March 23, 2026</strong>. Board: <strong>Jimmy Song</strong>, <strong>Samson Mow</strong>, <strong>Parker Lewis</strong>, <strong>John W. Ratcliff</strong>. Mission: fund an alternative Bitcoin client built on Core's codebase that <strong>reverses the burden of proof</strong> for changes — modifications require "overwhelming support" before merging. Endgame: <strong>protocol ossification</strong>.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--rd)">BORN FROM THE OP_RETURN WAR</div>
+      <div class="card-text">Core v30 removed the 80-byte OP_RETURN limit. Knots surged from ~2% to ~15% of nodes. ProductionReady would <strong>restore the data limit</strong>. On BIP-110: "not expected to be included given the lack of broad user consensus." Same consensus rules as Core — <strong>policy fork, not chain fork</strong>.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--bl)">THE DEBATE</div>
+      <div class="card-text"><strong>For:</strong> Implementation diversity, node operators voting with their feet, checks on Core development process.<br><br><strong>Against:</strong> Board of public figures not protocol devs, Knots already fills the niche, fragments scarce review effort, escalates policy disputes into infrastructure.</div>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">THE BIGGER QUESTION</div>
+    <div class="card-text">If relay policy disagreements spawn competing implementations, what happens during an <em>actual</em> consensus debate? Is this <strong>healthy ecosystem diversification</strong> or the beginning of <strong>political balkanization</strong> of Bitcoin development?</div>
+  </div>
+
+  <div class="links">
+    <a href="https://productionready.org/blog/productionready-launches" target="_blank">ProductionReady Launch Announcement &rarr;</a>
+    <a href="https://jimmysong.substack.com/p/the-case-for-a-conservative-bitcoin" target="_blank">Jimmy Song: The Case for a Conservative Client &rarr;</a>
   </div>
 </div>
 
