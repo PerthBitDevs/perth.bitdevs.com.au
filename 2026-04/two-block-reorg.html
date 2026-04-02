@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2-Block Reorg — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--ylG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--ylD);border:1px solid var(--yl);border-radius:16px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--yl);background:var(--ylG);color:var(--yl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--yl);background:var(--ylD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:4px;letter-spacing:.04em}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.chain-diagram{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:18px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--txM);overflow-x:auto;white-space:pre}
+.chain-diagram .stale{color:var(--rd);opacity:.6}
+.chain-diagram .winner{color:var(--gn)}
+.chain-diagram .label{color:var(--txD);font-size:11px}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--yl);background:var(--ylG);color:var(--yl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr}.cols{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">NETWORK</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-04/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: What Happened -->
+<div class="slide" data-name="Event">
+  <h2 class="slide-title">2-Block Reorg at Height 941,881</h2>
+  <p class="subtitle">March 23, 2026 — a rare-ish fork resolved by Nakamoto consensus</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--yl)">941,881</div>
+      <div class="stat-label">BLOCK HEIGHT</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">2</div>
+      <div class="stat-label">BLOCKS DEEP</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--gn)">7</div>
+      <div class="stat-label">FOUNDRY STREAK</div>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">WHAT HAPPENED</div>
+    <div class="card-text">At ~15:49 UTC, <strong>Foundry USA</strong> and <strong>AntPool</strong> found competing valid blocks within ~12 seconds of each other at height 941,881. The tie persisted into the next block — ViaBTC extended AntPool's chain while Foundry extended its own. Foundry's chain won, making the AntPool + ViaBTC blocks <strong>stale</strong>. Flagged by Bitcoin network researcher <strong>b10c</strong>.</div>
+  </div>
+
+  <div class="chain-diagram"><span class="label">                      CANONICAL CHAIN</span>
+<span class="winner">941,879 ──→ 941,881 ──→ 941,882 ──→ 941,883 ──→ ...</span>
+<span class="label"> Foundry     Foundry     Foundry     Foundry</span>
+<span class="label">                 ↘</span>
+<span class="stale">              941,881' ──→ 941,882'  (stale)</span>
+<span class="label"><span class="stale">              AntPool      ViaBTC</span></span></div>
+</div>
+
+<!-- Slide 2: Why It Happened -->
+<div class="slide" data-name="Cause">
+  <h2 class="slide-title">Why — Not an Attack</h2>
+
+  <div class="green-box">
+    <div class="green-label">NATURAL CONSENSUS BEHAVIOR</div>
+    <div class="card-text">This was <strong>not malicious</strong>. Two pools solved the proof-of-work puzzle nearly simultaneously. Network propagation latency meant some miners heard Foundry's block first and others heard AntPool's. The fork persisted one extra block because neither side had converged yet. <strong>Nakamoto consensus resolved it exactly as designed</strong> — the chain with more cumulative proof-of-work won.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--yl)">CONTRIBUTING FACTORS</div>
+      <div class="card-text"><strong>~12 second gap:</strong> Tight enough that the second block propagated before most miners switched<br><br><strong>~8% difficulty drop:</strong> Recent retarget may have contributed to tighter block timing<br><br><strong>Mining concentration:</strong> Foundry holds &gt;30% of hashrate, increasing streak probability</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-label" style="color:var(--bl)">HOW RARE?</div>
+      <div class="card-text"><strong>1-block reorgs:</strong> Roughly every couple of weeks — routine and expected<br><br><strong>2-block reorgs:</strong> Extremely rare on mainnet — public datasets show only a small handful of confirmed examples<br><br><strong>3+ block reorgs:</strong> Essentially never observed in modern Bitcoin</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: Implications -->
+<div class="slide" data-name="Implications">
+  <h2 class="slide-title">What It Means</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--rd)"></div>
+    <div class="card-label" style="color:var(--rd)">MINING CENTRALIZATION</div>
+    <div class="card-text">Foundry USA mined <strong>7 consecutive blocks</strong> (941,879 through 941,885). Foundry and AntPool together control <strong>nearly half of global hashrate</strong>. While this reorg was benign, the concentration increases the statistical probability of extended block streaks and competing forks. The event reignited discussion about pool dominance and <strong>Stratum V2</strong> adoption for decentralizing block template construction.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">CONFIRMATION SECURITY</div>
+    <div class="card-text"><strong>No double-spend occurred</strong>, but any transaction with only 1 confirmation could have been temporarily displaced. This is a practical reminder that low-confirmation acceptance carries real risk. The standard 6-confirmation guideline for high-value transactions remains sound. Merchants and exchanges accepting 1-conf should take note — especially for Lightning channel opens.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">THE PROTOCOL WORKED</div>
+    <div class="card-text">This is textbook Nakamoto consensus. The network saw two competing chains, miners built on whichever they heard first, and the chain with the most accumulated proof-of-work won within minutes. <strong>Bitcoin price was unaffected</strong>, trading near $71,000 throughout. The protocol did exactly what it was designed to do.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://bnoc.xyz/t/two-block-reorg-at-height-941880/97" target="_blank">BNOC: Technical Discussion →</a>
+    <a href="https://fork.observer/" target="_blank">fork.observer — Live Fork Tracker →</a>
+    <a href="https://b10c.me/observations/" target="_blank">b10c's Network Observations →</a>
+  </div>
+</div>
+
+<!-- Slide 4: Selfish Mining Question -->
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Selfish Mining?</h2>
+  <p class="subtitle">stratum.work saw no Foundry jobs for their winning 941,882 — what gives?</p>
+
+  <div class="warn-box">
+    <div class="warn-label">THE RED FLAG</div>
+    <div class="card-text">b10c noted that <strong>stratum.work</strong> (which monitors pool job distribution) <strong>did not see any stratum jobs from Foundry</strong> mining on their winning block at height 941,882. This raised the question: was Foundry <strong>selfish mining</strong> — withholding blocks and mining privately to gain an advantage?</div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">b10c'S CONCLUSION: PROBABLY NOT</div>
+    <div class="card-text">The fee rewards in the stale blocks were tiny (<strong>0.008 + 0.017 BTC</strong>) — not worth the reputational risk. b10c demonstrated with a Bitcoin Core functional test that normal network relay with geographic distribution can look like coordination. Foundry was likely mining "in one region" while stratum.work was connected to another, explaining the missing job data. Murch: <em>"The natural explanation is plausible… the community tends toward conspiracy theories perhaps a little too enthusiastically."</em></div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">STREAK FREQUENCY ANOMALY</div>
+    <div class="card-text">Analysis by Sorukumar on BNOC showed <strong>7+ block streaks are 3–7× more frequent than hashrate alone predicts</strong>, with Foundry at 3.17× expected frequency. This suggests pools have <strong>structural propagation advantages</strong> — they see their own blocks first and start mining immediately. Not necessarily malicious, but a real centralisation concern.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">HISTORICAL 2-BLOCK REORGS</div>
+    <div class="card-text">From b10c's <code>stale-blocks</code> dataset, confirmed 2-block reorg examples on mainnet include heights <strong>180,804</strong> (2012), <strong>261,198</strong> (2013), <strong>358,998</strong> (2015), <strong>656,477</strong> (2020), <strong>788,686</strong> (2023), and now <strong>941,881</strong> (2026). The last two gaps were <strong>~132k</strong> and <strong>~153k</strong> blocks — roughly <strong>2.5–3 years</strong> apart.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://bnoc.xyz/t/consecutive-block-patterns-dont-match-what-hashrate-predicts/105" target="_blank">BNOC: Block Streak Analysis →</a>
+    <a href="https://stratum.work/height/941882" target="_blank">stratum.work: Height 941,882 →</a>
+    <a href="https://github.com/bitcoin-data/stale-blocks" target="_blank">GitHub: bitcoin-data/stale-blocks →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-04/'});
+render();
+</script>
+</body>
+</html>

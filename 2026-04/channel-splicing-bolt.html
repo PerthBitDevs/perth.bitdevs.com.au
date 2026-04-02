@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channel Splicing BOLT Merged — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.mono{font-family:'JetBrains Mono',monospace}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--cyG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--cyD);border:1px solid var(--cy);border-radius:16px;color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--cy);background:var(--cyG);color:var(--cy);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--cy),#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--cy);background:var(--cyD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:800}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:4px;letter-spacing:.04em}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:14px}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--txD);text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(28,36,50,.5);color:var(--txM)}
+.tbl td strong{color:var(--tx)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl .highlight{background:var(--cyD)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--cy);background:var(--cyG);color:var(--cy)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr}.cols{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">LIGHTNING</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-04/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: What & Why -->
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Channel Splicing BOLT Merged</h2>
+  <p class="subtitle">Resize Lightning channels without closing them — 8 years in the making</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--cy)">~8yr</div>
+      <div class="stat-label">CONCEPT TO SPEC</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--gn)">3/4</div>
+      <div class="stat-label">IMPLS READY</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--or)">1 tx</div>
+      <div class="stat-label">NOT 2</div>
+    </div>
+  </div>
+
+  <div class="cyan-box">
+    <div class="cyan-label">WHAT IS SPLICING</div>
+    <div class="card-text">Spending the current funding transaction to create a <strong>new one with different capacity</strong>, without closing the channel. <strong>Splice-in</strong> adds funds; <strong>splice-out</strong> removes funds to an on-chain address. The channel stays usable throughout — payments keep flowing while the splice tx confirms. Previously, resizing required <strong>two on-chain txs</strong> (close + reopen) and channel downtime.</div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">"DEATH TO ALL SWAPS"</div>
+    <div class="card-text">Splicing replaces submarine swaps for moving funds between on-chain and Lightning. No trusted intermediaries, no double on-chain fees, <strong>predictable feerates</strong> you control directly. Creates <strong>fungibility between on-chain and Lightning bitcoin</strong> — enabling "one balance" wallets where users see unified liquidity. Phoenix wallet already cut fees ~60% using this architecture.</div>
+  </div>
+</div>
+
+<!-- Slide 2: How It Works -->
+<div class="slide" data-name="Protocol">
+  <h2 class="slide-title">How It Works</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">1. QUIESCENCE (STFU)</div>
+    <div class="card-text">Either peer sends <code>stfu</code> (<em>"SomeThing Fundamental is Underway"</em>) to pause the channel. The responder acknowledges after completing any pending HTLCs. This ensures both peers have the <strong>same view of current commitments</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">2. NEGOTIATE & CONSTRUCT</div>
+    <div class="card-text">Initiator sends <code>splice_init</code>, acceptor responds with <code>splice_ack</code>. Using <strong>interactive-tx</strong> (same protocol as dual funding), peers take turns adding inputs and outputs. The existing funding UTXO is always an input. Both sides can batch additional operations — <strong>splice + channel open + on-chain payment in one tx</strong>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--gn)"></div>
+    <div class="card-label" style="color:var(--gn)">3. SIGN, BROADCAST & CONTINUE</div>
+    <div class="card-text">Peers exchange <code>tx_signatures</code> and broadcast the splice. The channel <strong>immediately resumes</strong> — commitment txs are rebuilt for every pending splice simultaneously. After confirmation, peers exchange <code>splice_locked</code> and the new funding output takes over. Supports <strong>RBF</strong> (fee bump if stuck) and <strong>concurrent splices</strong>.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">THE COMPLEXITY</div>
+    <div class="card-text">Multiple splices can be pending at once, each with its own commitment transaction set. Reconnection logic (<code>channel_reestablish</code> extensions) was the most debated part of the spec — synchronizing splice state after disconnection took months of back-and-forth between t-bast and Dusty Daemon.</div>
+  </div>
+</div>
+
+<!-- Slide 3: Implementation Status -->
+<div class="slide" data-name="Status">
+  <h2 class="slide-title">Implementation Status</h2>
+
+  <table class="tbl">
+    <tr><th>IMPLEMENTATION</th><th>STATUS</th></tr>
+    <tr class="highlight"><td><strong>Eclair</strong> (ACINQ)</td><td><strong style="color:var(--gn)">Full support</strong> — incl. RBF, public channels, taproot splicing</td></tr>
+    <tr><td><strong>Core Lightning</strong></td><td><strong style="color:var(--gn)">Experimental</strong> since v23.08 — interop with Eclair confirmed</td></tr>
+    <tr><td><strong>LDK</strong></td><td><strong style="color:var(--gn)">Experimental</strong> in v0.2 — cross-compat tested Jan 2026</td></tr>
+    <tr><td><strong>Phoenix Wallet</strong></td><td><strong style="color:var(--gn)">Production</strong> since Jul 2023 — splicing as core architecture</td></tr>
+    <tr><td><strong>LND</strong></td><td><strong style="color:var(--rd)">Not yet</strong> — quiescence added, taproot prep merged Mar 2026</td></tr>
+  </table>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">SPEC PR DETAILS</div>
+    <div class="card-text"><strong>PR #1160</strong> by t-bast (ACINQ), merged March 23, 2026. Clean rewrite of original PR #863 (Rusty Russell, 2021). Feature bits <strong>62/63</strong>. +1,721 lines across BOLT 2, BOLT 7, BOLT 9, plus test vectors. Depends on quiescence protocol (PR #869, merged June 2024). Rusty Russell ACK'd March 9, 2026.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">LND GAP</div>
+    <div class="card-text">The largest Lightning implementation by node count <strong>cannot participate yet</strong>. LND has quiescence support and taproot nonce coordination (PR #9982, March 2026), but full splicing remains unimplemented. This limits network-wide adoption until LND ships support.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Timeline & Links -->
+<div class="slide" data-name="Timeline">
+  <h2 class="slide-title">Timeline & Resources</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">THE LONG ROAD</div>
+    <div class="card-text">
+      <strong>Jun 2018:</strong> Concept proposed by Rene Pickhardt; detailed spec by Rusty Russell later that year<br><br>
+      <strong>Apr 2021:</strong> First spec draft (PR #863) opened<br><br>
+      <strong>May 2022:</strong> World's first splice on-chain (Dusty Daemon via CLN)<br><br>
+      <strong>Jul 2023:</strong> Phoenix ships splicing in production; CLN experimental<br><br>
+      <strong>May 2024:</strong> t-bast rewrites spec as PR #1160 (cleaner edge-case handling)<br><br>
+      <strong>Jan 2026:</strong> Cross-compat confirmed between Eclair, CLN, and LDK<br><br>
+      <strong>Mar 2026:</strong> BOLT merged &mdash; splicing is officially part of the Lightning spec
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/lightning/bolts/pull/1160" target="_blank">BOLT PR #1160 →</a>
+    <a href="https://lightningsplice.com/splicing_explained.html" target="_blank">Splicing Explained (Dusty Daemon) →</a>
+    <a href="https://gist.github.com/t-bast/a7779d82cd1ccf6c99f610d05fc7bc2f" target="_blank">t-bast: "Death to All Swaps" →</a>
+    <a href="https://bitcoinops.org/en/topics/splicing/" target="_blank">Bitcoin Optech: Splicing →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' \u00b7 '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-04/'});
+render();
+</script>
+</body>
+</html>
