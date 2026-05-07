@@ -44,8 +44,20 @@ For each selected topic, Claude Code:
 2. **Creates** the topic slide HTML file at `YYYY-MM/topic-name.html`
 3. **Follows** conventions in `slide-page-conventions.md` (keyboard nav, Esc handling, back link, scroll fix)
 4. **Applies** the design system from `design-system.md` (color palette, typography, components)
+5. **Respects** the voice rules in `voice-and-tone.md` and the size limits in `content-budget.md`
 
 Each topic page is self-contained HTML with inline CSS and JS. Per-topic creative freedom within the shared design framework.
+
+### Step 3.5: Mandatory Fact-Check Gate
+
+**Before a topic deck is considered done**, run the `technical-accuracy-review` skill against it (in Codex: `$technical-accuracy-review path/to/topic.html`). This catches:
+
+- Unverifiable numeric claims (May 2026 caught a Knots-node-count claim that was 4–10× off)
+- Mis-attributed quotes (May 2026 caught a "stickies-v volunteered" attribution that was wrong)
+- Stale dates and version numbers
+- Internal inconsistencies between summary and detail slides
+
+The review is review-only by default — apply its proposed fixes deliberately, not blindly. If it flags `UNVERIFIABLE` claims, either find the source or remove the claim. Don't ship slides with unverified specifics.
 
 ### Step 4: Month Hub
 
@@ -73,8 +85,18 @@ When creating a new month's content, a typical prompt flow:
 
 1. "Fetch the comments from PerthBitDevs/PerthBitDevs issue #NN and list the topics"
 2. "Create topic slide pages for these topics in YYYY-MM/"
-3. "Create the month hub page at YYYY-MM/index.html"
-4. "Update the landing page with the new month"
+3. "Run the technical-accuracy-review skill against each topic page and apply the high-severity fixes"
+4. "Create the month hub page at YYYY-MM/index.html"
+5. "Update the landing page with the new month"
+
+## Multi-Agent Coordination
+
+When using parallel research agents (a good fit for breadth), coordinate them to avoid the cross-file consistency bugs that May 2026 produced:
+
+1. **Plan first, in one session** — produce a topic-to-file mapping and decide which deck owns each sub-thread before any research runs. Cross-references between decks are the agent contract.
+2. **Parallel research only, not parallel drafting** — research agents return findings; a single drafting agent (or sequential drafting) writes HTML. Parallel HTML writers will diverge in voice and trample shared topics.
+3. **One topic, one file** — never split a single topic across multiple HTML files. See the mega-topic rule in `content-budget.md`.
+4. **After any rename, merge, or topic move**, grep all `YYYY-MM/*.html` for the old name and clean up stale references before declaring the work done.
 
 ## Archive Pages (Historical)
 
