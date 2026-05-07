@@ -47,6 +47,18 @@ Body MUST use `overflow-x:hidden`, NOT `overflow:hidden`. This allows vertical s
 ### Back link
 The header branding area MUST be a link back to the month hub with text "← Topics".
 
+### TV-friendly sizing (May 2026 onward)
+Pages are projected on a 4K TV from a laptop via HDMI. New slide pages
+MUST use the TV-friendly font scale and max-widths defined in
+`design-system.md`. Do not retrofit older pages.
+
+Quick reference:
+- `h2.slide-title`: 36px (mobile 30px)
+- `card-text`, `subtitle`, info/warn/box bodies: 20px
+- box labels: 19px
+- card-label, code, links, nav-btn: 17-19px
+- `.slide-inner` max-width: 960px
+
 ## Navigation JavaScript
 
 Standard JS pattern used across all slide pages:

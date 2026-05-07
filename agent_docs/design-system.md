@@ -40,15 +40,35 @@ Each semantic color has a dim variant at ~12% opacity for backgrounds (e.g. `--b
 
 ## Typography
 
+### TV-friendly scale (May 2026 onward)
+
+Pages are projected on a 4K TV via HDMI from a laptop. Font sizes were
+scaled up (~1.4×) so text is legible from across the room. Use these
+values for all new slide pages and hub pages:
+
 | Element | Font | Weight | Size |
 |---------|------|--------|------|
-| Page title (h1) | JetBrains Mono | 800 | clamp(28px, 5vw, 38px+) |
-| Topic title (h3) | JetBrains Mono | 700 | 17px |
-| Body text (p) | DM Sans | 400 | 15px |
-| Labels / metadata | JetBrains Mono | 700 | 12-13px |
-| Author attribution | JetBrains Mono | 400 | 12px |
-| Links in `.links` | JetBrains Mono | 400 | 13px |
-| Footer | JetBrains Mono | 400 | 13px |
+| Hub h1 | JetBrains Mono | 800 | clamp(40px, 6vw, 60px) |
+| Slide title (h2) | JetBrains Mono | 800 | 36px (mobile 30px) |
+| Topic title in cards | JetBrains Mono | 700 | 22-24px |
+| Body text / card-text | DM Sans | 400 | 20px |
+| Subtitle | DM Sans | 400 | 20px |
+| Box labels (info/warn/etc) | JetBrains Mono | 700 | 19px |
+| Card-label, table cells | JetBrains Mono / DM Sans | 700/400 | 17-18px |
+| Code (inline + blocks) | JetBrains Mono | 400 | 17px |
+| Links in `.links` | JetBrains Mono | 400 | 19px |
+| Nav buttons | JetBrains Mono | 400 | 17px |
+| Nav-info, footer, badges | JetBrains Mono | 700 | 14-16px |
+| Update tags | JetBrains Mono | 700 | 13px |
+
+### Layout widths (TV-friendly)
+
+| Element | Old | New (TV) |
+|---------|-----|----------|
+| Hub `.shell` max-width | 760px | **1080px** |
+| Slide-inner max-width | 680-720px | **960px** |
+
+Pre-May-2026 pages keep their original tighter sizing — do not retrofit.
 
 The h1 on the landing page and month hubs uses a gradient fill:
 ```css
@@ -99,9 +119,11 @@ All topic cards and event cards have a 3px left border accent (colored per categ
 | Page type | Max width |
 |-----------|-----------|
 | Landing page | 760px |
-| Month hub (Feb 2026 style) | 760px |
+| Month hub (Feb 2026 – Apr 2026) | 760px |
+| Month hub (May 2026 onward, TV-friendly) | **1080px** |
 | Archive pages | 760px |
-| Slide content area | 620-680px (varies per topic) |
+| Slide content area (Feb–Apr 2026) | 620-680px (varies per topic) |
+| Slide content area (May 2026 onward, TV-friendly) | **960px** |
 | Mining stack (wide layout) | 1100px |
 | About page | 660px |
 

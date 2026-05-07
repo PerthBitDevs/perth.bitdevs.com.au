@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Australian Bitcoin Bush Bash 2026 — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.15);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--gnG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--gnD);border:1px solid var(--gn);border-radius:16px;color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--orG);border:1px solid var(--or);border-radius:4px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--gn);background:var(--gnG);color:var(--gn);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:12px;background:linear-gradient(135deg,var(--gn),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-bottom:18px;line-height:1.5}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:14px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.info-text{color:var(--txM);font-size:19px;line-height:1.55}
+.info-text strong{color:var(--tx)}
+.event-row{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:12px 16px;margin-bottom:8px;position:relative;overflow:hidden}
+.event-row::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.7}
+.event-row.past::before{background:var(--txD)}
+.event-row.now::before{background:var(--or)}
+.event-row.upcoming::before{background:var(--gn)}
+.event-row.tba::before{background:var(--bl)}
+.event-month{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--txD);min-width:60px;padding-top:2px}
+.event-row.past .event-month{color:var(--txD)}
+.event-row.now .event-month{color:var(--or)}
+.event-row.upcoming .event-month{color:var(--gn)}
+.event-row.tba .event-month{color:var(--bl)}
+.event-body{min-width:0}
+.event-title{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--tx);margin-bottom:2px;letter-spacing:-.01em}
+.event-meta{color:var(--txM);font-size:17px;line-height:1.45}
+.event-meta strong{color:var(--tx)}
+.event-state{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:6px;align-self:flex-start;white-space:nowrap}
+.event-row.past .event-state{color:var(--txD);background:rgba(80,96,120,.15);border:1px solid var(--bd)}
+.event-row.now .event-state{color:var(--or);background:var(--orG);border:1px solid rgba(247,147,26,.4)}
+.event-row.upcoming .event-state{color:var(--gn);background:var(--gnG);border:1px solid rgba(34,197,94,.4)}
+.event-row.tba .event-state{color:var(--bl);background:var(--blG);border:1px solid rgba(59,130,246,.4)}
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;margin-bottom:12px}
+.format{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px 12px}
+.format-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;letter-spacing:.06em;margin-bottom:3px}
+.format-val{color:var(--txM);font-size:17px;line-height:1.4}
+.format-val strong{color:var(--tx)}
+.links{display:flex;flex-direction:column;gap:5px;margin-top:10px}
+.links a{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.note{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;margin-top:14px;line-height:1.5}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:600px){.format-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.event-row{grid-template-columns:auto 1fr;gap:10px}.event-state{grid-column:1/-1;justify-self:start;margin-top:4px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">COMMUNITY</div>
+    <div class="update-tag">2026 SCHEDULE</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Bush Bash 2026">
+  <h2 class="slide-title">Australian Bitcoin Bush Bash 2026</h2>
+
+  <div class="event-row past">
+    <div class="event-month">MAR</div>
+    <div class="event-body">
+      <div class="event-title">Beechworth, VIC</div>
+      <div class="event-meta">13–15 March 2026.</div>
+    </div>
+    <div class="event-state">PAST</div>
+  </div>
+
+  <div class="event-row upcoming">
+    <div class="event-month">15–17 MAY</div>
+    <div class="event-body">
+      <div class="event-title">Byron Bay, NSW</div>
+      <div class="event-meta">Scout Hall, <strong>29 Tennyson St, Byron Bay</strong>.</div>
+    </div>
+    <div class="event-state">NEXT</div>
+  </div>
+
+  <div class="event-row upcoming">
+    <div class="event-month">24–26 JUL</div>
+    <div class="event-body">
+      <div class="event-title">Palm Cove, QLD</div>
+      <div class="event-meta">Friday to Sunday.</div>
+    </div>
+    <div class="event-state">CONFIRMED</div>
+  </div>
+
+  <div class="event-row tba">
+    <div class="event-month">OCT/NOV</div>
+    <div class="event-body">
+      <div class="event-title">Busselton, WA</div>
+      <div class="event-meta">Exact dates TBA.</div>
+    </div>
+    <div class="event-state">EXPECTED</div>
+  </div>
+
+  <div class="event-row tba">
+    <div class="event-month">NOV</div>
+    <div class="event-body">
+      <div class="event-title">Parkes, NSW</div>
+      <div class="event-meta">Exact dates TBA.</div>
+    </div>
+    <div class="event-state">EXPECTED</div>
+  </div>
+
+  <div class="format-grid">
+    <div class="format">
+      <div class="format-label">REGISTRATION</div>
+      <div class="format-val"><strong>None</strong> — turn up</div>
+    </div>
+    <div class="format">
+      <div class="format-label">KYC</div>
+      <div class="format-val"><strong>None</strong> — anonymous</div>
+    </div>
+    <div class="format">
+      <div class="format-label">TICKETS</div>
+      <div class="format-val"><strong>Free</strong></div>
+    </div>
+    <div class="format">
+      <div class="format-label">TOPICS</div>
+      <div class="format-val"><strong>Crowd-sourced</strong>, Bitcoin-only</div>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://bitcoinbushbash.info/" target="_blank">bitcoinbushbash.info — schedule &amp; details →</a>
+    <a href="https://www.meetup.com/bitcoin-bush-bash/" target="_blank">Meetup group →</a>
+  </div>
+
+  <div class="note">
+    Check the official site before travel. "Expected" dates follow the usual yearly cadence.
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)" disabled>&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn" id="nextBtn" onclick="go(1)" disabled>Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  document.getElementById('nextBtn').disabled=cur===slides.length-1;
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

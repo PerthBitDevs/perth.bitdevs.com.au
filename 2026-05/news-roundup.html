@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Roundup — Perth BitDevs May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:980px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,#06b6d4,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:19px;margin-top:-10px;margin-bottom:16px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:19px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.orange-box{background:var(--orG);border:1px solid rgba(247,147,26,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.orange-label{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.pink-box{background:var(--pkG);border:1px solid rgba(236,72,153,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.pink-label{color:var(--pk);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.purple-box{background:var(--puG);border:1px solid rgba(168,85,247,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.purple-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.teal-box{background:var(--tlG);border:1px solid rgba(20,184,166,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.teal-label{color:var(--tl);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.quote-box{background:var(--sf);border-left:3px solid var(--bl);padding:11px 15px;margin-bottom:12px;border-radius:0 6px 6px 0;color:var(--txM);font-size:18px;line-height:1.55;font-style:italic}
+.quote-box strong{color:var(--tx);font-style:normal}
+.quote-box.rd{border-left-color:var(--rd)}
+.quote-box.or{border-left-color:var(--or)}
+.quote-box.gn{border-left-color:var(--gn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.headline-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.headline{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--bd2);border-radius:8px;padding:12px 14px}
+.headline.bl{border-left-color:var(--bl)}
+.headline.rd{border-left-color:var(--rd)}
+.headline.or{border-left-color:var(--or)}
+.headline.gn{border-left-color:var(--gn)}
+.headline.pk{border-left-color:var(--pk)}
+.headline.cy{border-left-color:var(--cy)}
+.headline.pu{border-left-color:var(--pu)}
+.headline.yl{border-left-color:var(--yl)}
+.headline.tl{border-left-color:var(--tl)}
+.headline-tag{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
+.headline-tag.bl{color:var(--bl)}
+.headline-tag.rd{color:var(--rd)}
+.headline-tag.or{color:var(--or)}
+.headline-tag.gn{color:var(--gn)}
+.headline-tag.pk{color:var(--pk)}
+.headline-tag.cy{color:var(--cy)}
+.headline-tag.pu{color:var(--pu)}
+.headline-tag.yl{color:var(--yl)}
+.headline-tag.tl{color:var(--tl)}
+.headline-title{color:var(--tx);font-size:17px;font-weight:600;line-height:1.35;margin-bottom:3px}
+.headline-text{color:var(--txM);font-size:15px;line-height:1.45}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fact{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px}
+.fact-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;letter-spacing:.06em;margin-bottom:3px}
+.fact-val{color:var(--tx);font-size:17px;line-height:1.4}
+.fact-val strong{font-family:'JetBrains Mono',monospace;color:var(--bl)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;line-height:1.1;margin-bottom:2px}
+.stat-num.rd{color:var(--rd)}
+.stat-num.or{color:var(--or)}
+.stat-num.gn{color:var(--gn)}
+.stat-num.bl{color:var(--bl)}
+.stat-num.cy{color:var(--cy)}
+.stat-num.pu{color:var(--pu)}
+.stat-num.yl{color:var(--yl)}
+.stat-num.pk{color:var(--pk)}
+.stat-lbl{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:700px){.cols,.headline-grid,.fact-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:26px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">NEWS ROUNDUP</div>
+    <div class="update-tag">7 ITEMS</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: Headlines -->
+<div class="slide" data-name="Headlines">
+  <h2 class="slide-title">News Roundup</h2>
+  <p class="subtitle">Seven items from the past month, one slide each</p>
+
+  <div class="headline-grid">
+    <div class="headline bl">
+      <div class="headline-tag bl">INDOPACOM · APR 21</div>
+      <div class="headline-title">US Military Runs a Bitcoin Node</div>
+      <div class="headline-text">Adm. Paparo confirms it in Senate testimony — framed as <em>"a computing tool"</em>, not currency.</div>
+    </div>
+    <div class="headline rd">
+      <div class="headline-tag rd">IRAN · APR 9–10</div>
+      <div class="headline-title">Strait of Hormuz Bitcoin Tolls — and a Hashrate Collapse</div>
+      <div class="headline-text">Tehran approves $1/bbl BTC-or-yuan toll; meanwhile Iran's hashrate drops <strong>77%</strong>.</div>
+    </div>
+    <div class="headline gn">
+      <div class="headline-tag gn">SOLO MINER · APR 9</div>
+      <div class="headline-title">Solo Miner Wins Block 944,306</div>
+      <div class="headline-text">CKpool solo at <strong>~70 TH/s</strong> finds block <strong>944,306</strong> — claims full <strong>3.128 BTC</strong> reward.</div>
+    </div>
+    <div class="headline cy">
+      <div class="headline-tag cy">SQUARE / BLOCK · MAR 31</div>
+      <div class="headline-title">Bitcoin Lightning Auto-Enabled for Millions of Sellers</div>
+      <div class="headline-text">Block enables US merchants by default — Lightning settlement, instant USD, <strong>zero processing fees through 2026</strong>.</div>
+    </div>
+    <div class="headline yl">
+      <div class="headline-tag yl">LITECOIN · APR 25</div>
+      <div class="headline-title">13-Block Reorg via MWEB Bug</div>
+      <div class="headline-text">Privacy-layer DoS exploited; ~3hr resolution; "<em>zero-day</em>" framing contested by GitHub timeline.</div>
+    </div>
+    <div class="headline pu">
+      <div class="headline-tag pu">LIGHTNING · APR</div>
+      <div class="headline-title">CLN Splicing GA, LDK Zero-Fee, Onion-Msg DoS Mitigations</div>
+      <div class="headline-text">Three threads converging — splicing leaves experimental, jamming work formalises.</div>
+    </div>
+    <div class="headline or">
+      <div class="headline-tag or">VEGAS MONEY · APR 29</div>
+      <div class="headline-title">Tether-Proposed 3-Way Merger: XXI + Strike + Elektron</div>
+      <div class="headline-text">A combined treasury + lending + mining co. Tether's BTC stack now <strong>97,141 BTC</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: US Military Node (compressed) -->
+<div class="slide" data-name="Military Node">
+  <h2 class="slide-title bl">"We Have a Node on the Bitcoin Network"</h2>
+  <p class="subtitle">First public confirmation that a US combatant command runs a node</p>
+
+  <div class="quote-box">
+    "<strong>We have a node on the Bitcoin network.</strong> We are conducting a series of operational tests..."
+    <div style="margin-top:6px;font-style:normal;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px">— Adm. Samuel Paparo, Commander, US Indo-Pacific Command (Senate Armed Services, 2026-04-21)</div>
+  </div>
+
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">FRAMING</div><div class="fact-val">A <strong>"computing tool"</strong> — cryptography + blockchain + PoW. Positioned as <em>peer-to-peer, zero-trust value transfer</em>, not currency or investment.</div></div>
+    <div class="fact"><div class="fact-label">STRATEGIC ANGLE</div><div class="fact-val">Researching whether PoW <strong>"imposes greater security costs than conventional algorithmic protections"</strong> for military networks. PoW as a defence primitive vs. well-resourced peers.</div></div>
+    <div class="fact"><div class="fact-label">CONFIRMED</div><div class="fact-val">A node exists, on the public network, run by INDOPACOM.</div></div>
+    <div class="fact"><div class="fact-label">UNKNOWN</div><div class="fact-val">Implementation, location, reachability, mempool policy, inbound vs. outbound only.</div></div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">CONTEXT</div>
+    <div class="card-text">A military node has no special consensus power — it's just a node. But state-actor traffic analysis and peer-graph mapping at scale is now plausible, which lines up with the Bitprojects Sybil disclosure and the increased-outbounds work covered on the BIP-110 deck.</div>
+  </div>
+</div>
+
+<!-- Slide 3: Iran -->
+<div class="slide" data-name="Iran">
+  <h2 class="slide-title rd">Iran: Hormuz Tolls vs. Hashrate Collapse</h2>
+  <p class="subtitle">Tehran approves a $1/bbl Bitcoin-or-yuan toll on Hormuz tankers; Iran's mining hashrate falls 77%</p>
+
+  <div class="cols">
+    <div class="warn-box" style="margin-bottom:0">
+      <div class="warn-label">THE TOLL</div>
+      <div class="card-text">Iran's security council approved a <strong>$1/barrel toll</strong> on tankers transiting the <strong>Strait of Hormuz</strong>, payable in <strong>Bitcoin or yuan</strong>. A fully loaded supertanker = ~<strong>$2M</strong> for safe passage.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--rd)"></div>
+      <div class="card-label" style="color:var(--rd)">THE HASHRATE</div>
+      <div class="card-text">Iran's mining hashrate <strong>collapsed 77%</strong> last quarter. <strong>~427,000 rigs</strong> went dark, shedding <strong>~7 EH/s</strong> at an all-time-low hashprice of <code>$27.89/PH/day</code>. Kyrgyzstan, Paraguay, Laos, Finland all grew YoY.</div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num rd">77%</div><div class="stat-lbl">Iran hashrate Q-on-Q</div></div>
+    <div class="stat"><div class="stat-num rd">7 EH/s</div><div class="stat-lbl">capacity offline</div></div>
+    <div class="stat"><div class="stat-num rd">$2M</div><div class="stat-lbl">per supertanker toll</div></div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">FOLLOW-UP · APR 28</div>
+    <div class="card-text">Blockchain firms and intelligence sources <strong>can find no on-chain data confirming tolls being paid at scale</strong>. By late April, reports surfaced of <strong>scammers targeting stranded ships in the Strait with fake "Bitcoin transit fees"</strong>.</div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">NOTE</div>
+    <div class="card-text">"Censorship-resistance" usually frames Bitcoin as resisting state coercion against users. Here a state wants to use Bitcoin to coerce others — the network can't refuse such use. The hashrate move tracks economics: rigs left at the prevailing hashprice.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Solo Miner -->
+<div class="slide" data-name="Solo Miner">
+  <h2 class="slide-title gn">Solo Miner Wins a Block</h2>
+  <p class="subtitle">A 70 TH/s solo miner solves block 944,306 and claims the full 3.128 BTC reward</p>
+
+  <div class="green-box">
+    <div class="green-label">BLOCK 944,306 · APR 9</div>
+    <div class="card-text">A <strong>CKpool</strong> solo miner with just <strong>~70 TH/s</strong> (comparable to a 2019 Antminer S17+) solved <strong>block 944,306</strong> and claimed the full <strong>3.128 BTC ($222K)</strong> reward. Con Kolivas put the odds at roughly <strong>1 in 100,000 per day</strong> at that hashrate.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num gn">~70 TH/s</div><div class="stat-lbl">solo hashrate</div></div>
+    <div class="stat"><div class="stat-num gn">3.128 BTC</div><div class="stat-lbl">full block reward</div></div>
+    <div class="stat"><div class="stat-num gn">1 in 100K</div><div class="stat-lbl">odds per day</div></div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">CONTEXT</div>
+    <div class="card-text">A small solo setup can still occasionally claim a full block. PoW isn't weighted by operator size.</div>
+  </div>
+</div>
+
+<!-- Slide 5: Square / Block — Bitcoin Lightning at scale -->
+<div class="slide" data-name="Square Lightning">
+  <h2 class="slide-title cy">Square Flips Bitcoin On — at Scale</h2>
+  <p class="subtitle">Block makes <strong>Lightning</strong> the default payment rail for millions of US merchants</p>
+
+  <div class="cyan-box">
+    <div class="cyan-label">WHAT HAPPENED · MAR 31</div>
+    <div class="card-text">Square <strong>auto-enabled Bitcoin payments</strong> for millions of eligible US sellers. A customer who chooses to pay in BTC over Lightning settles instantly to the merchant's account in <strong>USD</strong>, with <strong>zero processing fees through 2026</strong>. The merchant does not need to interact with Bitcoin to receive the payment.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--cy)"></div>
+      <div class="card-label" style="color:var(--cy)">WHY IT MATTERS</div>
+      <div class="card-text">First instance of a major payments processor setting BTC payments to <em>on by default</em> across its merchant base. Sellers don't opt in — they'd have to opt out.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--cy)"></div>
+      <div class="card-label" style="color:var(--cy)">WHAT'S NEXT</div>
+      <div class="card-text">A customer-side toggle is reportedly planned — buyer taps "pay in sats", merchant still receives USD.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">SCALE</div>
+    <div class="card-text">Square processes card and Cash App payments for an estimated <strong>4M+ US sellers</strong> across food, retail, and services. Default-on means the long tail is plumbed in even where the merchant has no Bitcoin literacy.</div>
+  </div>
+</div>
+
+<!-- Slide 7: Litecoin reorg -->
+<div class="slide" data-name="Litecoin Reorg">
+  <h2 class="slide-title yl">Litecoin's 13-Block Reorg</h2>
+  <p class="subtitle">A bug in Litecoin's MWEB privacy layer caused a 13-block reorg on Apr 25</p>
+
+  <div class="warn-box">
+    <div class="warn-label">WHAT HAPPENED · APR 25</div>
+    <div class="card-text">A bug in Litecoin's <strong>MWEB privacy layer</strong> (MimbleWimble Extension Block) let a denial-of-service attack push <strong>invalid transactions</strong> past nodes that hadn't updated. Result: a <strong>13-block reorganisation</strong> across blocks <code>#3,095,931–943</code>, taking ~3 hours to resolve. NEAR Intents initially reported ~<strong>$600K</strong> in exposure to swap protocols; most of it was reversed when the longest valid chain corrected.</div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">THE DISCLOSURE CONTROVERSY</div>
+    <div class="card-text">Litecoin's official line: <em>"zero-day attack"</em>. But <strong>GitHub commit history</strong> tells a different story — the consensus bug was <strong>privately patched between Mar 19 and Mar 26</strong>, roughly four weeks before the exploit. A separate DoS bug was patched the morning of Apr 25, with both fixes rolled into <code>0.21.5.4</code> the same afternoon, <em>after</em> the attack had begun. Researchers (and CoinDesk) flagged the gap.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">WHY THIS MATTERS FOR BITCOIN</div>
+    <div class="card-text">Bitcoin doesn't have an MWEB-style privacy layer, so the specific bug doesn't transfer. The general points: <strong>privacy features add validation surface</strong>; any optional layer increases the cost of correctness; and "zero-day" framing can obscure what was, by then, a known-and-patched vulnerability.</div>
+  </div>
+</div>
+
+<!-- Slide 8: Lightning briefs -->
+<div class="slide" data-name="Lightning Briefs">
+  <h2 class="slide-title pu">Lightning Briefs</h2>
+  <p class="subtitle">CLN 26.04/26.04.1 splicing GA · LDK zero-fee commitments to production · onion-message DoS work</p>
+
+  <div class="purple-box">
+    <div class="purple-label">CORE LIGHTNING 26.04/26.04.1 — SPLICING GA</div>
+    <div class="card-text">Splicing — adding/removing channel funds without close+reopen — graduated from experimental in CLN. Headline upgrade: <strong>multi-channel splices</strong> in a single command (e.g. splice out of five channels and into two), which makes large-node rebalancing dramatically cheaper.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">LDK — ZERO-FEE COMMITMENTS PROMOTED</div>
+    <div class="card-text">LDK moved <strong>zero-fee commitment channels</strong> from the experimental feature bit to production: the commitment tx itself carries no fee, so force-close fee-bumping happens at broadcast time via anchor outputs (CPFP) rather than via a fee reserve negotiated up-front under uncertain future fee markets. Cheaper, simpler force-close behaviour, less dust held by routing nodes for fee bumping.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">ONION-MESSAGE DOS — JAMMING WORK</div>
+    <div class="card-text">Onion messages let nodes coordinate without an on-chain anchor — payment-less packets used for BOLT 12 offers, async payments, and route-blinding handshakes. They're also a DoS vector: senders pay nothing (no fee, no HTLC, no liquidity lockup) while every hop pays CPU and bandwidth — asymmetric cost makes flooding cheap. <strong>Erick Cestari</strong> outlined four mitigations at Optech:<br>
+    • Upfront fees per message<br>
+    • Balance-based forwarding<br>
+    • Bandwidth-metered payments<br>
+    • Backpropagation rate limits<br><br>
+    <strong>LND</strong> has an open mitigation PR with per-peer and global token-bucket limits, plus onion-message forwarding work awaiting release.</div>
+  </div>
+</div>
+
+<!-- Slide 7: Vegas Money — XXI / Strike / Tether / Elektron -->
+<div class="slide" data-name="Vegas Money">
+  <h2 class="slide-title">Vegas Money — A Three-Way Merger</h2>
+  <p class="subtitle">Tether, XXI, Strike, Elektron Energy — proposed merger announced at Bitcoin 2026 Las Vegas, Apr 29</p>
+
+  <div class="orange-box">
+    <div class="orange-label">THE PROPOSAL · APR 29 · BITCOIN 2026 VEGAS</div>
+    <div class="card-text"><strong>Tether Investments</strong> proposed merging <strong>Twenty One Capital (NYSE: XXI)</strong>, <strong>Strike</strong>, and bitcoin miner <strong>Elektron Energy</strong> into a single public Bitcoin company. If it lands, the combined entity would unite <em>treasury, financial services, lending, capital markets, and mining</em> under one ticker.</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">XXI — TREASURY</div>
+      <div class="card-text">Twenty One Capital (Mallers, backed by Tether + Bitfinex) — currently holds <strong>~43,514 BTC</strong>. Went public Dec 2025 via SPAC.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">STRIKE — RAILS &amp; LENDING</div>
+      <div class="card-text">Mallers' BTC financial-services platform. NY BitLicense (Mar). <strong>$2.1B credit facility</strong>. New <em>"volatility-proof"</em> BTC-backed loans built with Tether (no liquidation).</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">ELEKTRON — HASHRATE</div>
+      <div class="card-text">Mining company led by <strong>Raphael Zagury</strong> (proposed President of merged co). <strong>~50 EH/s</strong> — about <strong>5%</strong> of the global Bitcoin network. All-in production cost &lt;$60K/BTC.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">TETHER ITSELF</div>
+    <div class="card-text">• <strong>April purchase:</strong> another <strong>$70M of BTC</strong> under its 15%-of-profits policy.<br>
+    • <strong>Total holdings:</strong> <strong>97,141 BTC (~$7.16B)</strong>.<br>
+    • <strong>Broader corporate position:</strong> reported around <strong>140K BTC</strong>.<br>
+    • <strong>USDT supply:</strong> all-time high of <strong>$188B</strong> on Apr 21.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">CONCENTRATION</div>
+    <div class="card-text">If it completes: a single public co. with a top-3 corporate BTC stack, a major BTC-native lending platform, ~5% of network hashrate, and Tether backing. The Strike + Tether "volatility-proof" loan mechanism (no liquidation) hasn't been published. Cross-ref: <a href="governance.html">Governance</a> for the Bitcoin 2026 Vegas stage politics.</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

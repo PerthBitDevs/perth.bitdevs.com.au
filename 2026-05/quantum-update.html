@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Update — Perth BitDevs · May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.15);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--puG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--puD);border:1px solid var(--pu);border-radius:16px;color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--pu);background:var(--puG);color:var(--pu);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:19px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--pu);background:var(--puD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.purple-box{background:var(--puG);border:1px solid rgba(168,85,247,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.purple-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+	.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+	.sig-flow{display:grid;grid-template-columns:1fr auto 1.25fr auto 1fr auto 1.1fr;gap:8px;align-items:center;margin-bottom:10px}
+	.flow-box{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;min-height:60px;display:flex;flex-direction:column;justify-content:center}
+	.flow-box.hot{background:var(--puD);border-color:rgba(168,85,247,.45)}
+	.flow-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+	.flow-main{font-size:17px;color:var(--tx);font-weight:700;line-height:1.25}
+	.flow-sub{font-size:12px;color:var(--txM);line-height:1.25;margin-top:2px}
+	.flow-arrow{font-family:'JetBrains Mono',monospace;color:var(--txD);font-size:18px}
+	.sig-visual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+	.sig-panel{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px}
+	.sig-title{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;letter-spacing:.03em;margin-bottom:8px;text-transform:uppercase}
+	.leaf-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:10px 0 9px}
+	.leaf{min-height:40px;border:1px solid var(--bd2);background:var(--sf);border-radius:6px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txM);line-height:1.15}
+	.leaf.used{border-color:rgba(34,197,94,.45);background:var(--gnG);color:var(--gn)}
+	.leaf.next{border-color:rgba(234,179,8,.55);background:var(--ylG);color:var(--yl);font-weight:800}
+	.device-stack{display:flex;flex-direction:column;gap:7px;margin:10px 0 9px}
+	.device-row{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:center}
+	.device-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txD);text-transform:uppercase;letter-spacing:.04em}
+	.sig-path{min-height:32px;border:1px solid var(--bd2);border-radius:6px;display:flex;align-items:center;padding:0 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txM);position:relative;overflow:hidden;background:var(--sf)}
+	.sig-path::before{content:"";position:absolute;inset:0 auto 0 0;width:64%;opacity:.85}
+	.sig-path span{position:relative;z-index:1}
+	.sig-path.compact::before{background:linear-gradient(90deg,var(--puG),transparent)}
+	.sig-path.compact{border-color:rgba(168,85,247,.45);color:var(--pu)}
+	.sig-path.fallback::before{background:linear-gradient(90deg,var(--blG),transparent)}
+	.sig-path.fallback{border-color:rgba(59,130,246,.45);color:var(--bl)}
+	.sig-caption{font-size:16px;color:var(--txM);line-height:1.45}
+	.sig-caption strong{color:var(--tx)}
+	.sig-caption code{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--pu);background:var(--puD);padding:1px 5px;border-radius:3px}
+	.bucket-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.bucket{display:flex;gap:12px;align-items:flex-start;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px}
+.bucket-tag{flex-shrink:0;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;letter-spacing:.04em;padding:3px 9px;border-radius:4px;margin-top:2px}
+.bucket-content{flex:1;font-size:19px;color:var(--txM);line-height:1.55}
+.bucket-content strong{color:var(--tx)}
+.bucket-content em{color:var(--txM);font-style:italic}
+.tag-rd{color:var(--rd);background:var(--rdG);border:1px solid rgba(239,68,68,.35)}
+.tag-yl{color:var(--yl);background:var(--ylG);border:1px solid rgba(234,179,8,.35)}
+.tag-gn{color:var(--gn);background:var(--gnG);border:1px solid rgba(34,197,94,.35)}
+.tag-bl{color:var(--bl);background:var(--blG);border:1px solid rgba(59,130,246,.35)}
+.tag-cy{color:var(--cy);background:var(--cyG);border:1px solid rgba(6,182,212,.35)}
+.tag-pu{color:var(--pu);background:var(--puG);border:1px solid rgba(168,85,247,.35)}
+.proposal{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-bottom:8px;position:relative}
+.proposal-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px;flex-wrap:wrap}
+.proposal-name{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);letter-spacing:.02em}
+.proposal-meta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);letter-spacing:.04em}
+.proposal-text{color:var(--txM);font-size:18px;line-height:1.55}
+.proposal-text strong{color:var(--tx)}
+.proposal-text em{color:var(--txM);font-style:italic}
+.proposal-text code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--pu);background:var(--puD);padding:1px 5px;border-radius:3px}
+.proposal-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.proposal-text a:hover{border-bottom-color:var(--bl)}
+.voice{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:11px 14px;margin-bottom:8px}
+.voice-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px;flex-wrap:wrap}
+.voice-name{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--tx);letter-spacing:.02em}
+.voice-meta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);letter-spacing:.04em}
+.voice-text{color:var(--txM);font-size:18px;line-height:1.55}
+.voice-text strong{color:var(--tx)}
+.voice-text em{color:var(--txM);font-style:italic}
+.voice-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.voice-text a:hover{border-bottom-color:var(--bl)}
+.quote{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px;margin-bottom:8px}
+.quote-text{color:var(--txM);font-size:18px;line-height:1.55;font-style:italic;padding-left:10px;border-left:2px solid var(--bd2)}
+.quote-text strong{color:var(--tx);font-style:normal}
+.quote-attr{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);margin-top:6px;letter-spacing:.04em}
+.quote-attr a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.quote-attr a:hover{border-bottom-color:var(--bl)}
+	.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+	.links a{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.85;word-break:break-all}
+	.links a:hover{opacity:1;text-decoration:underline}
+	.links.compact-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--pu);background:var(--puG);color:var(--pu)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+	@media(max-width:600px){.cols,.sig-visual,.links.compact-links{grid-template-columns:1fr}.sig-flow{grid-template-columns:1fr}.flow-arrow{display:none}.device-row{grid-template-columns:78px 1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">QUANTUM</div>
+    <div class="update-tag">PAST MONTH</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: Snapshot -->
+<div class="slide" data-name="Snapshot">
+  <h2 class="slide-title">Quantum Update</h2>
+  <p class="subtitle">What changed for Bitcoin specifically</p>
+
+  <div class="purple-box">
+    <div class="purple-label">RESOURCE ESTIMATES FOR BREAKING SECP256K1 KEEP FALLING</div>
+    <div class="card-text">
+      <strong>Apr 2 — Luo et al.</strong> (arXiv 2604.02311): <strong>1,333 logical qubits</strong> for 256-bit ECDLP — a low-width record, down from Häner et al.'s 2,124.<br>
+      <strong>Apr 15 — Babbush, Gidney, Drake, Boneh v2</strong> (arXiv 2603.28846): <strong>&lt;500K physical qubits</strong> at 10⁻³ error rate, ~9 min from a primed state.
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">REAL HARDWARE TODAY</div>
+    <div class="card-text">Lab-demonstrated logical qubits are in the dozens. Vendor roadmaps target large-scale fault-tolerance ~2029–2030+. The gap to the estimates above is still large.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">EXPOSED-COIN COUNT</div>
+    <div class="card-text">Coinbase's Quantum Advisory Council (Apr 21) puts <strong>vulnerable</strong> bitcoin — held in P2PK outputs or in address-reused P2PKH / P2WPKH, where the public key has already appeared on-chain — at <strong>~6.9M BTC</strong>, roughly <strong>33%</strong> of supply. A <strong>CRQC</strong> (cryptographically-relevant quantum computer) running Shor's algorithm derives the private key from any exposed public key, so it would recover the keys for every such output from public chain history.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Q-Day Prize -->
+<div class="slide" data-name="Q-Day Prize">
+  <h2 class="slide-title">The Q-Day Prize</h2>
+  <p class="subtitle">Project Eleven, April 24 — and the backlash that followed</p>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">THE ANNOUNCEMENT</div>
+    <div class="card-text">On April 24, <strong>Project Eleven</strong> awarded its 1 BTC Q-Day Prize to <strong>Giancarlo Lelli</strong> for what its press release described as the <em>"largest quantum attack on elliptic curve cryptography to date"</em> — a <strong>15-bit ECC key</strong> recovered using IBM quantum hardware. <a href="https://blog.projecteleven.com/posts/project-eleven-awards-1-btc-q-day-prize-for-largest-quantum-attack-on-elliptic-curve-cryptography-to-date" target="_blank">Project Eleven</a></div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">THE BACKLASH — "THE QUANTUM PART DID NOTHING"</div>
+    <div class="card-text">Within hours, independent reviewers reproduced the result <strong>without any quantum hardware</strong>. Critics argued the IBM circuit's output was <em>statistically indistinguishable from random coin flips</em>, and that classical search alone trivially recovers a 15-bit key — a search space of just <strong>32,767 candidates</strong>. Project Eleven's announcement post on X now carries a Community Note fact-check.</div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text">"The quantum computer contributed nothing (noise)! The answer was recovered by a classical checker sifting random noise."</div>
+    <div class="quote-attr">— Jonas Schnelli, former Bitcoin Core maintainer · reproduced the result in ~20 lines of Python · <a href="https://news.bitcoin.com/ibm-quantum-hardware-cracks-15-bit-ecc-key-but-bitcoin-devs-say-random-bits-match-the-result/" target="_blank">news.bitcoin.com</a></div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text">Independently, <strong>Yuval Adam</strong> swapped Lelli's IBM quantum backend for <code>/dev/urandom</code> (Linux's classical RNG) and recovered the same key with the same pipeline.</div>
+    <div class="quote-attr">— independent verification · <a href="https://news.bitcoin.com/ibm-quantum-hardware-cracks-15-bit-ecc-key-but-bitcoin-devs-say-random-bits-match-the-result/" target="_blank">news.bitcoin.com</a></div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text">A separate critique from <strong>Craig Gidney</strong> (Google quantum researcher, co-author of the secp256k1 estimate paper) argued the submission did not meaningfully demonstrate progress toward a cryptographically relevant attack.</div>
+    <div class="quote-attr">— Craig Gidney, blog post Apr 25 · <a href="https://yellow.com/news/google-researcher-q-day-prize-quantum-bitcoin" target="_blank">Yellow</a></div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">CONFLICT-OF-INTEREST CONCERNS</div>
+    <div class="card-text">Project Eleven (Alex Pruden, $20M Series A in Jan at $120M valuation) <strong>sells PQ-migration tooling</strong>, designed the prize, picked the judges, awarded the bounty, <em>and</em> issued the press release. Pruden later acknowledged the result was <em>"not Q-Day"</em> and framed it as incremental progress in a noisy, classically assisted NISQ setting. <a href="https://protos.com/project-eleven-paid-a-quantum-prize-for-a-random-number-generator/" target="_blank">Protos</a></div>
+  </div>
+</div>
+
+<!-- Slide 3: Two Camps -->
+<div class="slide" data-name="Two Camps">
+  <h2 class="slide-title">Two Camps</h2>
+  <p class="subtitle">Freeze the old coins, or don't.</p>
+
+  <div class="cols">
+    <div class="warn-box" style="margin-bottom:0">
+      <div class="warn-label">CAMP A — FREEZE</div>
+      <div class="card-text">Old keys exposed (P2PK, reused addresses) face future theft once signatures break. Freeze first, sort later.<br><br>
+      • <strong>BIP-361</strong> (Lopp et al, Apr 14): calendar deadline. Phase A blocks new sends to legacy types (~3 yrs); Phase B restricts legacy ECDSA/Schnorr spends behind a quantum-safe rescue path (~5 yrs).<br>
+      • <strong>Hourglass V2</strong> (Beast/Casey): throttle P2PK to 1 BTC per block, draining ~1.7M BTC over ~32 years.</div>
+    </div>
+    <div class="green-box" style="margin-bottom:0">
+      <div class="green-label">CAMP B — DON'T</div>
+      <div class="card-text">Freezing valid signatures means a consensus-level freeze of otherwise valid spends. Detect or defend without taking anyone's coins.<br><br>
+      • <strong>BitMEX "Canary"</strong>: honeypot tripwire; freeze legacy only if its spend proves a working quantum computer.<br>
+      • <strong>PACTs</strong> (Paradigm): dormant holders prove ownership now (BIP-322 + OpenTimestamps; STARK proof later), redeem later.<br>
+      • <strong>QSB</strong> (Avihu Levy): hash-based signatures inside existing script. No fork. ~$75–150 GPU compute per spend.<br>
+      • <strong>Quip</strong>: wallet-side PQ commitment via an L2 (Arch Network). Mainchain unchanged. Available now.</div>
+    </div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text"><strong>Lopp's own framing:</strong> <em>"I know folks don't like BIP-361. I don't like it myself. I wrote it because I like the alternative even less."</em></div>
+    <div class="quote-attr">— Jameson Lopp · <a href="https://www.coindesk.com/business/2026/04/15/bitcoin-developer-jameson-lopp-says-it-s-better-to-freeze-5-6-million-btc-than-let-hackers-have-them" target="_blank">CoinDesk, Apr 15</a></div>
+  </div>
+
+  <div class="quote">
+    <div class="quote-text"><strong>The objection, in one line:</strong> <em>"We have to steal people's money to prevent their money from being stolen."</em></div>
+    <div class="quote-attr">— Phil Geiger, Metaplanet (Apr 15)</div>
+  </div>
+
+  <div class="purple-box">
+    <div class="purple-label">CORALLO · APR 15 · "PQC — WHAT IS OUR GOAL, EVEN?"</div>
+    <div class="card-text"><strong>Matt Corallo</strong> (Spiral) reframes the question: the goal isn't the perfect freeze policy, it's maximising the number of coins secured before a CRQC arrives — so the freeze question matters less when it does. Implication: focus on the weakest links (mainstream wallets that reuse static addresses — Bitcoin.com, Trust, Coinbase Wallet, Blockchain.com), not on perfecting expert setups or designing the ultimate PQ scheme today.<br><br>
+    <em>"we should be seeking to minimize the chance that the Bitcoin community feels the need to fork to burn coins by reducing the number of coins which can be stolen"</em><br>
+    — <a href="https://gnusha.org/pi/bitcoindev/CF7A554D-EE6F-4E6B-A670-1D6F72170539@mattcorallo.com/" target="_blank">bitcoindev, Apr 15</a></div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">SEPARATE FROM THE FREEZE QUESTION</div>
+    <div class="card-text">Both camps still need a <strong>quantum-safe signature scheme</strong> for new outputs. <strong>BIP-360</strong> defines a PQ-friendly output format; the actual sig scheme (SHRINCS / SHRIMPS) is on the next slide. <strong>Presidio Bitcoin's "Quantum Readiness v1"</strong> compares all the proposals end-to-end: <a href="https://github.com/presidiobtc/bitcoin-quantum" target="_blank">github.com/presidiobtc/bitcoin-quantum</a></div>
+  </div>
+</div>
+
+<!-- Slide 4: SHRINCS / SHRIMPS Refresher -->
+<div class="slide" data-name="SHRINCS / SHRIMPS">
+  <h2 class="slide-title">SHRINCS / SHRIMPS</h2>
+  <p class="subtitle">Yes: SHRINCS is a post-quantum signature scheme. It proves a wallet can spend without relying on ECDSA/Schnorr.</p>
+
+  <div class="sig-flow" aria-label="Post-quantum signature scheme flow">
+    <div class="flow-box">
+      <div class="flow-label">Spend</div>
+      <div class="flow-main">Transaction digest</div>
+      <div class="flow-sub">The message being authorized</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box hot">
+      <div class="flow-label">Signer</div>
+      <div class="flow-main">SHRINCS / SHRIMPS</div>
+      <div class="flow-sub">Secret key + signing state</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">
+      <div class="flow-label">Witness</div>
+      <div class="flow-main">PQ signature</div>
+      <div class="flow-sub">~324 B or ~2.5 KB path</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-box">
+      <div class="flow-label">Verifier</div>
+      <div class="flow-main">Public key check</div>
+      <div class="flow-sub">Nodes validate the spend</div>
+    </div>
+  </div>
+
+  <div class="sig-visual">
+    <div class="sig-panel">
+      <div class="sig-title" style="color:var(--gn)">SHRINCS: one signer, one queue</div>
+      <div class="leaf-row" aria-label="SHRINCS signing leaves">
+        <div class="leaf used">leaf<br>0</div>
+        <div class="leaf used">leaf<br>1</div>
+        <div class="leaf next">next</div>
+        <div class="leaf">leaf<br>3</div>
+        <div class="leaf">...</div>
+      </div>
+      <div class="sig-caption"><strong>The counter is the state.</strong> Each normal signature consumes one Unbalanced XMSS leaf — a <em>one-time</em> key. Reuse a leaf and the private key leaks, so the wallet must remember which leaves it has spent. Early signatures are about <strong>324 bytes</strong>; if state is lost, the wallet falls back to a larger stateless backup path that doesn't require a counter.</div>
+    </div>
+
+    <div class="sig-panel">
+      <div class="sig-title" style="color:var(--pu)">SHRIMPS: compact slots for devices</div>
+      <div class="device-stack" aria-label="SHRIMPS compact and fallback paths">
+        <div class="device-row"><div class="device-name">hardware</div><div class="sig-path compact"><span>compact path · first sig</span></div></div>
+        <div class="device-row"><div class="device-name">phone</div><div class="sig-path compact"><span>compact path · first sig</span></div></div>
+        <div class="device-row"><div class="device-name">desktop</div><div class="sig-path compact"><span>compact path · first sig</span></div></div>
+        <div class="device-row"><div class="device-name">later</div><div class="sig-path fallback"><span>fallback path · larger sig</span></div></div>
+      </div>
+      <div class="sig-caption"><strong>SHRIMPS is the multi-device version.</strong> With <code>n_dev = 2^10</code>, seed restores can each get a compact <strong>~2,564-byte</strong> first signature before falling back safely.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">MARCH → APRIL → MAY</div>
+    <div class="card-text">March proved a SHRINCS verifier on Liquid via Simplicity; April introduced SHRIMPS for hardware-wallet + phone + desktop signing. May framing: candidate Bitcoin signature verifiers, separate from BIP-360's output format.</div>
+  </div>
+
+  <div class="links compact-links">
+    <a href="/2026-03/pq-signatures-liquid.html">March: SHRINCS on Liquid &rarr;</a>
+    <a href="/2026-04/shrimps.html">April: SHRIMPS deck &rarr;</a>
+    <a href="https://delvingbitcoin.org/t/shrincs-324-byte-stateful-post-quantum-signatures-with-static-backups/2158" target="_blank">Delving Bitcoin: SHRINCS &rarr;</a>
+    <a href="https://delvingbitcoin.org/t/shrimps-2-5-kb-post-quantum-signatures-across-multiple-stateful-devices/2355" target="_blank">Delving Bitcoin: SHRIMPS &rarr;</a>
+  </div>
+</div>
+
+<!-- Slide 5: Voices & Reactions -->
+<div class="slide" data-name="Voices">
+  <h2 class="slide-title">Voices Across the Ecosystem</h2>
+  <p class="subtitle">Coverage of the quantum debate expanded across the ecosystem; positions diverged</p>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--gn)"></div>
+      <div class="card-label" style="color:var(--gn)">"DECADES AWAY"</div>
+      <div class="card-text">• <strong>Saylor</strong>: <em>"overblown… likely decades away."</em><br>
+      • <strong>Adam Back</strong>: <em>"real in theory, not yet practical."</em><br>
+      • <strong>Bernstein</strong>: <em>"neither existential nor novel."</em></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--rd)"></div>
+      <div class="card-label" style="color:var(--rd)">"ON THE HORIZON"</div>
+      <div class="card-text">• <strong>Coinbase Quantum Advisory Council</strong>: <em>"not imminent but now clearly on the horizon."</em><br>
+      • <strong>Haroche (Nobel)</strong>: Bitcoin <em>"could be an early target."</em></div>
+    </div>
+  </div>
+
+  <div class="voice">
+    <div class="voice-head"><div class="voice-name">Coinbase Quantum Advisory Council</div><div class="voice-meta">APR 21 · 50pp</div></div>
+    <div class="voice-text">• <strong>Panel:</strong> Aaronson, Boneh, Drake, Kannan, Lindell, Malkhi<br>
+    • <strong>Threat:</strong> <em>"not imminent but now clearly on the horizon"</em><br>
+    • <strong>Timeline debate:</strong> <em>"largely irrelevant"</em><br>
+    • <strong>Exposure:</strong> ~6.9M BTC in keys-exposed UTXOs<br>
+    <a href="https://www.coinbase.com/blog/coinbase-quantum-advisory-council-publishes-position-paper-on-quantum-computing-and-blockchain" target="_blank">Coinbase</a></div>
+  </div>
+
+  <div class="voice">
+    <div class="voice-head"><div class="voice-name">Saylor · MARA · Adam Back</div><div class="voice-meta">APR 7–27</div></div>
+    <div class="voice-text">• <strong>Saylor:</strong> quantum risk <em>"overblown… decades away";</em> Strategy pledged a "Bitcoin Security Program."<br>
+    • <strong>MARA Foundation</strong> (Apr 27): funding quantum-research as a priority.<br>
+    • <strong>Adam Back:</strong> pro-optional upgrades, anti-forced-freeze.<br>
+    <a href="https://www.coindesk.com/markets/2026/04/08/michael-saylor-says-bitcoin-has-likely-bottomed-quantum-risk-overblown" target="_blank">CoinDesk</a> · <a href="https://bitcoinmagazine.com/news/mara-launches-bitcoin-focused-foundation" target="_blank">BM</a> · <a href="https://www.bloomberg.com/news/videos/2026-04-07/quantum-risk-not-imminent-for-crypto-adam-back-video" target="_blank">Bloomberg</a></div>
+  </div>
+
+  <div class="voice">
+    <div class="voice-head"><div class="voice-name">Bernstein · Grayscale · BTC Policy Institute · Haroche</div><div class="voice-meta">APR 7–8</div></div>
+    <div class="voice-text">• <strong>Bernstein:</strong> <em>"real but manageable"</em>, 3–5 yr window.<br>
+    • <strong>Grayscale:</strong> <em>"governance, not engineering."</em><br>
+    • <strong>BTC Policy Institute:</strong> "State of Play" report.<br>
+    • <strong>Haroche</strong> (Nobel laureate): Bitcoin <em>"could be early target."</em><br>
+    <a href="https://www.btcpolicy.org/articles/state-of-play-quantum-computing-and-bitcoins-path-forward" target="_blank">btcpolicy.org</a></div>
+  </div>
+</div>
+
+<!-- Slide 9: Discussion -->
+<div class="slide" data-name="Conferences">
+  <h2 class="slide-title">Conferences &amp; Threads</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--pu)"></div>
+    <div class="card-label" style="color:var(--pu)">QUANTUM ON STAGE</div>
+    <div class="card-text">
+      <strong>MIT Bitcoin Expo</strong> (Apr 11–12) — Heilman on algorithm agility.<br>
+      <strong>OPNEXT NYC</strong> (Apr 16) — quantum sessions; <a href="https://blockspace.media/podcast/quantum-bitcoin-bip-360-algorithm-agility-ethan-heilman-opnext-26/" target="_blank">Blockspace podcasts</a>.<br>
+      <strong>bitcoin++ Vegas</strong> (Apr 23–24) — Oxford Debate <em>"Quantum FUD vs Quantum Compute"</em>: Zell, Pruden, Black. <a href="https://btcplusplus.dev/conf/vegas" target="_blank">btcplusplus.dev</a>
+    </div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">BITCOIN-DEV THREADS (APR 2 – MAY 5)</div>
+    <div class="card-text">
+      • <strong>"Algorithm Agility for Bitcoin"</strong> — Heilman, Apr 2.<br>
+      • <strong>"PQ BIP-86 Recovery via zk-STARK"</strong> — Roasbeef, Apr 8. Reduced xpriv variant cut composite prover time <code>~49s → ~2s</code>; succinct proof <code>~64s → ~3s</code>.<br>
+      • <strong>"In defense of a PQ output type"</strong> — Antoine Poinsot, Apr 9.<br>
+      • <strong>"PQC – What is our Goal, Even?"</strong> — Matt Corallo, Apr 15. Reframes the migration goal: maximise coins secured before a CRQC arrives, focus on weakest-link mainstream wallets (covered on the Two Camps slide).<br>
+      • <strong>"A Post-Quantum Path for BIP 324"</strong> — Roasbeef, May 5. Heilman pushed TLS 1.3; declined.
+    </div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

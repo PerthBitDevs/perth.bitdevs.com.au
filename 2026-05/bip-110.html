@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIP-110 — Perth BitDevs · May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.15);--ylD:rgba(234,179,8,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylD);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.dot{padding:4px 8px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:20px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orG);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.orange-box{background:var(--orG);border:1px solid rgba(247,147,26,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.orange-label{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.quote-box{background:var(--sf);border-left:3px solid var(--or);padding:12px 16px;margin-bottom:12px;border-radius:0 6px 6px 0;color:var(--txM);font-size:19px;line-height:1.6;font-style:italic}
+.quote-box.opp{border-left-color:var(--rd)}
+.quote-box.pro{border-left-color:var(--gn)}
+.quote-box.neut{border-left-color:var(--bl)}
+.quote-box strong{color:var(--tx);font-style:normal}
+.attrib{margin-top:6px;font-style:normal;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:19px}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--txD);text-align:left;padding:8px 10px;border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.tbl td{padding:8px 10px;border-bottom:1px solid rgba(28,36,50,.5);color:var(--txM);vertical-align:top}
+.tbl td strong{color:var(--tx)}
+.tbl tr:last-child td{border-bottom:none}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:800}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;margin-top:4px;letter-spacing:.04em}
+.flow{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.flow-step{display:flex;gap:12px;align-items:flex-start;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px}
+.flow-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--orG);border:1px solid var(--or);color:var(--or);font-family:'JetBrains Mono',monospace;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center}
+.flow-content{flex:1;font-size:19px;color:var(--txM);line-height:1.55}
+.flow-content strong{color:var(--tx)}
+.flow-content code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--or);background:var(--orG);padding:1px 5px;border-radius:3px}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.action{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.action-num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gn);font-weight:700;letter-spacing:.06em}
+.action-title{font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--tx);font-weight:700;line-height:1.3}
+.action-desc{color:var(--txM);font-size:17px;line-height:1.5}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:19px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10;gap:12px}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px;text-align:center;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:600px){.cols,.stat-row,.action-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">BIP-110</div>
+    <div class="update-tag">APR 7 → MAY 7</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — STATE OF PLAY -->
+<!-- ============================================================ -->
+<div class="slide" data-name="State of Play">
+  <h2 class="slide-title">BIP-110 — State of Play</h2>
+
+  <div class="orange-box">
+    <div class="orange-label">THE PROPOSAL</div>
+    <div class="card-text">A <strong>one-year temporary soft fork</strong> limiting arbitrary on-chain data — inscriptions, BRC-20-style tokens, large <code>OP_RETURN</code> outputs. Author: <strong>dathonohm</strong>. Activation: modified BIP-9 bit-4 with a <strong>55% miner-signaling threshold</strong>, plus a BIP8-style mandatory-signaling window before max-height. (BIP-9 = miner signals via coinbase, fork can fail to activate if the threshold isn't reached. BIP-8 = activation becomes mandatory at max-height regardless of signaling.)</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">SIGNALING %</div>
+      <div class="card-text">Period 470 (current): <strong>0 / 759 blocks</strong> as of block 948278, 2026-05-07 06:48 UTC. Peak: <strong>0.15%</strong>. Threshold: <strong>55%</strong>.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--rd)"></div>
+      <div class="card-label" style="color:var(--rd)">KNOTS NODE SHARE</div>
+      <div class="card-text"><strong>~21–22%</strong> of public reachable nodes by mid-April.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">WHERE THE CODE LIVES</div>
+    <div class="card-text"><strong>(1)</strong> dathonohm's fork client (v0.4.1, 2026-03-10)<br>
+    <strong>(2)</strong> Bitcoin Knots, via in-flight pull requests<br>
+    <strong>(3)</strong> two Bitcoin Core PRs (#34929, #34930) auto-closed by DrahtBot 2026-03-26, no reopen</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — KNOTS PR #238 -->
+<!-- ============================================================ -->
+<div class="slide" data-name="PR #238">
+  <h2 class="slide-title">May 1 — Luke Dashjr APPROVED Knots PR #238</h2>
+
+  <div class="orange-box">
+    <div class="orange-label">WHAT HAPPENED</div>
+    <div class="card-text">On <strong>2026-05-01</strong>, Luke Dashjr submitted a formal <strong>APPROVED</strong> review on <a href="https://github.com/bitcoinknots/bitcoin/pull/238" target="_blank">bitcoinknots/bitcoin#238</a> — <em>"Reduced Data Temporary Softfork, implemented as a modified BIP9 temporary deployment."</em> The PR is <strong>still open, not yet merged</strong>, but Luke's approval is the gate for landing BIP-110 enforcement in mainline Knots.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">EFFECT</div>
+    <div class="card-text">Until #238 lands, BIP-110 enforcement only ships in <strong>dathonohm's fork client</strong>. Once merged, Knots (~22% of reachable nodes) would include the enforcement code path in a future release; exact build/runtime defaults are tied to the consent-gate PRs. Approval ≠ merge.</div>
+  </div>
+
+  <div class="cyan-box">
+    <div class="cyan-label">ALSO IN THE WINDOW — RDTS_CONSENT</div>
+    <div class="card-text">Knots PR <a href="https://github.com/bitcoinknots/bitcoin/pull/256" target="_blank">#256</a> adds the <strong>RDTS_CONSENT</strong> build/runtime consent mechanism for RDTS-enabled builds. PR <a href="https://github.com/bitcoinknots/bitcoin/pull/289" target="_blank">#289</a> adds warnings/prompts for older or non-RDTS builds. Response to the "miners didn't consent" objection from earlier soft-fork debates.</div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">SIGNALING UNCHANGED</div>
+    <div class="card-text">Miner signaling stays well under 1% regardless of where the code lives.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — WHERE THE CONVERSATION LIVES -->
+<!-- ============================================================ -->
+<div class="slide" data-name="The Discussion">
+  <h2 class="slide-title">Where the Debate Is Active — and Where It Is Quiet</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">DELVING BITCOIN — THREAD #2360 · CRITIQUES</div>
+    <div class="card-text">The April debate on the v0.4.1 release thread:<br><br>
+    • <strong>Apr 7</strong> — ArmchairCryptologist: <em>"the BIP does not accomplish its stated objective since the restrictions are easily bypassed."</em><br>
+    • <strong>Apr 7</strong> — neonrooks: <em>"Part of a permissionless system is allowing users to waste their money on whatever transactions they choose."</em><br>
+    • <strong>Apr 10</strong> — Antoine Riard, on an academic paper BIP-110 supporters cite for node-runner legal risk: <em>"I fear it's more a paper written by computer scientists … who were just seeking a sophisticated justification to write more papers."</em></div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--gn)"></div>
+    <div class="card-label" style="color:var(--gn)">AUTHOR'S RESPONSE — DATHONOHM, APR 20</div>
+    <div class="card-text">Three replies (#12–#14):<br><br>
+    <strong>On "the BIP doesn't stop data":</strong> <em>"Please point me to where the BIP states that its objective is to prevent all data insertion."</em> Cites BIP-148 (2017 SegWit UASF) as precedent for skepticism-then-success.<br><br>
+    <strong>Storm-damage analogy:</strong> <em>"If your roof was damaged by a storm 50× less severe than the worst case, and it stopped raining, would you take the opportunity to reinforce your roof to prepare it for the worst case, or would you say 'it's not raining now, so there's no need to do anything'?"</em><br><br>
+    <strong>On the Tor comparison:</strong> <em>"Operating a Tor node is nowhere close to operating a Bitcoin node."</em> Argues that tolerating arbitrary-data storage narrows the node-runner population and drives centralisation.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">WHERE IT IS QUIET</div>
+    <div class="card-text">• <strong><code>bitcoin/bips</code> repo:</strong> zero edits to <code>bip-0110.mediawiki</code> since 2026-03-05<br>
+    • <strong>Bitcoin Core PRs #34929 / #34930:</strong> auto-closed by DrahtBot 2026-03-26, no reopen<br>
+    • <strong>bitcoin-dev mailing list:</strong> no BIP-110 / OP_RETURN / datacarrier threads</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — SIGNALING STALLED -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Signaling Stalled">
+  <h2 class="slide-title">Signaling Has Stalled</h2>
+
+  <table class="tbl">
+    <tr><th>Period</th><th>Approx. dates</th><th>Signal blocks</th><th>%</th></tr>
+    <tr><td><strong>465</strong></td><td>early–mid Apr</td><td>1 / 2016</td><td>0.05%</td></tr>
+    <tr><td><strong>466</strong></td><td>mid Apr</td><td>0 / 2016</td><td>0.00%</td></tr>
+    <tr><td><strong>467</strong></td><td>late Apr</td><td>3 / 2016</td><td>0.15%</td></tr>
+    <tr><td><strong>468</strong></td><td>late Apr – early May</td><td>2 / 2016</td><td>0.10%</td></tr>
+    <tr><td><strong>469</strong></td><td>early May</td><td>0 / 2016</td><td>0.00%</td></tr>
+    <tr><td><strong>470</strong> (current)</td><td>rolling</td><td>0 / 759</td><td><strong>0.00%</strong></td></tr>
+  </table>
+
+  <div class="orange-box">
+    <div class="orange-label">PEAK vs THRESHOLD</div>
+    <div class="card-text">Peak: <strong>0.15%</strong>. Threshold: <strong>55%</strong>. Source: <a href="https://bip110monitor.com/" target="_blank">bip110monitor.com</a>, accessed 2026-05-07.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">NO SECOND POOL · NO REJECT TAG</div>
+    <div class="card-text">All bit-4 signaling blocks came through Ocean's DATUM template path. <strong>No second public pool</strong> signaled BIP-110:<br>
+    • Foundry<br>
+    • Antpool<br>
+    • F2Pool<br>
+    • ViaBTC<br>
+    • Luxor<br>
+    • SBI<br>
+    • MARA<br>
+    • Braiins<br><br>
+    Equally, <strong>no pool added an explicit "REJECT BIP-110" coinbase tag</strong> as a counter-signal.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — OCEAN CLIMBS -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Ocean Climbs">
+  <h2 class="slide-title">Ocean Hashrate Rose; Signaling Did Not</h2>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--or)">~14.5 EH/s</div>
+      <div class="stat-label">OCEAN · APR 7</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--or)">22.75 EH/s</div>
+      <div class="stat-label">OCEAN · MAY 7</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--or)">~1.87%</div>
+      <div class="stat-label">NETWORK SHARE (24H)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--or)"></div>
+    <div class="card-label" style="color:var(--or)">THE NUMBERS</div>
+    <div class="card-text">Ocean.xyz dashboard reads <strong>22.75 EH/s</strong> on 2026-05-07, up from ~14.5 EH/s a month ago. <a href="https://mempool.space/mining/pool/ocean" target="_blank">mempool.space</a> reports a more conservative 24h figure of ~19.8 EH/s and <strong>~1.87% network share</strong>. Hashrate Index's Apr 13 roundup put Ocean + Braiins Pool together at "just over 4%" of blocks for Apr 3–17.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">THE GAP</div>
+    <div class="card-text">Ocean's pool hashrate roughly <strong>1.5×'d</strong> over the month — but per-period signaling stayed under <strong>0.20%</strong>. Most Ocean blocks aren't built from DATUM templates with the bit-4 flag set. Pool affiliation ≠ signaling.</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">FROM OCEAN</div>
+    <div class="card-text">On <strong>2026-04-16</strong>, Ocean called the rent-hashrate-to-DATUM pipeline "an unexpected use of DATUM we love." No pool roadmap change announced.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — HASHRATE RENTALS -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Rentals">
+  <h2 class="slide-title">The Hashrate-Rental Pattern</h2>
+  <p class="subtitle">Rent → Datum → Ocean.</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-content"><strong>Rent on Braiins Hashpower</strong> in sat-denominated chunks. ~<strong>47k sats / PH·day</strong> typical.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-content"><strong>Point at a DATUM-compatible stratum.</strong> Public path: PyBlock at <code>stratum+tcp://pool.pyblock.xyz:23334</code> (Knots + BIP-110 templates). Advanced path: your own Knots/BIP-110 node + DATUM gateway.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-content"><strong>Hash submits to Ocean</strong> on PPLNS. Coinbase signals BIP-110 if the template was built from a Knots-with-BIP-110 node.</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">@VENORUSPRIME · MAR 22</div>
+      <div class="card-text">Scaled <strong>100 TH/s home gear → 1.1 PH/s rented</strong>. Routed through his own DATUM. Frames the cost gap as protocol "dues."</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">@FIELDNAS · APR 6</div>
+      <div class="card-text">First-time rental: <strong>15 PH/s for 7 hours</strong> via PyBlock. <em>"That's equivalent to 20+ days running an ASIC S21+."</em></div>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">EFFECT ON SIGNALING</div>
+    <div class="card-text">Monthly signaling stayed <strong>under 0.20%</strong>. To hit 55% via rentals alone — ~47k sats/PH/day across ~1,000 EH/s of network hashrate — you'd need <strong>500+ EH/s of rented hash</strong> daily. Subsidy-scale, not pleb-coordination scale. F2Pool's <strong>Wang Chun</strong> on <strong>Apr 4</strong>: <em>"This is one of the reasons I rejected BIP-110."</em></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — BITPROJECTS + NODE COUNTS -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Sybil Nodes">
+  <h2 class="slide-title">Bitprojects' 3,000 Nodes — and What Node Counts Mean</h2>
+
+  <div class="warn-box">
+    <div class="warn-label">WHAT HAPPENED · MAR 31, 00:12 UTC</div>
+    <div class="card-text">b10c's BNOC monitors saw <strong>~220 new IPv4 peers</strong> appear within ~3 minutes. The cause: a single operator — <strong>bitprojects-io</strong> — had pulled <strong>~3,000 nodes</strong> offline simultaneously. Half-rack of colocation, ~$2,000/month, IPs at $0.30–0.40 each. Run for two years. Switched to Knots+BIP-110 about two weeks before shutdown.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">80,526</div>
+      <div class="stat-label">INBOUND CONNECTIONS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">35,127</div>
+      <div class="stat-label">UNIQUE SOURCE IPs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">3,040</div>
+      <div class="stat-label">CONTROLLED NODES</div>
+    </div>
+  </div>
+
+  <div class="quote-box opp">
+    "I actually did control 3k nodes, and I chose to signal BIP-110."
+    <div class="attrib">— bitprojects, BNOC forum</div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">WHY IT MATTERS</div>
+    <div class="card-text">PoW secures blocks, not the P2P transport layer. A peer-graph-dominant attacker can <strong>eclipse</strong> a victim node — surrounding it with attacker-controlled peers so it sees only the attacker's view of the chain, mempool, and policy signals — as well as delay propagation network-wide. Reachable-node signaling carries no economic weight. The Knots ~22% figure is post-disclosure (bitprojects nodes removed); other undisclosed Sybil operations are unknown.</div>
+  </div>
+
+  <div class="action-grid">
+    <div class="action">
+      <div class="action-num">ACTION 01</div>
+      <div class="action-title">Make your node IPv4-reachable</div>
+      <div class="action-desc">Open <code style="font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--gn);background:rgba(34,197,94,.12);padding:1px 5px;border-radius:3px">TCP/8333</code>. The network's worst weakness today is that few nodes accept inbound IPv4.</div>
+    </div>
+    <div class="action">
+      <div class="action-num">ACTION 02</div>
+      <div class="action-title">Increase outbound connections</div>
+      <div class="action-desc">Default 8–12 → <strong>24–48</strong>. Diverse outbound makes eclipse attacks dramatically harder per-victim.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — APRIL FOLLOW-UP: THE 30K DROP -->
+<!-- ============================================================ -->
+<div class="slide" data-name="30k Drop">
+  <h2 class="slide-title">Late April — A Larger Drop, Reportedly</h2>
+  <p class="subtitle">A second, larger end-of-April drop — figures circulated, primary post not retrieved.</p>
+
+  <div class="warn-box">
+    <div class="warn-label">THE CHART</div>
+    <div class="card-text">An <strong>all-nodes</strong> "Node Count by Implementation" chart (counts non-listening peers, ~10× the reachable figures on Bitnodes / Coin Dance) circulated in late April, attributed to @bitprojects_io. Bitcoin Knots rose from ~20,000 in early February to ~50,000 mid-April, then dropped sharply at end-of-month; Bitcoin Core dipped at the same moment. Primary post not retrieved — figures as reported.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--yl)">~20k</div>
+      <div class="stat-label">KNOTS · FEB · ALL-NODES</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">~50k</div>
+      <div class="stat-label">KNOTS · MID-APR PEAK</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">~30k</div>
+      <div class="stat-label">END-APR DROP</div>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">IF IT HOLDS UP</div>
+    <div class="card-text">March 31 disclosure was <strong>~3,040 nodes</strong>. A ~30,000-node drop is an order of magnitude larger. Possible reasons: the original admission understated scale; the fleet kept growing after disclosure; or other operators ran parallel infrastructure on the same economics. Earlier Jan–Mar drop-spikes on the same chart would look like start/stop cycles, not a one-off. All-nodes counts are noisier than reachable counts.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — VOICES (Conferences + Opposition + Pro, merged) -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Voices">
+  <h2 class="slide-title">Voices — Conferences, Opposition, Pro</h2>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">MIT EXPO · APR 11–12</div>
+      <div class="card-text" style="font-size:18px">• <strong>Poinsot</strong> (Core): <em>"low-likelihood/high-impact fixes that impose reasonable resource costs"</em> are also valuable.<br>
+      • <strong>Rubin</strong>: BIP-110 as <em>"ecosystem conventions rather than top-down control."</em></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--rd)"></div>
+      <div class="card-label" style="color:var(--rd)">BITCOIN 2026 LV · APR 27–29</div>
+      <div class="card-text" style="font-size:18px">• <strong>Saylor</strong>: risk of <em>"iatrogenic protocol changes"</em> (the cure causes more harm than the disease).<br>
+      • <strong>Back</strong>: <em>"could open the door to transactional censorship logic."</em><br>
+      • <strong>Bailey</strong> (BTC Inc): olive branch to BIP-110 supporters — the only on-the-record position change this month.</div>
+    </div>
+  </div>
+
+  <div class="quote-box opp">
+    "BIP 110 is a misguided and unusually careless softfork proposal. I do not expect nor support adoption. It also is on-topic, had substantial review and public discussion, and the authors made reasonable efforts to address raised issues."
+    <div class="attrib">— <strong>Murch</strong> (BIP editor, Bitcoin Core) · X</div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>#</th><th>Convergent opposition line</th><th>Loudest voices</th></tr>
+    <tr><td><strong>1</strong></td><td><strong>It doesn't work.</strong> Habovštiak image-bypass demo; filter rules can be evaded by anyone determined.</td><td>Habovštiak, ArmchairCryptologist</td></tr>
+    <tr><td><strong>2</strong></td><td><strong>55% threshold without broad consensus is the real problem.</strong></td><td>Lopp, Back, Murch</td></tr>
+    <tr><td><strong>3</strong></td><td><strong>Filtering invites the regulator.</strong></td><td>Lopp, Riard</td></tr>
+    <tr><td><strong>4</strong></td><td><strong>Iatrogenic risk.</strong></td><td>Saylor</td></tr>
+  </table>
+
+  <div class="green-box">
+    <div class="green-label">PRO SIDE — STILL TALKING</div>
+    <div class="card-text">Most active recent pro-BIP-110 voice: <strong>Renaud Cuny</strong> (Block Space Weekly; <a href="https://podcasts.apple.com/us/podcast/bip-110-miner-centralisation-and-node-is-law-renaud-cuny-594/id1497540130?i=1000750776760" target="_blank">Once Bitten! #594</a>, Apr 14). Framing: <em>"miners can accelerate but cannot prevent"</em> the proposed flag day; "node-is-law" rather than "miner-is-law."</div>
+  </div>
+
+  <div class="links">
+    <a href="https://bip110monitor.com/" target="_blank">bip110monitor.com →</a>
+    <a href="https://github.com/bitcoinknots/bitcoin/pull/238" target="_blank">Knots PR #238 →</a>
+    <a href="https://delvingbitcoin.org/t/bip-110-update-v0-4-1-release-and-implementation-submitted-to-bitcoin-core/2360" target="_blank">Delving Bitcoin · #2360 →</a>
+    <a href="https://mitbitcoinexpo.org/blog/bip110-fight-about-what-bitcoin-is-for" target="_blank">MIT Expo essay →</a>
+    <a href="https://blog.lopp.net/a-laymans-guide-to-bip-110/" target="_blank">Lopp · A Layman's Guide to BIP-110 →</a>
+    <a href="https://blockspaceweekly.substack.com/" target="_blank">Cuny · Block Space Weekly →</a>
+    <a href="https://bnoc.xyz/t/steep-increase-in-inbound-connections-on-2026-03-31-at-00-12-utc/108" target="_blank">BNOC · Bitprojects spike thread →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

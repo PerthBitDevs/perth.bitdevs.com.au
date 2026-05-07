@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Governance — Perth BitDevs · May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--blG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--blD);border:1px solid var(--bl);border-radius:16px;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--bl);background:var(--blG);color:var(--bl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:19px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--bl);background:var(--blG);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.purple-box{background:var(--puG);border:1px solid rgba(168,85,247,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.purple-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.orange-box{background:var(--orG);border:1px solid rgba(247,147,26,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.orange-label{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.quote-box{background:var(--sf);border-left:3px solid var(--bl);padding:12px 16px;margin-bottom:12px;border-radius:0 6px 6px 0;color:var(--txM);font-size:19px;line-height:1.55;font-style:italic}
+.quote-box.opp{border-left-color:var(--rd)}
+.quote-box.pro{border-left-color:var(--gn)}
+.quote-box.neut{border-left-color:var(--cy)}
+.quote-box strong{color:var(--tx);font-style:normal}
+.quote-box .attrib{margin-top:6px;font-style:normal;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;letter-spacing:.02em}
+.quote-box .attrib a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.quote-box .attrib a:hover{border-bottom-color:var(--bl)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.article-card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.article-num{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--bl);font-weight:700;letter-spacing:.06em}
+.article-title{font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--tx);font-weight:700;line-height:1.3}
+.article-date{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px}
+.article-desc{color:var(--txM);font-size:17px;line-height:1.5}
+.article-status{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--gn);font-weight:700;letter-spacing:.06em;margin-top:4px}
+.article-pending{color:var(--txD)}
+.tl{position:relative;padding-left:32px}
+.tl::before{content:"";position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--bl),var(--pu));border-radius:1px}
+.tl-item{position:relative;margin-bottom:14px}
+.tl-item::before{content:"";position:absolute;left:-26px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--bl)}
+.tl-date{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--bl);font-weight:700;letter-spacing:.04em;margin-bottom:3px}
+.tl-title{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--tx);font-weight:700;margin-bottom:3px}
+.tl-text{color:var(--txM);font-size:17px;line-height:1.55}
+.tl-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:10px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;color:var(--bl)}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:3px;letter-spacing:.04em}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:12px;font-size:18px}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--txD);text-align:left;padding:7px 9px;border-bottom:1px solid var(--bd);letter-spacing:.04em}
+.tbl td{padding:7px 9px;border-bottom:1px solid rgba(28,36,50,.5);color:var(--txM);vertical-align:top;line-height:1.5}
+.tbl td strong{color:var(--tx)}
+.tbl tr:last-child td{border-bottom:none}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.85;word-break:break-all}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--bl);background:var(--blG);color:var(--bl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:600px){.cols,.cols-3,.stat-row{grid-template-columns:1fr 1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}}
+@media(max-width:420px){.stat-row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">GOVERNANCE</div>
+    <div class="update-tag">PAST MONTH</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — OVERVIEW -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Governance</h2>
+  <p class="subtitle">Five governance threads ran in parallel through the month</p>
+
+  <div class="info-box">
+    <div class="info-label">THE SHAPE OF THE MONTH</div>
+    <div class="card-text">A current BIP editor (Murch) asked for a team refresh. Citadel21's "Capture" series published Article 2. A separate quantitative governance brief from Falco landed on the Bitcoin Core issue tracker. Bitcoin 2026 Las Vegas put federal regulators on stage and drew cypherpunk-leaning backlash. (<strong>ProductionReady</strong> is covered on <a href="alt-clients.html">Alt-Client Watch</a>.)</div>
+  </div>
+
+  <div class="cols">
+    <div class="article-card">
+      <div class="article-num">THREAD 01 · APR 22</div>
+      <div class="article-title">Murch RFC — BIP Editor Refresh</div>
+      <div class="article-desc">Mailing-list call to shrink the BIP-Editor team from six to three actively engaged editors.</div>
+    </div>
+    <div class="article-card">
+      <div class="article-num">THREAD 02 · APR 29</div>
+      <div class="article-title">"The Capture" — Article 2</div>
+      <div class="article-desc">hodlonaut's "The Lever" published on Citadel21. Articles 3 &amp; 4 still pending.</div>
+    </div>
+    <div class="article-card">
+      <div class="article-num">THREAD 03 · APR 11</div>
+      <div class="article-title">Falco's "Stakeholder Equilibrium"</div>
+      <div class="article-desc">Independent governance brief; merge-share data on the maintainer set.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">THREAD 04 · APR 27–29 — CONFERENCE POLITICS</div>
+    <div class="card-text"><strong>Bitcoin 2026 Las Vegas</strong> ran a "Code &amp; Country" forum and a fireside with FBI Director <strong>Kash Patel</strong> and Acting AG <strong>Todd Blanche</strong>. Early investor <strong>Simon Dixon</strong> called the conference <em>"compromised."</em></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — MURCH BIP EDITOR RFC -->
+<!-- ============================================================ -->
+<div class="slide" data-name="BIP Editor RFC">
+  <h2 class="slide-title">Murch — "Time for Some New Faces?"</h2>
+  <p class="subtitle">RFC on the bitcoindev mailing list, 2026-04-22</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">4,108</div><div class="stat-label">EDITOR COMMENTS · 2YR</div></div>
+    <div class="stat"><div class="stat-num">596</div><div class="stat-label">PRs HANDLED</div></div>
+    <div class="stat"><div class="stat-num">42</div><div class="stat-label">BIPs PUBLISHED</div></div>
+    <div class="stat"><div class="stat-num">6 → 3</div><div class="stat-label">PROPOSED ROSTER</div></div>
+  </div>
+
+  <div class="quote-box neut">
+    "For most of this time, two BIP Editors contributed most of the work. Then for the first quarter this year, I was the only BIP Editor that regularly contributed... I enjoy the work — but we added more BIP Editors two years ago because it's more than a one-person job. After two years, I propose that we refresh the BIP Editor team. My recommendation would be to aim for three BIP Editors that are all keen on regularly contributing."
+    <div class="attrib">— Murch (Mark Erhardt) · <a href="https://gnusha.org/pi/bitcoindev/3cfa2ee0-07ae-43db-8664-a817af477c95@murch.one/raw" target="_blank">bitcoindev RFC, 2026-04-22</a></div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">CURRENT ROSTER (PER BIP-3)</div>
+    <div class="card-text">• Bryan Bishop (kanzure)<br>
+    • Jon Atack<br>
+    • Luke Dashjr<br>
+    • Mark "Murch" Erhardt<br>
+    • Olaoluwa Osuntokun (Roasbeef)<br>
+    • Ruben Somsen<br><br>
+    Murch <strong>names no one to remove</strong>; he singles out only himself as having carried Q1 2026.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--gn)"></div>
+    <div class="card-label" style="color:var(--gn)">ON-LIST RESPONSES</div>
+    <div class="card-text">
+      • <strong>Greg Tonoski</strong> (2026-04-23) — volunteered. Tonoski is a public BIP-110 advocate and ships Knots+BIP-110 release candidates; his earlier 2024 candidacy was contested.<br>
+      • <strong>Jaroslav "Zed" Dlouhy</strong> (2026-04-27) — asked clarifying questions about the role.<br>
+      • <strong>stickies-v</strong> (2026-04-23) — supportive of the proposal (not a candidate): <em>"Three sounds reasonable."</em><br>
+      Murch's reply (2026-04-29) sets criteria: <em>"some experience contributing to a Bitcoin project or Bitcoin protocol design; solid command of English; and enjoy detail-oriented work… 5–10 hours per week."</em>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">OPEN QUESTIONS</div>
+    <div class="card-text">• No editor has publicly stepped down.<br>
+    • No GitHub PR yet implements the proposed roster change.<br>
+    • No reply on-list from Bishop, Atack, Dashjr, Osuntokun, or Somsen as of 2026-05-07.<br>
+    • The Tonoski volunteer-and-BIP-110-advocate overlap was not addressed substantively on the thread.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — THE CAPTURE: SERIES UPDATE -->
+<!-- ============================================================ -->
+<div class="slide" data-name="The Capture">
+  <h2 class="slide-title">"The Capture" — Series Update</h2>
+  <p class="subtitle">hodlonaut, Citadel21 — Article 2 "The Lever" published 2026-04-29</p>
+
+  <div class="cols">
+    <div class="article-card">
+      <div class="article-num">ARTICLE 01 · MAR 27</div>
+      <div class="article-title">The Network</div>
+      <div class="article-desc">How the network assembled, 2018–2021. Residencies, fellowships, recruitment dinners, mentorship pipelines.</div>
+      <div class="article-status">PUBLISHED</div>
+    </div>
+    <div class="article-card">
+      <div class="article-num">ARTICLE 02 · APR 29</div>
+      <div class="article-title">The Lever</div>
+      <div class="article-desc">How influence was exercised, 2021–2025. Cases: Dashjr, Atack. O'Beirne objections.</div>
+      <div class="article-status">PUBLISHED</div>
+    </div>
+    <div class="article-card">
+      <div class="article-num">ARTICLE 03 · TBA</div>
+      <div class="article-title">— forthcoming</div>
+      <div class="article-desc">Governance infrastructure (expected).</div>
+      <div class="article-status article-pending">PENDING</div>
+    </div>
+    <div class="article-card">
+      <div class="article-num">ARTICLE 04 · TBA</div>
+      <div class="article-title">— forthcoming</div>
+      <div class="article-desc">Consequences (expected).</div>
+      <div class="article-status article-pending">PENDING</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">THE THESIS</div>
+    <div class="card-text">The series argues that Bitcoin Core governance, since ~2018, has been shaped by a connected network of developers, funders, and educators using social mechanisms (residencies, fellowships, mentorship pipelines) to advance preferred contributors and marginalise critics. It doesn't take a position on specific protocol questions — the claim is about the process behind them.</div>
+  </div>
+
+  <table class="tbl">
+    <tr><th>Contested fact</th><th>Series claim</th><th>Right-of-reply</th></tr>
+    <tr>
+      <td><strong>Brink committees</strong></td>
+      <td>"The Organization did not have committees" per FY20–23 Form 990s.</td>
+      <td>Schmidt: a committee met but was "non-governing", not 990-reportable.</td>
+    </tr>
+    <tr>
+      <td><strong>Newbery FY21 comp</strong></td>
+      <td>$359,044; sources say "removed, not voluntary."</td>
+      <td>Schmidt: deferred founding-compensation for 2020 work, not severance.</td>
+    </tr>
+    <tr>
+      <td><strong>Hiring criteria</strong></td>
+      <td>Zhao recruited without prior Bitcoin contributions.</td>
+      <td>Corallo: criteria were "intelligence, commitment, and history of contributions."</td>
+    </tr>
+  </table>
+
+  <div class="links">
+    <a href="https://www.citadel21.com/the-network" target="_blank">Article 1 · The Network →</a>
+    <a href="https://www.citadel21.com/the-lever" target="_blank">Article 2 · The Lever →</a>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — FALCO BRIEF -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Falco Brief">
+  <h2 class="slide-title">Falco — "The Stakeholder Equilibrium"</h2>
+  <p class="subtitle">Independent governance brief, 2026-04-11 — distinct from "The Capture", more quantitative framing</p>
+
+  <div class="quote-box neut">
+    "[Bitcoin Core is] an abandoned institution operating behind a functional maintenance facade… every mechanism that could correct the institution's trajectory has been independently disabled."
+    <div class="attrib">— Vinnie Falco · <em>The Stakeholder Equilibrium: Bitcoin Core As Live Player</em> · <a href="https://cppalliance.org/tools/bitcoin-core-reform-agenda.pdf" target="_blank">PDF</a> · placeholder issue <a href="https://github.com/bitcoin/bitcoin/issues/35055" target="_blank">bitcoin/bitcoin#35055</a></div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--or)"></div>
+      <div class="card-label" style="color:var(--or)">MERGE CONCENTRATION (FALCO'S DATA)</div>
+      <div class="card-text"><strong>fanquake</strong>: 65% of merges in 2025; 65% in 2026 YTD through April.<br><strong>achow101</strong>: 24% over the same period.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--bl)"></div>
+      <div class="card-label" style="color:var(--bl)">STRUCTURE</div>
+      <div class="card-text"><strong>35 findings · 8 compound dynamics.</strong> Brief is structural rather than ad-hominem — focuses on merge-share, decision provenance, and review distribution.</div>
+    </div>
+  </div>
+
+  <div class="yellow-box">
+    <div class="yellow-label">RECEPTION</div>
+    <div class="card-text">Widely cited. No formal maintainer response as of 2026-05-07.</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — CORE PROCESS -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Core Process">
+  <h2 class="slide-title">Bitcoin Core — Process State</h2>
+  <p class="subtitle">What changed inside the project itself — releases, maintainers, infrastructure</p>
+
+  <div class="yellow-box">
+    <div class="yellow-label">v31.0 RELEASE &amp; MAINTAINER SET</div>
+    <div class="card-text">Bitcoin Core <strong>v31.0</strong> was published on bitcoincore.org <strong>2026-04-19</strong>, GitHub release <strong>2026-04-20</strong>, and announced on bitcoindev <strong>2026-04-22</strong> (Ava Chow). No add/remove activity to the maintainer set since April; the most recent change was <strong>TheCharlatan</strong> added <strong>2026-01-08</strong>.<br><br>
+    Current set (six):<br>
+    • Michael Ford (fanquake)<br>
+    • Ava Chow<br>
+    • Hennadii Stepanov (hebasto)<br>
+    • Ryan Ofsky<br>
+    • TheCharlatan<br>
+    • glozow</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">DELVING · "GITLAB BACKUPS FOR BITCOIN CORE REPOSITORY"</div>
+    <div class="card-text">Reactivated <strong>2026-04-30</strong>. TheCharlatan reopened a 2024 thread citing GitHub <em>"constant outages lately"</em>; <strong>laanwj</strong> and <strong>0xB10C</strong> confirmed Tor-only and mirror infrastructure. <a href="https://delvingbitcoin.org/t/gitlab-backups-for-bitcoin-core-repository/624" target="_blank">delvingbitcoin.org/t/624</a></div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">CROSS-REFERENCES</div>
+    <div class="card-text">
+      • <strong>Merge concentration</strong> — Falco's data (slide 4) puts fanquake at 65% / achow101 at 24% of merges across 2025 and 2026 YTD.<br>
+      • <strong>Alt-client wave</strong> — ProductionReady, Hornet and Libbitcoin v4 are covered on the <a href="alt-clients.html">Alt-Client Watch</a> deck. The historical anti-multi-client position (Maxwell, 2018) has <strong>no fresh statement this month</strong> located.<br>
+      • <strong>Knots</strong> dynamics — Knots PR #238 approval, RDTS_CONSENT, the bitprojects Sybil disclosures — are on the <a href="bip-110.html">BIP-110</a> deck.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — STAGES, READING & DISCUSSION -->
+<!-- ============================================================ -->
+<div class="slide" data-name="Stages &amp; Reading">
+  <h2 class="slide-title">Conferences, Other Stages &amp; Reading</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--rd)"></div>
+    <div class="card-label" style="color:var(--rd)">BITCOIN 2026 LAS VEGAS · APR 27–29</div>
+    <div class="card-text">• <strong>"Code &amp; Country"</strong> forum and a fireside with FBI Director <strong>Kash Patel</strong> and Acting AG <strong>Todd Blanche</strong> (<em>"Code is Free Speech: Ending the War on Bitcoin"</em>).<br>
+    • <strong>Simon Dixon</strong> called the conference <em>"compromised."</em><br>
+    • <strong>MASTR</strong> (X, Apr 27): <em>"Or how Bitcoin slowly became the system it was built to escape."</em><br>
+    • <strong>Saylor's</strong> Apr 28 keynote covered Strategy's STRC instrument; no protocol governance content.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">OTHER STAGES &amp; THREADS</div>
+    <div class="card-text">
+      <strong>Adam Back · Paris Blockchain Week, Apr 16</strong> — defended rough-consensus governance, framing BIP-361's calendared freeze as the wrong shape of response: <em>"Preparation is much safer than hasty responses in a crisis"</em> with the corollary that <em>"bugs have been identified and fixed within hours"</em> in past Bitcoin emergencies.<br><br>
+      <strong>Guillaume Girard · Bitcoin Magazine, Apr 23</strong> — frames the quantum question as a governance question: <em>"The quantum computing threat to Bitcoin is not primarily a technical problem — it is a political one."</em><br><br>
+      <strong>Stephan Livera Podcast · Apr 3</strong> — Matyas Kuchar (BTC Prague co-founder); episode tags include <em>"Bitcoin civil war, community divides, culture conflict, sovereignty debate."</em>
+    </div>
+  </div>
+
+  <div class="links">
+    <a href="https://gnusha.org/pi/bitcoindev/3cfa2ee0-07ae-43db-8664-a817af477c95@murch.one/raw" target="_blank">Murch · BIP-Editor RFC (bitcoindev) →</a>
+    <a href="https://www.citadel21.com/the-network" target="_blank">Citadel21 · "The Network" →</a>
+    <a href="https://www.citadel21.com/the-lever" target="_blank">Citadel21 · "The Lever" →</a>
+    <a href="https://github.com/bitcoin/bitcoin/issues/35055" target="_blank">GH · Falco brief placeholder #35055 →</a>
+    <a href="https://cppalliance.org/tools/bitcoin-core-reform-agenda.pdf" target="_blank">Falco · "Stakeholder Equilibrium" PDF →</a>
+    <a href="https://productionready.org/blog/productionready-launches" target="_blank">ProductionReady · launch post →</a>
+    <a href="https://bitcoinops.org/en/newsletters/" target="_blank">Bitcoin Optech newsletters →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

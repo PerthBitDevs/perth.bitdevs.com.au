@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New BIPs Roundup — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bd2:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orG:rgba(247,147,26,.15);--bl:#3b82f6;--blG:rgba(59,130,246,.15);--blD:rgba(59,130,246,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--pu:#a855f7;--puG:rgba(168,85,247,.15);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--blG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--blG);border:1px solid var(--bl);border-radius:16px;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--bl);background:var(--blG);color:var(--bl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:19px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--bl);background:var(--blG);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txD);margin:14px 0 8px;padding-left:2px}
+.section-label:first-child{margin-top:0}
+.bip-row{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 14px;margin-bottom:8px;position:relative;overflow:hidden}
+.bip-row::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;opacity:.7}
+.bip-num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800;letter-spacing:-.01em;line-height:1.2;min-width:64px}
+.bip-body{display:flex;flex-direction:column;gap:3px;min-width:0}
+.bip-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);line-height:1.3}
+.bip-desc{color:var(--txM);font-size:18px;line-height:1.5}
+.bip-link{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;align-self:center;white-space:nowrap;transition:color .15s}
+.bip-link:hover{color:var(--bl)}
+.bip-row.bl::before{background:var(--bl)} .bip-row.bl .bip-num{color:var(--bl)}
+.bip-row.pu::before{background:var(--pu)} .bip-row.pu .bip-num{color:var(--pu)}
+.bip-row.cy::before{background:var(--cy)} .bip-row.cy .bip-num{color:var(--cy)}
+.bip-row.gn::before{background:var(--gn)} .bip-row.gn .bip-num{color:var(--gn)}
+.bip-row.yl::before{background:var(--yl)} .bip-row.yl .bip-num{color:var(--yl)}
+.bip-row.rd::before{background:var(--rd)} .bip-row.rd .bip-num{color:var(--rd)}
+.bip-row.pk::before{background:var(--pk)} .bip-row.pk .bip-num{color:var(--pk)}
+.bip-row.tl::before{background:var(--tl)} .bip-row.tl .bip-num{color:var(--tl)}
+.bip-row.or::before{background:var(--or)} .bip-row.or .bip-num{color:var(--or)}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.purple-box{background:var(--puG);border:1px solid rgba(168,85,247,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.purple-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:800;color:var(--bl)}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;margin-top:4px;letter-spacing:.04em}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:18px;text-decoration:none;opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--bl);background:var(--blG);color:var(--bl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:600px){.stat-row{grid-template-columns:1fr 1fr}h2.slide-title{font-size:30px}.bip-row{grid-template-columns:auto 1fr;gap:10px}.bip-link{grid-column:1 / -1;justify-self:start}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">RECENT BIPS · 2026</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: Overview -->
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Eight Recent BIPs</h2>
+  <p class="subtitle">Eight recent BIPs in <code style="font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--bl);background:var(--blG);padding:2px 6px;border-radius:4px">bitcoin/bips</code> covering soft-fork drafts, new opcodes, post-quantum migration, and dust disposal.</p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">RECENT BIPS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">SOFT-FORK DRAFTS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">NEW OPCODES</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">THE SHAPE OF THE MONTH</div>
+    <div class="card-text">Three thematic clusters: a <strong>"Great Script Restoration"</strong> pair from Rusty Russell + Julian Moik (BIPs 440 / 441), a <strong>tapscript-opcodes</strong> family aimed at second-layer protocols (BIPs 442 / 446 / 448), and a set of <strong>operational</strong> BIPs covering quantum migration (361), Silent-Payment PSBTs (376), and dust UTXO disposal (451).</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">FOOTPRINT</div>
+    <div class="card-text">Five of eight are <strong>consensus / soft-fork</strong> drafts. Two restore script ops emergency-disabled in 2010. One sunsets legacy ECDSA / Schnorr signatures.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Script Restoration & Opcodes -->
+<div class="slide" data-name="Script &amp; Opcodes">
+  <h2 class="slide-title">Soft-Fork Drafts &amp; New Opcodes</h2>
+
+  <div class="section-label">Great Script Restoration — Rusty Russell &amp; Julian Moik</div>
+
+  <div class="info-box" style="margin-bottom:10px">
+    <div class="info-label">WHAT IT IS</div>
+    <div class="card-text">Satoshi disabled a batch of script opcodes (string-handling, multiplication/division, bitwise) in 2010 after a serious bug. They've been dead since. The Great Script Restoration is a two-BIP plan to bring them back behind a runtime "fuel budget" (BIP-440) so no script can run away with the network. Lightning, Ark, vaults, and BitVM would get a richer toolkit.</div>
+  </div>
+
+  <div class="bip-row bl">
+    <div class="bip-num">440</div>
+    <div class="bip-body">
+      <div class="bip-title">Varops Budget for Script Runtime Constraint</div>
+      <div class="bip-desc">A <strong>"fuel budget"</strong> for any future script work — every opcode counts against a per-transaction limit, so nothing can use too much CPU. Required scaffolding for BIP-441.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0440.mediawiki" target="_blank">github →</a>
+  </div>
+
+  <div class="bip-row bl">
+    <div class="bip-num">441</div>
+    <div class="bip-body">
+      <div class="bip-title">Restoration of disabled Script (Tapleaf 0xc2)</div>
+      <div class="bip-desc">Brings back the <strong>2010-disabled opcodes</strong>, including <code>OP_CAT</code>, <code>OP_SUBSTR</code>, <code>OP_MUL/DIV/MOD</code>, shifts, and bitwise ops. Lives on a new tapleaf version (<code>0xc2</code>) so old scripts are unaffected. Safe under BIP-440's budget. Requires BIP-440.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0441.mediawiki" target="_blank">github →</a>
+  </div>
+
+  <div class="section-label">New Tapscript Opcodes</div>
+
+  <div class="bip-row pu">
+    <div class="bip-num">442</div>
+    <div class="bip-body">
+      <div class="bip-title">OP_PAIRCOMMIT</div>
+      <div class="bip-desc">Pop two stack elements, push the tagged-hash commitment. Limited vector commitment for richer contracts; LNhance candidate. Replaces <code>OP_SUCCESS205</code> on tapleaf 0xc0. Authors: moonsettler, Brandon Black.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0442.md" target="_blank">github →</a>
+  </div>
+
+  <div class="bip-row pu">
+    <div class="bip-num">446</div>
+    <div class="bip-body">
+      <div class="bip-title">OP_TEMPLATEHASH</div>
+      <div class="bip-desc">Modern CTV-style commitment to the spending transaction — a UTXO can lock its spend to a specific future tx shape, so participants don't have to pre-sign every possible spending path up front. Removes pre-signed-tx interactivity in Lightning HTLCs, makes Ark VTXOs non-interactive, optimises DLCs. Authors: Sanders, Poinsot, Roose.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0446.md" target="_blank">github →</a>
+  </div>
+
+  <div class="bip-row pu">
+    <div class="bip-num">448</div>
+    <div class="bip-body">
+      <div class="bip-title">Taproot-native (Re)bindable Transactions</div>
+      <div class="bip-desc">Bundles BIP-446 <code>OP_TEMPLATEHASH</code> + BIP-348 <code>OP_CHECKSIGFROMSTACK</code> + BIP-349 <code>OP_INTERNALKEY</code> into one deployment unit. Aimed at LN-Symmetry, Ark, and other second-layer protocols.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0448.md" target="_blank">github →</a>
+  </div>
+</div>
+
+<!-- Slide 3: Operational BIPs -->
+<div class="slide" data-name="Quantum &amp; Operations">
+  <h2 class="slide-title">Quantum, Privacy &amp; UTXO Hygiene</h2>
+
+  <div class="section-label">Post-Quantum Migration</div>
+
+  <a href="quantum-update.html" style="text-decoration:none">
+    <div class="bip-row pk" style="cursor:pointer">
+      <div class="bip-num">361</div>
+      <div class="bip-body">
+        <div class="bip-title">Post Quantum Migration and Legacy Signature Sunset</div>
+        <div class="bip-desc">Lopp et al's calendar-based PQ migration: Phase A bans sends <em>to</em> legacy types; Phase B restricts ECDSA / Schnorr spends by requiring a quantum-safe rescue path, with exact rescue mechanics still TBD. Covered in depth alongside the other five quantum proposals on this month's <strong>Quantum Update</strong> page — see the migration-proposals slide.</div>
+      </div>
+      <div class="bip-link">→ quantum page</div>
+    </div>
+  </a>
+
+  <div class="section-label">Silent Payments Tooling</div>
+
+  <div class="bip-row cy">
+    <div class="bip-num">376</div>
+    <div class="bip-body">
+      <div class="bip-title">Spending Silent Payment outputs with PSBTs</div>
+      <div class="bip-desc">New per-input PSBTv2 fields for the BIP-352 silent-payment tweak. Lets multi-party / hardware-signing workflows handle SP output spends. Requires BIPs 352, 370, 371. Author: nymius.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0376.mediawiki" target="_blank">github →</a>
+  </div>
+
+  <div class="section-label">UTXO Hygiene</div>
+
+  <div class="bip-row gn">
+    <div class="bip-num">451</div>
+    <div class="bip-body">
+      <div class="bip-title">Dust UTXO Disposal Protocol</div>
+      <div class="bip-desc">Standardised way to spend dust UTXOs to <code>OP_RETURN</code> with the entire value going to fees. Dust outputs are uneconomic to spend normally (fees exceed value) yet bloat every full node's UTXO set forever; sending to a provably-unspendable <code>OP_RETURN</code> lets the chain recognise destruction without growing the set. Mitigates the privacy-vs-UTXO-bloat tradeoff, with caveats around public-key exposure and same-address non-dust funds. Includes signature conventions for third-party batching. Landed May 6.</div>
+    </div>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0451.md" target="_blank">github →</a>
+  </div>
+
+  <div class="purple-box">
+    <div class="purple-label">MERGED THIS WEEK</div>
+    <div class="card-text"><strong>BIP-451</strong> landed on May 6. The dust-attack threat model traces back to the start of 2026's data-carrier debate. BIP-451 gives victims a disposal path; BIP-110 limits what can be put on-chain in the first place.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Discussion -->
+<div class="slide" data-name="Pipeline">
+  <h2 class="slide-title">Soft-Fork Pipeline</h2>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--bl)"></div>
+    <div class="card-label" style="color:var(--bl)">DRAFT CONSENSUS BIPs MOVED THIS YEAR</div>
+    <div class="card-text">
+    • <strong>BIP-54</strong> — consensus cleanup<br>
+    • <strong>BIP-110</strong> — data-spam limit<br>
+    • <strong>BIP-119</strong> — CTV<br>
+    • <strong>BIP-348</strong> — CSFS<br>
+    • <strong>BIP-349</strong> — OP_INTERNALKEY<br>
+    • <strong>BIP-440/441</strong> — varops + 0xc2 restore<br>
+    • <strong>BIP-442</strong> — PAIRCOMMIT<br>
+    • <strong>BIP-446/448</strong> — TEMPLATEHASH bundle<br>
+    • <strong>BIP-361</strong> — PQ sunset</div>
+  </div>
+
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips" target="_blank">bitcoin/bips repository →</a>
+    <a href="https://groups.google.com/g/bitcoindev" target="_blank">bitcoin-dev mailing list →</a>
+    <a href="https://delvingbitcoin.org" target="_blank">delvingbitcoin.org →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

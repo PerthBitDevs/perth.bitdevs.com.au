@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sztorc's eCash Hard Fork — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.15);--ylD:rgba(234,179,8,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--ylG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--ylD);border:1px solid var(--yl);border-radius:16px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--orG);border:1px solid var(--or);border-radius:4px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--yl);background:var(--ylG);color:var(--yl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:680px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--yl),#fde047);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:15px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:15px;line-height:1.65}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--yl);background:var(--ylD);padding:2px 6px;border-radius:4px}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.purple-box{background:var(--puG);border:1px solid rgba(168,85,247,.35);border-radius:8px;padding:14px 18px;margin-bottom:12px}
+.purple-label{color:var(--pu);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:6px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:14px;text-align:center}
+.stat-num{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:800}
+.stat-label{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:4px;letter-spacing:.04em}
+.fork-diagram{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:18px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txM);line-height:1.7;text-align:center}
+.fork-diagram .pre{color:var(--or)}
+.fork-diagram .btc{color:var(--or);font-weight:700}
+.fork-diagram .ec{color:var(--yl);font-weight:700}
+.fork-diagram .height{color:var(--bl)}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--yl);background:var(--ylG);color:var(--yl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px}
+@media(max-width:600px){.cols,.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:22px}.header{flex-wrap:wrap;gap:8px}.fork-diagram{font-size:11px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">HARD FORK</div>
+    <div class="update-tag">SZTORC PROPOSAL</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: The Proposal -->
+<div class="slide" data-name="The Proposal">
+  <h2 class="slide-title">An eCash Hard Fork at Block 964,000</h2>
+  <p class="subtitle">Paul Sztorc proposes a new chain that replicates Bitcoin's history then diverges with Drivechains built in</p>
+
+  <div class="info-box">
+    <div class="info-label">WHAT'S BEING PROPOSED</div>
+    <div class="card-text">Paul Sztorc is proposing a <strong>hard fork</strong> at <strong>block height 964,000</strong> (estimated August 2026). The new chain would <strong>replicate Bitcoin's entire history</strong> up to the fork point — every BTC holder receives equivalent <strong>eCash</strong> on the new chain — and then diverge with new rules, including <strong>Drivechains (BIP-300/301)</strong> active by default.</div>
+  </div>
+
+  <div class="fork-diagram">
+    <span class="pre">└─ Bitcoin chain ────────────────────────┐</span><br>
+    <span class="btc">BTC</span> &nbsp;<span class="height">[height &lt; 964,000]</span> &nbsp;┐<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ <span class="btc">BTC continues (no change)</span><br>
+    &nbsp;<span class="height">[height = 964,000]</span> &nbsp;FORK&nbsp;┤<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ <span class="ec">eCash + Drivechains</span>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--yl)"></div>
+    <div class="card-label" style="color:var(--yl)">BACKGROUND</div>
+    <div class="card-text">Sztorc has been developing this architecture since <strong>2015</strong>, formalised as <strong>BIP-300 / BIP-301</strong> in 2017–2019. The new-chain approach is the path he proposes for deploying Drivechains, given BIP-300 has not activated on mainnet Bitcoin. Seven Drivechains are reportedly already in development — privacy chains, prediction markets, DEXes, quantum-resistant infrastructure.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Drivechains Refresher -->
+<div class="slide" data-name="Drivechains">
+  <h2 class="slide-title">Drivechains Refresher</h2>
+
+  <div class="purple-box">
+    <div class="purple-label">WHAT THEY ARE</div>
+    <div class="card-text"><strong>Drivechains are sidechains anchored to a parent chain</strong> via miner-controlled two-way pegs. The parent chain's miners <em>also</em> mine the sidechain blocks, and BTC is moved between chains via on-chain "withdrawal bundles" that miners ratify over a long voting window (BIP-300).</div>
+  </div>
+
+  <div class="cols">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--gn)"></div>
+      <div class="card-label" style="color:var(--gn)">UPSIDE</div>
+      <div class="card-text">Permissionless feature experimentation. Privacy chains, smart-contract chains, prediction markets — all anchored to the BTC supply, none requiring main-chain consensus changes after the initial peg.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--rd)"></div>
+      <div class="card-label" style="color:var(--rd)">CRITIQUE</div>
+      <div class="card-text">Withdrawal security depends entirely on miners. The long-running BIP-300 debate: does miner-secured peg become a feature or a hostage in adversarial conditions? Mainnet activation has not happened.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">WHY A HARD FORK NOW</div>
+    <div class="card-text">Rather than wait indefinitely for a Drivechain soft fork on Bitcoin, the proposal ships a sibling chain where Drivechains are <strong>active from day one</strong>. Holders get copied-chain coins; participation is opt-in.</div>
+  </div>
+</div>
+
+<!-- Slide 3: The Controversial Bit -->
+<div class="slide" data-name="The Controversy">
+  <h2 class="slide-title">The Satoshi-Coin Allocation</h2>
+
+  <div class="warn-box">
+    <div class="warn-label">THE ALLOCATION</div>
+    <div class="card-text">The proposal allocates approximately <strong>1.1 million BTC</strong> sitting in <strong>Satoshi Nakamoto's dormant addresses</strong> on the new eCash chain to attract investors before launch. Less than half of that allocation would be offered to <em>pre-fork</em> backers; the rest is reserved for the project's own use.</div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-num" style="color:var(--yl)">964,000</div>
+      <div class="stat-label">FORK HEIGHT</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--rd)">~1.1M</div>
+      <div class="stat-label">"SATOSHI" BTC ALLOCATED</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="color:var(--bl)">7</div>
+      <div class="stat-label">DRIVECHAINS QUEUED</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--rd)"></div>
+    <div class="card-label" style="color:var(--rd)">CONTEXT</div>
+    <div class="card-text">Satoshi's coins are untouched on Bitcoin itself. A new chain that re-runs history can rewrite the rules — and the proposal uses Satoshi-linked coins as part of its launch economics.</div>
+  </div>
+</div>
+
+<!-- Slide 4: Discussion -->
+<div class="slide" data-name="Steelman &amp; Critique">
+  <h2 class="slide-title">Steelman &amp; Critique</h2>
+
+  <div class="green-box">
+    <div class="green-label">STEELMAN</div>
+    <div class="card-text">If BIP-300 isn't going to activate on mainnet, a sibling chain ships the architecture and lets users opt in. BTC holders get copied-chain coins on a chain they can ignore.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">CRITIQUE</div>
+    <div class="card-text">"eCash" is a loaded name (Chaum, BCH-eCash). Pre-launch coin allocation to backers looks closer to an ICO than a Bitcoin upgrade. And using Satoshi's coins to bootstrap value is the part most BTC holders object to.</div>
+  </div>
+
+  <div class="links">
+    <a href="https://atlas21.com/bitcoin-paul-sztorc-proposes-ecash-hard-fork/" target="_blank">Atlas21 article →</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>

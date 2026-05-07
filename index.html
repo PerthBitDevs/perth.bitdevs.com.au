@@ -39,6 +39,13 @@
   a.event:hover .event-arrow{color:var(--or);transform:translateX(3px)}
   .event-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:-.01em}
   .event-desc{color:var(--txM);font-size:15px;line-height:1.55}
+  .event-meta-line{color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:10px;letter-spacing:.02em}
+  .event-meta-line .when{color:var(--or)}
+  .event-desc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+  .event-desc li{padding-left:16px;position:relative;line-height:1.45}
+  .event-desc li::before{content:"▸";position:absolute;left:0;top:0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD)}
+  a.event:hover .event-desc li::before{color:var(--or)}
+  .event-desc li strong{color:var(--tx)}
   .event-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
   .event-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:10px;text-transform:uppercase;color:var(--or);background:var(--orD)}
 
@@ -67,6 +74,7 @@
   <header>
     <h1>Perth BitDevs</h1>
     <p class="tagline">Monthly socratic seminar exploring Bitcoin development, protocol changes, and the broader technical ecosystem.</p>
+    <p class="meta-line"><strong style="color:var(--or)">Next:</strong> Thursday 7 May 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</p>
     <p class="meta-line">First Thursday of each month &middot; <a href="/about.html">About</a></p>
     <div class="nav-row">
       <a class="nav-link" href="https://github.com/PerthBitDevs/PerthBitDevs/issues" target="_blank" rel="noopener">Add a topic for discussion on GitHub</a>
@@ -77,12 +85,23 @@
 
   <div class="section-label">Upcoming</div>
   <div class="section-gap">
-    <a class="event next" href="/2026-04/">
+    <a class="event next" href="/2026-05/">
       <span class="next-badge">Next Meetup</span>
-      <div class="event-title">April 2026</div>
-      <div class="event-desc">Thursday 2 April, 6pm. BIP-54 consensus cleanup draft &amp; deployment debate, BIP-110 Sybil nodes &amp; crawler data, PQ lattice-based HD wallets, SHRIMPS multi-device PQ signatures, IBD optimizations, Bitcoin TUI, fuzzing dashboard, channel splicing BOLT merged, rare 2-block reorg, silent payments adoption &amp; BIP-392.</div>
+      <div class="event-title">May 2026</div>
+      <div class="event-meta-line"><span class="when">Thursday 7 May, 6pm</span> &middot; Rocky Ridge, Burswood</div>
+      <div class="event-desc"><ul>
+        <li><strong>News roundup</strong> — INDOPACOM, Iran, Square Lightning, Litecoin reorg, Vegas merger &amp; more</li>
+        <li><strong>BIP-110</strong> — status, signaling &amp; discourse</li>
+        <li><strong>Quantum update</strong> — Q-Day Prize fallout, freeze vs don't-freeze camps</li>
+        <li><strong>Governance</strong> — BIP-Editor RFC, "The Lever", Falco brief, Bitcoin 2026 Vegas</li>
+        <li><strong>Alt-client watch</strong> — ProductionReady, libbitcoin v4, Hornet</li>
+        <li><strong>Bisq v1 exploit</strong> — likely AI-assisted</li>
+        <li><strong>Sztorc's eCash</strong> hard fork at block 964,000</li>
+        <li><strong>New BIPs roundup</strong> — eight BIPs incl. Great Script Restoration (BIP-440/441)</li>
+        <li><strong>Australian Bush Bash</strong> 2026 schedule</li>
+      </ul></div>
       <div class="event-tags">
-        <span class="event-tag">10 topics</span>
+        <span class="event-tag">9 topics</span>
         <span class="event-tag">Interactive slides</span>
       </div>
     </a>
@@ -92,6 +111,18 @@
 
   <div class="section-label">2026</div>
   <div class="section-gap">
+    <a class="event" href="/2026-04/">
+      <div class="event-top">
+        <span class="event-date">2 April 2026</span>
+        <span class="event-arrow">&rarr;</span>
+      </div>
+      <div class="event-title">April 2026</div>
+      <div class="event-desc">BIP-54 consensus cleanup draft &amp; deployment debate, BIP-110 Sybil nodes &amp; crawler data, PQ lattice-based HD wallets, SHRIMPS multi-device PQ signatures, IBD optimizations, Bitcoin TUI, fuzzing dashboard, channel splicing BOLT merged, rare 2-block reorg, silent payments adoption &amp; BIP-392.</div>
+      <div class="event-tags">
+        <span class="event-tag">10 topics</span>
+        <span class="event-tag">Interactive slides</span>
+      </div>
+    </a>
     <a class="event" href="/2026-03/">
       <div class="event-top">
         <span class="event-date">5 March 2026</span>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alt-Client Watch: ProductionReady &amp; Hornet — Perth BitDevs</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--blG),transparent 70%);filter:blur(80px);opacity:.5;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--blD);border:1px solid var(--bl);border-radius:16px;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--bl);background:var(--blG);color:var(--bl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:980px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:18px;background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-12px;margin-bottom:18px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:10px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:19px;line-height:1.6}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--bl);background:var(--blD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.warn-box{background:var(--rdG);border:1px solid rgba(239,68,68,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.warn-label{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.info-label{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.yellow-box{background:var(--ylG);border:1px solid rgba(234,179,8,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.yellow-label{color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.green-box{background:var(--gnG);border:1px solid rgba(34,197,94,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.green-label{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.cyan-box{background:var(--cyG);border:1px solid rgba(6,182,212,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.cyan-label{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.pink-box{background:var(--pkG);border:1px solid rgba(236,72,153,.35);border-radius:8px;padding:13px 18px;margin-bottom:12px}
+.pink-label{color:var(--pk);font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;margin-bottom:6px}
+.quote-box{background:var(--sf);border-left:3px solid var(--bl);padding:12px 16px;margin-bottom:12px;border-radius:0 6px 6px 0;color:var(--txM);font-size:18px;line-height:1.55;font-style:italic}
+.quote-box strong{color:var(--tx);font-style:normal}
+.quote-box.cy{border-left-color:var(--cy)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.claim-row{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:8px;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.claim-col{padding:10px 14px;background:var(--sf)}
+.claim-col.crit{background:var(--pkD);border-left:1px solid var(--bd)}
+.claim-label{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
+.claim-label.song{color:var(--bl)}
+.claim-label.crit{color:var(--pk)}
+.claim-text{color:var(--tx);font-size:17px;line-height:1.4}
+.claim-text em{color:var(--txM);font-style:italic}
+.code-snip{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--cy);overflow-x:auto;line-height:1.55;white-space:pre-wrap}
+.code-snip .com{color:var(--txD)}
+.code-snip .kw{color:var(--pu)}
+.code-snip .ty{color:var(--bl)}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:18px;text-decoration:none;opacity:.8}
+.links a:hover{opacity:1;text-decoration:underline}
+.section-tag{display:inline-block;padding:2px 10px;border-radius:12px;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+.section-tag.bl{background:var(--blD);border:1px solid var(--bl);color:var(--bl)}
+.section-tag.cy{background:var(--cyD);border:1px solid var(--cy);color:var(--cy)}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--bl);background:var(--blG);color:var(--bl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:900px){.cols3{grid-template-columns:1fr}}
+@media(max-width:600px){.cols,.claim-row{grid-template-columns:1fr}h2.slide-title{font-size:28px}.header{flex-wrap:wrap;gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">ALT CLIENTS</div>
+    <div class="update-tag">3 PROJECTS</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-05/">← Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<!-- Slide 1: Three projects, three theses -->
+<div class="slide" data-name="Three Theses">
+  <h2 class="slide-title">Three Projects, Three Theses</h2>
+  <p class="subtitle">Three implementations active in the 2025–26 alt-client wave — different theses, different stages</p>
+
+  <div class="cols3">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--bl)"></div>
+      <span class="section-tag bl">PRODUCTIONREADY</span>
+      <div class="card-label" style="color:var(--bl);font-size:15px">SOCIAL-DYNAMICS PITCH</div>
+      <div class="card-text" style="font-size:17px">The <strong>ProductionReady</strong> client (Song · Mow · Lewis · Ratcliff), pitched in Song's voice as <strong>"conservative"</strong>, <strong>"no drama"</strong>, <strong>"we listen"</strong>. Thesis: <em>"3+ implementations create entirely different social dynamics."</em></div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--gn)"></div>
+      <span class="section-tag bl" style="background:var(--gnG);border-color:var(--gn);color:var(--gn)">LIBBITCOIN</span>
+      <div class="card-label" style="color:var(--gn);font-size:15px">PERFORMANCE / MODULARITY</div>
+      <div class="card-text" style="font-size:17px"><strong>Eric Voskuil's</strong> long-running C++ stack. <strong>v4</strong> in development — in-memory metadata graph for block-template production, swappable storage, decoupled components.</div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-accent" style="background:var(--cy)"></div>
+      <span class="section-tag cy">HORNET</span>
+      <div class="card-label" style="color:var(--cy);font-size:15px">FORMAL-SPEC PITCH</div>
+      <div class="card-text" style="font-size:17px"><strong>Toby Sharp's</strong> clean-slate C++ effort. Aims to extract consensus into a <strong>precise, executable specification</strong>. Paper out Sep 2025; <strong>code not released yet</strong>.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">CONTEXT</div>
+    <div class="card-text">All three sit in the 2025–26 alt-client wave alongside <strong>Knots</strong>. Song's promo post is the public-facing pitch for the ProductionReady implementation — same project, different voice.</div>
+  </div>
+
+  <div class="green-box">
+    <div class="green-label">LIBBITCOIN — WHERE V4 ACTUALLY IS</div>
+    <div class="card-text">Voskuil signalled v4 would <em>"mature around the end of 2025"</em> with a <em>"functional preview in early 2026"</em>. As of May 2026 the latest tagged release of <code>libbitcoin-node</code> is still <strong>v3.8.0</strong> — v4 has not shipped. Active dev continued into Jan 2026 (system-dep alignment, build improvements). v4 design notes still call out a connection layer for <strong>Sparrow (via ElectrumX)</strong> and <strong>Stratum V1 (via JSON-RPC)</strong>, and tx protocols slated for after the initial release alongside mining support.</div>
+  </div>
+</div>
+
+<!-- Slide 2: Song's promo & Luke Ratio -->
+<div class="slide" data-name="Song &amp; Criticism">
+  <h2 class="slide-title">ProductionReady Launch &amp; Early Criticism</h2>
+  <p class="subtitle">Song's launch promo for the <strong>ProductionReady</strong> client and the community reaction to it</p>
+
+  <div class="quote-box">
+    "The nice part about the Luke ratio of the new Jimmy Song client promo post is that it immediately lays bare the hand-waving of <strong>'conservative'</strong>, <strong>'no drama'</strong> and <strong>'we listen and engage and get feedback from Bitcoiners'</strong> all at once. Turns out, other people already think the decisions are the opposite of conservative, they inject high drama, and then Jimmy doesn't engage on the community's feedback. I guess <strong>'Three or more implementations create entirely different social dynamics'</strong> isn't quite true either."
+    <div style="margin-top:6px;font-style:normal;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px">— from the May Perth BitDevs issue thread</div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-label">CONCRETE OBJECTIONS · WHAT CRITICS POINT TO</div>
+    <div class="card-text">
+      • <strong>Not conservative</strong> — ProductionReady ships an opt-in <em>relax</em> of the 83-byte <code>OP_RETURN</code> default that Bitcoin Core 30.0 changed. Reverting an in-Core decision is, structurally, the opposite of "small change, low risk."<br>
+      • <strong>High drama</strong> — the launch was concurrent with the Knots / BIP-110 dispute and explicitly positioned <em>against</em> Core's direction. Critics read this as picking the loudest moment to ship a contested fork.<br>
+      • <strong>No engagement</strong> — Song's post-launch X replies have been characterised by his critics as ignoring substantive technical questions, particularly on funding sources and decision authority within the 501(c)(3).
+    </div>
+  </div>
+
+  <div class="pink-box">
+    <div class="pink-label">"3+ IMPLEMENTATIONS"</div>
+    <div class="card-text">Song's structural claim is that 3+ independent implementations <em>"create entirely different social dynamics"</em>. The 2025–26 wave is clustering by <strong>policy stance</strong> (loosen vs tighten data carriage) rather than by technical goals. Several efforts are still pre-mainnet. The bitprojects Sybil-node episode tied implementation choice to network-layer signaling games. Whether this validates or refutes the claim depends on what counts as a "different social dynamic."</div>
+  </div>
+</div>
+
+<!-- Slide 3: Hornet — Project & Main Artefact -->
+<div class="slide" data-name="Hornet: Spec">
+  <h2 class="slide-title cy">Hornet — Consensus as a Spec</h2>
+  <p class="subtitle">A clean-slate Bitcoin client by <strong style="color:var(--cy)">Toby Sharp</strong>; public artefacts are a paper and update posts, no source code released</p>
+
+  <div class="cyan-box">
+    <div class="cyan-label">WHAT IT IS</div>
+    <div class="card-text">Hornet is a from-scratch Bitcoin node in modern C++ by <strong>Toby Sharp</strong> (mathematician; ex-Microsoft Principal Software Scientist, now at Google). The ambition isn't another client — it's an <strong>executable specification</strong> of Bitcoin's consensus rules. Site: <code>hornetnode.org</code>.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-accent" style="background:var(--cy)"></div>
+    <div class="card-label" style="color:var(--cy)">THE GAP</div>
+    <div class="card-text">Bitcoin's consensus rules currently only exist inside Bitcoin Core, tangled with storage, networking, signature caching, and 15+ years of workarounds. Hornet aims to extract them into a standalone, auditable spec.</div>
+  </div>
+
+  <div class="warn-box">
+    <div class="warn-label">ARTEFACTS — PAPER ONLY</div>
+    <div class="card-text">Public artefacts as of May 2026 are the <strong>arxiv paper</strong> (<code>2509.15754</code>, Sep 2025) plus Delving / Optech updates on the architecture, consensus engine, and <strong>Hornet DSL</strong>. <strong>No source repo released.</strong> Sharp: <em>"I'll make the code available when it's ready. Until then, there is nothing to check."</em></div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
+render();
+</script>
+</body>
+</html>
