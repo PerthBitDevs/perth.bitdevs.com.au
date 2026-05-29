@@ -2,6 +2,15 @@
 
 The single biggest source of churn in monthly content production is voice. Per-topic creative latitude lives in **layout** (slide structure, components, colour) — **not** in voice. Voice is shared and consistent across every deck.
 
+## Contents
+
+- [Register](#register)
+- [Banned phrases and patterns](#banned-phrases-and-patterns)
+- [Bullets vs prose](#bullets-vs-prose)
+- [Headings](#headings)
+- [Quoting and attribution](#quoting-and-attribution)
+- [Self-check before submitting a deck](#self-check-before-submitting-a-deck)
+
 ## Register
 
 Concise, factual, neutral. Present what happened and what was said. Let the audience decide.

@@ -2,6 +2,16 @@
 
 Topic slide pages are the primary content format for monthly presentations (Feb 2026 onward). Each topic gets its own self-contained HTML file with slide-based navigation.
 
+## Contents
+
+- [HTML Structure](#html-structure)
+- [Required Behaviours](#required-behaviours)
+- [Navigation JavaScript](#navigation-javascript)
+- [Content Components](#content-components)
+- [Per-Topic Creativity](#per-topic-creativity)
+- [When to Use Interactive Expandable Layouts](#when-to-use-interactive-expandable-layouts)
+- [Non-Slide Topic Pages](#non-slide-topic-pages)
+
 ## HTML Structure
 
 ```html
