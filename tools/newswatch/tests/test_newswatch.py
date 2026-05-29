@@ -28,6 +28,21 @@ def source(**overrides):
     return newswatch.Source(**data)
 
 
+def source_record(**overrides):
+    data = {
+        "id": "sample",
+        "title": "Sample Feed",
+        "category": "protocol",
+        "kind": "feed",
+        "url": "https://example.com/feed.xml",
+        "priority": "high",
+        "tags": ["sample", "protocol"],
+        "enabled": True,
+    }
+    data.update(overrides)
+    return data
+
+
 class NewswatchTests(unittest.TestCase):
     def test_canonicalize_url_removes_tracking_and_fragment(self):
         url = "https://Example.com:443/foo/?utm_source=x&b=2&a=1#section"
@@ -172,6 +187,41 @@ class NewswatchTests(unittest.TestCase):
         sources = newswatch.load_sources(newswatch.DEFAULT_SOURCES_PATH)
         self.assertGreaterEqual(len(sources), 10)
         self.assertTrue(any(item.enabled for item in sources))
+
+    def test_load_sources_rejects_malformed_id(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sources.json"
+            path.write_text(json.dumps([source_record(id="Bad ID")]), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "id must use lowercase"):
+                newswatch.load_sources(path)
+
+    def test_load_sources_rejects_empty_required_string(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sources.json"
+            path.write_text(json.dumps([source_record(title="  ")]), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "title must be a non-empty string"):
+                newswatch.load_sources(path)
+
+    def test_load_sources_rejects_url_without_scheme_or_host(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sources.json"
+            path.write_text(json.dumps([source_record(url="example.com/feed.xml")]), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "url must include http"):
+                newswatch.load_sources(path)
+
+    def test_load_sources_rejects_non_boolean_enabled(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sources.json"
+            path.write_text(json.dumps([source_record(enabled="false")]), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "enabled must be a boolean"):
+                newswatch.load_sources(path)
+
+    def test_load_sources_rejects_empty_tag(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "sources.json"
+            path.write_text(json.dumps([source_record(tags=["sample", ""])]), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "tags must be a list of non-empty strings"):
+                newswatch.load_sources(path)
 
     def test_fetch_source_retries_without_conditional_headers_on_403(self):
         calls = []

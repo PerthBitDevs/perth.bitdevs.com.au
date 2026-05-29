@@ -29,9 +29,10 @@ The repo includes a local Python helper for collecting candidate Bitcoin news fr
 ```bash
 just setup-newswatch
 just news-scan since=2026-05-07 issue=36
+just news-scan-preview since=2026-05-07 issue=36
 ```
 
-The scan writes an LLM-ready Markdown packet and matching JSON under `tools/newswatch/runs/`. Add `issue=NN` to include community topic comments from `PerthBitDevs/PerthBitDevs` in the same packet as the curated-source scan. Optional local import packets can be merged with scans:
+The scan writes an LLM-ready Markdown packet and matching JSON under `tools/newswatch/runs/`. Use `just news-scan-preview` when you want the same packet output without advancing the local state cursor. Add `issue=NN` to include community topic comments from `PerthBitDevs/PerthBitDevs` in the same packet as the curated-source scan. Optional local import packets can be merged with scans:
 
 ```bash
 just news-scan since=2026-05-07 issue=36 import=tools/newswatch/imports/local.json

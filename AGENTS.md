@@ -34,6 +34,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 - `just check` - run `site-check`, newswatch source validation, and newswatch tests
 - `just setup-newswatch` - create `.venv` and install newswatch dependencies
 - `just news-scan since=YYYY-MM-DD issue=NN` - create a local planning packet from curated sources and the meetup issue
+- `just news-scan-preview since=YYYY-MM-DD issue=NN` - create a planning packet without advancing the local newswatch cursor
 
 ## Content Types
 

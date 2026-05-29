@@ -70,6 +70,7 @@ STOPWORDS = {
     "without",
 }
 URL_RE = re.compile(r"https?://[^\"'<>\s)]+")
+SOURCE_ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 
 
 @dataclass
@@ -221,6 +222,19 @@ def write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def require_source_string(item: dict[str, Any], key: str, index: int) -> str:
+    value = item[key]
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"source #{index + 1}: {key} must be a non-empty string")
+    return value.strip()
+
+
+def validate_source_url(source_id: str, url: str) -> None:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise ValueError(f"{source_id}: url must include http(s) scheme and host")
+
+
 def load_sources(path: Path) -> list[Source]:
     data = load_json(path, [])
     if not isinstance(data, list):
@@ -235,25 +249,39 @@ def load_sources(path: Path) -> list[Source]:
         missing = sorted(required - item.keys())
         if missing:
             raise ValueError(f"source #{index + 1} missing fields: {', '.join(missing)}")
-        if item["id"] in seen_ids:
-            raise ValueError(f"duplicate source id: {item['id']}")
-        if item["kind"] not in VALID_KINDS:
-            raise ValueError(f"{item['id']}: kind must be one of {sorted(VALID_KINDS)}")
-        if item["priority"] not in VALID_PRIORITIES:
-            raise ValueError(f"{item['id']}: priority must be one of {sorted(VALID_PRIORITIES)}")
-        if not isinstance(item["tags"], list) or not all(isinstance(tag, str) for tag in item["tags"]):
-            raise ValueError(f"{item['id']}: tags must be a list of strings")
-        seen_ids.add(item["id"])
+        source_id = require_source_string(item, "id", index)
+        title = require_source_string(item, "title", index)
+        category = require_source_string(item, "category", index)
+        kind = require_source_string(item, "kind", index)
+        url = require_source_string(item, "url", index)
+        priority = require_source_string(item, "priority", index)
+        enabled = item["enabled"]
+        tags = item["tags"]
+
+        if not SOURCE_ID_RE.fullmatch(source_id):
+            raise ValueError(f"{source_id}: id must use lowercase letters, numbers, dashes, or underscores")
+        if source_id in seen_ids:
+            raise ValueError(f"duplicate source id: {source_id}")
+        if kind not in VALID_KINDS:
+            raise ValueError(f"{source_id}: kind must be one of {sorted(VALID_KINDS)}")
+        if priority not in VALID_PRIORITIES:
+            raise ValueError(f"{source_id}: priority must be one of {sorted(VALID_PRIORITIES)}")
+        validate_source_url(source_id, url)
+        if not isinstance(enabled, bool):
+            raise ValueError(f"{source_id}: enabled must be a boolean")
+        if not isinstance(tags, list) or not all(isinstance(tag, str) and tag.strip() for tag in tags):
+            raise ValueError(f"{source_id}: tags must be a list of non-empty strings")
+        seen_ids.add(source_id)
         sources.append(
             Source(
-                id=item["id"],
-                title=item["title"],
-                category=item["category"],
-                kind=item["kind"],
-                url=item["url"],
-                priority=item["priority"],
-                tags=item["tags"],
-                enabled=bool(item["enabled"]),
+                id=source_id,
+                title=title,
+                category=category,
+                kind=kind,
+                url=url,
+                priority=priority,
+                tags=[tag.strip() for tag in tags],
+                enabled=enabled,
             )
         )
     return sources

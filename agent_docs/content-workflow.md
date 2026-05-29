@@ -53,9 +53,10 @@ Use the local newswatch helper when you want an AI-assisted scan of curated Bitc
 ```bash
 just setup-newswatch
 just news-scan since=YYYY-MM-DD issue=NN
+just news-scan-preview since=YYYY-MM-DD issue=NN
 ```
 
-After the first explicit-date run, `just news-scan` uses the stored local cursor in `tools/newswatch/state.local.json`. Add `issue=NN` to pull community topic comments from `PerthBitDevs/PerthBitDevs` into the same packet as the curated-source scan. Optional local import packets can be merged with scans:
+After the first explicit-date run, `just news-scan` uses and advances the stored local cursor in `tools/newswatch/state.local.json`. Use `just news-scan-preview` to generate packet output without advancing that cursor. Add `issue=NN` to pull community topic comments from `PerthBitDevs/PerthBitDevs` into the same packet as the curated-source scan. Optional local import packets can be merged with scans:
 
 ```bash
 just news-scan since=YYYY-MM-DD issue=NN import=tools/newswatch/imports/local.json

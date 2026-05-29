@@ -44,6 +44,34 @@ news-scan since="" issue="" import="":
     fi
     python tools/newswatch/newswatch.py scan "${args[@]}"
 
+# Preview a scan without advancing the local state cursor.
+# Example: just news-scan-preview since=2026-05-07 issue=36 import=tools/newswatch/imports/local.json
+news-scan-preview since="" issue="" import="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ ! -x .venv/bin/python ]; then
+      echo "Missing .venv. Run: just setup-newswatch" >&2
+      exit 1
+    fi
+    . .venv/bin/activate
+    args=(--no-state-update)
+    since_arg="{{since}}"
+    since_arg="${since_arg#since=}"
+    if [ -n "$since_arg" ]; then
+      args+=(--since "$since_arg")
+    fi
+    issue_arg="{{issue}}"
+    issue_arg="${issue_arg#issue=}"
+    if [ -n "$issue_arg" ]; then
+      args+=(--github-issue "$issue_arg")
+    fi
+    import_arg="{{import}}"
+    import_arg="${import_arg#import=}"
+    if [ -n "$import_arg" ]; then
+      args+=(--import-packet "$import_arg")
+    fi
+    python tools/newswatch/newswatch.py scan "${args[@]}"
+
 # Run newswatch tests
 news-test:
     #!/usr/bin/env bash
