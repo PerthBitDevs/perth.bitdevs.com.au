@@ -51,8 +51,8 @@ h1 .hl{background:linear-gradient(135deg,var(--accent) 0%,#67e8f9 50%,var(--acce
 .narration code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--accent);background:var(--accent-bg);padding:2px 6px;border-radius:4px}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
 .info-card{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:16px 18px}
-.info-card .label{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
-.info-card .value{color:var(--txM);font-size:18px;line-height:1.55}
+.info-label{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+.info-value{color:var(--txM);font-size:18px;line-height:1.55}
 .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .links a{color:#60a5fa;font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none}
 .links a:hover{text-decoration:underline}
@@ -99,8 +99,8 @@ h1 .hl{background:linear-gradient(135deg,var(--accent) 0%,#67e8f9 50%,var(--acce
       <div class="section-title">Discussion Hooks</div>
     </div>
     <div class="info-grid">
-      <div class="info-card"><div class="label">QUESTION</div><div class="value">{{DISCUSSION_PROMPT}}</div></div>
-      <div class="info-card"><div class="label">VERIFY</div><div class="value">{{CLAIM_TO_VERIFY}}</div></div>
+      <div class="info-card"><div class="info-label">QUESTION</div><div class="info-value">{{DISCUSSION_PROMPT}}</div></div>
+      <div class="info-card"><div class="info-label">VERIFY</div><div class="info-value">{{CLAIM_TO_VERIFY}}</div></div>
     </div>
     <div class="links">
       <a href="{{SOURCE_URL}}" target="_blank" rel="noopener">{{SOURCE_LABEL}}</a>

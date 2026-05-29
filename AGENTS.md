@@ -68,6 +68,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 - Every HTML page is **fully self-contained** (inline CSS, no external deps except Google Fonts)
 - New page work should start from `templates/`, then be edited in the target month directory.
 - Current-month non-topic HTML pages must be classified under `auxiliary_pages` in `manifest.json`; historical non-manifest exceptions are documented in `agent_docs/content-workflow.md`.
+- New slide pages should use the canonical class vocabulary in `agent_docs/slide-page-conventions.md`; avoid old shorthand names such as `.si`, `.st`, `.cl`, and `.ct`.
 - Presentation context: **slides are projected on a 4K TV via HDMI from a laptop.** Use the TV-friendly font scale and max-widths in `agent_docs/design-system.md` for all new slide pages.
 - Slide pages MUST use `overflow-x:hidden` on body, NOT `overflow:hidden` (allows vertical scroll when zoomed)
 - Slide pages MUST handle **Esc key** → navigate back to month hub

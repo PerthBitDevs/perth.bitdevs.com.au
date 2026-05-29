@@ -33,4 +33,5 @@ After copying:
 2. Keep `target="_blank"` links paired with `rel="noopener"`.
 3. List every current-month topic or auxiliary page in `manifest.json`.
 4. Give each auxiliary page a `parent_topic` that matches a topic `file` entry.
-5. Run `just site-check` or `just check`.
+5. Use canonical slide class names from `agent_docs/slide-page-conventions.md`.
+6. Run `just site-check` or `just check`.

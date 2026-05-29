@@ -8,6 +8,7 @@ Start new slide pages from `templates/slide-deck.html.tmpl`. It is the canonical
 
 - [HTML Structure](#html-structure)
 - [Required Behaviours](#required-behaviours)
+- [Canonical Class Vocabulary](#canonical-class-vocabulary)
 - [Navigation JavaScript](#navigation-javascript)
 - [Content Components](#content-components)
 - [Per-Topic Creativity](#per-topic-creativity)
@@ -70,6 +71,26 @@ Quick reference:
 - box labels: 19px
 - card-label, code, links, nav-btn: 17-19px
 - `.slide-inner` max-width: 960px
+
+## Canonical Class Vocabulary
+
+New slide pages should use descriptive class names from `templates/slide-deck.html.tmpl`. Avoid the early shorthand dialect that appears in some historical pages.
+
+| Role | Use | Legacy shorthand to avoid |
+|------|-----|---------------------------|
+| Slide viewport wrapper | `.content` | n/a |
+| Slide width wrapper | `.slide-inner` | `.si` |
+| Slide panel | `.slide` | n/a |
+| Slide heading | `.slide-title` | `.st` |
+| Card container | `.card` | n/a |
+| Card label | `.card-label` | `.cl`, generic `.label` for slide cards |
+| Card body text | `.card-text` | `.ct`, generic `.text` for slide cards |
+| Supporting subtitle | `.subtitle` | n/a |
+| Source link row | `.links` | n/a |
+| Footer navigation | `.footer-nav`, `.nav-btn`, `.nav-info` | n/a |
+| Dot navigation | `.dots`, `.dot` | n/a |
+
+Do not mass-retrofit old pages only for naming. When editing an old slide page for a substantive content, accessibility, or validation reason, migrate shorthand classes in the touched area where it is practical and low risk. Preserve bespoke topic-specific classes for diagrams, timelines, stats, and simulations when those names describe the local visual model.
 
 ## Navigation JavaScript
 

@@ -49,19 +49,19 @@ body::before{
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;line-height:1.18;margin-bottom:14px;background:linear-gradient(135deg,var(--accent),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-6px;margin-bottom:16px;line-height:1.5}
 .hero{border:1px solid var(--accent-border);background:linear-gradient(135deg,var(--accent-bg),rgba(59,130,246,.08));border-radius:8px;padding:24px 28px;margin-bottom:14px}
-.hero .kicker,.label{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.06em}
-.hero .kicker{font-size:17px;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
-.hero .text{font-size:26px;line-height:1.45;color:var(--tx)}
-.hero .text strong{color:#fff}
+.hero-kicker,.card-label{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.06em}
+.hero-kicker{font-size:17px;color:var(--accent);margin-bottom:8px;text-transform:uppercase}
+.hero-text{font-size:26px;line-height:1.45;color:var(--tx)}
+.hero-text strong{color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:15px 18px;position:relative}
 .card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;background:var(--accent);opacity:.7}
 .card.bl::before{background:var(--bl)}.card.gn::before{background:var(--gn)}.card.rd::before{background:var(--rd)}.card.cy::before{background:var(--cy)}.card.pu::before{background:var(--pu)}.card.pk::before{background:var(--pk)}.card.yl::before{background:var(--yl)}.card.tl::before{background:var(--tl)}
-.label{font-size:18px;margin-bottom:8px;color:var(--accent)}
-.card.bl .label{color:var(--bl)}.card.gn .label{color:var(--gn)}.card.rd .label{color:var(--rd)}.card.cy .label{color:var(--cy)}.card.pu .label{color:var(--pu)}.card.pk .label{color:var(--pk)}.card.yl .label{color:var(--yl)}.card.tl .label{color:var(--tl)}
-.text{color:var(--txM);font-size:20px;line-height:1.55}
-.text strong{color:var(--tx)}
-.text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
+.card-label{font-size:18px;margin-bottom:8px;color:var(--accent)}
+.card.bl .card-label{color:var(--bl)}.card.gn .card-label{color:var(--gn)}.card.rd .card-label{color:var(--rd)}.card.cy .card-label{color:var(--cy)}.card.pu .card-label{color:var(--pu)}.card.pk .card-label{color:var(--pk)}.card.yl .card-label{color:var(--yl)}.card.tl .card-label{color:var(--tl)}
+.card-text{color:var(--txM);font-size:20px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
 .links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .links a{color:#60a5fa;font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.9}
 .links a:hover{opacity:1;text-decoration:underline}
@@ -77,7 +77,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
 .nav-btn.next{border-color:var(--accent);background:var(--accent-bg);color:var(--accent)}
 .nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
 .nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px;text-align:center}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.header{flex-wrap:wrap}.dots{order:3;width:100%}.content{justify-content:flex-start}h2.slide-title{font-size:30px}.hero .text{font-size:22px}.footer-nav{padding:10px 12px}.nav-btn{min-width:auto}}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.header{flex-wrap:wrap}.dots{order:3;width:100%}.content{justify-content:flex-start}h2.slide-title{font-size:30px}.hero-text{font-size:22px}.footer-nav{padding:10px 12px}.nav-btn{min-width:auto}}
 </style>
 </head>
 <body>
@@ -98,12 +98,12 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
   <h2 class="slide-title">{{TOPIC_TITLE}}</h2>
   <p class="subtitle">{{ONE_SENTENCE_CONTEXT}}</p>
   <div class="hero">
-    <div class="kicker">Takeaway</div>
-    <div class="text">{{MAIN_TAKEAWAY}}</div>
+    <div class="hero-kicker">Takeaway</div>
+    <div class="hero-text">{{MAIN_TAKEAWAY}}</div>
   </div>
   <div class="grid">
-    <div class="card"><div class="label">CONTEXT</div><div class="text">{{CARD_TEXT}}</div></div>
-    <div class="card bl"><div class="label">WHY NOW</div><div class="text">{{CARD_TEXT}}</div></div>
+    <div class="card"><div class="card-label">CONTEXT</div><div class="card-text">{{CARD_TEXT}}</div></div>
+    <div class="card bl"><div class="card-label">WHY NOW</div><div class="card-text">{{CARD_TEXT}}</div></div>
   </div>
   <div class="links">
     <a href="{{SOURCE_URL}}" target="_blank" rel="noopener">{{SOURCE_LABEL}}</a>
@@ -114,10 +114,10 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
   <h2 class="slide-title">How It Works</h2>
   <p class="subtitle">{{MECHANICS_SUBTITLE}}</p>
   <div class="grid">
-    <div class="card gn"><div class="label">STEP 1</div><div class="text">{{CARD_TEXT}}</div></div>
-    <div class="card cy"><div class="label">STEP 2</div><div class="text">{{CARD_TEXT}}</div></div>
-    <div class="card pu"><div class="label">STEP 3</div><div class="text">{{CARD_TEXT}}</div></div>
-    <div class="card yl"><div class="label">TRADEOFF</div><div class="text">{{CARD_TEXT}}</div></div>
+    <div class="card gn"><div class="card-label">STEP 1</div><div class="card-text">{{CARD_TEXT}}</div></div>
+    <div class="card cy"><div class="card-label">STEP 2</div><div class="card-text">{{CARD_TEXT}}</div></div>
+    <div class="card pu"><div class="card-label">STEP 3</div><div class="card-text">{{CARD_TEXT}}</div></div>
+    <div class="card yl"><div class="card-label">TRADEOFF</div><div class="card-text">{{CARD_TEXT}}</div></div>
   </div>
 </div>
 
@@ -125,8 +125,8 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
   <h2 class="slide-title">Discussion Prompts</h2>
   <p class="subtitle">{{DISCUSSION_SUBTITLE}}</p>
   <div class="grid">
-    <div class="card"><div class="label">QUESTION</div><div class="text">{{PROMPT_TEXT}}</div></div>
-    <div class="card rd"><div class="label">RISK</div><div class="text">{{PROMPT_TEXT}}</div></div>
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">{{PROMPT_TEXT}}</div></div>
+    <div class="card rd"><div class="card-label">RISK</div><div class="card-text">{{PROMPT_TEXT}}</div></div>
   </div>
   <div class="disclosure">
     <button type="button" class="disclosure-trigger" aria-expanded="false" aria-controls="detail-1" data-disclosure-target="detail-1">
