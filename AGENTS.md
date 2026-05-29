@@ -50,6 +50,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 - Start new manifests, month hubs, slide decks, archive pages, and auxiliary visual pages from `templates/`.
 - Template files use `.html.tmpl` or `.json.tmpl` so placeholder values are not treated as published pages.
 - After copying a template into `YYYY-MM/`, replace every `{{PLACEHOLDER}}` and keep the published HTML self-contained.
+- Current-month auxiliary pages must be listed in `manifest.json` with `parent_topic` pointing at the owning topic file.
 - Do not copy last month's closest page by eye unless the template is genuinely the wrong page type.
 
 ## Monthly Workflow
@@ -66,6 +67,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 - Every HTML page is **fully self-contained** (inline CSS, no external deps except Google Fonts)
 - New page work should start from `templates/`, then be edited in the target month directory.
+- Current-month non-topic HTML pages must be classified under `auxiliary_pages` in `manifest.json`; historical non-manifest exceptions are documented in `agent_docs/content-workflow.md`.
 - Presentation context: **slides are projected on a 4K TV via HDMI from a laptop.** Use the TV-friendly font scale and max-widths in `agent_docs/design-system.md` for all new slide pages.
 - Slide pages MUST use `overflow-x:hidden` on body, NOT `overflow:hidden` (allows vertical scroll when zoomed)
 - Slide pages MUST handle **Esc key** → navigate back to month hub

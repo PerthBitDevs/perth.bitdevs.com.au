@@ -32,4 +32,5 @@ After copying:
 1. Keep topic filenames in kebab-case.
 2. Keep `target="_blank"` links paired with `rel="noopener"`.
 3. List every current-month topic or auxiliary page in `manifest.json`.
-4. Run `just site-check` or `just check`.
+4. Give each auxiliary page a `parent_topic` that matches a topic `file` entry.
+5. Run `just site-check` or `just check`.

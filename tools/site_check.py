@@ -293,6 +293,12 @@ def manifest_page_file(item: object) -> str | None:
     return None
 
 
+def manifest_parent_topic(item: object) -> str | None:
+    if isinstance(item, dict) and isinstance(item.get("parent_topic"), str):
+        return str(item["parent_topic"])
+    return None
+
+
 def href_to_file_pattern(file_name: str) -> re.Pattern[str]:
     escaped = re.escape(file_name)
     return re.compile(r"""href\s*=\s*["']""" + escaped + r"""(?:[?#][^"']*)?["']""")
@@ -389,6 +395,23 @@ def check_manifest(root: Path, month_dir: Path, findings: list[Finding]) -> dict
 
     declared_auxiliary: set[str] = set()
     for index, item in enumerate(auxiliary_pages, start=1):
+        if not isinstance(item, dict):
+            add(
+                findings,
+                "error",
+                "manifest-auxiliary-shape",
+                manifest_rel,
+                1,
+                f"auxiliary page #{index} must be an object with file, title, parent_topic, status, and summary",
+            )
+            continue
+        require_keys(
+            item,
+            ["file", "title", "parent_topic", "status", "summary"],
+            findings,
+            manifest_rel,
+            f"auxiliary page #{index}",
+        )
         file_name = manifest_page_file(item)
         if file_name is None:
             add(
@@ -397,10 +420,48 @@ def check_manifest(root: Path, month_dir: Path, findings: list[Finding]) -> dict
                 "manifest-auxiliary-shape",
                 manifest_rel,
                 1,
-                f"auxiliary page #{index} must be a string or object with file",
+                f"auxiliary page #{index} file must be a string",
             )
             continue
+        parent_topic = manifest_parent_topic(item)
+        if "parent_topic" in item and parent_topic is None:
+            add(
+                findings,
+                "error",
+                "manifest-auxiliary-shape",
+                manifest_rel,
+                1,
+                f"auxiliary page #{index} parent_topic must be a topic file",
+            )
+        elif parent_topic is not None and parent_topic not in declared_topics:
+            add(
+                findings,
+                "error",
+                "manifest-auxiliary-parent",
+                manifest_rel,
+                1,
+                f"auxiliary page {file_name} parent_topic is not listed in topics: {parent_topic}",
+            )
         declared_auxiliary.add(file_name)
+        if "/" in file_name or file_name == "index.html":
+            add(
+                findings,
+                "error",
+                "manifest-auxiliary-file",
+                manifest_rel,
+                1,
+                f"invalid auxiliary page file: {file_name}",
+            )
+            continue
+        if file_name in declared_topics:
+            add(
+                findings,
+                "error",
+                "manifest-auxiliary-duplicate",
+                manifest_rel,
+                1,
+                f"auxiliary page is also listed as a topic: {file_name}",
+            )
         if not (month_dir / file_name).exists():
             add(
                 findings,

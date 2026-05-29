@@ -6,6 +6,7 @@
 - [Optional Newswatch + Issue Trigger](#optional-newswatch--issue-trigger)
 - [Month Manifest](#month-manifest)
 - [Source Templates](#source-templates)
+- [Page Classification and Provenance](#page-classification-and-provenance)
 - [Prompt Pattern for Topic Creation](#prompt-pattern-for-topic-creation)
 - [Multi-Agent Coordination](#multi-agent-coordination)
 - [Archive Pages (Historical)](#archive-pages-historical)
@@ -89,7 +90,7 @@ The manifest records:
 - Event metadata: month, status, date, time, timezone, venue, and display labels.
 - Source metadata: the monthly GitHub issue and any newswatch packet used for triage.
 - Topic metadata: file, title, category, draft/final status, slide count, tags, source refs, and summary.
-- Auxiliary page ownership: any month-local HTML page that is not a topic deck.
+- Auxiliary page ownership: any month-local HTML page that is not a topic deck, including its `parent_topic`.
 - Landing metadata: the month href and summary topics expected on `/index.html`.
 
 The first tracked manifest is `2026-06/manifest.json`. Do not backfill historical manifests during ordinary content work unless a task explicitly asks for it.
@@ -119,6 +120,48 @@ Available templates:
 After copying a template, replace every `{{PLACEHOLDER}}`, keep the published page self-contained, list the page in `manifest.json` when the month has a manifest, and run `just site-check` or `just check`.
 
 Do not start from last month's closest page unless the tracked template is genuinely the wrong page type. Copying old pages by eye is how slide runtime and CSS token drift re-enters the site.
+
+## Page Classification and Provenance
+
+Every current-month `YYYY-MM/*.html` file should have one clear role:
+
+| Role | Manifest field | Hub link | Rule |
+|------|----------------|----------|------|
+| Topic page | `topics[]` | Yes | Main discussion item, deck, roundup, or archive card linked from the month hub |
+| Auxiliary page | `auxiliary_pages[]` | Usually no | Support page owned by one topic, such as a worked example or interactive visualiser |
+| Month hub | n/a | n/a | `YYYY-MM/index.html` links to topic pages and the source issue |
+
+Auxiliary entries in `manifest.json` must be objects, not bare filenames:
+
+```json
+{
+  "file": "worked-example.html",
+  "title": "Worked Example",
+  "parent_topic": "owning-topic.html",
+  "relationship": "visual_explainer",
+  "status": "draft",
+  "summary": "Short reason this support page exists.",
+  "source_refs": ["PerthBitDevs/PerthBitDevs#NN"]
+}
+```
+
+The `parent_topic` value must match a `topics[].file` entry in the same manifest. This keeps support pages discoverable without forcing every visual aid into the hub as a standalone topic.
+
+Historical pages before manifests are documented rather than retrofitted during ordinary content work:
+
+| Auxiliary page | Parent topic | Relationship |
+|----------------|--------------|--------------|
+| `2026-03/cluster-mempool-example.html` | `2026-03/bitcoin-core-v31.html` | Interactive worked example for the cluster mempool section |
+| `2026-03/marmot-sloth-visualised.html` | `2026-03/sloth-messaging.html` | Interactive visualisation for Marmot, Sloth, and White Noise messaging |
+
+Research notes are local scratch by default. Ignored paths such as `YYYY-MM/_docs/`, `tools/newswatch/runs/`, and machine-specific import packets are useful while drafting, but they are not durable provenance unless a task explicitly promotes a curated artifact into a tracked path. Durable provenance for published content should live in:
+
+- `manifest.json` `sources`, `source_refs`, and topic summaries
+- source links in the final HTML page
+- the monthly GitHub issue
+- a tracked project document only when the material is curated, reusable, and safe to publish
+
+Do not move ignored `_docs/` material into git just to preserve drafting history.
 
 ### Step 3: Research and Create Topic Pages
 
