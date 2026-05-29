@@ -135,7 +135,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">Varops Budget for Script Runtime Constraint</div>
       <div class="bip-desc">A <strong>"fuel budget"</strong> for any future script work — every opcode counts against a per-transaction limit, so nothing can use too much CPU. Required scaffolding for BIP-441.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0440.mediawiki" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0440.mediawiki" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="bip-row bl">
@@ -144,7 +144,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">Restoration of disabled Script (Tapleaf 0xc2)</div>
       <div class="bip-desc">Brings back the <strong>2010-disabled opcodes</strong>, including <code>OP_CAT</code>, <code>OP_SUBSTR</code>, <code>OP_MUL/DIV/MOD</code>, shifts, and bitwise ops. Lives on a new tapleaf version (<code>0xc2</code>) so old scripts are unaffected. Safe under BIP-440's budget. Requires BIP-440.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0441.mediawiki" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0441.mediawiki" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="section-label">New Tapscript Opcodes</div>
@@ -155,7 +155,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">OP_PAIRCOMMIT</div>
       <div class="bip-desc">Pop two stack elements, push the tagged-hash commitment. Limited vector commitment for richer contracts; LNhance candidate. Replaces <code>OP_SUCCESS205</code> on tapleaf 0xc0. Authors: moonsettler, Brandon Black.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0442.md" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0442.md" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="bip-row pu">
@@ -164,7 +164,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">OP_TEMPLATEHASH</div>
       <div class="bip-desc">Modern CTV-style commitment to the spending transaction — a UTXO can lock its spend to a specific future tx shape, so participants don't have to pre-sign every possible spending path up front. Removes pre-signed-tx interactivity in Lightning HTLCs, makes Ark VTXOs non-interactive, optimises DLCs. Authors: Sanders, Poinsot, Roose.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0446.md" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0446.md" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="bip-row pu">
@@ -173,7 +173,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">Taproot-native (Re)bindable Transactions</div>
       <div class="bip-desc">Bundles BIP-446 <code>OP_TEMPLATEHASH</code> + BIP-348 <code>OP_CHECKSIGFROMSTACK</code> + BIP-349 <code>OP_INTERNALKEY</code> into one deployment unit. Aimed at LN-Symmetry, Ark, and other second-layer protocols.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0448.md" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0448.md" target="_blank" rel="noopener">github →</a>
   </div>
 </div>
 
@@ -202,7 +202,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">Spending Silent Payment outputs with PSBTs</div>
       <div class="bip-desc">New per-input PSBTv2 fields for the BIP-352 silent-payment tweak. Lets multi-party / hardware-signing workflows handle SP output spends. Requires BIPs 352, 370, 371. Author: nymius.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0376.mediawiki" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0376.mediawiki" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="section-label">UTXO Hygiene</div>
@@ -213,7 +213,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
       <div class="bip-title">Dust UTXO Disposal Protocol</div>
       <div class="bip-desc">Standardised way to spend dust UTXOs to <code>OP_RETURN</code> with the entire value going to fees. Dust outputs are uneconomic to spend normally (fees exceed value) yet bloat every full node's UTXO set forever; sending to a provably-unspendable <code>OP_RETURN</code> lets the chain recognise destruction without growing the set. Mitigates the privacy-vs-UTXO-bloat tradeoff, with caveats around public-key exposure and same-address non-dust funds. Includes signature conventions for third-party batching. Landed May 6.</div>
     </div>
-    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0451.md" target="_blank">github →</a>
+    <a class="bip-link" href="https://github.com/bitcoin/bips/blob/master/bip-0451.md" target="_blank" rel="noopener">github →</a>
   </div>
 
   <div class="purple-box">
@@ -242,9 +242,9 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
   </div>
 
   <div class="links">
-    <a href="https://github.com/bitcoin/bips" target="_blank">bitcoin/bips repository →</a>
-    <a href="https://groups.google.com/g/bitcoindev" target="_blank">bitcoin-dev mailing list →</a>
-    <a href="https://delvingbitcoin.org" target="_blank">delvingbitcoin.org →</a>
+    <a href="https://github.com/bitcoin/bips" target="_blank" rel="noopener">bitcoin/bips repository →</a>
+    <a href="https://groups.google.com/g/bitcoindev" target="_blank" rel="noopener">bitcoin-dev mailing list →</a>
+    <a href="https://delvingbitcoin.org" target="_blank" rel="noopener">delvingbitcoin.org →</a>
   </div>
 </div>
 

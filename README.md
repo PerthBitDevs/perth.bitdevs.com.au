@@ -4,6 +4,8 @@ Website for [Perth BitDevs](https://perth.bitdevs.com.au), a monthly socratic se
 
 Pure static HTML hosted on GitHub Pages. No build step, no frameworks.
 
+The deployed site has no runtime dependencies. Local helpers are split between static-site helpers, which only need standard system tools, and optional newswatch planning tools, which use Python dependencies inside `.venv`.
+
 ## Structure
 
 - `index.html` - Landing page with event listings
@@ -29,7 +31,13 @@ just setup-newswatch
 just news-scan since=2026-05-07 issue=36
 ```
 
-The scan writes an LLM-ready Markdown packet and matching JSON under `tools/newswatch/runs/`. Add `issue=NN` to include community topic comments from `PerthBitDevs/PerthBitDevs` in the same packet as the curated-source scan. These files are local planning artefacts and are ignored by git. Source configuration lives in `tools/newswatch/sources.json`.
+The scan writes an LLM-ready Markdown packet and matching JSON under `tools/newswatch/runs/`. Add `issue=NN` to include community topic comments from `PerthBitDevs/PerthBitDevs` in the same packet as the curated-source scan. Optional local import packets can be merged with scans:
+
+```bash
+just news-scan since=2026-05-07 issue=36 import=tools/newswatch/imports/local.json
+```
+
+Import packet schema documentation lives in `tools/newswatch/imports/README.md`. Run outputs and local import packets are planning artefacts and should stay out of git when they contain private or machine-specific content. Source configuration lives in `tools/newswatch/sources.json`.
 
 ## Checks
 
@@ -38,4 +46,4 @@ just site-check
 just check
 ```
 
-`just site-check` validates local static-site contracts without network access. `just check` runs the site checker plus the local newswatch validation and tests.
+`just site-check` validates local static-site contracts without network access, including link safety for new tabs. `just check` runs the site checker plus the local newswatch validation and tests.

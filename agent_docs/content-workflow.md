@@ -55,7 +55,13 @@ just setup-newswatch
 just news-scan since=YYYY-MM-DD issue=NN
 ```
 
-After the first explicit-date run, `just news-scan` uses the stored local cursor in `tools/newswatch/state.local.json`. Add `issue=NN` to pull community topic comments from `PerthBitDevs/PerthBitDevs` into the same packet as the curated-source scan. The helper writes Markdown and JSON planning packets under `tools/newswatch/runs/`; these files are ignored by git and should be treated as research inputs, not publishable content.
+After the first explicit-date run, `just news-scan` uses the stored local cursor in `tools/newswatch/state.local.json`. Add `issue=NN` to pull community topic comments from `PerthBitDevs/PerthBitDevs` into the same packet as the curated-source scan. Optional local import packets can be merged with scans:
+
+```bash
+just news-scan since=YYYY-MM-DD issue=NN import=tools/newswatch/imports/local.json
+```
+
+External packet schema documentation lives in `tools/newswatch/imports/README.md`. The helper writes Markdown and JSON planning packets under `tools/newswatch/runs/`; these files are ignored by git and should be treated as research inputs, not publishable content.
 
 The packet is designed to be pasted into Codex or another LLM for topic triage. Ask the LLM to classify each item as:
 - `dedicated deck`

@@ -37,6 +37,7 @@ MAX_SEEN_IDS = 500
 VALID_KINDS = {"feed", "page"}
 VALID_PRIORITIES = {"high", "medium", "low"}
 PRIORITY_ORDER = {"high": 0, "medium": 1, "low": 2}
+IMPORT_PACKET_SCHEMA_VERSION = 1
 TRACKING_PARAMS = {
     "utm_source",
     "utm_medium",
@@ -101,6 +102,7 @@ class Candidate:
     already_cited_paths: list[str] = field(default_factory=list)
     possible_repeat_paths: list[str] = field(default_factory=list)
     duplicate_sources: list[str] = field(default_factory=list)
+    provenance: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -703,9 +705,150 @@ def fetch_github_issue_candidates(
     return github_issue_candidates_from_payload(repo, issue_number, comments, since=since, limit=limit)
 
 
+def as_import_string(value: Any, *, field_name: str, required: bool = False) -> str:
+    if value is None:
+        if required:
+            raise ValueError(f"import candidate missing required field: {field_name}")
+        return ""
+    if not isinstance(value, str):
+        raise ValueError(f"import candidate field {field_name} must be a string")
+    return value.strip()
+
+
+def as_import_tags(value: Any, *, field_name: str) -> list[str]:
+    if value is None:
+        return []
+    if not isinstance(value, list) or not all(isinstance(tag, str) for tag in value):
+        raise ValueError(f"import candidate field {field_name} must be a list of strings")
+    return [tag.strip() for tag in value if tag.strip()]
+
+
+def merge_tags(*tag_lists: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for tags in tag_lists:
+        for tag in tags:
+            if tag not in seen:
+                seen.add(tag)
+                merged.append(tag)
+    return merged
+
+
+def import_candidate_raw_id(path: Path, source_id: str, item: dict[str, Any], title: str, url: str) -> str:
+    explicit_id = item.get("raw_id") or item.get("id")
+    if explicit_id is not None:
+        return hashlib.sha256(str(explicit_id).encode("utf-8")).hexdigest()
+    seed = {
+        "packet": str(path),
+        "source_id": source_id,
+        "title": title,
+        "url": url,
+        "published_at": item.get("published_at"),
+        "provenance": item.get("provenance", {}),
+    }
+    return hashlib.sha256(json.dumps(seed, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def candidate_from_import_item(
+    path: Path,
+    defaults: dict[str, Any],
+    item: dict[str, Any],
+    index: int,
+    *,
+    since: datetime | None,
+) -> Candidate | None:
+    if not isinstance(item, dict):
+        raise ValueError(f"{path}: candidates[{index}] must be an object")
+
+    source_id = as_import_string(
+        item.get("source_id", defaults.get("source_id") or defaults.get("id") or path.stem),
+        field_name="source_id",
+        required=True,
+    )
+    source_title = as_import_string(
+        item.get("source_title", defaults.get("source_title") or defaults.get("title") or f"External import ({path.name})"),
+        field_name="source_title",
+        required=True,
+    )
+    category = as_import_string(item.get("category", defaults.get("category") or "external"), field_name="category", required=True)
+    priority = as_import_string(item.get("priority", defaults.get("priority") or "medium"), field_name="priority", required=True)
+    if priority not in VALID_PRIORITIES:
+        raise ValueError(f"{path}: candidates[{index}].priority must be one of {sorted(VALID_PRIORITIES)}")
+    kind = as_import_string(item.get("kind", defaults.get("kind") or "external_import"), field_name="kind", required=True)
+    title = clean_text(as_import_string(item.get("title"), field_name="title", required=True), max_chars=220)
+    if not title:
+        raise ValueError(f"{path}: candidates[{index}].title must not be empty")
+
+    provenance = item.get("provenance", {})
+    if provenance is None:
+        provenance = {}
+    if not isinstance(provenance, dict):
+        raise ValueError(f"{path}: candidates[{index}].provenance must be an object")
+
+    published_dt = parse_date(item.get("published_at") or item.get("created_at") or provenance.get("creation_date"))
+    updated_dt = parse_date(item.get("updated_at") or provenance.get("modification_date")) or published_dt
+    if since is not None and updated_dt is not None and updated_dt <= since:
+        return None
+
+    url = as_import_string(
+        item.get("url") or item.get("link") or provenance.get("source_url") or provenance.get("reference_url"),
+        field_name="url",
+    )
+    raw_id = import_candidate_raw_id(path, source_id, item, title, url)
+    if not url:
+        url = f"external-candidate://{source_id}/{raw_id[:24]}"
+    canonical_url = as_import_string(item.get("canonical_url"), field_name="canonical_url") or canonicalize_url(url)
+    default_tags = as_import_tags(defaults.get("tags"), field_name="defaults.tags")
+    item_tags = as_import_tags(item.get("tags"), field_name="tags")
+    summary = clean_text(item.get("summary") or item.get("excerpt") or item.get("body") or "", max_chars=900)
+    excerpt = clean_text(item.get("excerpt") or summary, max_chars=900)
+
+    return Candidate(
+        source_id=source_id,
+        source_title=source_title,
+        category=category,
+        priority=priority,
+        tags=merge_tags(default_tags, item_tags),
+        kind=kind,
+        title=title,
+        url=url,
+        canonical_url=canonical_url,
+        raw_id=raw_id,
+        published_at=isoformat(published_dt),
+        summary=summary,
+        excerpt=excerpt,
+        provenance=provenance,
+    )
+
+
+def load_import_packet_candidates(path: Path, *, since: datetime | None) -> list[Candidate]:
+    payload = load_json(path, None)
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+
+    version = payload.get("schema_version", payload.get("version"))
+    if version != IMPORT_PACKET_SCHEMA_VERSION:
+        raise ValueError(f"{path}: schema_version must be {IMPORT_PACKET_SCHEMA_VERSION}")
+
+    defaults = payload.get("defaults") or payload.get("source") or {}
+    if not isinstance(defaults, dict):
+        raise ValueError(f"{path}: defaults/source must be an object")
+
+    items = payload.get("candidates")
+    if not isinstance(items, list):
+        raise ValueError(f"{path}: candidates must be an array")
+
+    candidates: list[Candidate] = []
+    for index, item in enumerate(items):
+        candidate = candidate_from_import_item(path, defaults, item, index, since=since)
+        if candidate is not None:
+            candidates.append(candidate)
+    return candidates
+
+
 def packet_prompt() -> str:
     return (
-        "Review these curated-source and GitHub issue candidates for the next Perth BitDevs. "
+        "Review these curated-source, GitHub issue, and external import candidates for the next Perth BitDevs. "
         "Classify each item as "
         "`dedicated deck`, `news roundup`, `watch`, or `ignore`. Prefer technical "
         "Bitcoin protocol, wallet, privacy, mining, Lightning, security, and open-source "
@@ -714,6 +857,55 @@ def packet_prompt() -> str:
         "a full deck. Give community-submitted GitHub issue topics extra editorial weight. "
         "Flag contested claims that need source verification before slides are written."
     )
+
+
+def format_provenance_value(value: Any) -> str:
+    def clean_metadata_text(raw: Any, *, max_chars: int) -> str:
+        text = html.unescape(str(raw) or "")
+        text = re.sub(r"\s+", " ", text).strip()
+        if len(text) > max_chars:
+            return text[: max_chars - 1].rstrip() + "..."
+        return text
+
+    if isinstance(value, list):
+        return ", ".join(clean_metadata_text(item, max_chars=160) for item in value if str(item).strip())
+    if isinstance(value, dict):
+        return clean_metadata_text(json.dumps(value, sort_keys=True), max_chars=220)
+    return clean_metadata_text(value, max_chars=220)
+
+
+def markdown_provenance(candidate: Candidate) -> str | None:
+    if not candidate.provenance:
+        return None
+    labels = {
+        "reference_url": "Reference",
+        "source_url": "Source URL",
+        "email_subject": "Email subject",
+        "record_uuid": "Record UUID",
+        "month_group": "Month group",
+        "creation_date": "Created",
+        "original_location": "Original location",
+    }
+    preferred = [
+        "reference_url",
+        "source_url",
+        "email_subject",
+        "record_uuid",
+        "month_group",
+        "creation_date",
+        "original_location",
+    ]
+    ordered_keys = [key for key in preferred if key in candidate.provenance]
+    ordered_keys.extend(sorted(key for key in candidate.provenance if key not in ordered_keys))
+    parts = []
+    for key in ordered_keys:
+        value = candidate.provenance.get(key)
+        if value in (None, "", []):
+            continue
+        parts.append(f"{labels.get(key, key.replace('_', ' ').title())}: {format_provenance_value(value)}")
+    if not parts:
+        return None
+    return "- Provenance: " + "; ".join(parts)
 
 
 def markdown_candidate(candidate: Candidate) -> str:
@@ -732,6 +924,9 @@ def markdown_candidate(candidate: Candidate) -> str:
         lines.append(f"- Possible repeat: {', '.join(candidate.possible_repeat_paths)}")
     if candidate.duplicate_sources:
         lines.append(f"- Also seen via: {', '.join(candidate.duplicate_sources)}")
+    provenance = markdown_provenance(candidate)
+    if provenance:
+        lines.append(provenance)
     if candidate.excerpt:
         lines.append("")
         lines.append(candidate.excerpt)
@@ -867,13 +1062,26 @@ def command_scan(args: argparse.Namespace) -> int:
                         )
                     )
 
+    for import_packet in args.import_packet:
+        try:
+            candidates.extend(load_import_packet_candidates(Path(import_packet), since=since))
+        except Exception as exc:  # noqa: BLE001 - invalid import packets are reported in the packet.
+            failures.append(
+                SourceFailure(
+                    f"import-packet-{Path(import_packet).stem}",
+                    f"Import packet {Path(import_packet).name}",
+                    str(import_packet),
+                    str(exc),
+                )
+            )
+
     candidates = dedupe_candidates(candidates)
     mark_recent_coverage(candidates, ROOT, args.coverage_months)
     markdown_path, json_path = write_packet(
         candidates,
         failures,
         since=since,
-        enabled_source_count=len(enabled_sources) + len(issue_refs),
+        enabled_source_count=len(enabled_sources) + len(issue_refs) + len(args.import_packet),
         runs_dir=runs_dir,
     )
 
@@ -910,6 +1118,7 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("--github-repo", default=DEFAULT_GITHUB_REPO, help="Default owner/repo for numeric GitHub issue refs")
     scan.add_argument("--github-issue", action="append", default=[], help="Include a GitHub issue's comments as community topic candidates")
     scan.add_argument("--github-issue-limit", type=int, default=100)
+    scan.add_argument("--import-packet", action="append", default=[], help="Merge candidates from a local external JSON packet")
     scan.add_argument("--no-state-update", action="store_true")
     scan.add_argument("--fail-on-source-error", action="store_true")
     scan.set_defaults(func=command_scan)

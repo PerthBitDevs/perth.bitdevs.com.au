@@ -181,7 +181,7 @@ def check_target_blank_rel(pages: list[HtmlPage], findings: list[Finding]) -> No
             href = tag.attrs.get("href", "")
             add(
                 findings,
-                "warning",
+                "error",
                 "blank-target-without-noopener",
                 page.rel_path,
                 tag.line,

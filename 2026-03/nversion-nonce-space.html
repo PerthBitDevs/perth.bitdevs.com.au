@@ -107,7 +107,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
 
   <div class="warn-box">
     <div class="warn-label">THE ENTROPY PROBLEM</div>
-    <div class="card-text">Modern ASICs exhaust the 32-bit <code>nNonce</code> in roughly <strong>one second</strong>. BIP 320 added 16 bits of <code>nVersion</code> as extra nonce space, but it's <strong>not enough</strong>. Some devices have started stealing 7 bits from <code>nTime</code> for additional nonce space (<a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2 discussion</a>). This creates conflicts with proposals like BIP-54.</div>
+    <div class="card-text">Modern ASICs exhaust the 32-bit <code>nNonce</code> in roughly <strong>one second</strong>. BIP 320 added 16 bits of <code>nVersion</code> as extra nonce space, but it's <strong>not enough</strong>. Some devices have started stealing 7 bits from <code>nTime</code> for additional nonce space (<a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank" rel="noopener">Stratum V2 discussion</a>). This creates conflicts with proposals like BIP-54.</div>
   </div>
 
   <div class="info-box">
@@ -124,7 +124,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   <div class="card">
     <div class="card-accent" style="background:var(--tl)"></div>
     <div class="card-label" style="color:var(--tl)">THE BIP</div>
-    <div class="card-text"><strong>Matt Corallo</strong> proposes reserving <strong>24 bits</strong> of the <code>nVersion</code> field as extra nonce space for miners, replacing BIP 320's 16 bits. Published on the <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank">bitcoin-dev mailing list</a>.</div>
+    <div class="card-text"><strong>Matt Corallo</strong> proposes reserving <strong>24 bits</strong> of the <code>nVersion</code> field as extra nonce space for miners, replacing BIP 320's 16 bits. Published on the <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank" rel="noopener">bitcoin-dev mailing list</a>.</div>
   </div>
 
   <div class="stat-row">
@@ -231,7 +231,7 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   <div class="cols">
     <div class="card" style="margin-bottom:0">
       <div class="card-label" style="color:var(--tl)">STRATUM V2 COMPATIBLE</div>
-      <div class="card-text">The <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2 mining protocol</a> already supports nVersion rolling. The expanded range integrates naturally with existing mining infrastructure.</div>
+      <div class="card-text">The <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank" rel="noopener">Stratum V2 mining protocol</a> already supports nVersion rolling. The expanded range integrates naturally with existing mining infrastructure.</div>
     </div>
     <div class="card" style="margin-bottom:0">
       <div class="card-label" style="color:var(--bl)">NO CONSENSUS CHANGE</div>
@@ -252,9 +252,9 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight
   </div>
 
   <div class="links">
-    <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank">Bitcoin-dev mailing list: 24-bit nVersion proposal &rarr;</a>
-    <a href="https://github.com/bitcoin/bips/blob/master/bip-0320.mediawiki" target="_blank">BIP 320: nVersion bits for general purpose use &rarr;</a>
-    <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank">Stratum V2: nTime rolling discussion &rarr;</a>
+    <a href="https://groups.google.com/g/bitcoindev/c/fCfbi8hy-AE" target="_blank" rel="noopener">Bitcoin-dev mailing list: 24-bit nVersion proposal &rarr;</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0320.mediawiki" target="_blank" rel="noopener">BIP 320: nVersion bits for general purpose use &rarr;</a>
+    <a href="https://github.com/stratum-mining/sv2-spec/discussions/187" target="_blank" rel="noopener">Stratum V2: nTime rolling discussion &rarr;</a>
   </div>
 </div>
 

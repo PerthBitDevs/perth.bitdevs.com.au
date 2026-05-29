@@ -16,9 +16,9 @@ news-validate-sources:
     . .venv/bin/activate
     python tools/newswatch/newswatch.py validate-sources
 
-# Scan curated sources and optional meetup issue topics.
-# Example: just news-scan since=2026-05-07 issue=36
-news-scan since="" issue="":
+# Scan curated sources, optional meetup issue topics, and optional local imports.
+# Example: just news-scan since=2026-05-07 issue=36 import=tools/newswatch/imports/local.json
+news-scan since="" issue="" import="":
     #!/usr/bin/env bash
     set -euo pipefail
     if [ ! -x .venv/bin/python ]; then
@@ -36,6 +36,11 @@ news-scan since="" issue="":
     issue_arg="${issue_arg#issue=}"
     if [ -n "$issue_arg" ]; then
       args+=(--github-issue "$issue_arg")
+    fi
+    import_arg="{{import}}"
+    import_arg="${import_arg#import=}"
+    if [ -n "$import_arg" ]; then
+      args+=(--import-packet "$import_arg")
     fi
     python tools/newswatch/newswatch.py scan "${args[@]}"
 
@@ -71,12 +76,7 @@ check:
 dev:
     #!/usr/bin/env bash
     set -euo pipefail
-    if [ ! -x .venv/bin/python ]; then
-      echo "Missing .venv. Run: just setup-newswatch" >&2
-      exit 1
-    fi
-    . .venv/bin/activate
-    python -m http.server 8000
+    ruby -run -e httpd . -p 8000
 
 # Open the site in the default browser
 open:
@@ -86,12 +86,7 @@ open:
 run:
     #!/usr/bin/env bash
     set -euo pipefail
-    if [ ! -x .venv/bin/python ]; then
-      echo "Missing .venv. Run: just setup-newswatch" >&2
-      exit 1
-    fi
-    . .venv/bin/activate
-    python -m http.server 8000 &
+    ruby -run -e httpd . -p 8000 &
     sleep 0.5
     open http://localhost:8000
     wait

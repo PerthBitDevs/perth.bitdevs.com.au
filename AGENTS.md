@@ -22,6 +22,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 ## Local Tooling
 
+- `just dev` and `just run` serve the static site without requiring the newswatch `.venv`.
 - `tools/site_check.py` validates static-site contracts without network access.
 - `tools/newswatch/` is optional local planning tooling. It uses Python dependencies installed into `.venv` and writes ignored research packets under `tools/newswatch/runs/`.
 - Local tooling is not part of the deployed GitHub Pages runtime.

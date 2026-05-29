@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 import warnings
@@ -258,6 +259,85 @@ class NewswatchTests(unittest.TestCase):
             limit=10,
         )
         self.assertEqual(candidates, [])
+
+    def test_load_import_packet_candidates_uses_defaults_and_filters_by_since(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            packet_path = Path(temp_dir) / "external.json"
+            packet_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": 1,
+                        "source": {
+                            "id": "local-export",
+                            "title": "Local Export",
+                            "category": "protocol",
+                            "priority": "medium",
+                            "tags": ["local"],
+                        },
+                        "candidates": [
+                            {
+                                "id": "fresh-1",
+                                "title": "Fresh imported candidate",
+                                "url": "https://example.com/fresh?utm_source=newsletter",
+                                "published_at": "2026-05-29T02:00:00Z",
+                                "summary": "Imported summary",
+                                "tags": ["wallet"],
+                                "provenance": {
+                                    "reference_url": "external://record/fresh-1",
+                                    "email_subject": "Fresh source email",
+                                },
+                            },
+                            {
+                                "id": "old-1",
+                                "title": "Old imported candidate",
+                                "url": "https://example.com/old",
+                                "published_at": "2026-05-01T02:00:00Z",
+                            },
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            candidates = newswatch.load_import_packet_candidates(
+                packet_path,
+                since=newswatch.parse_date("2026-05-07"),
+            )
+
+        self.assertEqual(len(candidates), 1)
+        self.assertEqual(candidates[0].source_id, "local-export")
+        self.assertEqual(candidates[0].source_title, "Local Export")
+        self.assertEqual(candidates[0].category, "protocol")
+        self.assertEqual(candidates[0].priority, "medium")
+        self.assertEqual(candidates[0].tags, ["local", "wallet"])
+        self.assertEqual(candidates[0].canonical_url, "https://example.com/fresh")
+        self.assertEqual(candidates[0].published_at, "2026-05-29T02:00:00+00:00")
+
+    def test_import_packet_candidates_render_provenance(self):
+        candidate = newswatch.Candidate(
+            source_id="local-export",
+            source_title="Local Export",
+            category="protocol",
+            priority="medium",
+            tags=["local"],
+            kind="external_import",
+            title="Imported item",
+            url="external://record/item",
+            canonical_url="external://record/item",
+            raw_id="item",
+            published_at=None,
+            summary="",
+            excerpt="Imported excerpt",
+            provenance={
+                "reference_url": "external://record/item",
+                "email_subject": "Source email",
+                "record_uuid": "<record-uuid>",
+            },
+        )
+        markdown = newswatch.markdown_candidate(candidate)
+        self.assertIn("- Provenance: Reference: external://record/item", markdown)
+        self.assertIn("Email subject: Source email", markdown)
+        self.assertIn("Record UUID: <record-uuid>", markdown)
 
 
 if __name__ == "__main__":
