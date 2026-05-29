@@ -1,0 +1,362 @@
+[
+  {
+    "id": "bitcoin-optech",
+    "title": "Bitcoin Optech",
+    "category": "protocol",
+    "kind": "feed",
+    "url": "https://bitcoinops.org/feed.xml",
+    "priority": "high",
+    "tags": ["optech", "protocol", "lightning"],
+    "enabled": true
+  },
+  {
+    "id": "delving-bitcoin",
+    "title": "Delving Bitcoin",
+    "category": "protocol",
+    "kind": "feed",
+    "url": "https://delvingbitcoin.org/latest.rss",
+    "priority": "high",
+    "tags": ["research", "protocol", "mailing-list"],
+    "enabled": true
+  },
+  {
+    "id": "bitcoin-core-releases",
+    "title": "Bitcoin Core Releases",
+    "category": "bitcoin-core",
+    "kind": "feed",
+    "url": "https://github.com/bitcoin/bitcoin/releases.atom",
+    "priority": "high",
+    "tags": ["core", "release", "github"],
+    "enabled": true
+  },
+  {
+    "id": "bitcoin-core-commits",
+    "title": "Bitcoin Core Master Commits",
+    "category": "bitcoin-core",
+    "kind": "feed",
+    "url": "https://github.com/bitcoin/bitcoin/commits/master.atom",
+    "priority": "medium",
+    "tags": ["core", "commits", "github"],
+    "enabled": true
+  },
+  {
+    "id": "bitcoin-bips-commits",
+    "title": "Bitcoin BIPs Commits",
+    "category": "bips",
+    "kind": "feed",
+    "url": "https://github.com/bitcoin/bips/commits/master.atom",
+    "priority": "high",
+    "tags": ["bips", "github"],
+    "enabled": true
+  },
+  {
+    "id": "bolts-commits",
+    "title": "Lightning BOLTs Commits",
+    "category": "lightning",
+    "kind": "feed",
+    "url": "https://github.com/lightning/bolts/commits/master.atom",
+    "priority": "medium",
+    "tags": ["lightning", "spec", "github"],
+    "enabled": true
+  },
+  {
+    "id": "core-lightning-releases",
+    "title": "Core Lightning Releases",
+    "category": "lightning",
+    "kind": "feed",
+    "url": "https://github.com/ElementsProject/lightning/releases.atom",
+    "priority": "medium",
+    "tags": ["lightning", "release", "cln"],
+    "enabled": true
+  },
+  {
+    "id": "ldk-releases",
+    "title": "LDK Releases",
+    "category": "lightning",
+    "kind": "feed",
+    "url": "https://github.com/lightningdevkit/rust-lightning/releases.atom",
+    "priority": "medium",
+    "tags": ["lightning", "release", "ldk"],
+    "enabled": true
+  },
+  {
+    "id": "lnd-releases",
+    "title": "LND Releases",
+    "category": "lightning",
+    "kind": "feed",
+    "url": "https://github.com/lightningnetwork/lnd/releases.atom",
+    "priority": "medium",
+    "tags": ["lightning", "release", "lnd"],
+    "enabled": true
+  },
+  {
+    "id": "gnusha-bitcoindev",
+    "title": "bitcoindev Archive",
+    "category": "protocol",
+    "kind": "feed",
+    "url": "https://gnusha.org/pi/bitcoindev/atom.xml",
+    "priority": "high",
+    "tags": ["bitcoindev", "mailing-list"],
+    "enabled": true
+  },
+  {
+    "id": "bnoc-latest",
+    "title": "Bitcoin Network Operations Collective",
+    "category": "network",
+    "kind": "feed",
+    "url": "https://bnoc.xyz/latest.rss",
+    "priority": "high",
+    "tags": ["network", "operations", "monitoring"],
+    "enabled": true
+  },
+  {
+    "id": "mempool-research",
+    "title": "mempool Research",
+    "category": "research",
+    "kind": "page",
+    "url": "https://research.mempool.space/",
+    "priority": "medium",
+    "tags": ["mempool", "research"],
+    "enabled": true
+  },
+  {
+    "id": "b10c-observations",
+    "title": "b10c Observations",
+    "category": "network",
+    "kind": "page",
+    "url": "https://b10c.me/observations/",
+    "priority": "medium",
+    "tags": ["network", "monitoring"],
+    "enabled": true
+  },
+  {
+    "id": "fork-observer",
+    "title": "fork.observer",
+    "category": "network",
+    "kind": "page",
+    "url": "https://fork.observer/",
+    "priority": "medium",
+    "tags": ["forks", "network", "monitoring"],
+    "enabled": true
+  },
+  {
+    "id": "brink-blog",
+    "title": "Brink Blog",
+    "category": "research",
+    "kind": "feed",
+    "url": "https://brink.dev/feed.xml",
+    "priority": "medium",
+    "tags": ["research", "funding", "core"],
+    "enabled": true
+  },
+  {
+    "id": "spiral-blog",
+    "title": "Spiral Blog",
+    "category": "funding",
+    "kind": "page",
+    "url": "https://spiral.xyz/blog/",
+    "priority": "medium",
+    "tags": ["funding", "open-source", "wallets", "lightning"],
+    "enabled": true
+  },
+  {
+    "id": "opensats-blog",
+    "title": "OpenSats Blog",
+    "category": "funding",
+    "kind": "page",
+    "url": "https://opensats.org/blog",
+    "priority": "medium",
+    "tags": ["funding", "open-source", "grants"],
+    "enabled": true
+  },
+  {
+    "id": "hrf-financial-freedom",
+    "title": "HRF Financial Freedom",
+    "category": "funding",
+    "kind": "page",
+    "url": "https://hrf.org/program/financial-freedom/",
+    "priority": "medium",
+    "tags": ["funding", "human-rights", "grants"],
+    "enabled": true
+  },
+  {
+    "id": "vinteum-feed",
+    "title": "Vinteum",
+    "category": "funding",
+    "kind": "feed",
+    "url": "https://vinteum.org/feed/",
+    "priority": "medium",
+    "tags": ["funding", "open-source", "latin-america"],
+    "enabled": true
+  },
+  {
+    "id": "btrust-blog",
+    "title": "Btrust Blog",
+    "category": "funding",
+    "kind": "feed",
+    "url": "https://blog.btrust.tech/feed/",
+    "priority": "medium",
+    "tags": ["funding", "open-source", "africa"],
+    "enabled": true
+  },
+  {
+    "id": "2140-blog",
+    "title": "2140 Blog",
+    "category": "funding",
+    "kind": "feed",
+    "url": "https://2140blog.substack.com/feed",
+    "priority": "medium",
+    "tags": ["funding", "open-source", "research", "silent-payments"],
+    "enabled": true
+  },
+  {
+    "id": "chaincode-feed",
+    "title": "Chaincode Labs",
+    "category": "research",
+    "kind": "feed",
+    "url": "https://chaincode.com/feed.xml",
+    "priority": "medium",
+    "tags": ["research", "education", "bitcoin-core"],
+    "enabled": true
+  },
+  {
+    "id": "summer-of-bitcoin",
+    "title": "Summer of Bitcoin",
+    "category": "funding",
+    "kind": "page",
+    "url": "https://www.summerofbitcoin.org/",
+    "priority": "low",
+    "tags": ["funding", "education", "open-source"],
+    "enabled": true
+  },
+  {
+    "id": "maelstrom-feed",
+    "title": "Maelstrom",
+    "category": "funding",
+    "kind": "feed",
+    "url": "https://maelstrom.fund/feed/",
+    "priority": "low",
+    "tags": ["funding", "investment", "research"],
+    "enabled": true
+  },
+  {
+    "id": "bitcoin-plus-plus",
+    "title": "Bitcoin++",
+    "category": "events",
+    "kind": "page",
+    "url": "https://btcplusplus.dev/",
+    "priority": "medium",
+    "tags": ["conference", "talks", "protocol"],
+    "enabled": true
+  },
+  {
+    "id": "b10c-feed",
+    "title": "b10c",
+    "category": "developer-blog",
+    "kind": "feed",
+    "url": "https://b10c.me/feed.xml",
+    "priority": "medium",
+    "tags": ["developer-blog", "network", "mining"],
+    "enabled": true
+  },
+  {
+    "id": "lopp-blog",
+    "title": "Jameson Lopp",
+    "category": "developer-blog",
+    "kind": "feed",
+    "url": "https://blog.lopp.net/rss/",
+    "priority": "medium",
+    "tags": ["developer-blog", "security", "wallets"],
+    "enabled": true
+  },
+  {
+    "id": "jeremy-rubin-blog",
+    "title": "Jeremy Rubin",
+    "category": "developer-blog",
+    "kind": "feed",
+    "url": "https://rubin.io/feed.xml",
+    "priority": "medium",
+    "tags": ["developer-blog", "covenants", "script"],
+    "enabled": true
+  },
+  {
+    "id": "harlock-blog",
+    "title": "Harlock",
+    "category": "developer-blog",
+    "kind": "page",
+    "url": "https://www.harlock.xyz/artigos",
+    "priority": "medium",
+    "tags": ["developer-blog", "bitcoin"],
+    "enabled": true
+  },
+  {
+    "id": "blockspace-weekly",
+    "title": "Blockspace Weekly",
+    "category": "substack",
+    "kind": "feed",
+    "url": "https://blockspaceweekly.substack.com/feed",
+    "priority": "medium",
+    "tags": ["substack", "mining", "policy"],
+    "enabled": true
+  },
+  {
+    "id": "jimmysong-substack",
+    "title": "Jimmy Song Substack",
+    "category": "substack",
+    "kind": "feed",
+    "url": "https://jimmysong.substack.com/feed",
+    "priority": "low",
+    "tags": ["substack", "opinion", "bitcoin-core"],
+    "enabled": true
+  },
+  {
+    "id": "atlas21",
+    "title": "Atlas21",
+    "category": "general",
+    "kind": "feed",
+    "url": "https://atlas21.com/feed/",
+    "priority": "low",
+    "tags": ["general", "news"],
+    "enabled": true
+  },
+  {
+    "id": "citadel-wire",
+    "title": "Citadel Wire",
+    "category": "aggregator",
+    "kind": "feed",
+    "url": "https://citadelwire.com/feed.xml",
+    "priority": "low",
+    "tags": ["aggregator", "news", "bitcoin"],
+    "enabled": true
+  },
+  {
+    "id": "bitmex-research",
+    "title": "BitMEX Research",
+    "category": "research",
+    "kind": "page",
+    "url": "https://blog.bitmex.com/research/",
+    "priority": "low",
+    "tags": ["research", "markets"],
+    "enabled": true
+  },
+  {
+    "id": "bitcoin-magazine",
+    "title": "Bitcoin Magazine",
+    "category": "general",
+    "kind": "page",
+    "url": "https://bitcoinmagazine.com/news",
+    "priority": "low",
+    "tags": ["general", "news"],
+    "enabled": false
+  },
+  {
+    "id": "coindesk-bitcoin",
+    "title": "CoinDesk Bitcoin",
+    "category": "general",
+    "kind": "page",
+    "url": "https://www.coindesk.com/tag/bitcoin/",
+    "priority": "low",
+    "tags": ["general", "news"],
+    "enabled": false
+  }
+]

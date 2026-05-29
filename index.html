@@ -19,7 +19,7 @@
   .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
   .shell{max-width:760px;margin:0 auto;padding:52px 24px 100px;position:relative}
   header{text-align:center;margin-bottom:48px}
-  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,6vw,44px);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(32px,6vw,44px);font-weight:800;letter-spacing:0;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .tagline{color:var(--txM);font-size:17px;line-height:1.6;max-width:560px;margin:0 auto 8px}
   .meta-line{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:12px}
   .meta-line a{color:var(--or);text-decoration:none}
@@ -37,7 +37,7 @@
   .event-date{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--or);letter-spacing:.04em}
   .event-arrow{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--txD);transition:all .2s ease;flex-shrink:0}
   a.event:hover .event-arrow{color:var(--or);transform:translateX(3px)}
-  .event-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:-.01em}
+  .event-title{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:0}
   .event-desc{color:var(--txM);font-size:15px;line-height:1.55}
   .event-meta-line{color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;margin-bottom:10px;letter-spacing:.02em}
   .event-meta-line .when{color:var(--or)}
@@ -74,7 +74,7 @@
   <header>
     <h1>Perth BitDevs</h1>
     <p class="tagline">Monthly socratic seminar exploring Bitcoin development, protocol changes, and the broader technical ecosystem.</p>
-    <p class="meta-line"><strong style="color:var(--or)">Next:</strong> Thursday 7 May 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</p>
+    <p class="meta-line"><strong style="color:var(--or)">Next:</strong> Thursday 4 June 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</p>
     <p class="meta-line">First Thursday of each month &middot; <a href="/about.html">About</a></p>
     <div class="nav-row">
       <a class="nav-link" href="https://github.com/PerthBitDevs/PerthBitDevs/issues" target="_blank" rel="noopener">Add a topic for discussion on GitHub</a>
@@ -85,24 +85,22 @@
 
   <div class="section-label">Upcoming</div>
   <div class="section-gap">
-    <a class="event next" href="/2026-05/">
+    <a class="event next" href="/2026-06/">
       <span class="next-badge">Next Meetup</span>
-      <div class="event-title">May 2026</div>
-      <div class="event-meta-line"><span class="when">Thursday 7 May, 6pm</span> &middot; Rocky Ridge, Burswood</div>
+      <div class="event-title">June 2026</div>
+      <div class="event-meta-line"><span class="when">Thursday 4 June, 6pm</span> &middot; Rocky Ridge, Burswood</div>
       <div class="event-desc"><ul>
-        <li><strong>News roundup</strong> — INDOPACOM, Iran, Square Lightning, Litecoin reorg, Vegas merger &amp; more</li>
-        <li><strong>BIP-110</strong> — status, signaling &amp; discourse</li>
-        <li><strong>Quantum update</strong> — Q-Day Prize fallout, freeze vs don't-freeze camps</li>
-        <li><strong>Governance</strong> — BIP-Editor RFC, "The Lever", Falco brief, Bitcoin 2026 Vegas</li>
-        <li><strong>Alt-client watch</strong> — ProductionReady, libbitcoin v4, Hornet</li>
-        <li><strong>Bisq v1 exploit</strong> — likely AI-assisted</li>
-        <li><strong>Sztorc's eCash</strong> hard fork at block 964,000</li>
-        <li><strong>New BIPs roundup</strong> — eight BIPs incl. Great Script Restoration (BIP-440/441)</li>
-        <li><strong>Australian Bush Bash</strong> 2026 schedule</li>
+        <li><strong>Silent Payments</strong> - Sparrow 2.5.x receiving-wallet support, BIP-352, 2140 annual report, scan/spend keys</li>
+        <li><strong>Post-quantum Bitcoin</strong> - QCAP, lattice signatures, Winternitz proposals, P2WOTS, and hybrid SPHINCS+</li>
+        <li><strong>BIPs and process</strong> - BIP-54 moved to Complete, BIP-449 OP_TWEAKADD, BIP 3 discussion</li>
+        <li><strong>Covenants and exits</strong> - CTV-only vaults, sibling-aware covenant design, replay protection, blockspace limits</li>
+        <li><strong>Network observations</strong> - NAT traversal, addrman measurements, Tor address spike, forks, Electrum monitoring</li>
+        <li><strong>Lightning</strong> - CLN assertion DoS disclosure, v26.06 release candidates, LND rc2, routing-economics claims</li>
+        <li><strong>Issue #36 and funding topics</strong> - Spiral mempool-policy retrospective, Bitnodes data, Loupe, AI wallet recovery, Travel Rule, 2140</li>
       </ul></div>
       <div class="event-tags">
-        <span class="event-tag">9 topics</span>
-        <span class="event-tag">Interactive slides</span>
+        <span class="event-tag">First pass</span>
+        <span class="event-tag">Newswatch + issue #36</span>
       </div>
     </a>
   </div>
@@ -111,6 +109,18 @@
 
   <div class="section-label">2026</div>
   <div class="section-gap">
+    <a class="event" href="/2026-05/">
+      <div class="event-top">
+        <span class="event-date">7 May 2026</span>
+        <span class="event-arrow">&rarr;</span>
+      </div>
+      <div class="event-title">May 2026</div>
+      <div class="event-desc">News roundup, BIP-110 status and discourse, quantum update, governance, alt-client watch, Bisq v1 exploit, Sztorc's eCash hard fork, new BIPs, and Australian Bush Bash 2026 schedule.</div>
+      <div class="event-tags">
+        <span class="event-tag">9 topics</span>
+        <span class="event-tag">Interactive slides</span>
+      </div>
+    </a>
     <a class="event" href="/2026-04/">
       <div class="event-top">
         <span class="event-date">2 April 2026</span>

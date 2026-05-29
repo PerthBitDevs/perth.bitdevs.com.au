@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newswatch + Issue Roundup - Perth BitDevs June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge-group{display:flex;align-items:center;gap:8px}
+.badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,#06b6d4,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:20px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+.card-text em{color:var(--txM);font-style:italic}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
+.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
+.card-text a:hover{border-bottom-color:var(--bl)}
+.box{border-radius:8px;padding:13px 18px;margin-bottom:12px;border:1px solid rgba(148,163,184,.25)}
+.box .label{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.box.bl{background:var(--blG);border-color:rgba(59,130,246,.35)}.box.bl .label{color:var(--bl)}
+.box.rd{background:var(--rdG);border-color:rgba(239,68,68,.35)}.box.rd .label{color:var(--rd)}
+.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
+.box.or{background:var(--orG);border-color:rgba(247,147,26,.35)}.box.or .label{color:var(--or)}
+.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
+.box.cy{background:var(--cyG);border-color:rgba(6,182,212,.35)}.box.cy .label{color:var(--cy)}
+.box.yl{background:var(--ylG);border-color:rgba(234,179,8,.35)}.box.yl .label{color:var(--yl)}
+.box.pk{background:var(--pkG);border-color:rgba(236,72,153,.35)}.box.pk .label{color:var(--pk)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.headline-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.headline{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--bd2);border-radius:8px;padding:12px 14px}
+.headline.bl{border-left-color:var(--bl)}.headline.rd{border-left-color:var(--rd)}.headline.or{border-left-color:var(--or)}.headline.gn{border-left-color:var(--gn)}.headline.pk{border-left-color:var(--pk)}.headline.cy{border-left-color:var(--cy)}.headline.pu{border-left-color:var(--pu)}.headline.yl{border-left-color:var(--yl)}.headline.tl{border-left-color:var(--tl)}
+.headline-tag{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
+.headline-tag.bl{color:var(--bl)}.headline-tag.rd{color:var(--rd)}.headline-tag.or{color:var(--or)}.headline-tag.gn{color:var(--gn)}.headline-tag.pk{color:var(--pk)}.headline-tag.cy{color:var(--cy)}.headline-tag.pu{color:var(--pu)}.headline-tag.yl{color:var(--yl)}.headline-tag.tl{color:var(--tl)}
+.headline-title{color:var(--tx);font-size:18px;font-weight:600;line-height:1.35;margin-bottom:3px}
+.headline-text{color:var(--txM);font-size:16px;line-height:1.45}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fact{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px}
+.fact-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;letter-spacing:.06em;margin-bottom:3px}
+.fact-val{color:var(--txM);font-size:18px;line-height:1.4}
+.fact-val strong{color:var(--tx)}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:700px){.cols,.headline-grid,.fact-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">NEWSWATCH + ISSUE ROUNDUP</div>
+    <div class="update-tag">FIRST PASS</div>
+  </div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-06/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Headlines">
+  <h2 class="slide-title">June First Pass</h2>
+  <p class="subtitle">Curated-source scan plus GitHub issue #36, May 7 to May 29</p>
+  <div class="headline-grid">
+    <div class="headline pu"><div class="headline-tag pu">PQC</div><div class="headline-title">Quantum discussion keeps branching</div><div class="headline-text">QCAP, lattice signatures, Winternitz/Lamport proposals, P2WOTS, and wallet-layer hybrid SPHINCS+.</div></div>
+    <div class="headline gn"><div class="headline-tag gn">SILENT</div><div class="headline-title">Silent Payments gets wallet and org signals</div><div class="headline-text">Issue #36 flags Sparrow 2.5.x receiving-wallet support; 2140's report mentions SP integration work.</div></div>
+    <div class="headline yl"><div class="headline-tag yl">BIPS</div><div class="headline-title">BIP-54 moved to Complete</div><div class="headline-text">Consensus cleanup draft saw rationale edits, validation-time wording, reference implementation links, and status change.</div></div>
+    <div class="headline cy"><div class="headline-tag cy">COVENANTS</div><div class="headline-title">CTV-only vaults and sibling-aware designs</div><div class="headline-text">New vault concept release plus design-space mapping around CTV, TEMPLATEHASH, BitVM, Ark, and LN-Symmetry.</div></div>
+    <div class="headline bl"><div class="headline-tag bl">NETWORK</div><div class="headline-title">BNOC produced a dense month</div><div class="headline-text">NAT traversal, addrman overlap, Tor address spikes, fork observations, and Electrum server monitoring.</div></div>
+    <div class="headline rd"><div class="headline-tag rd">LIGHTNING</div><div class="headline-title">CLN DoS disclosure and v26.06 RCs</div><div class="headline-text">Assertion DoS patched in v26.04; release candidates bring graceful shutdown, sendamount, xpay changes, and payment-proof work.</div></div>
+    <div class="headline gn"><div class="headline-tag gn">CORE</div><div class="headline-title">Wallet, mining IPC, and build work</div><div class="headline-text">Ancient wallet migration fix, submitBlock IPC mining interface, Guix manifest split, and leveldb subtree bump.</div></div>
+    <div class="headline pk"><div class="headline-tag pk">VERIFY</div><div class="headline-title">Reproducibility and secp256k1 verification</div><div class="headline-text">b10c reproduced a Guix-built bitcoind binary with Nix; UltrafastSecp256k1 and Harlock add verification-heavy threads.</div></div>
+    <div class="headline or"><div class="headline-tag or">ISSUE #36</div><div class="headline-title">Community topics are now first-class inputs</div><div class="headline-text">Mempool policy, Bitnodes data, Loupe, AI wallet recovery, Travel Rule, Silent Payments, and 2140.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="PQC">
+  <h2 class="slide-title pu">Post-Quantum Bitcoin Threads</h2>
+  <p class="subtitle">The post-quantum discussion is no longer one proposal</p>
+  <div class="box pu"><div class="label">WHAT MOVED</div><div class="card-text">Newswatch found a cluster of new PQC discussion across Delving Bitcoin and bitcoindev: <strong>QCAP</strong>, lattice-based signatures, attack-game analysis, Winternitz/Lamport auth chains, <strong>P2WOTS</strong>, and a wallet-layer hybrid <strong>SPHINCS+ / secp256k1</strong> proposal.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">QCAP</div><div class="fact-val">A Bitcoin-native quantum-canary idea focused on uncertainty around the ECDLP break timeline.</div></div>
+    <div class="fact"><div class="fact-label">LATTICES</div><div class="fact-val">Discussion pointed to lattice-based signatures and questions about threshold signatures and practical wallet features.</div></div>
+    <div class="fact"><div class="fact-label">WOTS / LAMPORT</div><div class="fact-val">Two Delving threads proposed lightweight Winternitz-style approaches, including a revised P2WOTS design.</div></div>
+    <div class="fact"><div class="fact-label">WALLET LAYER</div><div class="fact-val">A bitcoindev BIP proposal targets hybrid SPHINCS+ / secp256k1 derivation for quantum-resistant paper wallets.</div></div>
+  </div>
+  <div class="box yl"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">This looks like a dedicated June deck candidate, but the first pass should frame it as a taxonomy of proposals and open questions, not as a comparison with winners.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/qcap-a-bitcoin-native-quantum-canary-alert/2498" target="_blank">QCAP</a>
+    <a href="https://delvingbitcoin.org/t/pqc-lattice-based-signatures/2522" target="_blank">Lattice thread</a>
+    <a href="https://delvingbitcoin.org/t/p2wots-post-quantum-utxo-winternitz-signatures/2530" target="_blank">P2WOTS</a>
+    <a href="https://gnusha.org/pi/bitcoindev/bpSypbIuSoDinhE-Y4CrVI5LGHrJ_I79xYUzpYswA5JGkbASwibq94UozeR2jsu48vH6FZLdEBPpWHgIuVtSpUNy-tRpnGfe1hce2ti8k5w=@protonmail.com/" target="_blank">Hybrid SPHINCS+</a>
+  </div>
+</div>
+
+<div class="slide" data-name="BIPs">
+  <h2 class="slide-title yl">BIPs and Process</h2>
+  <p class="subtitle">Status changes, new assignments, and process questions</p>
+  <div class="box yl"><div class="label">BIP-54 STATUS</div><div class="card-text"><strong>BIP-54</strong> moved to <strong>Complete</strong> after a sequence of edits: Timewarp motivation wording, worst-case validation-time wording, BIP 34 rationale cleanup, Luke's extranonce concern in rationale, and a rebased Bitcoin Core reference implementation link.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">OTHER STATUS CHANGES</div><div class="card-text"><strong>BIP-38</strong> and <strong>BIP-78</strong> advanced to Deployed. <strong>BIP-176</strong> advanced to Complete. <strong>BIP-10</strong> recorded its withdrawal in the changelog.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">NEW BIP</div><div class="card-text"><strong>BIP-449</strong> assigned OP_TWEAKADD, with compatibility discussion around Alpen and MATT noted in the commit text.</div></div>
+  </div>
+  <div class="box bl"><div class="label">PROCESS THREAD</div><div class="card-text">A bitcoindev post raised BIP 3 and BIPs repository issue-tracking questions. This can sit beside the BIP-Editor and process material from May.</div></div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/commit/43a4941b37ee36fbb005821e68635d3907f8a2fc" target="_blank">BIP-54 Complete</a>
+    <a href="https://github.com/bitcoin/bips/commit/76d434e5fc781b579495b336ab0b6a73e8e05a54" target="_blank">BIP-449</a>
+    <a href="https://gnusha.org/pi/bitcoindev/ahZOIkGfmJBbCffy@erisian.com.au/" target="_blank">BIP 3 thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Covenants">
+  <h2 class="slide-title cy">Covenants, Exits, and Replay</h2>
+  <p class="subtitle">Three threads to review together rather than separately</p>
+  <div class="box cy"><div class="label">CTV-ONLY VAULT</div><div class="card-text">MCCV v0.1.0 demonstrates a vault concept built using <strong>OP_CHECKTEMPLATEVERIFY</strong> alone. The author describes deposits, delayed withdrawals, recovery, velocity control, and repeated vault operations, while also flagging computational and usability tradeoffs.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">SIBLING-AWARE COVENANTS</div><div class="card-text">A bitcoindev thread maps where CTV and TEMPLATEHASH differ for designs that need sibling prevout commitments, including BitVM, Ark, and LN-Symmetry style constructions.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">REPLAY PROTECTION</div><div class="card-text">A Delving thread discusses replay risks in a hypothetical chain split around soft-fork signalling, using "Core" and "Knots" as simplifying labels.</div></div>
+  </div>
+  <div class="box pu"><div class="label">BLOCKSPACE LIMITS</div><div class="card-text">"Credible Exit and The Law of Conservation of Blockspace" argues about limits on trust-minimized layer exits under static block-weight accounting windows. This is a good "read before presenting" candidate.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/ctv-only-vault-concept-v0-1-0-release/2539" target="_blank">CTV vault</a>
+    <a href="https://gnusha.org/pi/bitcoindev/fd2ba4b8-95f6-4541-900a-47bdf65a166cn@googlegroups.com/" target="_blank">Sibling-aware covenants</a>
+    <a href="https://delvingbitcoin.org/t/replay-protection-conditions-solutions/2506" target="_blank">Replay protection</a>
+    <a href="https://delvingbitcoin.org/t/credible-exit-and-the-law-of-conservation-of-blockspace/2503" target="_blank">Credible exit</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Network">
+  <h2 class="slide-title bl">Network Observations</h2>
+  <p class="subtitle">BNOC and related feeds are now high-signal for monthly scanning</p>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">NAT TRAVERSAL</div><div class="fact-val">Delving thread asks whether TCP hole punching can connect otherwise unreachable home nodes.</div></div>
+    <div class="fact"><div class="fact-label">ADDRMAN</div><div class="fact-val">BNOC measured addrman overlap across nine nodes, plus age distribution and multi-port address patterns.</div></div>
+    <div class="fact"><div class="fact-label">TOR ADDRS</div><div class="fact-val">A temporary early-May increase in reachable Tor addresses showed up in monitoring data.</div></div>
+    <div class="fact"><div class="fact-label">FORKS</div><div class="fact-val">BNOC logged back-to-back forks at heights <strong>949203</strong> and <strong>949204</strong>.</div></div>
+  </div>
+  <div class="box bl"><div class="label">ELECTRUM MONITORING</div><div class="card-text">A new BNOC thread starts from b10c's question: can public spy-Electrum servers run by chain surveillance firms be spotted? The first version collects public server data from bitcoin-eye and mempool fee histograms, excluding Tor servers for now.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/tcp-hole-punching-for-bitcoin-nodes-behind-home-nats/2497" target="_blank">TCP hole punching</a>
+    <a href="https://bnoc.xyz/t/how-similar-are-addrman-of-different-nodes/128" target="_blank">Addrman overlap</a>
+    <a href="https://bnoc.xyz/t/temporary-increase-in-number-of-tor-addresses/131" target="_blank">Tor address spike</a>
+    <a href="https://bnoc.xyz/t/electrum-server-monitoring/135" target="_blank">Electrum monitoring</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Lightning">
+  <h2 class="slide-title rd">Lightning Security and Releases</h2>
+  <p class="subtitle">CLN disclosure, release candidates, and routing-economics claims</p>
+  <div class="box rd"><div class="label">ASSERTION DOS IN CLN</div><div class="card-text">A Summer of Bitcoin 2025 intern disclosed a remote peer crash in Core Lightning caused by an overly strict assertion in <code>openingd</code>. The issue is reported as patched in <strong>Core Lightning v26.04</strong>, and operators were advised to upgrade.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">CLN v26.06 RCs</div><div class="card-text">RC1 highlights include <code>graceful</code>, <code>sendamount</code>, and xpay taking over pay handling by default. RC2 includes payment-proof draft updates and gossipd robustness work.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">LND rc2</div><div class="card-text">LND v0.21.0-beta.rc2 appeared in the scan, along with module releases for queue, kvdb, and sqldb. Needs a deeper changelog read before presenting.</div></div>
+  </div>
+  <div class="box yl"><div class="label">WATCH ITEM</div><div class="card-text">The "Lightning economics" Delving post makes strong claims about routing capital velocity and returns. Treat as a discussion item requiring source review before putting numbers on slides.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/vulnerability-disclosure-assertion-dos-in-core-lightning/2507" target="_blank">CLN DoS disclosure</a>
+    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc1" target="_blank">CLN rc1</a>
+    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc2" target="_blank">CLN rc2</a>
+    <a href="https://github.com/lightningnetwork/lnd/releases/tag/v0.21.0-beta.rc2" target="_blank">LND rc2</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Core">
+  <h2 class="slide-title gn">Bitcoin Core Watch</h2>
+  <p class="subtitle">Several merges are small individually, but useful as a maintenance snapshot</p>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">WALLET MIGRATION</div><div class="fact-val">A merge fixed migration for very old wallets that lack the best block locator record introduced in early Bitcoin Core history.</div></div>
+    <div class="fact"><div class="fact-label">MINING IPC</div><div class="fact-val"><code>submitBlock</code> was added to the IPC Mining interface, with a functional test and helper refactor.</div></div>
+    <div class="fact"><div class="fact-label">GUIX</div><div class="fact-val">Build and codesign manifests were split to narrow Guix environment dependency scope.</div></div>
+    <div class="fact"><div class="fact-label">RBF CLEANUP</div><div class="fact-val">Followups remove deprecated BIP125 and <code>-walletrbf</code> test paths, while adding coverage for deprecated keys and options.</div></div>
+  </div>
+  <div class="box gn"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">This likely belongs in the roundup, not a full deck, unless the mining IPC change becomes part of a broader mining-interface topic.</div></div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bitcoin/commit/5486ef8cc25b6ae51c32c055bce9fd343128c48b" target="_blank">Ancient wallet migration</a>
+    <a href="https://github.com/bitcoin/bitcoin/commit/896eaacd9134c460b5e0724f7f18c15964365e40" target="_blank">Mining IPC submitBlock</a>
+    <a href="https://github.com/bitcoin/bitcoin/commit/e3f5c189134260ca98ab1a5f3301b02166d407a4" target="_blank">Guix manifest split</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Verification">
+  <h2 class="slide-title pk">Verification and Reproducibility</h2>
+  <p class="subtitle">Three threads around how Bitcoin software gets checked</p>
+  <div class="box pk"><div class="label">NIX MATCHES GUIX</div><div class="card-text">b10c reports producing a Nix-built <code>bitcoind</code> binary for Bitcoin Core v31.0 whose hash exactly matches the official Guix-built x86_64 Linux release binary. This is an excellent short technical segment if verified.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">ULTRAFASTSECP256K1</div><div class="card-text">Two Delving posts present v4.0 and an opt-in backend proposal. The stated emphasis is verification-first engineering, reproducible benchmark evidence, audit infrastructure, and controlled comparison.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">HARLOCK</div><div class="card-text">Harlock added a post on the first secp256k1 commit and field element operations. This is a source-watch addition and a possible explainer seed, not yet a full topic.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://b10c.me/projects/027-bitcoind-gunix-match/" target="_blank">b10c Nix/Guix match</a>
+    <a href="https://delvingbitcoin.org/t/ultrafastsecp256k1-v4-0-verification-performance-and-the-cost-of-engineering-truth/2508" target="_blank">UltrafastSecp256k1 v4.0</a>
+    <a href="https://delvingbitcoin.org/t/add-optional-ultrafastsecp256k1-backend-opt-in-default-unchanged/2509" target="_blank">Optional backend</a>
+    <a href="https://www.harlock.xyz/artigos" target="_blank">Harlock blog</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Funding">
+  <h2 class="slide-title or">Funding and Source Watch</h2>
+  <p class="subtitle">Useful context for who is funding and training contributors</p>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">BRINK</div><div class="fact-val">Published its 2025 annual organizational and financial report.</div></div>
+    <div class="fact"><div class="fact-label">BTRUST</div><div class="fact-val">Announced a new board and published Q1 2026 pathway cohort and contributor-profile updates.</div></div>
+    <div class="fact"><div class="fact-label">SOURCE LIST</div><div class="fact-val">Newswatch now follows Spiral, 2140, OpenSats, HRF, Vinteum, Btrust, Chaincode, Maelstrom, Bitcoin++, Atlas21, Citadel Wire, and Harlock.</div></div>
+    <div class="fact"><div class="fact-label">LOW PRIORITY</div><div class="fact-val">Aggregator and market sources are included, but should mostly feed the roundup rather than drive topic selection.</div></div>
+  </div>
+  <div class="box or"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">2140's annual report is worth mentioning alongside Brink and Btrust because it overlaps with the Silent Payments split-out and long-term Bitcoin development funding.</div></div>
+  <div class="links">
+    <a href="https://2140blog.substack.com/p/our-first-annual-report" target="_blank">2140 report</a>
+    <a href="https://brink.dev/blog/2026/05/26/2025-annual-report/" target="_blank">Brink report</a>
+    <a href="https://blog.btrust.tech/btrust-announces-new-board-to-lead-next-phase-of-growth/" target="_blank">Btrust board</a>
+    <a href="https://btcplusplus.dev/" target="_blank">Bitcoin++</a>
+    <a href="https://citadelwire.com/feed.xml" target="_blank">Citadel Wire</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Issue #36">
+  <h2 class="slide-title gn">GitHub Issue Topics</h2>
+  <p class="subtitle">Community submissions are now part of the same monthly triage packet</p>
+  <div class="box gn"><div class="label">SILENT PAYMENTS SPLIT OUT</div><div class="card-text">The strongest issue-submitted topic is <strong>Sparrow wallet 2.5.0 and 2.5.1 with initial Silent Payments support</strong>. It now has a dedicated draft deck instead of being buried in this roundup.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">MEMPOOL POLICY</div><div class="fact-val">Spiral's "decade of workarounds" post is a good bridge from May's policy/governance threads.</div></div>
+    <div class="fact"><div class="fact-label">BITNODES DATA</div><div class="fact-val">Bitnodes availability and historic network datasets connect directly to the BNOC source-watch cluster.</div></div>
+    <div class="fact"><div class="fact-label">AI AND SECURITY</div><div class="fact-val">Loupe and AI-assisted old-wallet recovery are useful short items, but need careful framing before presenting.</div></div>
+    <div class="fact"><div class="fact-label">TRAVEL RULE</div><div class="fact-val">The Australian Travel Rule topic is marked as a source-needed watch item until we attach primary regulatory material.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/36" target="_blank">Issue #36</a>
+    <a href="https://spiralbtc.substack.com/p/a-decade-of-workarounds" target="_blank">Mempool policy</a>
+    <a href="https://bnoc.xyz/t/request-bitnodes-historic-datasets-or-similar/126" target="_blank">BNOC Bitnodes request</a>
+    <a href="https://spiralbtc.substack.com/p/meet-loupe-ai-powered-vulnerability" target="_blank">Loupe</a>
+    <a href="silent-payments.html">Silent Payments deck</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Next">
+  <h2 class="slide-title">What To Split Out</h2>
+  <p class="subtitle">First-pass recommendation before editorial review</p>
+  <div class="box pu"><div class="label">DEDICATED DECK CANDIDATES</div><div class="card-text"><strong>Silent Payments</strong> is already split out. <strong>PQC taxonomy</strong> still looks strong. <strong>Network observations</strong> can work if we turn BNOC data into diagrams. <strong>Covenants and exit games</strong> can become a technical deck if narrowed to CTV vaults plus sibling-aware covenants.</div></div>
+  <div class="box bl"><div class="label">ROUNDUP CANDIDATES</div><div class="card-text">BIP status changes, Core wallet/build/mining merges, CLN/LND release candidates, Brink/Btrust/2140 updates, b10c's Nix/Guix result, Harlock's secp256k1 post, Spiral mempool-policy retrospective, Loupe, and Bitnodes data can stay in the roundup unless one gets expanded.</div></div>
+  <div class="box rd"><div class="label">NEEDS REVIEW</div><div class="card-text">Do not publish this draft without a source pass. The strongest claims to verify are Sparrow's exact Silent Payments feature scope, BIP-54 status, CLN disclosure details, Lightning routing-economics numbers, and any PQC proposal summary.</div></div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
+render();
+</script>
+</body>
+</html>

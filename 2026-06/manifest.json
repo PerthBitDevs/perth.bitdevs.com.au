@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "month": "2026-06",
+  "status": "upcoming",
+  "content_status": "first_pass",
+  "event": {
+    "title": "June 2026",
+    "date": "2026-06-04",
+    "date_label": "Thursday 4 June 2026",
+    "short_date_label": "Thursday 4 June",
+    "time_label": "6pm",
+    "timezone": "Australia/Perth",
+    "venue": {
+      "name": "Rocky Ridge",
+      "suburb": "Burswood",
+      "label": "Rocky Ridge, Burswood"
+    }
+  },
+  "sources": {
+    "github_issue": {
+      "repo": "PerthBitDevs/PerthBitDevs",
+      "number": 36,
+      "url": "https://github.com/PerthBitDevs/PerthBitDevs/issues/36"
+    },
+    "newswatch_packet": {
+      "markdown": "tools/newswatch/runs/20260529-034441.md",
+      "json": "tools/newswatch/runs/20260529-034441.json"
+    }
+  },
+  "topic_count": 2,
+  "topics": [
+    {
+      "file": "silent-payments.html",
+      "title": "Silent Payments - Sparrow 2.5.x and BIP-352",
+      "category": "Wallets and privacy",
+      "status": "draft",
+      "slides": 5,
+      "summary": "Sparrow 2.5.x receiving-wallet support, BIP-352, 2140 annual report, scan/spend keys, recovery, and light-client questions.",
+      "tags": ["silent-payments", "sparrow", "bip-352", "wallets", "privacy"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
+    {
+      "file": "news-roundup.html",
+      "title": "Newswatch + Issue Roundup - June First Pass",
+      "category": "News roundup",
+      "status": "draft",
+      "slides": 11,
+      "summary": "Post-quantum Bitcoin, BIPs and process, covenants, network observations, Lightning, Bitcoin Core, verification, funding, and issue #36 topics.",
+      "tags": ["pqc", "bips", "covenants", "network", "lightning", "bitcoin-core", "funding"],
+      "source_refs": ["tools/newswatch/runs/20260529-034441.md", "PerthBitDevs/PerthBitDevs#36"]
+    }
+  ],
+  "auxiliary_pages": [],
+  "landing": {
+    "href": "/2026-06/",
+    "summary_topics": [
+      "Silent Payments",
+      "Post-quantum Bitcoin",
+      "BIPs and process",
+      "Covenants and exits",
+      "Network observations",
+      "Lightning",
+      "Issue #36 and funding topics"
+    ]
+  }
+}

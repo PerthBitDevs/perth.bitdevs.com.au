@@ -9,3 +9,13 @@ Thumbs.db
 ehthumbs.db
 _docs/
 .playwright-mcp/
+.venv/
+__pycache__/
+*.pyc
+tools/newswatch/state.local.json
+tools/newswatch/runs/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
