@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "month": "{{MONTH}}",
+  "status": "upcoming",
+  "content_status": "first_pass",
+  "event": {
+    "title": "{{MONTH_LABEL}}",
+    "date": "{{YYYY-MM-DD}}",
+    "date_label": "{{DATE_LABEL}}",
+    "short_date_label": "{{SHORT_DATE_LABEL}}",
+    "time_label": "{{TIME_LABEL}}",
+    "timezone": "Australia/Perth",
+    "venue": {
+      "name": "{{VENUE_NAME}}",
+      "suburb": "{{VENUE_SUBURB}}",
+      "label": "{{VENUE_LABEL}}"
+    }
+  },
+  "sources": {
+    "github_issue": {
+      "repo": "PerthBitDevs/PerthBitDevs",
+      "number": {{ISSUE_NUMBER}},
+      "url": "https://github.com/PerthBitDevs/PerthBitDevs/issues/{{ISSUE_NUMBER}}"
+    },
+    "newswatch_packet": {
+      "markdown": "tools/newswatch/runs/{{PACKET_ID}}.md",
+      "json": "tools/newswatch/runs/{{PACKET_ID}}.json"
+    }
+  },
+  "topic_count": 1,
+  "topics": [
+    {
+      "file": "{{TOPIC_FILE}}.html",
+      "title": "{{TOPIC_TITLE}}",
+      "category": "{{CATEGORY}}",
+      "status": "draft",
+      "slides": {{SLIDE_COUNT}},
+      "summary": "{{TOPIC_SUMMARY}}",
+      "tags": ["{{TAG}}"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#{{ISSUE_NUMBER}}"]
+    }
+  ],
+  "auxiliary_pages": [
+    {
+      "file": "{{AUXILIARY_FILE}}.html",
+      "title": "{{AUXILIARY_TITLE}}",
+      "owner": "{{RELATED_TOPIC_FILE}}.html",
+      "status": "draft",
+      "summary": "{{AUXILIARY_SUMMARY}}"
+    }
+  ],
+  "landing": {
+    "href": "/{{MONTH}}/",
+    "summary_topics": [
+      "{{LANDING_TOPIC}}"
+    ]
+  }
+}

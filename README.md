@@ -13,10 +13,17 @@ The deployed site has no runtime dependencies. Local helpers are split between s
 - `YYYY-MM/index.html` - Monthly hub pages linking to topic slides
 - `YYYY-MM/manifest.json` - Current-month source of truth for event and topic metadata
 - `YYYY-MM/topic-name.html` - Individual topic slide pages
+- `templates/` - Copy sources for new manifests, hubs, decks, archive pages, and auxiliary visual pages
 
 ## Monthly Manifests
 
 For current and upcoming meetups, update `YYYY-MM/manifest.json` before changing the month hub or landing page. The manifest records the event date, venue, issue link, topic files, status, summaries, and auxiliary page ownership. Published pages remain plain static HTML.
+
+## Source Templates
+
+Start new monthly content from `templates/` rather than copying a previous month by eye. The templates are tracked authoring sources only. They use `.html.tmpl` so placeholder links are not treated as published pages by local checks.
+
+Copy the relevant template into `YYYY-MM/`, replace every `{{PLACEHOLDER}}`, keep the resulting page self-contained, then run `just site-check` or `just check`.
 
 ## Contributing Topics
 

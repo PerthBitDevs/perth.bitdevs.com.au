@@ -2,6 +2,8 @@
 
 Topic slide pages are the primary content format for monthly presentations (Feb 2026 onward). Each topic gets its own self-contained HTML file with slide-based navigation.
 
+Start new slide pages from `templates/slide-deck.html.tmpl`. It is the canonical source for the current slide runtime, footer nav, Topics link pattern, accessible disclosure controls, CSS tokens, and TV-friendly scale.
+
 ## Contents
 
 - [HTML Structure](#html-structure)
@@ -71,7 +73,7 @@ Quick reference:
 
 ## Navigation JavaScript
 
-Standard JS pattern used across all slide pages:
+The canonical JavaScript lives in `templates/slide-deck.html.tmpl`. Keep the following behaviours when customising a deck:
 
 ```javascript
 const slides = document.querySelectorAll('.slide');
@@ -97,6 +99,8 @@ document.addEventListener('keydown', e => {
 });
 render();
 ```
+
+When creating a new page, copy the template instead of transplanting this snippet from an older page.
 
 ## Content Components
 
@@ -150,3 +154,5 @@ Some topics work better without slides (e.g. the mining stack explainer). These 
 - Still MUST have Esc key → back to month hub
 - Still MUST have a visible "← Topics" back link
 - Still use the same color palette and typography
+
+For visual explainers or step-through pages that are not slide decks, start from `templates/auxiliary-visual-page.html.tmpl` and list the page under `auxiliary_pages` in the month manifest when the month has one.

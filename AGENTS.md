@@ -18,6 +18,9 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
   manifest.json     Current-month event/topic metadata source of truth
   index.html        Month hub (links to topic pages, or archive of topics)
   topic-name.html   Individual topic slides (Feb 2026+ only)
+/templates/         Authoring templates copied into month folders; not deployed directly
+  manifest.json.tmpl
+  *.html.tmpl
 ```
 
 ## Local Tooling
@@ -42,10 +45,17 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 1. **Interactive slide pages** (2026-02 onward): Per-topic HTML with slide navigation, keyboard controls, bespoke creative design per topic
 2. **Archive pages** (2023-12 through 2025-12): Single scrollable page per month listing all topics from the GitHub issue
 
+## Source Templates
+
+- Start new manifests, month hubs, slide decks, archive pages, and auxiliary visual pages from `templates/`.
+- Template files use `.html.tmpl` or `.json.tmpl` so placeholder values are not treated as published pages.
+- After copying a template into `YYYY-MM/`, replace every `{{PLACEHOLDER}}` and keep the published HTML self-contained.
+- Do not copy last month's closest page by eye unless the template is genuinely the wrong page type.
+
 ## Monthly Workflow
 
 1. Community submits topics as comments on the GitHub issue at `PerthBitDevs/PerthBitDevs`
-2. Before the meetup, topic slide HTML is created with Claude Code (see `agent_docs/content-workflow.md`)
+2. Before the meetup, topic slide HTML is created with Claude Code from the tracked templates (see `agent_docs/content-workflow.md`)
 3. For current/upcoming months, update `YYYY-MM/manifest.json` before editing hub or landing HTML
 4. Files go into `/YYYY-MM/` directory
 5. Landing page `index.html` updated with new event entry
@@ -55,6 +65,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 ## Key Constraints
 
 - Every HTML page is **fully self-contained** (inline CSS, no external deps except Google Fonts)
+- New page work should start from `templates/`, then be edited in the target month directory.
 - Presentation context: **slides are projected on a 4K TV via HDMI from a laptop.** Use the TV-friendly font scale and max-widths in `agent_docs/design-system.md` for all new slide pages.
 - Slide pages MUST use `overflow-x:hidden` on body, NOT `overflow:hidden` (allows vertical scroll when zoomed)
 - Slide pages MUST handle **Esc key** → navigate back to month hub
@@ -81,6 +92,7 @@ See `agent_docs/` for detailed references:
 - `content-workflow.md` — GitHub issue → slide HTML pipeline (incl. fact-check gate, multi-agent coordination)
 - `voice-and-tone.md` — Banned phrases, bullets-vs-prose, neutrality, before/after rewrites
 - `content-budget.md` — Per-meetup topic count, slides per deck, cut-order priorities
+- `templates/` - Tracked copy sources for new monthly content
 
 ### Refreshing Docs
 
