@@ -22,6 +22,15 @@ For current and upcoming meetups, update `YYYY-MM/manifest.json` before changing
 
 Submit discussion topics on the [GitHub issues](https://github.com/PerthBitDevs/PerthBitDevs/issues).
 
+## Local Preview
+
+```bash
+just dev
+just run port=8001
+```
+
+`just dev` serves the static site on port 8000 by default. `just run` starts the server, waits until it is responding, opens the browser, and cleans up the server when the command exits. Pass `port=NNNN` when the default port is already in use.
+
 ## Newswatch Helper
 
 The repo includes a local Python helper for collecting candidate Bitcoin news from curated sources before each meetup.

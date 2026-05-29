@@ -29,7 +29,8 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 ## Commands
 
-- `just dev` - serve the static site locally
+- `just dev [port=8000]` - serve the static site locally
+- `just run [port=8000]` - serve locally, wait until ready, then open the browser; choose another port with `just run port=8001`
 - `just site-check` - validate local links, manifest consistency, slide conventions, and safety warnings
 - `just check` - run `site-check`, newswatch source validation, and newswatch tests
 - `just setup-newswatch` - create `.venv` and install newswatch dependencies
