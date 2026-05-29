@@ -204,6 +204,17 @@
     padding: 24px 28px;
     cursor: pointer;
     user-select: none;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+  }
+
+  .layer-header:focus-visible {
+    outline: 2px solid var(--tether-green);
+    outline-offset: -4px;
   }
 
   .layer-number {
@@ -221,6 +232,7 @@
   }
 
   .layer-title {
+    display: block;
     font-family: 'Space Grotesk', sans-serif;
     font-size: 20px;
     font-weight: 700;
@@ -228,6 +240,7 @@
   }
 
   .layer-where {
+    display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--text-muted);
@@ -536,16 +549,16 @@
   <div class="stack">
 
     <!-- Layer 3: Pool / Stratum -->
-    <div class="layer layer--pool" onclick="this.classList.toggle('open')">
-      <div class="layer-header">
+    <div class="layer layer--pool">
+      <button class="layer-header" type="button" aria-expanded="false" aria-controls="layer-pool-body">
         <span class="layer-number">L3</span>
-        <div class="layer-title-block">
-          <div class="layer-title">Mining Pool / Stratum</div>
-          <div class="layer-where">Remote — pool server infrastructure</div>
-        </div>
+        <span class="layer-title-block">
+          <span class="layer-title">Mining Pool / Stratum</span>
+          <span class="layer-where">Remote — pool server infrastructure</span>
+        </span>
         <span class="layer-toggle">▾</span>
-      </div>
-      <div class="layer-body">
+      </button>
+      <div class="layer-body" id="layer-pool-body">
         <div class="layer-content">
           <p class="layer-desc">
             The protocol layer connecting your ASICs to the pool that coordinates work distribution and reward payouts. Miners receive block templates and submit shares via <strong>Stratum V1</strong> or the newer <strong>Stratum V2</strong> (which gives miners more control over transaction selection). MiningOS can <strong>configure</strong> pool settings on your miners, but it doesn't implement the protocol itself.
@@ -568,17 +581,17 @@
     <!-- Layer 2: Fleet Management — MiningOS -->
     <div class="mos-callout">
       <span class="mos-badge">← MiningOS lives here</span>
-      <div class="layer layer--mgmt open" onclick="this.classList.toggle('open')">
-        <div class="layer-header">
+      <div class="layer layer--mgmt open">
+        <button class="layer-header" type="button" aria-expanded="true" aria-controls="layer-mgmt-body">
           <span class="layer-number">L2</span>
-          <div class="layer-title-block">
-            <div class="layer-title">Fleet Management & Orchestration</div>
-            <div class="layer-where">Runs on YOUR separate machine — laptop, server, etc.</div>
-            <div class="not-firmware">✕ Does NOT run on the ASIC</div>
-          </div>
+          <span class="layer-title-block">
+            <span class="layer-title">Fleet Management & Orchestration</span>
+            <span class="layer-where">Runs on YOUR separate machine — laptop, server, etc.</span>
+            <span class="not-firmware">✕ Does NOT run on the ASIC</span>
+          </span>
           <span class="layer-toggle">▾</span>
-        </div>
-        <div class="layer-body">
+        </button>
+        <div class="layer-body" id="layer-mgmt-body">
           <div class="layer-content">
             <p class="layer-desc">
               This is where <strong>Tether's MiningOS</strong> sits. It's a JavaScript application that runs on your own computer (Windows, macOS, Linux) and talks <strong>to</strong> your miners over the network via their APIs. It reads telemetry (hashrate, temps, power), displays it in a unified dashboard, and lets you manage pool configs, alerts, and energy across all your devices and sites. It does <strong>not</strong> replace or modify what's running on the ASIC itself — it wraps around your existing firmware.
@@ -603,16 +616,16 @@
     </div>
 
     <!-- Layer 1: ASIC Firmware -->
-    <div class="layer layer--firmware" onclick="this.classList.toggle('open')">
-      <div class="layer-header">
+    <div class="layer layer--firmware">
+      <button class="layer-header" type="button" aria-expanded="false" aria-controls="layer-firmware-body">
         <span class="layer-number">L1</span>
-        <div class="layer-title-block">
-          <div class="layer-title">ASIC Firmware</div>
-          <div class="layer-where">Runs ON the miner's control board (flashed to NAND / SD card)</div>
-        </div>
+        <span class="layer-title-block">
+          <span class="layer-title">ASIC Firmware</span>
+          <span class="layer-where">Runs ON the miner's control board (flashed to NAND / SD card)</span>
+        </span>
         <span class="layer-toggle">▾</span>
-      </div>
-      <div class="layer-body">
+      </button>
+      <div class="layer-body" id="layer-firmware-body">
         <div class="layer-content">
           <p class="layer-desc">
             Software <strong>flashed directly onto the ASIC's control board</strong>. Controls chip-level operations: per-chip frequency tuning, voltage regulation, fan speed, thermal management, and the actual SHA-256 hashing. Exposes data via an API (typically cgminer RPC on port 4028) that management software (Layer 2) can query. Aftermarket firmware like Braiins OS can improve efficiency 10–25% via autotuning — stock firmware from Bitmain/MicroBT generally cannot. This is the layer where hashrate is actually produced.
@@ -634,16 +647,16 @@
     </div>
 
     <!-- Layer 0: Physical Hardware -->
-    <div class="layer layer--hw" onclick="this.classList.toggle('open')">
-      <div class="layer-header">
+    <div class="layer layer--hw">
+      <button class="layer-header" type="button" aria-expanded="false" aria-controls="layer-hw-body">
         <span class="layer-number">L0</span>
-        <div class="layer-title-block">
-          <div class="layer-title">Physical Hardware</div>
-          <div class="layer-where">The silicon, boards, PSUs, fans, and enclosures</div>
-        </div>
+        <span class="layer-title-block">
+          <span class="layer-title">Physical Hardware</span>
+          <span class="layer-where">The silicon, boards, PSUs, fans, and enclosures</span>
+        </span>
         <span class="layer-toggle">▾</span>
-      </div>
-      <div class="layer-body">
+      </button>
+      <div class="layer-body" id="layer-hw-body">
         <div class="layer-content">
           <p class="layer-desc">
             The actual ASIC chips, hash boards, control boards, power supplies, fans, and cooling infrastructure. This is the physical layer that does the work — everything above is software controlling or monitoring it.
@@ -702,6 +715,16 @@
 
 </div>
 
-<script>document.addEventListener('keydown',function(e){if(e.key==='Escape')window.location.href='/2026-02/'});</script>
+<script>
+document.querySelectorAll('.layer-header').forEach(function(button) {
+  const layer = button.closest('.layer');
+  button.setAttribute('aria-expanded', layer.classList.contains('open') ? 'true' : 'false');
+  button.addEventListener('click', function() {
+    const isOpen = layer.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')window.location.href='/2026-02/'});
+</script>
 </body>
 </html>

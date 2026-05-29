@@ -234,6 +234,17 @@
     padding: 24px 28px;
     cursor: pointer;
     user-select: none;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+  }
+
+  .section-header:focus-visible {
+    outline: 2px solid var(--tl);
+    outline-offset: -4px;
   }
 
   .section-num {
@@ -249,6 +260,7 @@
   .section-title-block { flex: 1; }
 
   .section-title {
+    display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 18px;
     font-weight: 700;
@@ -256,6 +268,7 @@
   }
 
   .section-subtitle {
+    display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--txD);
@@ -778,16 +791,16 @@
   </div>
 
   <!-- SECTIONS -->
-  <div class="section section--problem open" onclick="this.classList.toggle('open')">
-    <div class="section-header">
+  <div class="section section--problem open">
+    <button class="section-header" type="button" aria-expanded="true" aria-controls="section-problem-body">
       <span class="section-num">01</span>
-      <div class="section-title-block">
-        <div class="section-title">The Problem: Latency Creates Centralization</div>
-        <div class="section-subtitle">Why block propagation speed matters for mining decentralization</div>
-      </div>
+      <span class="section-title-block">
+        <span class="section-title">The Problem: Latency Creates Centralization</span>
+        <span class="section-subtitle">Why block propagation speed matters for mining decentralization</span>
+      </span>
       <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body">
+    </button>
+    <div class="section-body" id="section-problem-body">
       <div class="section-content">
         <p class="section-desc">
           When a miner finds a block, every millisecond it takes to reach other miners matters. <strong>A miner who hears about a new block late is wasting hashrate mining on a stale tip.</strong> This creates orphan blocks, which represent lost revenue. The economics are simple: miners with better network connectivity have a structural advantage.
@@ -821,16 +834,16 @@
   <!-- HOW FIBRE WORKS — highlighted -->
   <div class="fibre-callout">
     <span class="fibre-badge">Core Innovation</span>
-    <div class="section section--how open" onclick="this.classList.toggle('open')">
-      <div class="section-header">
+    <div class="section section--how open">
+      <button class="section-header" type="button" aria-expanded="true" aria-controls="section-how-body">
         <span class="section-num">02</span>
-        <div class="section-title-block">
-          <div class="section-title">How FIBRE Works</div>
-          <div class="section-subtitle">UDP + Forward Error Correction + Compact Blocks</div>
-        </div>
+        <span class="section-title-block">
+          <span class="section-title">How FIBRE Works</span>
+          <span class="section-subtitle">UDP + Forward Error Correction + Compact Blocks</span>
+        </span>
         <span class="section-toggle">&#9662;</span>
-      </div>
-      <div class="section-body">
+      </button>
+      <div class="section-body" id="section-how-body">
         <div class="section-content">
           <p class="section-desc">
             FIBRE is a <strong>patchset applied to Bitcoin Core</strong> that replaces the standard TCP-based block relay with a purpose-built UDP protocol optimized for minimum latency. Three key technologies work together to make sub-100ms global propagation possible:
@@ -888,16 +901,16 @@
 
   <div class="connector"><div class="line"></div></div>
 
-  <div class="section section--network" onclick="this.classList.toggle('open')">
-    <div class="section-header">
+  <div class="section section--network">
+    <button class="section-header" type="button" aria-expanded="false" aria-controls="section-network-body">
       <span class="section-num">03</span>
-      <div class="section-title-block">
-        <div class="section-title">The FIBRE Network</div>
-        <div class="section-subtitle">Global nodes, real-world propagation statistics</div>
-      </div>
+      <span class="section-title-block">
+        <span class="section-title">The FIBRE Network</span>
+        <span class="section-subtitle">Global nodes, real-world propagation statistics</span>
+      </span>
       <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body">
+    </button>
+    <div class="section-body" id="section-network-body">
       <div class="section-content">
         <p class="section-desc">
           The resurrected FIBRE network consists of geographically distributed nodes running the patched Bitcoin Core client. Nodes connect to both public relay infrastructure and the regular Bitcoin P2P network, ensuring blocks propagate through the fastest available path. <strong>Anyone can join</strong> by compiling the FIBRE patchset and connecting to the network.
@@ -959,16 +972,16 @@
 
   <div class="connector"><div class="line"></div></div>
 
-  <div class="section section--why" onclick="this.classList.toggle('open')">
-    <div class="section-header">
+  <div class="section section--why">
+    <button class="section-header" type="button" aria-expanded="false" aria-controls="section-why-body">
       <span class="section-num">04</span>
-      <div class="section-title-block">
-        <div class="section-title">Why This Matters for Bitcoin</div>
-        <div class="section-subtitle">Mining decentralization is censorship resistance</div>
-      </div>
+      <span class="section-title-block">
+        <span class="section-title">Why This Matters for Bitcoin</span>
+        <span class="section-subtitle">Mining decentralization is censorship resistance</span>
+      </span>
       <span class="section-toggle">&#9662;</span>
-    </div>
-    <div class="section-body">
+    </button>
+    <div class="section-body" id="section-why-body">
       <div class="section-content">
         <p class="section-desc">
           Bitcoin's censorship resistance ultimately depends on <strong>mining being sufficiently decentralized</strong>. If a small number of pools control the majority of hashrate, they can be coerced into censoring transactions. Today, the top 3-4 pools control well over 50% of hashrate. Network latency is one of the structural forces pushing miners toward these large, well-connected pools.
@@ -1154,6 +1167,14 @@
 })();
 
 // Esc key navigation
+document.querySelectorAll('.section-header').forEach(function(button) {
+  const section = button.closest('.section');
+  button.setAttribute('aria-expanded', section.classList.contains('open') ? 'true' : 'false');
+  button.addEventListener('click', function() {
+    const isOpen = section.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+});
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') window.location.href = '/2026-03/';
 });

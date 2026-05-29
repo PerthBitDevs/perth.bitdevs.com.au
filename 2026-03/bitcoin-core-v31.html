@@ -290,6 +290,17 @@
     padding: 20px 24px;
     cursor: pointer;
     user-select: none;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+  }
+
+  .feature-header:focus-visible {
+    outline: 2px solid var(--bl);
+    outline-offset: -4px;
   }
 
   .feature-icon {
@@ -309,6 +320,7 @@
   }
 
   .feature-title {
+    display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 17px;
     font-weight: 700;
@@ -316,6 +328,7 @@
   }
 
   .feature-sub {
+    display: block;
     font-size: 13px;
     color: var(--txM);
     margin-top: 3px;
@@ -787,17 +800,17 @@
   <div class="features">
 
     <!-- 1. CLUSTER MEMPOOL (highlighted, open by default) -->
-    <div class="feature feature--cluster open" onclick="this.classList.toggle('open')">
+    <div class="feature feature--cluster open">
       <span class="cluster-badge">Headline Feature</span>
-      <div class="feature-header">
+      <button class="feature-header" type="button" aria-expanded="true" aria-controls="feature-cluster-body">
         <span class="feature-icon">CM</span>
-        <div class="feature-title-block">
-          <div class="feature-title">Cluster Mempool</div>
-          <div class="feature-sub">Complete redesign of mempool data structures using transaction clusters and optimal linearization</div>
-        </div>
+        <span class="feature-title-block">
+          <span class="feature-title">Cluster Mempool</span>
+          <span class="feature-sub">Complete redesign of mempool data structures using transaction clusters and optimal linearization</span>
+        </span>
         <span class="feature-toggle">&#9662;</span>
-      </div>
-      <div class="feature-body">
+      </button>
+      <div class="feature-body" id="feature-cluster-body">
         <div class="feature-content">
           <div class="feature-desc">
             <strong>Cluster Mempool is the most significant mempool overhaul in Bitcoin Core's history.</strong> The existing mempool tracks individual transactions with ancestor/descendant limits, which leads to suboptimal fee-rate ordering, makes RBF (Replace-By-Fee) reasoning fragile, and limits the ability to construct optimal block templates.
@@ -922,16 +935,16 @@
     </div>
 
     <!-- 2. EMBEDDED ASMAP -->
-    <div class="feature feature--asmap" onclick="this.classList.toggle('open')">
-      <div class="feature-header">
+    <div class="feature feature--asmap">
+      <button class="feature-header" type="button" aria-expanded="false" aria-controls="feature-asmap-body">
         <span class="feature-icon">AS</span>
-        <div class="feature-title-block">
-          <div class="feature-title">Embedded ASMap</div>
-          <div class="feature-sub">Groundwork toward shipping AS (Autonomous System) mappings in the binary for better peer diversity</div>
-        </div>
+        <span class="feature-title-block">
+          <span class="feature-title">Embedded ASMap</span>
+          <span class="feature-sub">Groundwork toward shipping AS (Autonomous System) mappings in the binary for better peer diversity</span>
+        </span>
         <span class="feature-toggle">&#9662;</span>
-      </div>
-      <div class="feature-body">
+      </button>
+      <div class="feature-body" id="feature-asmap-body">
         <div class="feature-content">
           <div class="feature-desc">
             <strong>ASMap</strong> is a mapping from IP address ranges to Autonomous System Numbers (ASNs). An Autonomous System is a network operated by a single entity &mdash; think ISPs, cloud providers, hosting companies. Bitcoin Core uses this data to ensure it connects to peers across <strong>diverse</strong> network operators, making <strong>eclipse attacks</strong> (where an attacker surrounds your node with their own peers) significantly harder.
@@ -954,16 +967,16 @@
     </div>
 
     <!-- 3. PRIVATE BROADCAST -->
-    <div class="feature feature--private" onclick="this.classList.toggle('open')">
-      <div class="feature-header">
+    <div class="feature feature--private">
+      <button class="feature-header" type="button" aria-expanded="false" aria-controls="feature-private-body">
         <span class="feature-icon">PB</span>
-        <div class="feature-title-block">
-          <div class="feature-title">Private Transaction Broadcast</div>
-          <div class="feature-sub">Broadcast your own transactions via short-lived Tor/I2P connections to prevent IP linkage</div>
-        </div>
+        <span class="feature-title-block">
+          <span class="feature-title">Private Transaction Broadcast</span>
+          <span class="feature-sub">Broadcast your own transactions via short-lived Tor/I2P connections to prevent IP linkage</span>
+        </span>
         <span class="feature-toggle">&#9662;</span>
-      </div>
-      <div class="feature-body">
+      </button>
+      <div class="feature-body" id="feature-private-body">
         <div class="feature-content">
           <div class="feature-desc">
             <strong>Continuing the work we discussed at Perth BitDevs in February.</strong> When your node broadcasts a transaction you created, network observers can use timing analysis to link that transaction to your IP address. The fix: broadcast locally-submitted transactions only via <strong>short-lived, disposable Tor or I2P connections</strong>.
@@ -986,16 +999,16 @@
     </div>
 
     <!-- 4. IPC MINING INTERFACE -->
-    <div class="feature feature--ipc" onclick="this.classList.toggle('open')">
-      <div class="feature-header">
+    <div class="feature feature--ipc">
+      <button class="feature-header" type="button" aria-expanded="false" aria-controls="feature-ipc-body">
         <span class="feature-icon">IPC</span>
-        <div class="feature-title-block">
-          <div class="feature-title">IPC Mining Interface Improvements</div>
-          <div class="feature-sub">Better inter-process communication for the mining interface, enabling external mining software to use libbitcoinkernel</div>
-        </div>
+        <span class="feature-title-block">
+          <span class="feature-title">IPC Mining Interface Improvements</span>
+          <span class="feature-sub">Better inter-process communication for the mining interface, enabling external mining software to use libbitcoinkernel</span>
+        </span>
         <span class="feature-toggle">&#9662;</span>
-      </div>
-      <div class="feature-body">
+      </button>
+      <div class="feature-body" id="feature-ipc-body">
         <div class="feature-content">
           <div class="feature-desc">
             The <strong>IPC (Inter-Process Communication) mining interface</strong> allows external processes to interact with Bitcoin Core's block template construction and validation logic. This is a key piece of the <strong>libbitcoinkernel</strong> project: as consensus-critical code gets extracted into a standalone library, the IPC layer provides a clean boundary between the kernel and the rest of the node.
@@ -1018,16 +1031,16 @@
     </div>
 
     <!-- 5. BITCOIN KERNEL PROGRESS -->
-    <div class="feature feature--kernel" onclick="this.classList.toggle('open')">
-      <div class="feature-header">
+    <div class="feature feature--kernel">
+      <button class="feature-header" type="button" aria-expanded="false" aria-controls="feature-kernel-body">
         <span class="feature-icon">LBK</span>
-        <div class="feature-title-block">
-          <div class="feature-title">More Bitcoin Kernel Progress</div>
-          <div class="feature-sub">Continued extraction of consensus logic into libbitcoinkernel &mdash; a standalone, reusable consensus engine</div>
-        </div>
+        <span class="feature-title-block">
+          <span class="feature-title">More Bitcoin Kernel Progress</span>
+          <span class="feature-sub">Continued extraction of consensus logic into libbitcoinkernel &mdash; a standalone, reusable consensus engine</span>
+        </span>
         <span class="feature-toggle">&#9662;</span>
-      </div>
-      <div class="feature-body">
+      </button>
+      <div class="feature-body" id="feature-kernel-body">
         <div class="feature-content">
           <div class="feature-desc">
             <strong>libbitcoinkernel</strong> is an ongoing, multi-year effort to extract Bitcoin Core's consensus-critical code into a standalone C++ library. The goal: any software can validate Bitcoin blocks and transactions by linking against this library, without needing to embed all of Bitcoin Core. This benefits alternative node implementations, testing infrastructure, and research projects.
@@ -1069,6 +1082,14 @@
 </div>
 
 <script>
+document.querySelectorAll('.feature-header').forEach(function(button) {
+  const feature = button.closest('.feature');
+  button.setAttribute('aria-expanded', feature.classList.contains('open') ? 'true' : 'false');
+  button.addEventListener('click', function() {
+    const isOpen = feature.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+});
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') window.location.href = '/2026-03/';
 });

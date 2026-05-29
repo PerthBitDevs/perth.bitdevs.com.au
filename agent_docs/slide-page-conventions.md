@@ -134,7 +134,9 @@ The mining stack MiningOS page (`2026-02/mining-stack-miningos.html`) is a stron
 - The topic involves **comparing multiple items at the same level** (e.g. firmware options, pool choices)
 
 Key patterns from the MiningOS page:
-- Collapsible layer cards with `onclick="this.classList.toggle('open')"`
+- Collapsible layer cards where the visible header row is a real `<button type="button">`
+- Disclosure buttons must set `aria-expanded`, point `aria-controls` at the collapsible body, and keep `aria-expanded` synced whenever the `.open` state changes
+- Do not put `onclick` on a plain `<div>` for disclosure controls; keyboard users and screen readers need a button or native `<details>/<summary>`
 - Stack connectors between layers showing protocols/interfaces
 - Color-coded layers (each layer has its own semantic color)
 - One layer starts open (the most important one) to draw attention
