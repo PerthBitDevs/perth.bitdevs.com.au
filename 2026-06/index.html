@@ -13,7 +13,6 @@
   .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
   .shell{max-width:1080px;margin:0 auto;padding:52px 24px 100px;position:relative}
   header{text-align:center;margin-bottom:48px}
-  .badge{display:inline-block;padding:5px 16px;border:1px solid var(--orB);border-radius:20px;background:var(--orD);color:var(--or);font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
   h1{font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,60px);font-weight:800;letter-spacing:0;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .subtitle{color:var(--txD);font-size:21px;font-family:'JetBrains Mono',monospace}
   .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin-bottom:32px}
@@ -34,13 +33,28 @@
   .card-desc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
   .card-desc li{padding-left:18px;position:relative;line-height:1.45}
   .card-desc li::before{content:"▸";position:absolute;left:0;top:0;font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD)}
-  a.card:hover .card-desc li::before{color:var(--or)}
+  a.card--or:hover .card-desc li::before{color:var(--or)}
+  a.card--bl:hover .card-desc li::before{color:var(--bl)}
+  a.card--gn:hover .card-desc li::before{color:var(--gn)}
+  a.card--pu:hover .card-desc li::before{color:var(--pu)}
+  a.card--rd:hover .card-desc li::before{color:var(--rd)}
+  a.card--cy:hover .card-desc li::before{color:var(--cy)}
+  a.card--pk:hover .card-desc li::before{color:var(--pk)}
+  a.card--yl:hover .card-desc li::before{color:var(--yl)}
+  a.card--tl:hover .card-desc li::before{color:var(--tl)}
   .card-desc li strong{color:var(--tx)}
   .card-meta{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
   .card-meta-item{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--txD);display:flex;align-items:center;gap:5px}
   .card-meta-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .card--or::before{background:var(--or)}.card--or .card-tag{color:var(--or);background:var(--orD)}
+  .card--bl::before{background:var(--bl)}.card--bl .card-tag{color:var(--bl);background:var(--bld)}
   .card--gn::before{background:var(--gn)}.card--gn .card-tag{color:var(--gn);background:var(--gnd)}
+  .card--pu::before{background:var(--pu)}.card--pu .card-tag{color:var(--pu);background:var(--pud)}
+  .card--rd::before{background:var(--rd)}.card--rd .card-tag{color:var(--rd);background:var(--rdd)}
+  .card--cy::before{background:var(--cy)}.card--cy .card-tag{color:var(--cy);background:var(--cyd)}
+  .card--pk::before{background:var(--pk)}.card--pk .card-tag{color:var(--pk);background:var(--pkd)}
+  .card--yl::before{background:var(--yl)}.card--yl .card-tag{color:var(--yl);background:var(--yld)}
+  .card--tl::before{background:var(--tl)}.card--tl .card-tag{color:var(--tl);background:var(--tld)}
   .note{background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.25);border-radius:10px;padding:14px 18px;margin-bottom:32px;font-size:20px;color:var(--txM);line-height:1.6}
   .note strong{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:.06em}
   footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
@@ -58,17 +72,38 @@
   <a class="back" href="/">&larr; All Events</a>
 
   <header>
-    <div class="badge">First Pass</div>
     <h1>Perth BitDevs</h1>
     <div class="subtitle">Thursday 4 June 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</div>
   </header>
 
   <div class="note">
-    <strong>NOTE</strong>&ensp;This June page is a first pass generated from the local newswatch scan plus GitHub issue #36. Topic selection and claims still need editorial review before publishing.
+    <strong>NOTE</strong>&ensp;The topic summaries for this month were generated with the assistance of AI and may contain errors.
   </div>
 
   <div class="divider"></div>
-  <div class="section-label">June Draft</div>
+  <div class="section-label">In Brief</div>
+  <div class="cards section-gap">
+
+    <a class="card card--or" href="news-roundup.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Core</span><span class="card-tag">Verify</span><span class="card-tag">Funding</span><span class="card-tag">Issue #36</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">News Roundup - June</div>
+      <div class="card-desc"><ul>
+        <li><strong>Bitcoin Core</strong> - Ancient wallet migration fix, mining IPC submitBlock, Guix manifest split, RBF test cleanup</li>
+        <li><strong>Verification</strong> - b10c's Nix-built bitcoind matches Guix; UltrafastSecp256k1 v4; Harlock secp256k1 notes</li>
+        <li><strong>Funding orgs</strong> - Brink 2025 annual report, Btrust new board and Q1 cohort, 2140 first annual report</li>
+        <li><strong>Mempool policy</strong> - Spiral's "A Decade of Workarounds" retrospective</li>
+        <li><strong>AI security</strong> - Loupe vulnerability discovery tool and AI-assisted wallet recovery</li>
+        <li><strong>Travel Rule</strong> - Australian regulatory developments</li>
+        <li><strong>Nostr VPN</strong> - Martti Malmi's Nostr-coordinated VPN repo</li>
+        <li><strong>Kagikai</strong> - 2-of-3 multisig bearer-instrument design</li>
+        <li><strong>Zcash upgrade</strong> - Orchard soft-fork pause, then NU6.2 hard-fork remediation</li>
+      </ul></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Silent Payments</div>
   <div class="cards section-gap">
 
     <a class="card card--gn" href="silent-payments.html">
@@ -80,22 +115,94 @@
         <li><strong>Wallet reality</strong> - scan/spend key split, recovery, public Electrum infrastructure, and light-client research questions</li>
         <li><strong>Discussion prompts</strong> - adoption, infrastructure trust, hardware signer UX, and exact feature scope to verify</li>
       </ul></div>
-      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--gn)"></span>5 slides</span><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--bl)"></span>GitHub issue #36</span></div>
     </a>
 
-    <a class="card card--or" href="news-roundup.html">
-      <div class="card-top"><div class="card-tags"><span class="card-tag">PQC</span><span class="card-tag">BIPs</span><span class="card-tag">Covenants</span><span class="card-tag">Network</span><span class="card-tag">Lightning</span><span class="card-tag">Core</span><span class="card-tag">Issue #36</span></div><span class="card-arrow">&rarr;</span></div>
-      <div class="card-title">Newswatch + Issue Roundup - June First Pass</div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Post-Quantum Bitcoin</div>
+  <div class="cards section-gap">
+
+    <a class="card card--pu" href="post-quantum-bitcoin.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">PQC</span><span class="card-tag">ECDSA.fail</span><span class="card-tag">Hybrid</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Post-Quantum Bitcoin Threads</div>
       <div class="card-desc"><ul>
-        <li><strong>Post-quantum Bitcoin</strong> - QCAP, lattice signatures, Winternitz proposals, P2WOTS, and wallet-layer hybrid SPHINCS+ discussion</li>
-        <li><strong>BIP and process updates</strong> - BIP-54 moved to Complete, BIP-449 OP_TWEAKADD landed, and BIP 3 process questions returned</li>
-        <li><strong>Covenants and exit games</strong> - CTV-only vaults, sibling-aware covenant design, replay protection, and blockspace limits</li>
-        <li><strong>Network observations</strong> - NAT traversal, addrman measurements, Tor address spikes, back-to-back forks, and Electrum server monitoring</li>
-        <li><strong>Lightning</strong> - Core Lightning assertion DoS disclosure, v26.06 release candidates, LND rc2, and routing-economics claims</li>
-        <li><strong>Implementation and verification</strong> - Nix reproducing Guix release binaries, UltrafastSecp256k1, secp256k1 field-element notes, and Bitcoin Core wallet/mining merges</li>
-        <li><strong>Community issue and funding topics</strong> - Spiral mempool-policy retrospective, Bitnodes data, Loupe, AI wallet recovery, Travel Rule, 2140, and Silent Payments split-out</li>
+        <li><strong>QCAP</strong> - Bitcoin-native quantum-canary idea anchored on ECDLP-break uncertainty</li>
+        <li><strong>Lattices</strong> - Delving thread on lattice signatures, threshold questions, and wallet UX</li>
+        <li><strong>P2WOTS / Lamport</strong> - two Delving threads, including a revised Winternitz-style design</li>
+        <li><strong>Hybrid SPHINCS+</strong> - bitcoindev BIP proposal for SPHINCS+ / secp256k1 paper wallets</li>
+        <li><strong>ECDSA.fail</strong> - measurable circuit-cost challenge for secp256k1 attack research</li>
       </ul></div>
-      <div class="card-meta"><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--or)"></span>11 slides</span><span class="card-meta-item"><span class="card-meta-dot" style="background:var(--bl)"></span>Combined packet 20260529-034441</span></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">BIP-110 Watch</div>
+  <div class="cards section-gap">
+
+    <a class="card card--rd" href="bip-110-watch.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BIP-110</span><span class="card-tag">Recurring Theme</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">BIP-110 - No Concrete Update Since May</div>
+      <div class="card-desc"><ul>
+        <li><strong>Background</strong> - Knots-side proposal to add temporary consensus restrictions on data-carrying transactions</li>
+        <li><strong>May recap</strong> - Knots PR #238 approved by Luke Dashjr (not merged); signaling stalled below 0.20%; Bitprojects 3,000-node Sybil reveal</li>
+        <li><strong>This window</strong> - No new substantive source material since May</li>
+        <li><strong>Open question</strong> - Where relay policy, miner behavior, and social pressure get conflated</li>
+      </ul></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Changing Consensus</div>
+  <div class="cards section-gap">
+
+    <a class="card card--yl" href="changing-consensus.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BIP-54</span><span class="card-tag">BIP-449</span><span class="card-tag">Process</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">BIPs and Changing Consensus</div>
+      <div class="card-desc"><ul>
+        <li><strong>BIP-54</strong> moved to Complete after rationale, validation-time wording, and reference-implementation edits</li>
+        <li><strong>BIP-38 / 78</strong> advanced to Deployed; <strong>BIP-176</strong> to Complete; <strong>BIP-10</strong> closure recorded</li>
+        <li><strong>BIP-449</strong> assigned to OP_TWEAKADD, with Alpen and MATT compatibility notes in the commit text</li>
+        <li><strong>Process</strong> - a bitcoindev thread reopened BIP 3 and BIPs repository issue-tracking questions</li>
+      </ul></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Covenants and Exit Games</div>
+  <div class="cards section-gap">
+
+    <a class="card card--cy" href="covenants-exit-games.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">CTV</span><span class="card-tag">BitVM</span><span class="card-tag">Ark</span><span class="card-tag">Replay</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Covenants, Exits, and Replay</div>
+      <div class="card-desc"><ul>
+        <li><strong>CTV-only vault</strong> - MCCV v0.1.0 demonstrates deposits, delayed withdrawals, recovery, and velocity control</li>
+        <li><strong>Sibling-aware covenants</strong> - bitcoindev thread compares CTV vs TEMPLATEHASH for BitVM, Ark, and LN-Symmetry designs</li>
+        <li><strong>Replay protection</strong> - Delving thread on split-risk around soft-fork signaling, using Core/Knots as labels</li>
+        <li><strong>Blockspace limits</strong> - "Credible Exit and The Law of Conservation of Blockspace" essay on trust-minimized exits</li>
+      </ul></div>
+    </a>
+
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">Network and Lightning</div>
+  <div class="cards section-gap">
+
+    <a class="card card--bl" href="network-and-lightning.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BNOC</span><span class="card-tag">CLN</span><span class="card-tag">LND</span><span class="card-tag">Electrum</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Network Observations and Lightning Releases</div>
+      <div class="card-desc"><ul>
+        <li><strong>NAT traversal</strong> - Delving thread on TCP hole punching for home nodes behind home NATs</li>
+        <li><strong>Addrman overlap</strong> - BNOC measured across nine nodes; Tor-address spike noted in early May</li>
+        <li><strong>Back-to-back forks</strong> - BNOC logged forks at heights 949203 and 949204</li>
+        <li><strong>Electrum monitoring</strong> - new BNOC thread aims to spot public spy-Electrum servers</li>
+        <li><strong>CLN assertion DoS</strong> patched in v26.04; v26.06 RCs ship xpay-by-default and payment-proof work</li>
+        <li><strong>LND v0.21.0-beta rc1/rc3</strong> plus module releases; Delving routing-economics post</li>
+      </ul></div>
     </a>
 
   </div>
@@ -103,7 +210,7 @@
   <footer>
     <p>
       Perth BitDevs &middot; June 2026<br>
-      Sources: local newswatch scan and GitHub issue #36, 2026-05-07 to 2026-05-29
+      <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/36" target="_blank" rel="noopener">GitHub Issue #36</a>
     </p>
   </footer>
 

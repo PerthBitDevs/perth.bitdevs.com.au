@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changing Consensus - Perth BitDevs June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--yl:#eab308;--ylG:rgba(234,179,8,.15);--ylD:rgba(234,179,8,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--ylG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--ylD);border:1px solid var(--yl);border-radius:16px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--yl);background:var(--ylG);color:var(--yl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:20px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--yl);background:var(--ylD);padding:2px 6px;border-radius:4px}
+.card-text ul{margin:6px 0 0 22px;padding:0}
+.card-text li{margin-bottom:4px}
+.box{border-radius:8px;padding:13px 18px;margin-bottom:12px;border:1px solid rgba(148,163,184,.25)}
+.box .label{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.box.yl{background:var(--ylG);border-color:rgba(234,179,8,.35)}.box.yl .label{color:var(--yl)}
+.box.bl{background:var(--blG);border-color:rgba(59,130,246,.35)}.box.bl .label{color:var(--bl)}
+.box.cy{background:var(--cyG);border-color:rgba(6,182,212,.35)}.box.cy .label{color:var(--cy)}
+.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
+.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
+.box.rd{background:var(--rdG);border-color:rgba(239,68,68,.35)}.box.rd .label{color:var(--rd)}
+.box.pk{background:var(--pkG);border-color:rgba(236,72,153,.35)}.box.pk .label{color:var(--pk)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.bip-table{width:100%;border-collapse:collapse;margin-bottom:12px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.bip-table th{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--yl);text-align:left;padding:9px 14px;background:var(--ylD);border-bottom:1px solid var(--bd)}
+.bip-table td{padding:8px 14px;font-size:17px;color:var(--txM);border-bottom:1px solid var(--bd)}
+.bip-table td:first-child{font-family:'JetBrains Mono',monospace;color:var(--tx);white-space:nowrap}
+.bip-table tr:last-child td{border-bottom:none}
+.bip-table .st-co{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em}
+.bip-table .st-de{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em}
+.bip-table .st-wi{color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em}
+.bip-table .st-as{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.06em}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--yl);background:var(--ylG);color:var(--yl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:700px){.cols{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">CHANGING CONSENSUS</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-06/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Status Movement">
+  <h2 class="slide-title">BIPs Status Movement</h2>
+  <p class="subtitle">What moved in the BIPs repository</p>
+  <table class="bip-table">
+    <thead><tr><th>BIP</th><th>Status change</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td>BIP-54</td><td class="st-co">to COMPLETE</td><td>Consensus Cleanup soft-fork spec - timewarp, max validation time, Merkle weaknesses, duplicate-tx fix</td></tr>
+      <tr><td>BIP-38</td><td class="st-de">to DEPLOYED</td><td>Passphrase-encrypted private key format for paper wallets and physical bitcoins</td></tr>
+      <tr><td>BIP-78</td><td class="st-de">to DEPLOYED</td><td>Payjoin (Pay-to-Endpoint) - sender and receiver both contribute inputs</td></tr>
+      <tr><td>BIP-176</td><td class="st-co">to COMPLETE</td><td>"bits" denomination: 1 bit = 100 sats = 1/1,000,000 BTC</td></tr>
+      <tr><td>BIP-10</td><td class="st-wi">CLOSED</td><td>2011 Alan Reiner proposal for multisig transaction distribution; superseded in practice by PSBT (BIP-174)</td></tr>
+      <tr><td>BIP-449</td><td class="st-as">ASSIGNED</td><td>OP_TWEAKADD - a new tapscript opcode for x-only key tweak addition</td></tr>
+      <tr><td>BIP 3</td><td class="st-de">DEPLOYED</td><td>Murch's revised BIP process - replaces BIP 2 with streamlined editor role</td></tr>
+    </tbody>
+  </table>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/commit/43a4941b37ee36fbb005821e68635d3907f8a2fc" target="_blank" rel="noopener">BIP-54 commit</a>
+    <a href="https://github.com/bitcoin/bips/commit/76d434e5fc781b579495b336ab0b6a73e8e05a54" target="_blank" rel="noopener">BIP-449 assignment</a>
+    <a href="https://gnusha.org/pi/bitcoindev/ahZOIkGfmJBbCffy@erisian.com.au/" target="_blank" rel="noopener">BIP 3 / process thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="BIP-54">
+  <h2 class="slide-title">BIP-54 - Consensus Cleanup</h2>
+  <p class="subtitle">Soft fork fixing four long-standing vulnerabilities</p>
+  <div class="box yl"><div class="label">WHAT IT FIXES</div><div class="card-text">Originally proposed by Matt Corallo in 2019 and revived in spring 2024 with Antoine Poinsot. BIP-54 bundles four consensus fixes:
+    <ul>
+      <li><strong>Timewarp attack</strong> - a majority-hashrate attacker can manipulate block timestamps to drop difficulty to minimum within 38 days and steal subsidy from future miners.</li>
+      <li><strong>Worst-case block validation time</strong> - cap pathological scripts that take disproportionate CPU to verify.</li>
+      <li><strong>Merkle tree weaknesses</strong> - close the 64-byte transaction Merkle-collision class.</li>
+      <li><strong>Duplicate-transaction prevention</strong> - explicitly disallow re-mining the same txid (BIP-30 / BIP-34 cleanup).</li>
+    </ul>
+  </div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">TIMEWARP FIX</div><div class="card-text">Bitcoin's difficulty adjusts every 2,016 blocks. BIP-54 says the first block of each new period can't claim a timestamp earlier than the last block of the previous period, give or take two hours. That closes the window an attacking miner used to drift timestamps backwards and drop difficulty.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">EDITS LANDED THIS WINDOW</div><div class="card-text">Timewarp motivation wording, worst-case validation-time wording, BIP-34 rationale cleanup, Luke Dashjr's extranonce concern noted in rationale, and a rebased Bitcoin Core reference implementation link. Status: <strong>Complete</strong>. Tested on Bitcoin Inquisition signet.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bip54.org/" target="_blank" rel="noopener">bip54.org</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0054.md" target="_blank" rel="noopener">BIP-54 spec</a>
+    <a href="https://bitcoinops.org/en/topics/consensus-cleanup-soft-fork/" target="_blank" rel="noopener">Optech topic page</a>
+  </div>
+</div>
+
+<div class="slide" data-name="BIP-449">
+  <h2 class="slide-title cy">BIP-449 - OP_TWEAKADD</h2>
+  <p class="subtitle">Jeremy Rubin's proposed tapscript opcode</p>
+  <div class="box cy"><div class="label">THE IDEA</div><div class="card-text">When you build a Taproot address today, your wallet quietly combines a public key with extra commitments (like a hidden script tree). That combining step is called a <strong>"tweak"</strong>: take a key <code>P</code>, add a small amount <code>t&middot;G</code>, get a tweaked key <code>Q = P + t&middot;G</code>. <code>OP_TWEAKADD</code> exposes that same step <strong>inside Bitcoin Script</strong> - so a transaction can verify "this output key really is this base key plus that tweak" on-chain, without anyone revealing private keys.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">WHAT IT UNLOCKS</div><div class="card-text">
+      <ul>
+        <li><strong>Prove a tweak in script</strong> - reveal what was committed inside a Taproot key without spending it.</li>
+        <li><strong>Enforce signing order</strong> - require Alice to sign before Bob can sign.</li>
+        <li><strong>Delegate signing</strong> - hand spending power to another key in a verifiable way.</li>
+        <li><strong>Key evolution</strong> - let the spending key change over time without a heavy signature check.</li>
+        <li><strong>Covenant-like rules</strong> - lightweight restrictions on what a transaction can do.</li>
+      </ul>
+    </div></div>
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">WHO ELSE CARES</div><div class="card-text">The PR's commit text flags compatibility work with <strong>Alpen Labs</strong> (a Bitcoin L2 / rollup project) and <strong>MATT</strong> (<em>Merkleize All The Things</em>, a family of covenant designs that builds expressive contracts out of repeated hashing). BIP-449 is Draft / Consensus soft fork; number assigned 2026 via Rubin's PR #1944.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/pull/1944" target="_blank" rel="noopener">PR #1944</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Deployed">
+  <h2 class="slide-title gn">Deployed - BIP-38 and BIP-78</h2>
+  <p class="subtitle">Status changes for two long-standing wallet specs</p>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--gn)"></div><div class="card-label" style="color:var(--gn)">BIP-38 - PAPER-WALLET PASSPHRASE</div><div class="card-text">Encodes a passphrase-encrypted private key as a <strong>58-character Base58Check string</strong>, using scrypt and salting to resist brute-force. Designed for paper wallets and physical bitcoins. Two encoding variants - direct encryption of a known key, or a shared scheme where the printer never sees the unsalted passphrase. Now formally Deployed.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">BIP-78 - PAYJOIN</div><div class="card-text">Payjoin is a way for receiver and sender to both contribute inputs to the same payment, so a chain analyst can't assume the inputs all belong to the sender. Nicolas Dorier's 2019 spec: the receiver advertises a <code>pj=</code> endpoint in a BIP-21 URI; the sender posts a finalised PSBT; the receiver returns a modified PSBT including their own input. The resulting tx breaks the common-input-ownership heuristic. Now formally Deployed alongside the newer BIP-77 async variant being shipped by wallets like Bull Bitcoin.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0038.mediawiki" target="_blank" rel="noopener">BIP-38</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0078.mediawiki" target="_blank" rel="noopener">BIP-78</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Other">
+  <h2 class="slide-title pu">Other Movement - BIP-176, BIP-10, BIP 3</h2>
+  <p class="subtitle">Notation, withdrawn proposals, and the process layer</p>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">BIP-176 - BITS</div><div class="card-text">Standardises "bits" as <strong>100 sats = 1/1,000,000 BTC</strong>. Rationale: at high USD prices, sub-$10 amounts get awkward decimals - 0.00067 BTC is harder to read than 670 bits. Assigned 2017-12-12; now Complete. Sits alongside BIP-172 (define subunit as sat) and BIP-177 (redefine base unit) as part of the longer denomination debate.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">BIP-10 - CLOSED</div><div class="card-text">Alan Reiner's 2011 "Multi-Sig Transaction Distribution" spec, which standardised an encoding for collecting signatures off-network. <strong>Superseded in practice by PSBT (BIP-174)</strong>, which is the dominant interoperability format today. The BIPs repository now marks BIP-10 as Closed.</div></div>
+  </div>
+  <div class="box bl"><div class="label">BIP 3 - PROCESS</div><div class="card-text">Murch's "Updated BIP Process", assigned 2025-01-09 and currently Deployed. Replaces <strong>BIP 2</strong>, reduces judgment calls the BIP Editor has to make, clarifies BIP types, and generalises the process to match how the community actually uses the repository. The bitcoindev thread from Anthony Towns raised follow-on questions about issue tracking in <code>bitcoin/bips</code>.</div></div>
+  <div class="links">
+    <a href="https://bips.dev/176/" target="_blank" rel="noopener">BIP-176</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki" target="_blank" rel="noopener">BIP-10</a>
+    <a href="https://bips.dev/3/" target="_blank" rel="noopener">BIP 3</a>
+    <a href="https://gnusha.org/pi/bitcoindev/ahZOIkGfmJBbCffy@erisian.com.au/" target="_blank" rel="noopener">BIP 3 thread</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
+render();
+</script>
+</body>
+</html>

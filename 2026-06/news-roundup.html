@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Newswatch + Issue Roundup - Perth BitDevs June 2026</title>
+<title>News Roundup - Perth BitDevs June 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
 .glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
 .header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
-.badge-group{display:flex;align-items:center;gap:8px}
 .badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
-.update-tag{padding:2px 8px;background:var(--ylG);border:1px solid var(--yl);border-radius:4px;color:var(--yl);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
 .dots{display:flex;gap:4px;flex-wrap:wrap}
 .dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
 .dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
@@ -24,11 +22,11 @@ body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xm
 .slide-inner{max-width:960px;margin:0 auto;width:100%}
 .slide{display:none}.slide.active{display:block}
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.cy{background:linear-gradient(135deg,#06b6d4,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
@@ -37,26 +35,25 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
 .card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
 .card-text{color:var(--txM);font-size:20px;line-height:1.55}
 .card-text strong{color:var(--tx)}
-.card-text em{color:var(--txM);font-style:italic}
 .card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
-.card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
-.card-text a:hover{border-bottom-color:var(--bl)}
+.card-text ul{margin:6px 0 0 22px;padding:0}
+.card-text li{margin-bottom:4px}
 .box{border-radius:8px;padding:13px 18px;margin-bottom:12px;border:1px solid rgba(148,163,184,.25)}
 .box .label{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
+.box.pk{background:var(--pkG);border-color:rgba(236,72,153,.35)}.box.pk .label{color:var(--pk)}
+.box.or{background:var(--orG);border-color:rgba(247,147,26,.35)}.box.or .label{color:var(--or)}
 .box.bl{background:var(--blG);border-color:rgba(59,130,246,.35)}.box.bl .label{color:var(--bl)}
 .box.rd{background:var(--rdG);border-color:rgba(239,68,68,.35)}.box.rd .label{color:var(--rd)}
-.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
-.box.or{background:var(--orG);border-color:rgba(247,147,26,.35)}.box.or .label{color:var(--or)}
-.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
 .box.cy{background:var(--cyG);border-color:rgba(6,182,212,.35)}.box.cy .label{color:var(--cy)}
+.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
 .box.yl{background:var(--ylG);border-color:rgba(234,179,8,.35)}.box.yl .label{color:var(--yl)}
-.box.pk{background:var(--pkG);border-color:rgba(236,72,153,.35)}.box.pk .label{color:var(--pk)}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .headline-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 .headline{background:var(--sf);border:1px solid var(--bd);border-left:3px solid var(--bd2);border-radius:8px;padding:12px 14px}
-.headline.bl{border-left-color:var(--bl)}.headline.rd{border-left-color:var(--rd)}.headline.or{border-left-color:var(--or)}.headline.gn{border-left-color:var(--gn)}.headline.pk{border-left-color:var(--pk)}.headline.cy{border-left-color:var(--cy)}.headline.pu{border-left-color:var(--pu)}.headline.yl{border-left-color:var(--yl)}.headline.tl{border-left-color:var(--tl)}
+.headline.gn{border-left-color:var(--gn)}.headline.pk{border-left-color:var(--pk)}.headline.or{border-left-color:var(--or)}.headline.bl{border-left-color:var(--bl)}.headline.rd{border-left-color:var(--rd)}.headline.cy{border-left-color:var(--cy)}.headline.pu{border-left-color:var(--pu)}.headline.yl{border-left-color:var(--yl)}
 .headline-tag{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
-.headline-tag.bl{color:var(--bl)}.headline-tag.rd{color:var(--rd)}.headline-tag.or{color:var(--or)}.headline-tag.gn{color:var(--gn)}.headline-tag.pk{color:var(--pk)}.headline-tag.cy{color:var(--cy)}.headline-tag.pu{color:var(--pu)}.headline-tag.yl{color:var(--yl)}.headline-tag.tl{color:var(--tl)}
+.headline-tag.gn{color:var(--gn)}.headline-tag.pk{color:var(--pk)}.headline-tag.or{color:var(--or)}.headline-tag.bl{color:var(--bl)}.headline-tag.rd{color:var(--rd)}.headline-tag.cy{color:var(--cy)}.headline-tag.pu{color:var(--pu)}.headline-tag.yl{color:var(--yl)}
 .headline-title{color:var(--tx);font-size:18px;font-weight:600;line-height:1.35;margin-bottom:3px}
 .headline-text{color:var(--txM);font-size:16px;line-height:1.45}
 .fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -81,10 +78,7 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
 <div class="glow"></div>
 
 <div class="header">
-  <div class="badge-group">
-    <div class="badge">NEWSWATCH + ISSUE ROUNDUP</div>
-    <div class="update-tag">FIRST PASS</div>
-  </div>
+  <div class="badge">JUNE ROUNDUP</div>
   <div class="dots" id="dots"></div>
   <a class="branding" href="/2026-06/">&larr; Topics</a>
 </div>
@@ -93,185 +87,199 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
 <div class="slide-inner">
 
 <div class="slide" data-name="Headlines">
-  <h2 class="slide-title">June First Pass</h2>
-  <p class="subtitle">Curated-source scan plus GitHub issue #36, May 7 to May 29</p>
+  <h2 class="slide-title">June Roundup</h2>
+  <p class="subtitle">May 7 to June 3</p>
   <div class="headline-grid">
-    <div class="headline pu"><div class="headline-tag pu">PQC</div><div class="headline-title">Quantum discussion keeps branching</div><div class="headline-text">QCAP, lattice signatures, Winternitz/Lamport proposals, P2WOTS, and wallet-layer hybrid SPHINCS+.</div></div>
-    <div class="headline gn"><div class="headline-tag gn">SILENT</div><div class="headline-title">Silent Payments gets wallet and org signals</div><div class="headline-text">Issue #36 flags Sparrow 2.5.x receiving-wallet support; 2140's report mentions SP integration work.</div></div>
-    <div class="headline yl"><div class="headline-tag yl">BIPS</div><div class="headline-title">BIP-54 moved to Complete</div><div class="headline-text">Consensus cleanup draft saw rationale edits, validation-time wording, reference implementation links, and status change.</div></div>
-    <div class="headline cy"><div class="headline-tag cy">COVENANTS</div><div class="headline-title">CTV-only vaults and sibling-aware designs</div><div class="headline-text">New vault concept release plus design-space mapping around CTV, TEMPLATEHASH, BitVM, Ark, and LN-Symmetry.</div></div>
-    <div class="headline bl"><div class="headline-tag bl">NETWORK</div><div class="headline-title">BNOC produced a dense month</div><div class="headline-text">NAT traversal, addrman overlap, Tor address spikes, fork observations, and Electrum server monitoring.</div></div>
-    <div class="headline rd"><div class="headline-tag rd">LIGHTNING</div><div class="headline-title">CLN DoS disclosure and v26.06 RCs</div><div class="headline-text">Assertion DoS patched in v26.04; release candidates bring graceful shutdown, sendamount, xpay changes, and payment-proof work.</div></div>
-    <div class="headline gn"><div class="headline-tag gn">CORE</div><div class="headline-title">Wallet, mining IPC, and build work</div><div class="headline-text">Ancient wallet migration fix, submitBlock IPC mining interface, Guix manifest split, and leveldb subtree bump.</div></div>
-    <div class="headline pk"><div class="headline-tag pk">VERIFY</div><div class="headline-title">Reproducibility and secp256k1 verification</div><div class="headline-text">b10c reproduced a Guix-built bitcoind binary with Nix; UltrafastSecp256k1 and Harlock add verification-heavy threads.</div></div>
-    <div class="headline or"><div class="headline-tag or">ISSUE #36</div><div class="headline-title">Community topics are now first-class inputs</div><div class="headline-text">Mempool policy, Bitnodes data, Loupe, AI wallet recovery, Travel Rule, Silent Payments, and 2140.</div></div>
-  </div>
-</div>
-
-<div class="slide" data-name="PQC">
-  <h2 class="slide-title pu">Post-Quantum Bitcoin Threads</h2>
-  <p class="subtitle">The post-quantum discussion is no longer one proposal</p>
-  <div class="box pu"><div class="label">WHAT MOVED</div><div class="card-text">Newswatch found a cluster of new PQC discussion across Delving Bitcoin and bitcoindev: <strong>QCAP</strong>, lattice-based signatures, attack-game analysis, Winternitz/Lamport auth chains, <strong>P2WOTS</strong>, and a wallet-layer hybrid <strong>SPHINCS+ / secp256k1</strong> proposal.</div></div>
-  <div class="fact-grid">
-    <div class="fact"><div class="fact-label">QCAP</div><div class="fact-val">A Bitcoin-native quantum-canary idea focused on uncertainty around the ECDLP break timeline.</div></div>
-    <div class="fact"><div class="fact-label">LATTICES</div><div class="fact-val">Discussion pointed to lattice-based signatures and questions about threshold signatures and practical wallet features.</div></div>
-    <div class="fact"><div class="fact-label">WOTS / LAMPORT</div><div class="fact-val">Two Delving threads proposed lightweight Winternitz-style approaches, including a revised P2WOTS design.</div></div>
-    <div class="fact"><div class="fact-label">WALLET LAYER</div><div class="fact-val">A bitcoindev BIP proposal targets hybrid SPHINCS+ / secp256k1 derivation for quantum-resistant paper wallets.</div></div>
-  </div>
-  <div class="box yl"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">This looks like a dedicated June deck candidate, but the first pass should frame it as a taxonomy of proposals and open questions, not as a comparison with winners.</div></div>
-  <div class="links">
-    <a href="https://delvingbitcoin.org/t/qcap-a-bitcoin-native-quantum-canary-alert/2498" target="_blank" rel="noopener">QCAP</a>
-    <a href="https://delvingbitcoin.org/t/pqc-lattice-based-signatures/2522" target="_blank" rel="noopener">Lattice thread</a>
-    <a href="https://delvingbitcoin.org/t/p2wots-post-quantum-utxo-winternitz-signatures/2530" target="_blank" rel="noopener">P2WOTS</a>
-    <a href="https://gnusha.org/pi/bitcoindev/bpSypbIuSoDinhE-Y4CrVI5LGHrJ_I79xYUzpYswA5JGkbASwibq94UozeR2jsu48vH6FZLdEBPpWHgIuVtSpUNy-tRpnGfe1hce2ti8k5w=@protonmail.com/" target="_blank" rel="noopener">Hybrid SPHINCS+</a>
-  </div>
-</div>
-
-<div class="slide" data-name="BIPs">
-  <h2 class="slide-title yl">BIPs and Process</h2>
-  <p class="subtitle">Status changes, new assignments, and process questions</p>
-  <div class="box yl"><div class="label">BIP-54 STATUS</div><div class="card-text"><strong>BIP-54</strong> moved to <strong>Complete</strong> after a sequence of edits: Timewarp motivation wording, worst-case validation-time wording, BIP 34 rationale cleanup, Luke's extranonce concern in rationale, and a rebased Bitcoin Core reference implementation link.</div></div>
-  <div class="cols">
-    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">OTHER STATUS CHANGES</div><div class="card-text"><strong>BIP-38</strong> and <strong>BIP-78</strong> advanced to Deployed. <strong>BIP-176</strong> advanced to Complete. <strong>BIP-10</strong> recorded its withdrawal in the changelog.</div></div>
-    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">NEW BIP</div><div class="card-text"><strong>BIP-449</strong> assigned OP_TWEAKADD, with compatibility discussion around Alpen and MATT noted in the commit text.</div></div>
-  </div>
-  <div class="box bl"><div class="label">PROCESS THREAD</div><div class="card-text">A bitcoindev post raised BIP 3 and BIPs repository issue-tracking questions. This can sit beside the BIP-Editor and process material from May.</div></div>
-  <div class="links">
-    <a href="https://github.com/bitcoin/bips/commit/43a4941b37ee36fbb005821e68635d3907f8a2fc" target="_blank" rel="noopener">BIP-54 Complete</a>
-    <a href="https://github.com/bitcoin/bips/commit/76d434e5fc781b579495b336ab0b6a73e8e05a54" target="_blank" rel="noopener">BIP-449</a>
-    <a href="https://gnusha.org/pi/bitcoindev/ahZOIkGfmJBbCffy@erisian.com.au/" target="_blank" rel="noopener">BIP 3 thread</a>
-  </div>
-</div>
-
-<div class="slide" data-name="Covenants">
-  <h2 class="slide-title cy">Covenants, Exits, and Replay</h2>
-  <p class="subtitle">Three threads to review together rather than separately</p>
-  <div class="box cy"><div class="label">CTV-ONLY VAULT</div><div class="card-text">MCCV v0.1.0 demonstrates a vault concept built using <strong>OP_CHECKTEMPLATEVERIFY</strong> alone. The author describes deposits, delayed withdrawals, recovery, velocity control, and repeated vault operations, while also flagging computational and usability tradeoffs.</div></div>
-  <div class="cols">
-    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">SIBLING-AWARE COVENANTS</div><div class="card-text">A bitcoindev thread maps where CTV and TEMPLATEHASH differ for designs that need sibling prevout commitments, including BitVM, Ark, and LN-Symmetry style constructions.</div></div>
-    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">REPLAY PROTECTION</div><div class="card-text">A Delving thread discusses replay risks in a hypothetical chain split around soft-fork signalling, using "Core" and "Knots" as simplifying labels.</div></div>
-  </div>
-  <div class="box pu"><div class="label">BLOCKSPACE LIMITS</div><div class="card-text">"Credible Exit and The Law of Conservation of Blockspace" argues about limits on trust-minimized layer exits under static block-weight accounting windows. This is a good "read before presenting" candidate.</div></div>
-  <div class="links">
-    <a href="https://delvingbitcoin.org/t/ctv-only-vault-concept-v0-1-0-release/2539" target="_blank" rel="noopener">CTV vault</a>
-    <a href="https://gnusha.org/pi/bitcoindev/fd2ba4b8-95f6-4541-900a-47bdf65a166cn@googlegroups.com/" target="_blank" rel="noopener">Sibling-aware covenants</a>
-    <a href="https://delvingbitcoin.org/t/replay-protection-conditions-solutions/2506" target="_blank" rel="noopener">Replay protection</a>
-    <a href="https://delvingbitcoin.org/t/credible-exit-and-the-law-of-conservation-of-blockspace/2503" target="_blank" rel="noopener">Credible exit</a>
-  </div>
-</div>
-
-<div class="slide" data-name="Network">
-  <h2 class="slide-title bl">Network Observations</h2>
-  <p class="subtitle">BNOC and related feeds are now high-signal for monthly scanning</p>
-  <div class="fact-grid">
-    <div class="fact"><div class="fact-label">NAT TRAVERSAL</div><div class="fact-val">Delving thread asks whether TCP hole punching can connect otherwise unreachable home nodes.</div></div>
-    <div class="fact"><div class="fact-label">ADDRMAN</div><div class="fact-val">BNOC measured addrman overlap across nine nodes, plus age distribution and multi-port address patterns.</div></div>
-    <div class="fact"><div class="fact-label">TOR ADDRS</div><div class="fact-val">A temporary early-May increase in reachable Tor addresses showed up in monitoring data.</div></div>
-    <div class="fact"><div class="fact-label">FORKS</div><div class="fact-val">BNOC logged back-to-back forks at heights <strong>949203</strong> and <strong>949204</strong>.</div></div>
-  </div>
-  <div class="box bl"><div class="label">ELECTRUM MONITORING</div><div class="card-text">A new BNOC thread starts from b10c's question: can public spy-Electrum servers run by chain surveillance firms be spotted? The first version collects public server data from bitcoin-eye and mempool fee histograms, excluding Tor servers for now.</div></div>
-  <div class="links">
-    <a href="https://delvingbitcoin.org/t/tcp-hole-punching-for-bitcoin-nodes-behind-home-nats/2497" target="_blank" rel="noopener">TCP hole punching</a>
-    <a href="https://bnoc.xyz/t/how-similar-are-addrman-of-different-nodes/128" target="_blank" rel="noopener">Addrman overlap</a>
-    <a href="https://bnoc.xyz/t/temporary-increase-in-number-of-tor-addresses/131" target="_blank" rel="noopener">Tor address spike</a>
-    <a href="https://bnoc.xyz/t/electrum-server-monitoring/135" target="_blank" rel="noopener">Electrum monitoring</a>
-  </div>
-</div>
-
-<div class="slide" data-name="Lightning">
-  <h2 class="slide-title rd">Lightning Security and Releases</h2>
-  <p class="subtitle">CLN disclosure, release candidates, and routing-economics claims</p>
-  <div class="box rd"><div class="label">ASSERTION DOS IN CLN</div><div class="card-text">A Summer of Bitcoin 2025 intern disclosed a remote peer crash in Core Lightning caused by an overly strict assertion in <code>openingd</code>. The issue is reported as patched in <strong>Core Lightning v26.04</strong>, and operators were advised to upgrade.</div></div>
-  <div class="cols">
-    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">CLN v26.06 RCs</div><div class="card-text">RC1 highlights include <code>graceful</code>, <code>sendamount</code>, and xpay taking over pay handling by default. RC2 includes payment-proof draft updates and gossipd robustness work.</div></div>
-    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">LND rc2</div><div class="card-text">LND v0.21.0-beta.rc2 appeared in the scan, along with module releases for queue, kvdb, and sqldb. Needs a deeper changelog read before presenting.</div></div>
-  </div>
-  <div class="box yl"><div class="label">WATCH ITEM</div><div class="card-text">The "Lightning economics" Delving post makes strong claims about routing capital velocity and returns. Treat as a discussion item requiring source review before putting numbers on slides.</div></div>
-  <div class="links">
-    <a href="https://delvingbitcoin.org/t/vulnerability-disclosure-assertion-dos-in-core-lightning/2507" target="_blank" rel="noopener">CLN DoS disclosure</a>
-    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc1" target="_blank" rel="noopener">CLN rc1</a>
-    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc2" target="_blank" rel="noopener">CLN rc2</a>
-    <a href="https://github.com/lightningnetwork/lnd/releases/tag/v0.21.0-beta.rc2" target="_blank" rel="noopener">LND rc2</a>
+    <div class="headline gn"><div class="headline-tag gn">CORE</div><div class="headline-title">Wallet and mining IPC work</div><div class="headline-text">A fix that unsticks decade-old wallets from the migration tool, and a new submitBlock call on the IPC mining interface that hands block-building off to the mining client.</div></div>
+    <div class="headline pk"><div class="headline-tag pk">VERIFY</div><div class="headline-title">Reproducibility and secp256k1 verification</div><div class="headline-text">b10c matched a Guix-built bitcoind with Nix using Claude Code's <code>/goal</code> + <code>/loop</code>; UltrafastSecp256k1 v4 lands with Sparrow as the visible adopter.</div></div>
+    <div class="headline or"><div class="headline-tag or">FUNDING</div><div class="headline-title">Brink, Btrust, and 2140 reports</div><div class="headline-text">Brink 2025 annual report, Btrust new board and Q1 cohort, 2140 first annual report.</div></div>
+    <div class="headline yl"><div class="headline-tag yl">MEMPOOL</div><div class="headline-title">A decade of workarounds</div><div class="headline-text">Spiral retrospective on Bitcoin Core mempool policy.</div></div>
+    <div class="headline bl"><div class="headline-tag bl">LOUPE</div><div class="headline-title">Spiral and Block AI vulnerability scanner</div><div class="headline-text">Free scanning-as-a-service for FOSS Bitcoin: Bitcoin Core, BDK, LDK, rust-bitcoin, Cashu, Jade, bitcoinj, SRI in the initial cohort.</div></div>
+    <div class="headline pk"><div class="headline-tag pk">AI RECOVERY</div><div class="headline-title">cprkrn / Claude wallet recovery</div><div class="headline-text">~5 BTC unlocked after 11 years. Claude found a 2019 backup and a btcrecover misconfiguration; the seed came from a college notebook.</div></div>
+    <div class="headline cy"><div class="headline-tag cy">REGULATION</div><div class="headline-title">Australian Travel Rule</div><div class="headline-text">AUSTRAC compliance deadline 1 July 2026, no value threshold, self-hosted-wallet collection still required.</div></div>
+    <div class="headline pu"><div class="headline-tag pu">NOSTR VPN</div><div class="headline-title">Nostr-based VPN connectivity</div><div class="headline-text">Martti Malmi's nostr-vpn repo.</div></div>
+    <div class="headline rd"><div class="headline-tag rd">KAGIKAI</div><div class="headline-title">Multisig bearer instrument</div><div class="headline-text">2-of-3 multisig peer-to-peer electronic cash with secure-enclave assumptions.</div></div>
+    <div class="headline gn"><div class="headline-tag gn">ZCASH</div><div class="headline-title">Coordinated network upgrade</div><div class="headline-text">Orchard was paused by soft fork, then restored by the NU6.2 hard-fork upgrade.</div></div>
   </div>
 </div>
 
 <div class="slide" data-name="Core">
   <h2 class="slide-title gn">Bitcoin Core Watch</h2>
-  <p class="subtitle">Several merges are small individually, but useful as a maintenance snapshot</p>
-  <div class="fact-grid">
-    <div class="fact"><div class="fact-label">WALLET MIGRATION</div><div class="fact-val">A merge fixed migration for very old wallets that lack the best block locator record introduced in early Bitcoin Core history.</div></div>
-    <div class="fact"><div class="fact-label">MINING IPC</div><div class="fact-val"><code>submitBlock</code> was added to the IPC Mining interface, with a functional test and helper refactor.</div></div>
-    <div class="fact"><div class="fact-label">GUIX</div><div class="fact-val">Build and codesign manifests were split to narrow Guix environment dependency scope.</div></div>
-    <div class="fact"><div class="fact-label">RBF CLEANUP</div><div class="fact-val">Followups remove deprecated BIP125 and <code>-walletrbf</code> test paths, while adding coverage for deprecated keys and options.</div></div>
+  <p class="subtitle">Two notable merges - one for very old wallets, one for mining</p>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--gn)"></div><div class="card-label" style="color:var(--gn)">PR #34198 - ANCIENT WALLETS CAN MIGRATE AGAIN</div><div class="card-text">furszy, merged by achow101. Very old wallets - created before bitcoin/bitcoin#152, back in the early days of the codebase - never wrote a "best block locator", the marker a wallet uses to remember how far it has scanned the chain. The new wallet-migration tool was treating that missing marker as fatal and refusing to proceed, leaving anyone sitting on a decade-old <code>wallet.dat</code> stuck on the legacy format. The fix accepts the empty value, falls back to a normal rescan on reload, and lets these wallets finally move onto the modern descriptor wallet format.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">PR #34644 - MINING SOFTWARE GETS A NEW WAY TO SUBMIT BLOCKS</div><div class="card-text">woltx/w0xlt, merged by ryanofsky. Bitcoin Core has been growing an inter-process (IPC) Mining interface that lets external mining software drive a Core node from a separate process. This PR adds <code>submitBlock</code>, mirroring the existing <code>checkBlock</code> shape: the caller hands the node a fully formed block - including the coinbase witness commitment - and the node only validates and broadcasts it. Block construction lives entirely on the mining-client side, unlike the older <code>submitblock</code> RPC. Useful for mining stacks that want to build templates themselves rather than rely on Core's <code>getblocktemplate</code>.</div></div>
   </div>
-  <div class="box gn"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">This likely belongs in the roundup, not a full deck, unless the mining IPC change becomes part of a broader mining-interface topic.</div></div>
   <div class="links">
-    <a href="https://github.com/bitcoin/bitcoin/commit/5486ef8cc25b6ae51c32c055bce9fd343128c48b" target="_blank" rel="noopener">Ancient wallet migration</a>
-    <a href="https://github.com/bitcoin/bitcoin/commit/896eaacd9134c460b5e0724f7f18c15964365e40" target="_blank" rel="noopener">Mining IPC submitBlock</a>
-    <a href="https://github.com/bitcoin/bitcoin/commit/e3f5c189134260ca98ab1a5f3301b02166d407a4" target="_blank" rel="noopener">Guix manifest split</a>
+    <a href="https://github.com/bitcoin/bitcoin/pull/34198" target="_blank" rel="noopener">PR #34198</a>
+    <a href="https://github.com/bitcoin/bitcoin/pull/34644" target="_blank" rel="noopener">PR #34644</a>
   </div>
 </div>
 
 <div class="slide" data-name="Verification">
   <h2 class="slide-title pk">Verification and Reproducibility</h2>
-  <p class="subtitle">Three threads around how Bitcoin software gets checked</p>
-  <div class="box pk"><div class="label">NIX MATCHES GUIX</div><div class="card-text">b10c reports producing a Nix-built <code>bitcoind</code> binary for Bitcoin Core v31.0 whose hash exactly matches the official Guix-built x86_64 Linux release binary. This is an excellent short technical segment if verified.</div></div>
-  <div class="cols">
-    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">ULTRAFASTSECP256K1</div><div class="card-text">Two Delving posts present v4.0 and an opt-in backend proposal. The stated emphasis is verification-first engineering, reproducible benchmark evidence, audit infrastructure, and controlled comparison.</div></div>
-    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">HARLOCK</div><div class="card-text">Harlock added a post on the first secp256k1 commit and field element operations. This is a source-watch addition and a possible explainer seed, not yet a full topic.</div></div>
-  </div>
+  <p class="subtitle">Two threads on how Bitcoin software gets checked</p>
+  <div class="box pk"><div class="label">NIX MATCHES GUIX (DRIVEN BY CLAUDE CODE)</div><div class="card-text">b10c handed the whole task to Claude Code with one directive - <code>/goal produce a Nix-built binary with a hash matching the Bitcoin Core v31.0 release binary for x86_64-pc-linux-gnu</code> - paired with <code>/loop 2h continue with what you were doing. If you are stuck, try solving a different problem first</code> so the agent kept working through Pro-plan usage-cap resets. A mix of <strong>Claude Sonnet 4.6 and Opus 4.7</strong>, around <strong>80 unreviewed commits</strong>, and roughly <strong>1.5 weeks of Claude Pro</strong> usage later, the agent came back with a Nix-built binary matching the official Guix <code>bitcoind</code> at <code>sha256: dae69848…e25eb6</code>. The point: reproducibility today really only holds inside Guix - a second, fully independent toolchain converging on the same bytes turns it into something you can cross-verify, and an agent-driven loop got there.</div></div>
+  <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">ULTRAFASTSECP256K1 v4.0</div><div class="card-text">shrec, 2026-05-16. Targets x86, ARM64, RISC-V, ESP32, STM32, Android, iOS, WASM, and CUDA. v4.0 introduces <strong>CAAS</strong> (Continuous Assurance Architecture System), a quality framework where docs, benchmarks, CI, audit modules, and integration behaviour "must continuously agree with reality". Reception on Delving has been quiet: a companion thread proposing it as an opt-in libsecp256k1 backend (default unchanged) has drawn limited engagement and no merged path. Visible adoption sits with Sparrow's <code>duckdb-ufsecp-extension</code> - a Craig Raw DuckDB extension that runs BIP-352 Silent Payments scanning on libufsecp, with optional CUDA, OpenCL, and Apple Metal GPU paths. Not in the desktop wallet itself.</div></div>
   <div class="links">
     <a href="https://b10c.me/projects/027-bitcoind-gunix-match/" target="_blank" rel="noopener">b10c Nix/Guix match</a>
     <a href="https://delvingbitcoin.org/t/ultrafastsecp256k1-v4-0-verification-performance-and-the-cost-of-engineering-truth/2508" target="_blank" rel="noopener">UltrafastSecp256k1 v4.0</a>
     <a href="https://delvingbitcoin.org/t/add-optional-ultrafastsecp256k1-backend-opt-in-default-unchanged/2509" target="_blank" rel="noopener">Optional backend</a>
-    <a href="https://www.harlock.xyz/artigos" target="_blank" rel="noopener">Harlock blog</a>
+    <a href="https://github.com/sparrowwallet/duckdb-ufsecp-extension" target="_blank" rel="noopener">Sparrow duckdb-ufsecp</a>
   </div>
 </div>
 
 <div class="slide" data-name="Funding">
-  <h2 class="slide-title or">Funding and Source Watch</h2>
-  <p class="subtitle">Useful context for who is funding and training contributors</p>
-  <div class="fact-grid">
-    <div class="fact"><div class="fact-label">BRINK</div><div class="fact-val">Published its 2025 annual organizational and financial report.</div></div>
-    <div class="fact"><div class="fact-label">BTRUST</div><div class="fact-val">Announced a new board and published Q1 2026 pathway cohort and contributor-profile updates.</div></div>
-    <div class="fact"><div class="fact-label">SOURCE LIST</div><div class="fact-val">Newswatch now follows Spiral, 2140, OpenSats, HRF, Vinteum, Btrust, Chaincode, Maelstrom, Bitcoin++, Atlas21, Citadel Wire, and Harlock.</div></div>
-    <div class="fact"><div class="fact-label">LOW PRIORITY</div><div class="fact-val">Aggregator and market sources are included, but should mostly feed the roundup rather than drive topic selection.</div></div>
+  <h2 class="slide-title">Funding and Org Updates</h2>
+  <p class="subtitle">Brink, Btrust, 2140, Bitcoin++ schedule</p>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--or)"></div><div class="card-label" style="color:var(--or)">BRINK - 2025 ANNUAL REPORT</div><div class="card-text">Raised ~<strong>$7.8M</strong>; spent ~<strong>$2.6M</strong> with 87% to programs and <strong>$1.75M</strong> to developer salaries and grants. Funded eight engineers and two fuzz-testing interns; new in 2025 was Eugene Siegel on Bitcoin Core P2P. Underwrote Bitcoin Core's first third-party security audit (Quarkslab), <strong>Fuzzamoto</strong>, and the CoreDev meetings in Jamaica and Frankfurt. 2026 plan flagged: bug bounty, quantum-effort exploration, LLM integration.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--gn)"></div><div class="card-label" style="color:var(--gn)">BTRUST - NEW BOARD</div><div class="card-text">Inaugural board (Obi Nwosu, Ojoma Ochai, Carla Kirk-Cohen, Abubakar Nur Khalil) completed its mandate. New board as of <strong>2026-04-30</strong>: <strong>Janet Maingi, Bruno Garcia, Laurence Aderemi</strong>. <strong>Abubakar Nur Khalil moves to CEO</strong>. Funded by the original <strong>500 BTC endowment</strong> from Jack Dorsey and Jay-Z (2021). Focus remains Global South, Africa-based talent.</div></div>
   </div>
-  <div class="box or"><div class="label">DRAFT TAKEAWAY</div><div class="card-text">2140's annual report is worth mentioning alongside Brink and Btrust because it overlaps with the Silent Payments split-out and long-term Bitcoin development funding.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">2140 - FIRST ANNUAL REPORT</div><div class="card-text">First-year team: <strong>Rob, Novo, Sadiq, Sergi</strong>. Amsterdam office opened 2025. Projects: <strong>Silent Payments in Bitcoin Core and libsecp256k1</strong>, SwiftSync prototype, <strong>Kyoto</strong> (BIP-158 light client), the new mining interface, libmultiprocess, and libbitcoinkernel work. Hosted a Silent Payments gathering in Amsterdam.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">BITCOIN++ - 2026 SCHEDULE</div><div class="card-text">Four upcoming editions:
+      <ul>
+        <li><strong>Nairobi</strong> - June 17-19, Open Source edition</li>
+        <li><strong>Toronto</strong> - July 22-24, Consensus edition</li>
+        <li><strong>Berlin</strong> - Oct 1-3, Payments edition</li>
+        <li><strong>Seoul</strong> - Nov 5-6, Privacy edition</li>
+      </ul>
+    </div></div>
+  </div>
   <div class="links">
-    <a href="https://2140blog.substack.com/p/our-first-annual-report" target="_blank" rel="noopener">2140 report</a>
     <a href="https://brink.dev/blog/2026/05/26/2025-annual-report/" target="_blank" rel="noopener">Brink report</a>
     <a href="https://blog.btrust.tech/btrust-announces-new-board-to-lead-next-phase-of-growth/" target="_blank" rel="noopener">Btrust board</a>
-    <a href="https://btcplusplus.dev/" target="_blank" rel="noopener">Bitcoin++</a>
-    <a href="https://citadelwire.com/feed.xml" target="_blank" rel="noopener">Citadel Wire</a>
+    <a href="https://2140blog.substack.com/p/our-first-annual-report" target="_blank" rel="noopener">2140 report</a>
+    <a href="https://btcplusplus.dev/" target="_blank" rel="noopener">Bitcoin++ schedule</a>
   </div>
 </div>
 
-<div class="slide" data-name="Issue #36">
-  <h2 class="slide-title gn">GitHub Issue Topics</h2>
-  <p class="subtitle">Community submissions are now part of the same monthly triage packet</p>
-  <div class="box gn"><div class="label">SILENT PAYMENTS SPLIT OUT</div><div class="card-text">The strongest issue-submitted topic is <strong>Sparrow wallet 2.5.0 and 2.5.1 with initial Silent Payments support</strong>. It now has a dedicated draft deck instead of being buried in this roundup.</div></div>
+<div class="slide" data-name="Mempool Policy">
+  <h2 class="slide-title yl">Mempool Policy: A Decade of Workarounds</h2>
+  <p class="subtitle">Spiral retrospective by @theinstagibbs, 2026-04-08</p>
+  <div class="box yl"><div class="label">THE ARC</div><div class="card-text">It walks through how Bitcoin Core mempool policy evolved from v0.12 (Feb 2016) to v31's cluster mempool (2026). The author argues the 2018-2019 RBF carveouts were Lightning-specific patches that newer work - TRUC and cluster mempool - finally lets the project rip out, replacing rule-of-thumb constraints with policy that follows directly from how miners actually order transactions.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">WORKAROUNDS COVERED</div><div class="card-text">Opt-in RBF (BIP 125), CPFP, CPFP carveout, single-conflict RBF carveout, TRUC/v3 (BIP 431), 1P1C package relay, sibling eviction, Pay-to-Anchor (P2A), ephemeral dust, full RBF by default, and cluster mempool.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">RULES THE POST WANTS DELETED</div><div class="card-text">The "no new unconfirmed parents" RBF rule, the CPFP carveout, the single-conflict RBF carveout, and the topology restrictions on package RBF - now obviated by cluster mempool's linearisation.</div></div>
+  </div>
+  <div class="box bl"><div class="label">CONTRIBUTORS NAMED</div><div class="card-text">Matt Corallo (Nov 2018 CPFP carveout proposal), Pieter Wuille (cluster mempool linearisation), Suhas Daftuar (cluster mempool overview).</div></div>
+  <div class="links">
+    <a href="https://spiralbtc.substack.com/p/a-decade-of-workarounds" target="_blank" rel="noopener">A Decade of Workarounds</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Loupe">
+  <h2 class="slide-title bl">Loupe</h2>
+  <p class="subtitle">Spiral and Block AI vulnerability scanning, announced 2026-05-12</p>
+  <div class="box bl"><div class="label">ANNOUNCEMENT</div><div class="card-text">Authored by <strong>Elias Rohrer, Jordan Mecom, and Thomas Kilbride</strong> (Spiral and Block). Pitched as free "scanning-as-a-service" for FOSS Bitcoin projects, with a stated quality gate that the tool "only report vulnerabilities backed by a demonstrable test case".</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">INITIAL COHORT</div><div class="card-text">Projects committed to early scanning: Bitcoin Core, BDK, LDK, rust-bitcoin, Cashu, Blockstream Jade, bitcoinj, and SRI.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">MODEL APPROACH</div><div class="card-text">Loupe wraps multiple LLMs behind one interface and picks per-finding. Spiral says it'll keep that model mix updated as new frontier releases land; specific models aren't named in the announcement.</div></div>
+  </div>
+  <div class="box yl"><div class="label">WHAT'S NOT IN THE POST</div><div class="card-text">No specific vulnerabilities, CVEs, or quantified results are disclosed in the launch announcement. Block and Spiral describe prior internal use across Bitcoin repos with private maintainer reporting, but findings are not enumerated.</div></div>
+  <div class="links">
+    <a href="https://spiralbtc.substack.com/p/meet-loupe-ai-powered-vulnerability" target="_blank" rel="noopener">Meet Loupe</a>
+  </div>
+</div>
+
+<div class="slide" data-name="AI Wallet Recovery">
+  <h2 class="slide-title pk">AI-Assisted Wallet Recovery</h2>
+  <p class="subtitle">cprkrn's recovery of a 2015 wallet, posted 2026-05-13</p>
+  <div class="box pk"><div class="label">WHAT WAS POSTED</div><div class="card-text">X account <strong>@cprkrn</strong> reported recovering roughly <strong>5 BTC</strong> (~USD 400k) from a wallet password set in 2015 and forgotten. Earlier <code>btcrecover</code> brute-force attempts had run without success.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">WHAT CLAUDE DID</div><div class="card-text">Given a large dump of an old college computer, Claude located a December 2019 backup of the wallet file the owner had not remembered, and identified a misconfiguration in how <code>btcrecover</code> was combining the shared key and candidate passwords. The owner separately found a mnemonic seed in an old college notebook.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">WHAT CLAUDE DID NOT DO</div><div class="card-text">No encryption was broken. The recovery used the existing open-source <code>btcrecover</code> path plus owner-recovered seed material. Closer to structured discovery and tool orchestration than cryptographic attack.</div></div>
+  </div>
+  <div class="box yl"><div class="label">DISCUSSION PROMPTS</div><div class="card-text">What hygiene applies when feeding an LLM a wallet file or seed material - local model versus hosted, log retention, sandboxed instances? How does this sit alongside Loupe's defensive use of AI?</div></div>
+  <div class="links">
+    <a href="https://x.com/cprkrn/status/2054586810475364536" target="_blank" rel="noopener">@cprkrn post</a>
+    <a href="https://www.tomshardware.com/tech-industry/cryptocurrency/bitcoin-trader-recovers-usd400-000-using-claude-ai-after-losing-wallet-password-11-years-ago-bot-tried-3-5-trillion-passwords-before-decrypting-an-old-wallet-backup" target="_blank" rel="noopener">Tom's Hardware writeup</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Travel Rule">
+  <h2 class="slide-title cy">Australian Travel Rule</h2>
+  <p class="subtitle">AUSTRAC compliance deadline 1 July 2026</p>
   <div class="fact-grid">
-    <div class="fact"><div class="fact-label">MEMPOOL POLICY</div><div class="fact-val">Spiral's "decade of workarounds" post is a good bridge from May's policy/governance threads.</div></div>
-    <div class="fact"><div class="fact-label">BITNODES DATA</div><div class="fact-val">Bitnodes availability and historic network datasets connect directly to the BNOC source-watch cluster.</div></div>
-    <div class="fact"><div class="fact-label">AI AND SECURITY</div><div class="fact-val">Loupe and AI-assisted old-wallet recovery are useful short items, but need careful framing before presenting.</div></div>
-    <div class="fact"><div class="fact-label">TRAVEL RULE</div><div class="fact-val">The Australian Travel Rule topic is marked as a source-needed watch item until we attach primary regulatory material.</div></div>
+    <div class="fact"><div class="fact-label">COMPLIANCE DATE</div><div class="fact-val">All VASPs - existing and newly regulated - must comply with the Travel Rule by <strong>1 July 2026</strong>.</div></div>
+    <div class="fact"><div class="fact-label">VASP REGISTRATION</div><div class="fact-val">New providers can enrol with AUSTRAC from <strong>31 March 2026</strong>; deadline <strong>29 July 2026</strong>. The old "DCE" designation is retired in favour of "VASP".</div></div>
+    <div class="fact"><div class="fact-label">NO VALUE THRESHOLD</div><div class="fact-val">Every in-scope transfer triggers Travel Rule information handling. There is no minimum AUD threshold below which the rule does not apply.</div></div>
+    <div class="fact"><div class="fact-label">ASIC FRAMEWORK</div><div class="fact-val">A separate ASIC Digital Assets Framework commences <strong>9 April 2027</strong>, layering financial-services obligations onto the AUSTRAC regime.</div></div>
+  </div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">DATA TO BE SENT</div><div class="card-text">The sending exchange has to collect and verify who the payer is, collect the payee's full name, and pass all of that - plus tracing info for the transfer - to the next VASP in the chain, either before or alongside the transfer.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">SELF-HOSTED WALLETS</div><div class="card-text">Sending to a self-hosted wallet skips the VASP-to-VASP message - there's no other VASP to message - but the sending exchange still has to collect and verify payer details and the payee's name. Exchanges receiving from a self-hosted wallet must collect payer details, the payee's full name, and tracing info before crediting the account.</div></div>
   </div>
   <div class="links">
+    <a href="https://www.austrac.gov.au/industry-and-business/obligations-and-guidance/additional-guidance/travel-rule/travel-rule-overview" target="_blank" rel="noopener">AUSTRAC overview</a>
+    <a href="https://www.austrac.gov.au/industry-and-business/obligations-and-guidance/additional-guidance/travel-rule/when-travel-rule-doesnt-apply" target="_blank" rel="noopener">When the rule does not apply</a>
     <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/36" target="_blank" rel="noopener">Issue #36</a>
-    <a href="https://spiralbtc.substack.com/p/a-decade-of-workarounds" target="_blank" rel="noopener">Mempool policy</a>
-    <a href="https://bnoc.xyz/t/request-bitnodes-historic-datasets-or-similar/126" target="_blank" rel="noopener">BNOC Bitnodes request</a>
-    <a href="https://spiralbtc.substack.com/p/meet-loupe-ai-powered-vulnerability" target="_blank" rel="noopener">Loupe</a>
-    <a href="silent-payments.html">Silent Payments deck</a>
   </div>
 </div>
 
-<div class="slide" data-name="Next">
-  <h2 class="slide-title">What To Split Out</h2>
-  <p class="subtitle">First-pass recommendation before editorial review</p>
-  <div class="box pu"><div class="label">DEDICATED DECK CANDIDATES</div><div class="card-text"><strong>Silent Payments</strong> is already split out. <strong>PQC taxonomy</strong> still looks strong. <strong>Network observations</strong> can work if we turn BNOC data into diagrams. <strong>Covenants and exit games</strong> can become a technical deck if narrowed to CTV vaults plus sibling-aware covenants.</div></div>
-  <div class="box bl"><div class="label">ROUNDUP CANDIDATES</div><div class="card-text">BIP status changes, Core wallet/build/mining merges, CLN/LND release candidates, Brink/Btrust/2140 updates, b10c's Nix/Guix result, Harlock's secp256k1 post, Spiral mempool-policy retrospective, Loupe, and Bitnodes data can stay in the roundup unless one gets expanded.</div></div>
-  <div class="box rd"><div class="label">NEEDS REVIEW</div><div class="card-text">Do not publish this draft without a source pass. The strongest claims to verify are Sparrow's exact Silent Payments feature scope, BIP-54 status, CLN disclosure details, Lightning routing-economics numbers, and any PQC proposal summary.</div></div>
+<div class="slide" data-name="Nostr VPN">
+  <h2 class="slide-title pu">Nostr VPN</h2>
+  <p class="subtitle">Martti Malmi's Tailscale-style mesh, coordinated over Nostr</p>
+  <div class="box pu"><div class="label">DESIGN</div><div class="card-text">A private mesh VPN in the Tailscale shape: every device talks directly to every other device once they've joined the network. The data channel itself runs Malmi's own "FIPS" mesh protocol; WireGuard only shows up at the exit node, when the mesh forwards traffic out to the regular internet. CLI is <code>nvpn</code> (<code>cargo install nvpn</code>); identities are Nostr <code>npub</code> keys generated locally on first run.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">NOSTR ROLE</div><div class="card-text">Nostr relays carry invite sharing, roster sync, and admin coordination. There is one active named network at a time, with MagicDNS, route advertisement, and exit-node selection.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">PLATFORMS</div><div class="card-text">Native apps for Apple Silicon macOS, Linux x64 (GTK/libadwaita, .deb), Windows x64 (WPF, WinTun), Android arm64. iOS TestFlight is not yet public. Umbrel and StartOS packages exist. Intel macOS is source-only.</div></div>
+  </div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">LICENSE / LANG</div><div class="fact-val">MIT. Rust app-core with Swift, Kotlin, and C# platform shells.</div></div>
+    <div class="fact"><div class="fact-label">CANONICAL REPO</div><div class="fact-val"><code>git.iris.to</code> under Malmi's npub; GitHub is a mirror.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/mmalmi/nostr-vpn" target="_blank" rel="noopener">mmalmi/nostr-vpn</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Kagikai">
+  <h2 class="slide-title rd">Kagikai - Multisig Bearer Instrument</h2>
+  <p class="subtitle">Hardware-enclave 2-of-3 P2TR bearer cash, plus the Delving critique</p>
+  <div class="box rd"><div class="label">KEY MODEL</div><div class="card-text">
+    <ul>
+      <li><strong>Address</strong> - a Taproot 2-of-3 multisig over three locally generated keys.</li>
+      <li><strong>Keys</strong> - Key A (issuer side, deleted before funding); Key B and Key C (both held by whoever holds the note). B and C combine via MuSig2, so on-chain spends look like any other Schnorr signature.</li>
+      <li><strong>Hardware</strong> - the phone's secure chip generates and holds the keys (Android Titan M2 / iOS Secure Enclave).</li>
+      <li><strong>Transfer</strong> - encrypted key handover over QR, NFC, or HTTPS, with a Nostr receipt for the new bearer.</li>
+    </ul>
+  </div></div>
+  <div class="box pk"><div class="label">DELVING CRITIQUE (AdamISZ, since-deleted thread #2470)</div><div class="card-text">After the original P2SH framing was posted on 2026-05-01, AdamISZ replied that the core "transfer private key, then delete it" model is <strong>not convincing because the receiver cannot know the sender really deleted their copy</strong>. In other words: peer-to-peer handover lets the previous bearer race the new one. Hardware enclaves do not change this for the bearer-to-bearer step, only for the issuer's Key A.</div></div>
+  <div class="box yl"><div class="label">AUTHOR'S RESPONSE</div><div class="card-text">The author narrowed the claim and updated the design:
+    <ul>
+      <li>Issuer key deletion is <strong>not</strong> the security assumption. The novelty is the issuer being <strong>permanently below the spend threshold</strong>.</li>
+      <li>Moved from P2SH to <strong>Taproot/MuSig2</strong> with <strong>buyer-generated keys</strong> (buyer generates Keys B and C locally, sends only pubkeys to the issuer).</li>
+      <li>Added multi-node UTXO verification and a merchant sweep step.</li>
+      <li>Conceded that <strong>finality only comes from sweeping</strong> the UTXO to a fresh receiver-only address.</li>
+    </ul>
+  </div></div>
+  <div class="box bl"><div class="label">UPSHOT</div><div class="card-text">Kagikai removes the issuer as a trust point and lets a UTXO circulate off-chain, but it does not solve copied-key finality. Treat it as a digital cash note backed by a UTXO where possession of key material is the claim and real safety comes at sweep. The Delving thread is now 404; the criticism summary above is from prior cached reading.</div></div>
+  <div class="links">
+    <a href="https://kagikai.app/" target="_blank" rel="noopener">kagikai.app</a>
+    <a href="https://multisigbearer.org/" target="_blank" rel="noopener">multisigbearer.org</a>
+    <a href="https://zenodo.org/records/19382670" target="_blank" rel="noopener">Whitepaper (Zenodo)</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Zcash Fork">
+  <h2 class="slide-title gn">Zcash Orchard Emergency Upgrade</h2>
+  <p class="subtitle">Soft-fork pause, then NU6.2 hard-fork remediation</p>
+  <div class="box gn"><div class="label">WHAT HAPPENED</div><div class="card-text">A critical <strong>soundness vulnerability</strong> in the Orchard zero-knowledge proof circuit was discovered by Taylor Hornby on 2026-05-29 and privately disclosed to Zcash Open Development Lab engineers. Successful exploitation could have permitted invalid state transitions or double-spending within Orchard, but Zcash reported no evidence of exploitation, no evidence of unauthorized value creation, and no privacy impact.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">SOFT FORK</div><div class="fact-val"><code>zcashd v6.12.5</code> and <code>zebrad v4.5.3</code> temporarily disabled Orchard actions at mainnet height <strong>3,363,426</strong> (~02:00 UTC on 2026-06-02).</div></div>
+    <div class="fact"><div class="fact-label">HARD FORK</div><div class="fact-val">The follow-up <strong>NU6.2</strong> hard-fork network upgrade, shipped in <code>zcashd v6.20.0</code> and <code>zebrad v5.0.0</code>, completed at 00:05 EDT on 2026-06-03, re-enabling Orchard with the corrected circuit.</div></div>
+    <div class="fact"><div class="fact-label">SCOPE</div><div class="fact-val">Only Orchard transactions were paused. Sapling and transparent pools continued to operate normally.</div></div>
+    <div class="fact"><div class="fact-label">NETWORK EFFECT</div><div class="fact-val">Mining nodes that missed the soft-fork update risked orphaned blocks; one observer reported a 25-block competing fork before upgraded miners converged.</div></div>
+  </div>
+  <div class="box bl"><div class="label">WHY TWO STAGES?</div><div class="card-text">The soft fork bought time without publishing the full circuit fix. The hard fork was needed because the permanent remediation changed Orchard's zero-knowledge proof circuit and verifying key.</div></div>
+  <div class="links">
+    <a href="https://forum.zcashcommunity.com/t/coordinated-zcash-network-upgrade-underway/55950" target="_blank" rel="noopener">Zcash forum thread</a>
+    <a href="https://github.com/zcash/zcash/releases/tag/v6.12.5" target="_blank" rel="noopener">zcashd v6.12.5</a>
+    <a href="https://github.com/zcash/zcash/releases/tag/v6.20.0" target="_blank" rel="noopener">zcashd v6.20.0</a>
+    <a href="https://forum.zcashcommunity.com/t/orchard-vulnerability-successfully-remediated/55976" target="_blank" rel="noopener">Remediation summary</a>
+  </div>
 </div>
 
 </div>

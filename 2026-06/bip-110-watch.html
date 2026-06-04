@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIP-110 Watch - Perth BitDevs June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--rdG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--rdD);border:1px solid var(--rd);border-radius:16px;color:var(--rd);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--rd);background:var(--rdG);color:var(--rd);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
+.card-text{color:var(--txM);font-size:20px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
+.card-text ul{margin:6px 0 0 22px;padding:0}
+.card-text li{margin-bottom:4px}
+.box{border-radius:8px;padding:13px 18px;margin-bottom:12px;border:1px solid rgba(148,163,184,.25)}
+.box .label{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.box.rd{background:var(--rdG);border-color:rgba(239,68,68,.35)}.box.rd .label{color:var(--rd)}
+.box.bl{background:var(--blG);border-color:rgba(59,130,246,.35)}.box.bl .label{color:var(--bl)}
+.box.yl{background:var(--ylG);border-color:rgba(234,179,8,.35)}.box.yl .label{color:var(--yl)}
+.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
+.box.or{background:var(--orG);border-color:rgba(247,147,26,.35)}.box.or .label{color:var(--or)}
+.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fact{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px}
+.fact-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;letter-spacing:.06em;margin-bottom:3px}
+.fact-val{color:var(--txM);font-size:18px;line-height:1.4}
+.fact-val strong{color:var(--tx)}
+.fact-val code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--or);background:var(--orD);padding:2px 5px;border-radius:4px}
+.epoch-table{width:100%;border-collapse:collapse;margin-bottom:12px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.epoch-table th{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;color:var(--rd);text-align:left;padding:9px 14px;background:var(--rdD);border-bottom:1px solid var(--bd)}
+.epoch-table td{padding:8px 14px;font-size:17px;color:var(--txM);border-bottom:1px solid var(--bd)}
+.epoch-table td:first-child{font-family:'JetBrains Mono',monospace;color:var(--tx)}
+.epoch-table tr:last-child td{border-bottom:none}
+.epoch-table tr.curr td{background:rgba(247,147,26,.07)}
+.epoch-table tr.curr td:first-child{color:var(--or)}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--rd);background:var(--rdG);color:var(--rd)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:700px){h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}.fact-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">BIP-110 WATCH</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-06/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Signaling">
+  <h2 class="slide-title">Where Signaling Stands</h2>
+  <p class="subtitle">Recent retarget periods, per bip110monitor.com</p>
+  <table class="epoch-table">
+    <thead><tr><th>EPOCH</th><th>BLOCKS SIGNALLING</th><th>RATE</th></tr></thead>
+    <tbody>
+      <tr class="curr"><td>472 (current)</td><td>4 of ~742 mined so far</td><td>0.54%</td></tr>
+      <tr><td>471</td><td>7 of 2,016</td><td>0.35%</td></tr>
+      <tr><td>470</td><td>0 of 2,016</td><td>0.00%</td></tr>
+      <tr><td>469</td><td>0 of 2,016</td><td>0.00%</td></tr>
+      <tr><td>468</td><td>2 of 2,016</td><td>0.10%</td></tr>
+    </tbody>
+  </table>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">THRESHOLD</div><div class="fact-val"><strong>55%</strong> of blocks in a single retarget period (1,109 of 2,016).</div></div>
+    <div class="fact"><div class="fact-label">CURRENT GAP</div><div class="fact-val">Across the last four epochs, voluntary signaling has not exceeded <strong>0.54%</strong>. No major pool has signaled.</div></div>
+  </div>
+  <div class="box yl"><div class="label">EPOCHS REMAINING</div><div class="card-text">The current BIP-110 draft sets mandatory signaling for <strong>blocks 961,632-963,647</strong>. From the snapshot above, the start of that window is roughly <strong>four retarget periods</strong> - about eight to nine weeks - away.</div></div>
+</div>
+
+<div class="slide" data-name="Mandatory Signaling">
+  <h2 class="slide-title yl">Mandatory Signaling Mechanics</h2>
+  <p class="subtitle">What changes at the August signaling deadline</p>
+  <div class="box yl"><div class="label">THE BLOCKS</div><div class="card-text">At a specific future block height, BIP-110 nodes move from counting voluntary bit-4 signaling to rejecting blocks that don't signal for the deployment. Per the current BIP-110 draft, mandatory signaling enforcement begins at <strong>block 961,632</strong>, projected around <strong>2026-08-07</strong>. During blocks <strong>961,632-963,647</strong>, BIP-110 nodes reject any block that does not signal bit 4. That forces lock-in no later than <strong>963,648</strong>; the transaction restrictions become active one retarget period later at <strong>965,664</strong>.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">DURATION</div><div class="fact-val">Restrictions lift automatically after <code>52,416</code> blocks (~1 year) from the ACTIVE height. Framed by authors as "a one-year deployment that can be refined or extended".</div></div>
+    <div class="fact"><div class="fact-label">EARLY LOCK-IN</div><div class="fact-val">If any retarget period before then hits 55%, lock-in is triggered with no need to wait for mandatory signaling.</div></div>
+  </div>
+  <div class="box rd"><div class="label">ADAM BACK'S WARNING</div><div class="card-text">Back's framing (reported May 2026) is that BIP-110 will either <strong>self-fork</strong> at the mandatory-signaling deadline or simply <strong>fail to activate</strong>: with under 5% node support and zero backing from major pools, the threshold is unreachable and the mandatory path forces the question of whether a Knots-side minority will create a chain.</div></div>
+</div>
+
+<div class="slide" data-name="Minority Fork">
+  <h2 class="slide-title bl">Minority-Hashrate Outcomes</h2>
+  <p class="subtitle">Murch's thread, echoed by Lopp</p>
+  <div class="box bl"><div class="label">THE CLAIM MURCH DEBUNKS</div><div class="card-text">Murch (Bitcoin BIP editor, @murchandamus) opens his 2026-02-19 thread: "There is this claim that comes up a lot that a soft fork will win, even if it starts out with a minority of the hashrate upon activation. Let's dig into that for a bit." He calls the asymmetric-advantage narrative "a false narrative that is still being perpetuated despite being debunked a year ago".</div></div>
+  <div class="box rd"><div class="label">WHY THE MINORITY CHAIN STRUGGLES</div><div class="card-text">If Ocean is the only pool signaling at ~1% of total hashrate:
+    <ul>
+      <li>Expected output is <strong>1-2 blocks per day</strong>, versus 144 on the main chain.</li>
+      <li>Coinbase outputs need 100 confirmations - at 2 blocks/day that's <strong>~50 days</strong> before any reward becomes spendable.</li>
+      <li>Exchanges would impose extreme confirmation counts on a minority chain due to reorg risk, pushing real liquidity even further out.</li>
+      <li>Reaching the next difficulty retarget (2,016 blocks) would take <strong>~3 years</strong> at that rate, per Lopp.</li>
+    </ul>
+  </div></div>
+  <div class="box gn"><div class="label">WHO HAS TO ACCEPT A BLOCK FOR A SOFT FORK TO STICK</div><div class="card-text">Murch: "A soft fork that is designed to reject blocks from miners ONLY works if the nodes rejecting the blocks are nodes that the miner NEEDS to accept in order to 'cash out' their coinbase rewards." Many signaling nodes have "no economic power" - so their rejection has no cost to miners on the majority chain. The bypass route he flags is <code>invalidateblock</code>, which any operator can use to manually permanently reject the minority fork without coordinated activation.</div></div>
+</div>
+
+<div class="slide" data-name="Trackers and Voices">
+  <h2 class="slide-title pu">Trackers and Voices</h2>
+  <p class="subtitle">Where to follow this between now and August</p>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">WICKED SMART BITCOIN</div><div class="fact-val">Maintains <code>wickedsmartbitcoin.com/bip110_signaling</code>, a community-facing per-epoch signaling tracker.</div></div>
+    <div class="fact"><div class="fact-label">BIP110MONITOR</div><div class="fact-val"><code>bip110monitor.com</code> shows current-epoch counts and recent epoch history alongside threshold context.</div></div>
+    <div class="fact"><div class="fact-label">LOPP'S GUIDE</div><div class="fact-val"><code>blog.lopp.net/a-laymans-guide-to-bip-110/</code> - long-form layperson explainer that summarises Murch's analysis and walks through the minority-chain scenarios.</div></div>
+    <div class="fact"><div class="fact-label">SPEC HOME</div><div class="fact-val"><code>bip110.org</code> for the authors' framing: 55% threshold, voluntary deadline, ~1-year temporary deployment.</div></div>
+  </div>
+  <div class="box bl"><div class="label">THIS WINDOW (MAY 7 - JUNE 3)</div><div class="card-text">No new substantive consensus-level material on BIP-110 itself. The numbers continue to drift: 0.00% in two of the last four epochs, 0.54% in the current one. The August mandatory-signaling window is roughly four retarget periods away from the snapshot above.</div></div>
+  <div class="links">
+    <a href="https://bip110monitor.com/" target="_blank" rel="noopener">bip110monitor.com</a>
+    <a href="https://wickedsmartbitcoin.com/bip110_signaling" target="_blank" rel="noopener">Wicked Smart tracker</a>
+    <a href="https://blog.lopp.net/a-laymans-guide-to-bip-110/" target="_blank" rel="noopener">Lopp's guide</a>
+    <a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org</a>
+    <a href="https://x.com/murchandamus/status/2019961800910074117" target="_blank" rel="noopener">Murch on BIP-110</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
+render();
+</script>
+</body>
+</html>

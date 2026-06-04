@@ -6,136 +6,411 @@
 <title>Silent Payments - Perth BitDevs June 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#07110f;--sf:#0d1917;--sf2:#13231f;--bd:#24413a;--bd2:#35665a;--tx:#e5f4ef;--txM:#a0bdb5;--txD:#638178;--or:#f7931a;--orG:rgba(247,147,26,.14);--gn:#22c55e;--gnG:rgba(34,197,94,.13);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12)}
+:root{
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
-.glow{position:fixed;top:-150px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--gnG),transparent 70%);filter:blur(90px);opacity:.75;pointer-events:none}
-.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
-.badge-group{display:flex;align-items:center;gap:8px}
-.badge{padding:3px 12px;background:var(--gnG);border:1px solid var(--gn);border-radius:16px;color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
-.update-tag{padding:2px 8px;background:var(--orG);border:1px solid var(--or);border-radius:4px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.06em}
-.dots{display:flex;gap:4px;flex-wrap:wrap}
-.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
-.dot.on{border-color:var(--gn);background:var(--gnG);color:var(--gn);font-weight:700}
-.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
-.branding:hover{color:var(--txM)}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
-.slide-inner{max-width:980px;margin:0 auto;width:100%}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(90px);opacity:.65;pointer-events:none}
+
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.dot{min-width:34px;padding:4px 9px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot:hover{border-color:var(--bdh);color:var(--txM)}
+.dot.on{border-color:var(--or);background:var(--orD);color:var(--or);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s;white-space:nowrap}
+.branding:hover{color:var(--or)}
+
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 22px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
 .slide{display:none}.slide.active{display:block}
-h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--gn),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.or{background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#d8b4fe);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.subtitle{text-align:center;color:var(--txM);font-size:21px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
-.hero{border:1px solid rgba(34,197,94,.35);background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(59,130,246,.08));border-radius:8px;padding:24px 28px;margin-bottom:14px}
-.hero .kicker{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--gn);font-weight:700;letter-spacing:.06em;margin-bottom:8px}
-.hero .text{font-size:26px;line-height:1.45;color:var(--tx)}
-.hero .text strong{color:#bbf7d0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;line-height:1.18;margin-bottom:6px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f9a8d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#fde047);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin:0 auto 18px;max-width:760px;line-height:1.5}
+
+.lead{font-size:21px;line-height:1.55;color:var(--tx);text-align:center;max-width:740px;margin:0 auto 14px}
+.lead strong{color:#fff}
+
+
+/* colour-coded vocabulary — same term, same colour, every slide */
+.sp-addr{color:var(--pk);font-weight:600}
+.oc-addr{color:var(--gn);font-weight:600}
+.tap-out{color:var(--yl);font-weight:600}
+.scan-key{color:var(--cy);font-weight:600}
+.spend-key{color:var(--pu);font-weight:600}
+.secret{color:var(--or);font-weight:700}
+
+code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD);color:var(--or);padding:1px 7px;border-radius:4px}
+
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+
 .card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:15px 18px;position:relative}
-.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;background:var(--gn);opacity:.7}
-.card.bl::before{background:var(--bl)}.card.or::before{background:var(--or)}.card.pu::before{background:var(--pu)}.card.cy::before{background:var(--cy)}.card.yl::before{background:var(--yl)}
-.label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px;color:var(--gn)}
-.card.bl .label{color:var(--bl)}.card.or .label{color:var(--or)}.card.pu .label{color:var(--pu)}.card.cy .label{color:var(--cy)}.card.yl .label{color:var(--yl)}
-.text{color:var(--txM);font-size:20px;line-height:1.55}
-.text strong{color:var(--tx)}
-.text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);background:var(--orG);padding:2px 6px;border-radius:4px}
-.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.step{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:13px 14px;min-height:138px}
-.step-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;margin-bottom:4px}
-.step-title{font-size:19px;color:var(--tx);font-weight:700;line-height:1.3;margin-bottom:5px}
-.step-text{font-size:17px;color:var(--txM);line-height:1.45}
-.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-.links a{color:#60a5fa;font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.9}
+.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;background:var(--or);opacity:.7}
+.card.pk::before{background:var(--pk)}.card.gn::before{background:var(--gn)}.card.yl::before{background:var(--yl)}.card.pu::before{background:var(--pu)}.card.cy::before{background:var(--cy)}.card.bl::before{background:var(--bl)}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px;color:var(--or)}
+.card.pk .card-label{color:var(--pk)}.card.gn .card-label{color:var(--gn)}.card.yl .card-label{color:var(--yl)}.card.pu .card-label{color:var(--pu)}.card.cy .card-label{color:var(--cy)}.card.bl .card-label{color:var(--bl)}
+.card-text{color:var(--txM);font-size:19px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+
+/* aside / narrator note — uses canonical .box pattern, with italic uppercase kicker label */
+.box{border-radius:8px;padding:14px 18px;margin:14px auto;border:1px solid rgba(148,163,184,.25);max-width:820px}
+.box .box-label{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;margin-bottom:6px;font-style:italic}
+.box .box-text{font-size:19px;line-height:1.55;color:var(--tx)}
+.box.or{background:var(--orD);border-color:rgba(247,147,26,.35)}.box.or .box-label{color:var(--or)}
+.box.pk{background:var(--pkd);border-color:rgba(236,72,153,.35)}.box.pk .box-label{color:var(--pk)}
+.box.gn{background:var(--gnd);border-color:rgba(34,197,94,.35)}.box.gn .box-label{color:var(--gn)}
+.box.cy{background:var(--cyd);border-color:rgba(6,182,212,.35)}.box.cy .box-label{color:var(--cy)}
+
+/* numbered steps */
+.steps{display:flex;flex-direction:column;gap:10px;max-width:860px;margin:0 auto}
+.step{display:grid;grid-template-columns:48px 1fr 56px;gap:14px;align-items:center;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px 16px}
+.step-num{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--or);background:var(--orD);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;color:var(--or)}
+.step-body{font-size:19px;line-height:1.45;color:var(--tx)}
+.step-icon{display:flex;align-items:center;justify-content:center;color:var(--or);opacity:.75}
+
+/* ECDH equation centrepiece — orange glow box, two stacked rows */
+.ecdh{display:flex;flex-direction:column;align-items:center;gap:10px;margin:18px auto 10px;padding:22px 18px;background:var(--orD);border:1.5px solid var(--orB);border-radius:12px;max-width:880px;box-shadow:inset 0 0 60px -20px var(--orG)}
+.ecdh-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.ecdh-yields{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:2px}
+.ecdh-term{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:96px}
+.ecdh-term .term-label{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;line-height:1}
+.ecdh-term .term-eq{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txM);letter-spacing:.04em;text-transform:uppercase}
+.ecdh-op,.ecdh-eq{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:40px;line-height:1;color:var(--or)}
+.ecdh .scan-key .term-label{color:var(--cy)}
+.ecdh .input-key .term-label{color:var(--tx)}
+
+.output-eq{margin:14px auto 0;max-width:880px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:19px;color:var(--tx);padding:14px 18px;background:var(--pud);border:1.5px dashed var(--pu);border-radius:10px}
+.output-eq .eq-caption{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--pu);font-weight:700;margin-bottom:6px;font-style:italic}
+.output-eq.claim{background:var(--gnd);border-color:var(--gn)}.output-eq.claim .eq-caption{color:var(--gn)}
+
+/* address construction — orange-tinted, quieter than the ECDH box */
+.addr-construct{margin:6px auto 0;max-width:880px;text-align:center;padding:12px 18px;background:var(--orD);border:1.5px dashed var(--orB);border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:20px;color:var(--tx);line-height:1.4}
+.addr-construct .eq-caption{display:block;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--or);font-weight:700;margin-bottom:6px;font-style:italic}
+.addr-construct .hrp{color:var(--txM)}
+.addr-construct .addr-foot{display:block;margin-top:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--txM);line-height:1.4;font-style:normal}
+.addr-construct .addr-foot code{font-family:'JetBrains Mono',monospace;font-size:13px;background:transparent;padding:0;color:var(--or)}
+
+/* labelled step marker above an equation panel */
+.step-label{font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--txM);text-align:center;margin:16px 0 6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.step-num-inline{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--or);background:var(--orD);color:var(--or);font-weight:700;font-size:13px}
+
+.links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:14px}
+.links a{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
 .links a:hover{opacity:1;text-decoration:underline}
-.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
-.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+
+
+
+.footer-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{min-width:108px;padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
 .nav-btn:disabled{opacity:.4;cursor:default}
-.nav-btn.next{border-color:var(--gn);background:var(--gnG);color:var(--gn)}
+.nav-btn.next{border-color:var(--or);background:var(--orD);color:var(--or)}
 .nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
-.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
-@media(max-width:760px){.grid,.flow{grid-template-columns:1fr}h2.slide-title{font-size:30px}.hero .text{font-size:22px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px;text-align:center}
+
+@media(max-width:760px){
+  .cols2{grid-template-columns:1fr}
+  .step{grid-template-columns:38px 1fr;gap:10px}.step-icon{display:none}
+  h2.slide-title{font-size:30px}
+  .ecdh{gap:8px}.ecdh-op,.ecdh-eq{font-size:30px}.ecdh-term .term-label{font-size:20px}
+  .header{flex-wrap:wrap}.dots{order:3;width:100%}
+  .content{justify-content:flex-start;padding:18px 14px}
+  .footer-nav{padding:10px 14px}.nav-btn{min-width:auto;padding:6px 14px}
+}
 </style>
 </head>
 <body>
+
 <div class="glow"></div>
+
 <div class="header">
-  <div class="badge-group">
-    <div class="badge">SILENT PAYMENTS</div>
-    <div class="update-tag">ISSUE #36</div>
-  </div>
-  <div class="dots" id="dots"></div>
+  <div class="badge">Wallets and Privacy</div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
   <a class="branding" href="/2026-06/">&larr; Topics</a>
 </div>
 
 <div class="content">
 <div class="slide-inner">
 
-<div class="slide" data-name="Why Now">
-  <h2 class="slide-title">Silent Payments Are Back In The Room</h2>
-  <p class="subtitle">BIP-352 is Complete, Sparrow 2.5.x adds initial receiving support, and 2140 reports ongoing SP work</p>
-  <div class="hero"><div class="kicker">DRAFT TAKEAWAY</div><div class="text">Silent Payments give receivers a <strong>static payment address</strong> without asking senders to put notification data on-chain. The cost is shifted into wallet scanning, recovery, and light-client design.</div></div>
-  <div class="grid">
-    <div class="card"><div class="label">SPEC STATUS</div><div class="text">BIP-352 is an Applications-layer specification for static Bitcoin payment addresses without on-chain linkability or on-chain notifications.</div></div>
-    <div class="card bl"><div class="label">WALLET SIGNAL</div><div class="text">Sparrow 2.5.0 adds Silent Payments receiving wallets, including support for airgapped hardware wallet signers.</div></div>
-    <div class="card or"><div class="label">2140 SIGNAL</div><div class="text">2140's first annual report says its team worked on Silent Payments integration in Bitcoin Core and libsecp256k1, and hosted a Silent Payments gathering in Amsterdam.</div></div>
-    <div class="card pu"><div class="label">COMMUNITY SIGNAL</div><div class="text">Issue #36 raised Sparrow's release as a topic, which is why this is split out from the general roundup.</div></div>
+<!-- SLIDE 1 — Title -->
+<div class="slide" data-name="Title">
+  <h2 class="slide-title">Silent Payments</h2>
+  <p class="subtitle">A short tour of <strong>BIP-352</strong> — static, reusable Bitcoin addresses that don't compromise your privacy.</p>
+
+  <p class="lead">
+    Give one <span class="sp-addr">silent payment address</span> — printed on a card, pinned to a profile, hosted on a donation page. Senders derive a fresh on-chain output every time. <strong>The address never appears on-chain.</strong>
+  </p>
+
+  <div class="cols2">
+    <div class="card pk">
+      <div class="card-label">THE PROPOSAL</div>
+      <div class="card-text"><strong>BIP-352.</strong> Ruben Somsen &amp; Josie Baker, March 2023. Builds on Peter Todd's stealth addresses (2014).</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">WHERE WE ARE</div>
+      <div class="card-text"><strong>Sparrow 2.5.x</strong> ships receive support. Several wallet projects are working on scanning at scale. 2140's annual report covers the year of progress.</div>
+    </div>
   </div>
+</div>
+
+<!-- SLIDE 2 — The reuse problem -->
+<div class="slide" data-name="Why reuse hurts">
+  <h2 class="slide-title pk">Why Reuse Hurts</h2>
+  <p class="subtitle">The two ways we receive today, and why neither is great.</p>
+
+  <div class="cols2">
+    <div class="card pk">
+      <div class="card-label">REUSE ONE ADDRESS</div>
+      <div class="card-text">
+        Anyone who's ever paid you can see <strong>who else</strong> paid you, <strong>how much</strong>, and <strong>when</strong>. Address reuse compromises you <em>and</em> the parties who transact with you.
+      </div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">FRESH ADDRESS EACH TIME</div>
+      <div class="card-text">
+        Bob can't pay Alice whenever he wants. He has to ask for an <span class="oc-addr">address</span>, wait for Alice to respond, and only then send. The friction adds up.
+      </div>
+    </div>
+  </div>
+
+  <div class="box or">
+    <div class="box-label">enter</div>
+    <div class="box-text"><strong>silent payments.</strong> One static <span class="sp-addr">sp1...</span> address. The sender derives a unique on-chain output every time, with no back-and-forth. The address never touches the chain.</div>
+  </div>
+</div>
+
+<!-- SLIDE 3 — Protocol shape -->
+<div class="slide" data-name="How it works">
+  <h2 class="slide-title gn">How It Works</h2>
+  <p class="subtitle">Four moves. Most of the work lives in step 4.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        Receiver creates a reusable <span class="sp-addr">silent payment address</span> — encoded from two pubkeys: <span class="scan-key">B<sub>scan</sub></span> and <span class="spend-key">B<sub>spend</sub></span>. Publishes it once.
+      </div>
+      <div class="step-icon" aria-hidden="true">
+        <svg width="40" height="32" viewBox="0 0 44 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9 L20 9 L24 13 L41 13 L41 32 L3 32 Z"/>
+          <path d="M3 9 L3 5 L17 5 L20 9"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        Sender picks the UTXOs they'll spend, combines their inputs with the <span class="sp-addr">silent payment address</span>, and derives a unique <span class="tap-out">Taproot output</span> for the receiver.
+      </div>
+      <div class="step-icon" aria-hidden="true">
+        <svg width="44" height="32" viewBox="0 0 50 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="18" r="6"/>
+          <path d="M17 18 L26 18"/>
+          <text x="29" y="23" font-family="JetBrains Mono, monospace" font-size="20" stroke="none" fill="currentColor">+</text>
+          <rect x="36" y="10" width="12" height="16" rx="2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        Sender builds and broadcasts the transaction. On-chain it looks like <strong>any other Taproot payment</strong> — no flag, no marker.
+      </div>
+      <div class="step-icon" aria-hidden="true">
+        <svg width="40" height="32" viewBox="0 0 44 36" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="14" height="16" rx="1"/>
+          <rect x="22" y="10" width="14" height="16" rx="1"/>
+          <path d="M18 18 L22 18"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        Receiver scans every new block, re-deriving the addresses money <em>could</em> have been sent to. (Easier said than done — more on slide 4.)
+      </div>
+      <div class="step-icon" aria-hidden="true">
+        <svg width="40" height="36" viewBox="0 0 44 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="17" cy="18" r="10"/>
+          <path d="M25 26 L37 36"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SLIDE 4a — Encoding the address -->
+<div class="slide" data-name="Encoding the address">
+  <h2 class="slide-title">Encoding the Address</h2>
+  <p class="subtitle">Two pubkeys, one static address. Encoded once by the receiver, decoded by every sender.</p>
+
+  <div class="addr-construct">
+    <span class="eq-caption">silent payment address (published once, never on-chain)</span>
+    <span class="sp-addr">sp1...</span> = bech32m( <span class="hrp">"sp"</span>,  v  ||  <span class="scan-key">B<sub>scan</sub></span>  ||  <span class="spend-key">B<sub>spend</sub></span> )
+    <span class="addr-foot"><code>"sp"</code> human-readable prefix &middot; <code>v</code> version byte (currently <code>0x00</code>) &middot; <code>||</code> byte concatenation</span>
+  </div>
+
+  <p class="lead" style="font-size:18px;margin:14px auto 6px;max-width:880px;color:var(--txM);font-style:italic">
+    The encoding is reversible: anyone who reads <span class="sp-addr">sp1...</span> can <code>bech32m</code>-decode it to recover both <span class="scan-key">B<sub>scan</sub></span> and <span class="spend-key">B<sub>spend</sub></span>.
+  </p>
+
+  <div class="cols2" style="margin-top:16px">
+    <div class="card cy">
+      <div class="card-label">SCAN KEYPAIR</div>
+      <div class="card-text">
+        <code><span class="scan-key">b<sub>scan</sub></span></code> (priv) &harr; <code><span class="scan-key">B<sub>scan</sub></span></code> (pub)<br>
+        The receiver uses this to <strong>detect</strong> incoming payments (next slide &mdash; ECDH).
+      </div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">SPEND KEYPAIR</div>
+      <div class="card-text">
+        <code><span class="spend-key">b<sub>spend</sub></span></code> (priv) &harr; <code><span class="spend-key">B<sub>spend</sub></span></code> (pub)<br>
+        The receiver uses this to <strong>claim</strong> them &mdash; tweaked into the on-chain output (slide after).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4b — ECDH: the shared secret -->
+<div class="slide" data-name="ECDH">
+  <h2 class="slide-title cy">ECDH: The Shared Secret</h2>
+  <p class="subtitle">Two parties land on the same number without ever talking. Silent payments is built on this.</p>
+
+  <div class="box cy">
+    <div class="box-label">elliptic-curve Diffie&ndash;Hellman, in three lines</div>
+    <div class="box-text">
+      Alice has a private key <code>a</code> and publishes <code>A = a &middot; G</code>. Bob has <code>b</code> and publishes <code>B = b &middot; G</code>. <code>G</code> is a fixed generator point on the curve.<br><br>
+      Alice computes <code>a &middot; B</code>; Bob computes <code>b &middot; A</code>. Both land on the same point: <code>a &middot; B = a &middot; (b &middot; G) = ab &middot; G = b &middot; (a &middot; G) = b &middot; A</code>. Scalar multiplication is commutative.<br><br>
+      An eavesdropper sees only <code>A</code> and <code>B</code>. Recovering <code>a</code> from <code>A</code> would mean solving the <strong>elliptic curve discrete log problem</strong> &mdash; computationally hard. Without <code>a</code> or <code>b</code>, no shared secret.
+    </div>
+  </div>
+
+  <div class="step-label"><span class="step-num-inline">1</span> silent payments plugs the sender's UTXO keypair + receiver's scan keypair into ECDH</div>
+  <div class="ecdh" role="img" aria-label="ECDH equation: a times B-scan equals b-scan times A, yielding S">
+    <div class="ecdh-row">
+      <div class="ecdh-term input-key">
+        <div class="term-label">a</div>
+        <div class="term-eq">priv of spent UTXO</div>
+      </div>
+      <div class="ecdh-op">&middot;</div>
+      <div class="ecdh-term scan-key">
+        <div class="term-label">B<sub>scan</sub></div>
+        <div class="term-eq">decoded from sp1...</div>
+      </div>
+      <div class="ecdh-eq">=</div>
+      <div class="ecdh-term scan-key">
+        <div class="term-label">b<sub>scan</sub></div>
+        <div class="term-eq">receiver scan priv</div>
+      </div>
+      <div class="ecdh-op">&middot;</div>
+      <div class="ecdh-term input-key">
+        <div class="term-label">A</div>
+        <div class="term-eq">pub of spent UTXO</div>
+      </div>
+    </div>
+    <div class="ecdh-yields">
+      <div class="ecdh-eq">&darr;</div>
+      <div class="ecdh-term"><div class="term-label" style="color:var(--or)">S</div><div class="term-eq">shared secret</div></div>
+    </div>
+  </div>
+  <p class="lead" style="font-size:17px;margin:8px auto 0;max-width:880px;color:var(--txM);font-style:italic">
+    Both <code>a</code> and <code>A</code> are the keypair of the <strong>UTXO the sender is spending</strong> in this transaction. The sender already has <code>a</code>; the receiver gets <code>A</code> from that input's pubkey once the tx is broadcast &mdash; that's when the ECDH symmetry closes.
+  </p>
+</div>
+
+<!-- SLIDE 4c — Output and detection -->
+<div class="slide" data-name="Output and detection">
+  <h2 class="slide-title pu">Output and Detection</h2>
+  <p class="subtitle">S is the seed. The <span class="spend-key">spend keypair</span> gets tweaked into the on-chain output and the claim key.</p>
+
+  <div class="step-label"><span class="step-num-inline">2</span> sender derives the on-chain output and broadcasts</div>
+  <div class="output-eq" style="max-width:880px">
+    <span class="eq-caption">on-chain output pubkey &mdash; sender uses B<sub>spend</sub> (decoded from sp1...) and S (from step 1)</span>
+    P<sub>k</sub> = <span class="spend-key">B<sub>spend</sub></span> + hash(<span class="secret">S</span>, k) &middot; G
+  </div>
+
+  <div class="step-label"><span class="step-num-inline">3</span> receiver scans each new block, looking for a match</div>
+  <div class="output-eq claim" style="text-align:left;max-width:880px;padding:16px 22px">
+    <span class="eq-caption" style="text-align:center;display:block">receiver's scan loop, per transaction</span>
+<pre style="font-family:'JetBrains Mono',monospace;font-size:17px;line-height:1.6;color:var(--tx);margin:0;white-space:pre-wrap">for k = 0, 1, 2, ...:
+    candidate = <span class="spend-key">B<sub>spend</sub></span> + hash(<span class="secret">S</span>, k) &middot; G   <span style="color:var(--txD)"># receiver's own B_spend &mdash; same formula as the sender's P_k</span>
+    if candidate equals one of the tx's output pubkeys:   <span style="color:var(--txD)"># equality check</span>
+        <span style="color:var(--gn);font-weight:700">sk<sub>k</sub> = <span class="spend-key">b<sub>spend</sub></span> + hash(<span class="secret">S</span>, k)</span>   <span style="color:var(--txD)"># receiver's own b_spend, same tweak &rarr; claim privkey</span>
+    else:
+        stop   <span style="color:var(--txD)"># no more outputs to this sp1... in this tx; one sp1 can receive several outputs per tx, hence the loop</span></pre>
+  </div>
+
+  <div class="box or">
+    <div class="box-label">why scan and spend are separate keypairs</div>
+    <div class="box-text">
+      Scanning recomputes <code><span class="scan-key">b<sub>scan</sub></span> &middot; A = S</code> per tx, then <code>candidate = <span class="spend-key">B<sub>spend</sub></span> + hash(S, k) &middot; G</code> &mdash; so it needs <span class="scan-key"><code>b<sub>scan</sub></code></span> and <span class="spend-key"><code>B<sub>spend</sub></code></span>. You can hand both to a less-trusted scanner (watching server, indexer, hot device) and it can detect payments without ever being able to spend. Only <span class="spend-key"><code>b<sub>spend</sub></code></span> stays cold; it comes out once a match is found, to sign the claim.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 — Tradeoff & state of play -->
+<div class="slide" data-name="About that tradeoff">
+  <h2 class="slide-title yl">About That Tradeoff</h2>
+  <p class="subtitle">Receivers do a lot more work. Senders do almost the same thing they always did.</p>
+
+  <div class="cols2">
+    <div class="card pk">
+      <div class="card-label">THE COST</div>
+      <div class="card-text">
+        For every Taproot-output transaction in every new block, the receiver does about <strong>one elliptic-curve multiplication</strong> to compute the shared secret <span class="secret">S</span>, then derives candidate output keys and checks for matches. Compare to a normal BIP-32 wallet, which just looks up incoming payments in a list of known addresses - silent payments trade that lookup for ongoing math.
+      </div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">THE SHORTCUTS</div>
+      <div class="card-text">
+        Skip dust. Skip transactions from before the wallet was created. A node that stays up-to-date only has to scan ~one new block every 10 minutes — manageable. The hard problem is the <strong>first-time backfill</strong>, and light-client support.
+      </div>
+    </div>
+  </div>
+
+  <div class="cols2">
+    <div class="card yl">
+      <div class="card-label">WALLET SUPPORT TODAY</div>
+      <div class="card-text">
+        <strong>Sparrow 2.5.x</strong> ships silent-payment receive. Cake Wallet, BlueWallet and others are in active development. The 2140 annual report covers the year's scanning-infrastructure progress.
+      </div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">OPEN QUESTIONS</div>
+      <div class="card-text">
+        How do <strong>light clients</strong> participate? Can servers do the heavy index work without compromising privacy? What's the right UX for the moment a payment lands without an explicit "address request"?
+      </div>
+    </div>
+  </div>
+
   <div class="links">
     <a href="https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki" target="_blank" rel="noopener">BIP-352</a>
-    <a href="https://github.com/sparrowwallet/sparrow/releases/tag/2.5.0" target="_blank" rel="noopener">Sparrow 2.5.0</a>
-    <a href="https://2140blog.substack.com/p/our-first-annual-report" target="_blank" rel="noopener">2140 annual report</a>
-    <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/36#issuecomment-4569997621" target="_blank" rel="noopener">Issue #36 topic</a>
-  </div>
-</div>
-
-<div class="slide" data-name="Problem">
-  <h2 class="slide-title bl">The Problem It Tries To Solve</h2>
-  <p class="subtitle">Reusable identifiers without reusable on-chain addresses</p>
-  <div class="grid">
-    <div class="card bl"><div class="label">ADDRESS REUSE</div><div class="text">A normal static address is easy to share but leaks linkage when reused. Fresh addresses avoid that, but require interaction or infrastructure.</div></div>
-    <div class="card or"><div class="label">NOTIFICATION SCHEMES</div><div class="text">Protocols can use on-chain notifications, but that creates extra cost and a recognizable footprint that can leak metadata.</div></div>
-    <div class="card"><div class="label">SILENT PAYMENTS</div><div class="text">The receiver publishes a reusable Silent Payment address. Each payment still lands in a unique Taproot output that does not reveal the static address.</div></div>
-    <div class="card pu"><div class="label">TRADEOFF</div><div class="text">The receiver has to scan eligible transactions to find payments. BIP-352 treats light-client support as an open research area.</div></div>
-  </div>
-</div>
-
-<div class="slide" data-name="Mechanics">
-  <h2 class="slide-title or">How v0 Works, Simplified</h2>
-  <p class="subtitle">One shared secret, one tweaked Taproot output, no notification output</p>
-  <div class="flow">
-    <div class="step"><div class="step-num">01</div><div class="step-title">Receiver publishes keys</div><div class="step-text">A Silent Payment address encodes a scan public key and a spend public key.</div></div>
-    <div class="step"><div class="step-num">02</div><div class="step-title">Sender derives a tweak</div><div class="step-text">The sender combines their input keys with the receiver scan key to derive a shared secret.</div></div>
-    <div class="step"><div class="step-num">03</div><div class="step-title">Output looks ordinary</div><div class="step-text">The payment is a BIP-341 Taproot output to a tweaked key, not a marked notification transaction.</div></div>
-  </div>
-  <div class="card cy"><div class="label">IMPORTANT DETAIL</div><div class="text">BIP-352 v0 uses all eligible inputs for shared-secret derivation. This reduces receiver scanning work and avoids revealing one chosen input to the receiver in collaborative transaction settings.</div></div>
-</div>
-
-<div class="slide" data-name="Wallets">
-  <h2 class="slide-title pu">Wallet Reality</h2>
-  <p class="subtitle">The protocol shape is elegant, but implementation lives in the scanning details</p>
-  <div class="grid">
-    <div class="card"><div class="label">SCAN / SPEND SPLIT</div><div class="text">The receiver can keep spend keys offline while exposing a scan key to an online device that searches for incoming payments.</div></div>
-    <div class="card bl"><div class="label">RECOVERY</div><div class="text">Wallets need reliable scan history, descriptors, labels, and backup behavior so funds are found again after restore.</div></div>
-    <div class="card or"><div class="label">PUBLIC SERVERS</div><div class="text">Sparrow 2.5.0 notes an SP-capable public Electrum server and automatic selection when required.</div></div>
-    <div class="card pu"><div class="label">LIGHT CLIENTS</div><div class="text">BIP-352 says private light-client support is possible but remains an area of open research.</div></div>
-  </div>
-</div>
-
-<div class="slide" data-name="Discussion">
-  <h2 class="slide-title cy">Discussion Prompts</h2>
-  <p class="subtitle">Useful angles for the room, beyond "what is the math?"</p>
-  <div class="grid">
-    <div class="card cy"><div class="label">ADOPTION</div><div class="text">Does one serious desktop wallet adding receiving support, plus a dedicated development hub working on SP infrastructure, materially change adoption prospects?</div></div>
-    <div class="card or"><div class="label">INFRASTRUCTURE</div><div class="text">Who runs the scanning infrastructure, and what privacy assumptions are users making when they do not run their own node?</div></div>
-    <div class="card"><div class="label">HARDWARE SIGNERS</div><div class="text">What has to be true for airgapped signing and recovery to feel boring enough for real users?</div></div>
-    <div class="card yl"><div class="label">WHAT TO VERIFY</div><div class="text">Before presenting as final, check Sparrow's exact feature scope, especially receiving versus sending support and server behavior.</div></div>
-  </div>
-  <div class="links">
-    <a href="https://github.com/sparrowwallet/sparrow/releases/tag/2.5.1" target="_blank" rel="noopener">Sparrow 2.5.1</a>
-    <a href="https://github.com/bitcoin/bips/blob/master/bip-0352.mediawiki#appendix-a-light-client-support" target="_blank" rel="noopener">Light-client appendix</a>
+    <a href="https://silentpayments.xyz/" target="_blank" rel="noopener">silentpayments.xyz</a>
+    <a href="https://bitcoin.design/guide/how-it-works/silent-payments/" target="_blank" rel="noopener">bitcoin.design guide</a>
+    <a href="https://satsie.dev/zines/silentpayments.html" target="_blank" rel="noopener">satsie's zine</a>
   </div>
 </div>
 
@@ -143,27 +418,54 @@ h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-b
 </div>
 
 <div class="footer-nav">
-  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
   <div class="nav-info" id="navInfo"></div>
-  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
 </div>
 
 <script>
-const slides=document.querySelectorAll('.slide');
-const names=Array.from(slides).map(s=>s.dataset.name);
-let cur=0;
-function render(){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
-  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
-  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
-  document.getElementById('prevBtn').disabled=cur===0;
-  const nb=document.getElementById('nextBtn');
-  nb.disabled=cur===slides.length-1;
-  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+const monthHref = '/2026-06/';
+const slides = Array.from(document.querySelectorAll('.slide'));
+const names = slides.map(slide => slide.dataset.name || 'Slide');
+const dots = document.getElementById('dots');
+const navInfo = document.getElementById('navInfo');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let cur = 0;
+
+function goTo(index) {
+  cur = Math.max(0, Math.min(slides.length - 1, index));
+  render();
 }
-function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
-function goTo(i){cur=i;render()}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
+function go(delta) { goTo(cur + delta); }
+
+function render() {
+  slides.forEach((slide, index) => slide.classList.toggle('active', index === cur));
+  dots.replaceChildren();
+  names.forEach((name, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `dot${index === cur ? ' on' : ''}`;
+    button.textContent = String(index + 1);
+    button.setAttribute('aria-label', `Go to slide ${index + 1}: ${name}`);
+    if (index === cur) button.setAttribute('aria-current', 'step');
+    button.addEventListener('click', () => goTo(index));
+    dots.append(button);
+  });
+  navInfo.textContent = `${names[cur]} - ${cur + 1} / ${slides.length}`;
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = cur === slides.length - 1;
+  nextBtn.className = cur === slides.length - 1 ? 'nav-btn' : 'nav-btn next';
+}
+
+prevBtn.addEventListener('click', () => go(-1));
+nextBtn.addEventListener('click', () => go(1));
+document.addEventListener('keydown', event => {
+  if (event.key === 'ArrowRight') go(1);
+  if (event.key === 'ArrowLeft') go(-1);
+  if (event.key === 'Escape') window.location.href = monthHref;
+});
+
 render();
 </script>
 </body>

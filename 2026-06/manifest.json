@@ -2,7 +2,6 @@
   "schema_version": 1,
   "month": "2026-06",
   "status": "upcoming",
-  "content_status": "first_pass",
   "event": {
     "title": "June 2026",
     "date": "2026-06-04",
@@ -21,33 +20,79 @@
       "repo": "PerthBitDevs/PerthBitDevs",
       "number": 36,
       "url": "https://github.com/PerthBitDevs/PerthBitDevs/issues/36"
-    },
-    "newswatch_packet": {
-      "markdown": "tools/newswatch/runs/20260529-034441.md",
-      "json": "tools/newswatch/runs/20260529-034441.json"
     }
   },
-  "topic_count": 2,
+  "topic_count": 7,
   "topics": [
+    {
+      "file": "news-roundup.html",
+      "title": "News Roundup - June",
+      "category": "News roundup",
+      "status": "draft",
+      "slides": 11,
+      "summary": "Bitcoin Core wallet, mining IPC, and Guix work; reproducibility (Nix matches Guix) and secp256k1 verification threads; Brink, Btrust, 2140 funding-org updates; mempool policy (Spiral's Decade of Workarounds); Spiral and Block's Loupe AI vulnerability scanner; AI-assisted wallet recovery (cprkrn / Claude); Australian Travel Rule (AUSTRAC 1 July 2026 deadline); Martti Malmi's nostr-vpn mesh; Kagikai 2-of-3 multisig bearer instrument; and the Zcash Orchard emergency upgrade, with a soft-fork pause followed by the NU6.2 hard-fork remediation.",
+      "tags": ["bitcoin-core", "reproducibility", "secp256k1", "funding", "mempool-policy", "ai-security", "travel-rule", "nostr-vpn", "kagikai", "zcash"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
     {
       "file": "silent-payments.html",
       "title": "Silent Payments - Sparrow 2.5.x and BIP-352",
       "category": "Wallets and privacy",
       "status": "draft",
-      "slides": 5,
+      "slides": 7,
       "summary": "Sparrow 2.5.x receiving-wallet support, BIP-352, 2140 annual report, scan/spend keys, recovery, and light-client questions.",
       "tags": ["silent-payments", "sparrow", "bip-352", "wallets", "privacy"],
       "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
     },
     {
-      "file": "news-roundup.html",
-      "title": "Newswatch + Issue Roundup - June First Pass",
-      "category": "News roundup",
+      "file": "post-quantum-bitcoin.html",
+      "title": "Post-Quantum Bitcoin Threads",
+      "category": "Post-quantum cryptography",
+      "status": "draft",
+      "slides": 7,
+      "summary": "One slide per PQ thread: overview; QCAP (qatkk, secp192r1 canary); PQC lattices (nkaretnikov, NIST selected algorithms); Winternitz+Lamport auth chains (opus-lux, pivoted after Murch objections); P2WOTS (opus-lux, moved away from BIP-360's witness-version-2 slot toward witness version 3, with live signet demo); hybrid SPHINCS+/secp256k1 HD wallet (conduition, SSQR); and ECDSA.fail (Babbush et al. arXiv 2603.28846 plus Schrottenloher arXiv 2606.02235 - <1,200 logical qubits + <90M Toffoli for 256-bit ECDLP).",
+      "tags": ["pqc", "qcap", "lattices", "sphincs", "p2wots", "wots", "ecdsa-fail", "babbush"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
+    {
+      "file": "bip-110-watch.html",
+      "title": "BIP-110 Watch",
+      "category": "Policy and consensus",
+      "status": "draft",
+      "slides": 4,
+      "summary": "Current signaling per bip110monitor.com (period 472, 0.54%; recent epochs at or below 0.35%), mandatory-signaling mechanics at block 961,632 (~2026-08-07), lock-in no later than 963,648, active rules at 965,664, Murch's minority-hashrate thread on chain-split economics (1-2 blocks/day, 100-conf coinbase maturity, exchange behaviour), and pointers to Wicked Smart Bitcoin and Lopp trackers.",
+      "tags": ["bip-110", "data-carrying-transactions", "knots", "soft-fork", "minority-hashrate"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
+    {
+      "file": "changing-consensus.html",
+      "title": "BIPs and Changing Consensus",
+      "category": "BIPs and process",
+      "status": "draft",
+      "slides": 5,
+      "summary": "Per-BIP detail across status movement: BIP-54 Consensus Cleanup (timewarp, validation, Merkle, dup-tx) now Complete; BIP-449 OP_TWEAKADD (Jeremy Rubin) assigned with Alpen/MATT compatibility notes; BIP-38 paper-wallet passphrase and BIP-78 Payjoin both Deployed; BIP-176 bits denomination Complete; BIP-10 Closed (superseded in practice by PSBT); BIP 3 (Murch) process changes Deployed.",
+      "tags": ["bip-54", "bip-449", "bip-38", "bip-78", "bip-176", "bip-10", "bip-3", "bips", "process"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
+    {
+      "file": "covenants-exit-games.html",
+      "title": "Covenants, Exits, and Replay",
+      "category": "Covenants and layers",
+      "status": "draft",
+      "slides": 5,
+      "summary": "One slide per thread: MCCV CTV-only vault (ademan, v0.1.0 on Bitcoin Inquisition v29); CTV vs OP_TEMPLATEHASH (BIP-446) for BitVM, Ark, LN-Symmetry sibling-prevout needs; chain-split replay protection mechanics with Core/Knots framing (Kruw); and Conservation of Blockspace exit-game limits (BitcoinErrorLog).",
+      "tags": ["covenants", "ctv", "bip-446", "bip-448", "bitvm", "ark", "ln-symmetry", "replay", "exit-games"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
+    },
+    {
+      "file": "network-and-lightning.html",
+      "title": "Network Observations and Lightning Releases",
+      "category": "Network and Lightning",
       "status": "draft",
       "slides": 11,
-      "summary": "Post-quantum Bitcoin, BIPs and process, covenants, network observations, Lightning, Bitcoin Core, verification, funding, and issue #36 topics.",
-      "tags": ["pqc", "bips", "covenants", "network", "lightning", "bitcoin-core", "funding"],
-      "source_refs": ["tools/newswatch/runs/20260529-034441.md", "PerthBitDevs/PerthBitDevs#36"]
+      "summary": "Per-topic detail: TCP hole punching for home NATs (0xB10C); addrman overlap measurement across 9 nodes (stratospher); one-day Tor address spike to 33k peers (Matthias); back-to-back forks at heights 949203/949204 with Foundry/ViaBTC/MARA; spy-Electrum server detection via fee-histogram JSD (dutenrapha / b10c prompt); Bitnodes-is-dead data-recovery scramble (fjahr); CLN funding_created assertion DoS (Chand-ra, fixed in v26.04); CLN v26.06 rc1/rc2 with xpay-by-default; LND v0.21.0 rc1/rc3 with native-SQL payment store migration; and Lightning routing-economics numbers (capital velocity ~7x / ~88x dedicated, 5-6% gross at zero leverage).",
+      "tags": ["bnoc", "network", "addrman", "tor", "fork-observer", "electrum", "lightning", "cln", "lnd", "routing-economics"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#36"]
     }
   ],
   "auxiliary_pages": [],
@@ -56,11 +101,11 @@
     "summary_topics": [
       "Silent Payments",
       "Post-quantum Bitcoin",
-      "BIPs and process",
+      "BIP-110 Watch",
+      "Changing Consensus",
       "Covenants and exits",
-      "Network observations",
-      "Lightning",
-      "Issue #36 and funding topics"
+      "Network and Lightning",
+      "News roundup (Core, verification, funding, community odds and ends)"
     ]
   }
 }

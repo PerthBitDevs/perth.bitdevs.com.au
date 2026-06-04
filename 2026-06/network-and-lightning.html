@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network and Lightning - Perth BitDevs June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.15);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1000}
+.glow{position:fixed;top:-120px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,var(--blG),transparent 70%);filter:blur(80px);opacity:.4;pointer-events:none}
+.header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.badge{padding:3px 12px;background:var(--blD);border:1px solid var(--bl);border-radius:16px;color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dot{padding:4px 10px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
+.dot.on{border-color:var(--bl);background:var(--blG);color:var(--bl);font-weight:700}
+.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
+.branding:hover{color:var(--txM)}
+.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
+.slide-inner{max-width:960px;margin:0 auto;width:100%}
+.slide{display:none}.slide.active{display:block}
+h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2.slide-title.tl{background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:var(--txM);font-size:20px;margin-top:-8px;margin-bottom:16px;line-height:1.5}
+.card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative}
+.card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
+.card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.card-text{color:var(--txM);font-size:20px;line-height:1.55}
+.card-text strong{color:var(--tx)}
+.card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--bl);background:var(--blD);padding:2px 6px;border-radius:4px}
+.card-text ul{margin:6px 0 0 22px;padding:0}
+.card-text li{margin-bottom:4px}
+.box{border-radius:8px;padding:13px 18px;margin-bottom:12px;border:1px solid rgba(148,163,184,.25)}
+.box .label{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;margin-bottom:6px}
+.box.bl{background:var(--blG);border-color:rgba(59,130,246,.35)}.box.bl .label{color:var(--bl)}
+.box.rd{background:var(--rdG);border-color:rgba(239,68,68,.35)}.box.rd .label{color:var(--rd)}
+.box.yl{background:var(--ylG);border-color:rgba(234,179,8,.35)}.box.yl .label{color:var(--yl)}
+.box.gn{background:var(--gnG);border-color:rgba(34,197,94,.35)}.box.gn .label{color:var(--gn)}
+.box.cy{background:var(--cyG);border-color:rgba(6,182,212,.35)}.box.cy .label{color:var(--cy)}
+.box.pu{background:var(--puG);border-color:rgba(168,85,247,.35)}.box.pu .label{color:var(--pu)}
+.box.pk{background:var(--pkG);border-color:rgba(236,72,153,.35)}.box.pk .label{color:var(--pk)}
+.box.tl{background:var(--tlG);border-color:rgba(20,184,166,.35)}.box.tl .label{color:var(--tl)}
+.box.or{background:var(--orG);border-color:rgba(247,147,26,.35)}.box.or .label{color:var(--or)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fact-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fact{background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:11px 14px}
+.fact-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--txD);font-weight:700;letter-spacing:.06em;margin-bottom:3px}
+.fact-val{color:var(--txM);font-size:18px;line-height:1.4}
+.fact-val strong{color:var(--tx)}
+.fact-val code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--bl);background:var(--blD);padding:2px 5px;border-radius:4px}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
+.links a:hover{opacity:1;text-decoration:underline}
+.footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
+.nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
+.nav-btn:disabled{opacity:.4;cursor:default}
+.nav-btn.next{border-color:var(--bl);background:var(--blG);color:var(--bl)}
+.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
+.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
+@media(max-width:700px){.cols,.fact-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
+</style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<div class="header">
+  <div class="badge">NETWORK + LIGHTNING</div>
+  <div class="dots" id="dots"></div>
+  <a class="branding" href="/2026-06/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Network and Lightning</h2>
+  <p class="subtitle">Six P2P-network threads and five Lightning items from this window</p>
+  <div class="box bl"><div class="label">WHAT'S IN HERE</div><div class="card-text">A clear theme across the network items: <strong>operators measuring the network rather than just running on it</strong>. BNOC and Delving carried six threads that each look at a different angle - reachability behind NAT, how similar nodes' address books are, a one-day Tor surge, a novel back-to-back mining fork, surveillance Electrum servers, and the loss of Bitnodes as a historical reference. On the Lightning side: a CLN remote-crash disclosure, three concurrent release candidates, and a public conversation about how much money a routing node actually makes.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">NETWORK ITEMS</div><div class="fact-val">TCP hole punching, addrman overlap, Tor spike, back-to-back forks, Electrum monitoring, Bitnodes data.</div></div>
+    <div class="fact"><div class="fact-label">LIGHTNING ITEMS</div><div class="fact-val">CLN assertion DoS, CLN v26.06 RCs, LND v0.21.0 RCs, routing economics.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="TCP Hole Punching">
+  <h2 class="slide-title">TCP Hole Punching for Home Nodes</h2>
+  <p class="subtitle">0xB10C, Delving Bitcoin, 2026-05-11</p>
+  <div class="box bl"><div class="label">THE PROBLEM</div><div class="card-text">Most home Bitcoin nodes sit behind a NAT router and so are <strong>unreachable from the public internet</strong>: they can dial out, but no one can dial in. NAT-PMP/UPnP hasn't materially moved the needle. <strong>TCP hole punching</strong> coordinates two such nodes through a third-party "matchmaker" so both fire SYN packets at each other simultaneously, opening NAT mappings in both directions.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">PROTOCOL HOOKS DISCUSSED</div><div class="card-text">
+      <ul>
+        <li>A new service flag (e.g. <code>NODE_HOLEPUNCH</code>) to advertise capability.</li>
+        <li>ADDRv2 extensions linking a clearnet endpoint to a Tor/I2P coordinator.</li>
+        <li>BIP-324 initiator/responder semantics for "punched" connections.</li>
+      </ul>
+    </div></div>
+    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">OPEN CONCERNS</div><div class="card-text">
+      <ul>
+        <li>Effectiveness depends on the kind of NAT your router does. Friendly NATs (the ones that re-use the same external port for the same internal port) work fine; the strict ones that pick a new external port for every destination break the trick. Many home routers are the strict kind.</li>
+        <li>Coordination via a Tor/I2P endpoint risks <strong>linking clearnet + onion identities</strong>.</li>
+        <li>TCP hole punching is flakier than UDP; iroh sees 90%+ on UDP via federated relays.</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="box yl"><div class="label">STATUS</div><div class="card-text">Research phase, "more open questions than answers". <strong>@willcl-ark</strong> has a Python PoC (<code>natcat</code>); <strong>@sipa</strong> has a demo (<code>holeroulette</code>) with a live signet matchmaker; <strong>b_5</strong> and <strong>@cedarctic</strong> contributed UDP / iroh data points.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/tcp-hole-punching-for-bitcoin-nodes-behind-home-nats/2497" target="_blank" rel="noopener">Delving thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Addrman Overlap">
+  <h2 class="slide-title gn">Addrman Overlap Study</h2>
+  <p class="subtitle">stratospher, BNOC, 2026-05-19</p>
+  <div class="box gn"><div class="label">WHAT WAS MEASURED</div><div class="card-text">Every Bitcoin Core node keeps an on-disk address book - internally called <code>addrman</code> - that records peers it has heard about (the "new" table) and peers it has actually connected to (the "tried" table). stratospher pulled those tables from nine cooperating nodes and asked: <em>how much does each node's view of the network actually overlap with everyone else's?</em></div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">NEW TABLE (GOSSIP-DRIVEN)</div><div class="fact-val"><strong>~44-50%</strong> overlap among clearnet-only nodes; <strong>~50%</strong> among multi-network nodes; <strong>~8-11%</strong> between an onion/i2p-only node and the clearnet cluster.</div></div>
+    <div class="fact"><div class="fact-label">TRIED TABLE (HISTORY-DRIVEN)</div><div class="fact-val">~50% within the clearnet cluster, ~37% in the multi-network cluster, 27-37% cross-cluster.</div></div>
+    <div class="fact"><div class="fact-label">STANDOUT FINDING</div><div class="fact-val"><strong>76%</strong> of one node's tried entries also appeared in another's addrman, but tried-table similarity was only ~37% - they had the same pool, different luck.</div></div>
+    <div class="fact"><div class="fact-label">CONCLUSION</div><div class="fact-val">Address discovery is shaped strongly by which networks a node speaks; far from random.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bnoc.xyz/t/how-similar-are-addrman-of-different-nodes/128" target="_blank" rel="noopener">BNOC thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Tor Address Spike">
+  <h2 class="slide-title pu">Tor Address Spike</h2>
+  <p class="subtitle">Matthias, BNOC, 2026-05-20</p>
+  <div class="box pu"><div class="label">WHAT WAS SEEN</div><div class="card-text">A Tor-connecting Bitcoin node (configured like the DSN Research Group's network monitor) saw reachable Tor peers climb from a baseline ~<strong>16,000</strong> to about <strong>33,000 on 2026-05-09</strong>, in multiple steps over the early-May window. The count <strong>fell back to baseline on 2026-05-10</strong> just as abruptly.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pu)"></div><div class="card-label" style="color:var(--pu)">FINGERPRINT</div><div class="card-text">Every new peer in the spike advertised user agent <code>Satoshi:31.0.0</code> and service flags <strong>3080</strong> (<code>NODE_WITNESS | NODE_NETWORK_LIMITED | NODE_P2P_V2</code>) - a strikingly uniform set.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">EXPLANATION</div><div class="card-text">The post offers no theory. The pattern (uniform UA, identical flags, simultaneous on/off across one day) is consistent with a coordinated batch of nodes brought up and torn down together, but the data alone does not confirm that.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bnoc.xyz/t/temporary-increase-in-number-of-tor-addresses/131" target="_blank" rel="noopener">BNOC thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Back-to-Back Forks">
+  <h2 class="slide-title rd">Back-to-Back Forks at 949203-949204</h2>
+  <p class="subtitle">2026-05-13, logged by 0xB10C / fork-observer.com</p>
+  <div class="box rd"><div class="label">WHAT HAPPENED</div><div class="card-text">Three major pools produced competing blocks across <strong>two consecutive heights</strong>:
+    <ul>
+      <li><strong>Height 949203</strong>: Foundry USA and ViaBTC mined parallel blocks.</li>
+      <li><strong>Height 949204</strong>: ViaBTC and MARA Pool mined parallel blocks.</li>
+    </ul>
+    The ViaBTC block at 949203 won; its 949204 block became stale. MARA Pool then built on the canonical chain, followed by AntPool and Luxor.
+  </div></div>
+  <div class="box yl"><div class="label">WHY IT'S NOVEL</div><div class="card-text">This is <strong>not a two-block reorg</strong> - no chain rolled back. It is a back-to-back fork where multiple pools published competing siblings at consecutive heights and the network had to choose at each. 0xB10C flagged the pattern as <strong>previously undocumented</strong>; the event was tracked live on fork-observer.com.</div></div>
+  <div class="box bl"><div class="label">WHAT IT SUGGESTS</div><div class="card-text">Heavy concentration plus tight propagation timing produces these "near-miss" patterns more often than the textbook orphan-rate model assumes. Worth watching as Foundry, AntPool, and ViaBTC remain ~60% of hashrate.</div></div>
+  <div class="links">
+    <a href="https://forkmonitor.info/" target="_blank" rel="noopener">fork-observer.com</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Electrum Monitoring">
+  <h2 class="slide-title cy">Spotting Spy Electrum Servers</h2>
+  <p class="subtitle">dutenrapha, BNOC, 2026-05-28 (b10c's original prompt)</p>
+  <div class="box cy"><div class="label">THE QUESTION</div><div class="card-text">b10c asked publicly: can the network spot <strong>"spy" public Electrum servers</strong> - those that surveillance firms (Chainalysis et al.) might be running to log address queries? The working hypothesis: a cheap way to deploy many such servers is to <strong>back them all by the same Bitcoin node</strong>, which would make their mempool views nearly identical.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">METHOD</div><div class="card-text">Every five minutes, ask every public Electrum server listed at <code>1209k.com/bitcoin-eye</code> for its mempool fee histogram (via <code>mempool.get_fee_histogram</code>). Then compare every pair of histograms using a standard statistical "how different are these two distributions?" score - <strong>Jensen-Shannon Divergence</strong>. Servers whose histograms stay near-identical (JSD &le; 0.5) cluster together, a likely sign of a shared backing node.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">EARLY FINDINGS</div><div class="card-text"><strong>59 of 96</strong> registered servers respond; <strong>5 stable clusters</strong> persist across timestamps. Most server pairs report identical histograms (JSD = 0). Cluster 1 groups servers that look operationally unrelated - but it could also just reflect identical mempool-policy defaults.</div></div>
+  </div>
+  <div class="box yl"><div class="label">CAVEAT</div><div class="card-text">Tor servers are excluded in this first version. The author flags that matching histograms could indicate shared infrastructure or simply identical implementations - the test is suggestive, not conclusive.</div></div>
+  <div class="links">
+    <a href="https://bnoc.xyz/t/electrum-server-monitoring/135" target="_blank" rel="noopener">BNOC thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Bitnodes Data">
+  <h2 class="slide-title yl">Bitnodes Data Request</h2>
+  <p class="subtitle">fjahr, BNOC, 2026-05-13</p>
+  <div class="box yl"><div class="label">STATE OF PLAY</div><div class="card-text">fjahr wants historical Bitnodes snapshots to study how each new <strong>asmap</strong> file has affected network topology over the past two years. The post opens with the plain statement: <strong>"Bitnodes is dead"</strong> - the long-running network-crawl service appears to have gone offline with no announced cause.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">ALTERNATIVES OFFERED</div><div class="card-text">
+      <ul>
+        <li><strong>KIT (DSN)</strong> historical data exists but IPs are <strong>anonymised</strong> under German data-protection law - not useful for asmap analysis.</li>
+        <li><strong>b10c</strong>: holds <strong>200+ GB of snapshots</strong> back to 2025-07-10.</li>
+        <li><strong>Matthias (KIT)</strong>: can share non-anonymised files for specific dates.</li>
+        <li><strong>CedArctic</strong>: shared a 2025-06-26 snapshot.</li>
+      </ul>
+    </div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">WHY IT MATTERS</div><div class="card-text">Without Bitnodes, the community loses its main public historical record of the reachable-node graph. The thread is effectively a community archive scramble - and a useful reminder that load-bearing infrastructure built by one person can disappear.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bnoc.xyz/t/request-bitnodes-historic-datasets-or-similar/126" target="_blank" rel="noopener">BNOC thread</a>
+  </div>
+</div>
+
+<div class="slide" data-name="CLN DoS">
+  <h2 class="slide-title rd">CLN Assertion DoS</h2>
+  <p class="subtitle">Chand-ra (Summer of Bitcoin 2025 intern), disclosed 2026-05-16</p>
+  <div class="box rd"><div class="label">THE BUG</div><div class="card-text">During the channel-opening handshake, a malicious peer could send the funding transaction id as all zeros. CLN's signing daemon had an internal sanity check that crashed the whole process when it saw that input - turning a malformed message into a free node-takedown. The handshake gets that far without any prior peering or trust, so any node on the network could be the trigger. Source: <code>handle_setup_channel()</code> in <code>hsmd/libhsmd.c</code>.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">SEVERITY</div><div class="card-text">Medium/high DoS, remote, no special peering required. Versions before <strong>v26.04</strong> are vulnerable; v26.04 ships the fix.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--gn)"></div><div class="card-label" style="color:var(--gn)">DISCLOSURE TIMELINE</div><div class="card-text">
+      <ul>
+        <li>2025-07-11 - fuzzing target released.</li>
+        <li>2025-07-24 to 28 - bug confirmed and reported by Chand-ra.</li>
+        <li>2025-08-04 - fix confirmed by maintainers.</li>
+        <li>2025-08-07 - fix merged to master.</li>
+        <li>2026-05-16 - public Delving disclosure.</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="box yl"><div class="label">TAKEAWAY</div><div class="card-text">A reminder that fuzzing pays off (the report came directly from a fuzzing intern's target), and that <code>assert()</code> on attacker-controlled inputs is itself a DoS vector. Operators should be on v26.04 or later.</div></div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/vulnerability-disclosure-assertion-dos-in-core-lightning/2507" target="_blank" rel="noopener">CLN DoS disclosure</a>
+  </div>
+</div>
+
+<div class="slide" data-name="CLN v26.06">
+  <h2 class="slide-title pk">CLN v26.06 Release Candidates</h2>
+  <p class="subtitle">rc1 2026-05-12, rc2 2026-05-22</p>
+  <div class="box pk"><div class="label">HEADLINE: xpay TAKES OVER pay</div><div class="card-text">From v26.06, <code>xpay</code> handles the long-standing <code>pay</code> command by default and processes invoices returned by <code>invoicerequest()</code>. Operators that want the old behaviour can set <code>xpay-handle-pay=false</code>. <code>pay</code> itself is being deprecated but still works via delegation.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">NEW IN RC1</div><div class="card-text">
+      <ul>
+        <li><code>graceful</code> - prepare CLN for clean shutdown.</li>
+        <li><code>sendamount</code> - pay specifying amount-to-send rather than amount-to-receive.</li>
+        <li><code>xkeysend</code> - keysend with modern routing support.</li>
+        <li><code>createproof</code> - BOLT12 payment-proof JSON-RPC.</li>
+        <li>BOLT-protocol channel close timeout up from <strong>12 to 72 blocks</strong>.</li>
+      </ul>
+    </div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">CHANGES IN RC2</div><div class="card-text">
+      <ul>
+        <li>Payment-proof implementation updated to the latest draft.</li>
+        <li><strong>gossipd hardened against channel_update spamming</strong>.</li>
+        <li>Stale field cleanup in docs and gRPC.</li>
+      </ul>
+    </div></div>
+  </div>
+  <div class="box yl"><div class="label">BREAKING</div><div class="card-text"><code>message-padding</code> is now off by default (it was breaking interop with some peers). If you run plugins or integrations that assumed the old default, retest them on rc2.</div></div>
+  <div class="links">
+    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc1" target="_blank" rel="noopener">CLN rc1</a>
+    <a href="https://github.com/ElementsProject/lightning/releases/tag/v26.06rc2" target="_blank" rel="noopener">CLN rc2</a>
+  </div>
+</div>
+
+<div class="slide" data-name="LND v0.21.0">
+  <h2 class="slide-title tl">LND v0.21.0 Release Candidates</h2>
+  <p class="subtitle">rc1 2026-04-22, rc3 2026-05-29</p>
+  <div class="box tl"><div class="label">HEADLINE: NATIVE SQL PAYMENT STORE</div><div class="card-text">v0.21.0 lands the migration of LND's <strong>payment store from the legacy KV format to native SQL</strong> (issue <code>lnd#9861</code>). The migration runs only when both <code>--db.use-native-sql</code> and <code>--db.backend</code> are set to <code>sqlite</code> or <code>postgres</code>; operators not yet ready can stay opted-out with <code>--db.skip-native-sql-migration</code>.</div></div>
+  <div class="cols">
+    <div class="card"><div class="card-accent" style="background:var(--tl)"></div><div class="card-label" style="color:var(--tl)">WHY IT MATTERS</div><div class="card-text">Native SQL means LND can ask the database "find payments matching X" and get an answer in milliseconds, rather than scanning the whole payment history from disk every time. For routing nodes with years of accumulated payments, that's the difference between sub-second queries and multi-minute startups. Postgres support keeps multi-host setups (LND on one box, database on another) viable.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--bl)"></div><div class="card-label" style="color:var(--bl)">RELEASE CADENCE</div><div class="card-text">rc1 on 2026-04-22, rc3 on 2026-05-29. Compiled with <code>go1.25.5</code>; reproducible build tags include all the usual subsystems (autopilot, signer, wallet, invoices, neutrino, router, watchtower, peers, monitoring, plus <code>kvdb_postgres</code> / <code>kvdb_etcd</code> / <code>kvdb_sqlite</code>).</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/lightningnetwork/lnd/releases/tag/v0.21.0-beta.rc1" target="_blank" rel="noopener">LND rc1</a>
+    <a href="https://github.com/lightningnetwork/lnd/releases/tag/v0.21.0-beta.rc3" target="_blank" rel="noopener">LND rc3</a>
+    <a href="https://github.com/lightningnetwork/lnd/issues/9861" target="_blank" rel="noopener">Issue #9861</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Routing Economics">
+  <h2 class="slide-title or">Lightning Routing Economics</h2>
+  <p class="subtitle">May 2026 community data and observations</p>
+  <div class="box or"><div class="label">THE NUMBERS BEING DISCUSSED</div><div class="card-text">A short-form Delving post and several public write-ups put concrete numbers on what well-run routing nodes earn. The headline framing: routing capital is <strong>turned over many times per year</strong>, so even small per-hop fees compound into meaningful annualised returns - and unlike traditional yield, no leverage is involved.</div></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-label">CAPITAL VELOCITY</div><div class="fact-val">Total deployed liquidity reportedly turns over <strong>~7x annually</strong> across the network; on <strong>dedicated routing-only capital</strong> the figure cited is <strong>~88x</strong>.</div></div>
+    <div class="fact"><div class="fact-label">RETURNS</div><div class="fact-val">Professionally managed operators report <strong>5-6% gross annualised</strong> at zero leverage. Comparable returns in banking require ~10&times; leverage.</div></div>
+    <div class="fact"><div class="fact-label">NETWORK SIZE</div><div class="fact-val">Public capacity has now <strong>passed 5,600 BTC</strong>; total including private channels is estimated above <strong>12,000 BTC</strong>.</div></div>
+    <div class="fact"><div class="fact-label">VOLUME</div><div class="fact-val">Estimates put monthly Lightning transaction value over <strong>USD 1.1 B</strong> as of May 2026.</div></div>
+  </div>
+  <div class="box bl"><div class="label">CAVEAT</div><div class="card-text">These figures are reported by routing-node operators and Lightning service businesses, not measured from public data. The Delving discussion is mainly about whether published returns hold up at smaller node sizes and after rebalancing costs.</div></div>
+</div>
+
+</div>
+</div>
+
+<div class="footer-nav">
+  <button class="nav-btn" id="prevBtn" onclick="go(-1)">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const names=Array.from(slides).map(s=>s.dataset.name);
+let cur=0;
+function render(){
+  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
+  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
+  document.getElementById('prevBtn').disabled=cur===0;
+  const nb=document.getElementById('nextBtn');
+  nb.disabled=cur===slides.length-1;
+  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
+}
+function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
+function goTo(i){cur=i;render()}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
+render();
+</script>
+</body>
+</html>
