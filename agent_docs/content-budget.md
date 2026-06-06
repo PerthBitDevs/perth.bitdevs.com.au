@@ -25,6 +25,8 @@ Some topics (quantum, BIP-110, governance) span multiple sub-threads in a given 
 
 Items that don't justify a dedicated deck go into `news-roundup.html`. Use it actively — it's the pressure valve when a topic is interesting but not 4 slides' worth.
 
+The roundup holds **only** items that do **not** get their own dedicated section. If a topic justifies its own section, it gets its own file (see the mega-topic rule above: one topic, one file, never a hash anchor inside `news-roundup.html`). The same item must never appear in both the quick-fire roundup and a dedicated deck. June 2026 shipped that duplication on first pass and had to unwind it. Think of the roundup as "things we're not going deep on." The hub's card arrangement (quick-fire card plus one card per dedicated section) is `content-workflow.md`'s lane; this doc owns only the routing decision of where each item lands.
+
 Examples of news-roundup material from May 2026:
 - INDOPACOM bitcoin node
 - Iran toll-payment story
@@ -33,6 +35,8 @@ Examples of news-roundup material from May 2026:
 - Vegas merger headline
 
 Each becomes one news-roundup slide or one bullet on a multi-item slide. Not its own file.
+
+Community-submitted items are real topics, not filler. A community item that is its own distinct topic gets its **own slide**; don't lump or dismiss it as "odds and ends", "misc", or "etc." (June 2026 made this mistake on first pass). Only genuinely minor items belong in the roundup; distinctness, not provenance, decides.
 
 ## Don't re-cover recent topics
 
@@ -64,5 +68,7 @@ Rough budget for the presenter, useful when sizing content:
 - Title/intro slide of a deck: 30–60s
 - Standard content slide: 90–120s
 - Dense data slide (table, multi-bullet): 2–3 min
+
+Over-detailed slides cost speaking time the same way extra slides do. A slide stuffed with low-level implementation detail eats minutes whether or not the slide count looks fine, so when the budget is tight, **tighten dense slides, don't just count them**. June 2026 had decks carrying too much low-level detail and multi-sentence descriptions that one sentence would have covered. Lead with the result and why it matters; drop low-level detail unless that detail is the story.
 
 A 5-slide deck is roughly 8–12 minutes of speaking time. Eight 5-slide decks is ~80 minutes — this is the upper bound.

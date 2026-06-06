@@ -183,8 +183,27 @@ Each topic page is self-contained HTML with inline CSS and JS. Per-topic creativ
 - Mis-attributed quotes (May 2026 caught a "stickies-v volunteered" attribution that was wrong)
 - Stale dates and version numbers
 - Internal inconsistencies between summary and detail slides
+- Thin / low-information slides. Each topic must be researched to real depth (named people, dates, version numbers, concrete mechanics, concrete numbers) using web search. If a slide carries none of these, it is under-researched: expand it before the deck is "done", don't ship it. (June 2026 shipped low-information first-pass slides for wallet recovery with Claude, Loupe, and the Travel Rule that had to be expanded later with internet-search data.)
 
 The review is review-only by default. Apply its proposed fixes deliberately, not blindly. If it flags `UNVERIFIABLE` claims, either find the source or remove the claim. Don't ship slides with unverified specifics.
+
+Verification precision (June 2026 misses to avoid):
+
+- **Read the user's source-hints literally.** A hint like `(using / goal!!!)` points at the Claude Code `/goal` slash command, not a vague "project goal"; misreading it lost the real story (a `/goal` directive plus `/loop 2h` agentic build producing ~80 unreviewed commits to reproduce the Core binary).
+- **Verify "X uses Y" claims down to the precise mechanism, not a paraphrase.** "Sparrow uses ULTRAFASTSECP256K1" is false as stated; the precise truth is a Craig Raw DuckDB extension (`duckdb-ufsecp-extension`) for BIP-352 Silent Payments scanning, not the Sparrow desktop wallet binary.
+- **For contested items, actively seek and include the criticism.** Neutrality is a positive duty: the Kagikai deck omitted a (now-deleted) Delving post criticising it on first pass. If an item is contested, the criticism is part of the content.
+
+### Step 3.6: No Planning / Editorial Meta in Published Content
+
+The Step 2.5 newswatch packet is **research input only** (the helper writes it under the ignored `tools/newswatch/runs/`). Its classification and scaffolding vocabulary must never reach published HTML, the manifest, or the hub. Participants don't need to know how the content was triaged.
+
+Before a page is done, grep the new month's files for packet and editorial scaffolding and remove every hit:
+
+```bash
+grep -rniE 'first pass|newswatch found|draft takeaway|watch item|needs review|needs source review|editorial rule|what to split out|read before presenting' 2026-MM/*.html 2026-MM/manifest.json
+```
+
+These are triage labels (`dedicated deck` / `news roundup` / `watch` / `ignore`), packet section headings (`DRAFT TAKEAWAY`, `WATCH ITEM`, `NEEDS REVIEW`, `EDITORIAL RULE`, `What To Split Out`), provenance disclaimers ("Newswatch found a cluster…", internal source lists, "first pass"), and process notes, not content. June 2026 had 8 "first pass" references plus a whole "What To Split Out" slide leak straight from the packet into the manifest and slides. This gate is the planning-meta sibling of the Step 3.5 fact-check gate; for the prose banned-vocabulary list and the deck self-check, see `voice-and-tone.md`.
 
 ### Step 4: Month Hub
 
@@ -194,6 +213,13 @@ Create `YYYY-MM/index.html` as a hub page linking to all topic pages. Start from
 - Slide count or format type in card metadata
 - "All Events" back link to landing page
 - Footer linking to the source GitHub issue
+
+**Month Hub Content Arrangement.** Mirror the previous month's established hub pattern: diff the prior month's `index.html` before arranging this month (`git diff` or read the previous `2026-MM/index.html`). The pattern, recovered the hard way in June 2026:
+
+1. **Lead with an "In Brief" quick-fire news-roundup card first**, the way May did.
+2. **Then one dedicated section/card per topic.**
+3. **In Brief contains only items that get no dedicated section**, the things you're not going deep on. No item appears both in the quick-fire roundup and in a dedicated section.
+4. **Each dedicated topic is its own HTML file**, not a hash-anchor into the shared roundup (for example `post-quantum-bitcoin.html`, not `news-roundup.html#PQC`). See the one-topic-one-file rule in Multi-Agent Coordination below and the budget and catch-all semantics in `content-budget.md`.
 
 Before considering the hub done, compare it against `YYYY-MM/manifest.json`: every topic file should be listed in the manifest and linked from the hub, and every non-topic HTML file should be listed under `auxiliary_pages`.
 
