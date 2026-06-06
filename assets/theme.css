@@ -1,15 +1,41 @@
 /*
  * Perth BitDevs — shared theme module.
  *
- * Loaded by every page. Carries the light-mode token overrides, the
- * theme-toggle component, and the cross-page tweaks needed for light mode
- * to read well on slide pages.
+ * Loaded by every page. Carries:
+ *   - The universal box-sizing/reset
+ *   - The body background + typography base
+ *   - The body::before noise overlay (the 430-byte SVG data URI lives here once)
+ *   - The light-mode token overrides
+ *   - The theme-toggle component
+ *   - Cross-page tweaks needed for light mode to read well on slide pages
  *
- * Per-page :root token defaults stay inline on each page; this module only
- * supplies the variations on top.
+ * Per-page :root token defaults stay inline (palettes vary by month and per
+ * topic). Per-page .glow rules stay inline (dimensions and accents vary per
+ * page type and topic). This module only supplies the universals.
  *
  * See agent_docs/design-system.md for the full token vocabulary.
  */
+
+/* ===== Universal base ================================================== */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
 
 /* ===== Light palette =================================================== */
 

@@ -111,6 +111,25 @@ python3 tools/wire_shared_theme.py
 
 It is idempotent — already-wired pages report `skip`.
 
+### Universal base in shared CSS
+
+[`/assets/theme.css`](../assets/theme.css) also carries the three universals that every page needed inlined before:
+
+- `* { margin:0; padding:0; box-sizing:border-box }`
+- `body` base (background, color, font-family, min-height, font smoothing)
+- `body::before` noise overlay (the 430-byte SVG data URI lives here once instead of in 33 inline copies)
+
+Per-page inline `<style>` blocks may still extend `body` (slide pages add `display:flex; flex-direction:column; overflow-x:hidden`), and pages with bespoke palettes (e.g. `2026-03/cluster-mempool-example.html`) keep their own `body` and `body::before` declarations untouched. `:root` token defaults and `.glow` rules stay inline per page — palettes and glow accents vary too much across months and topics to share.
+
+To re-run the base strip after touching `assets/theme.css`:
+
+```bash
+python3 tools/strip_canonical_base.py            # dry-run
+python3 tools/strip_canonical_base.py --apply    # rewrite files
+```
+
+Like the chrome strip, it uses normalised exact-match comparison at the rule level for `*` and `body::before`, and property-level matching for `body` so slide pages keep their flex/overflow-x extras.
+
 ## Typography
 
 ### TV-friendly scale (May 2026 onward)
