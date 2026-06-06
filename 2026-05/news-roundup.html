@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>News Roundup — Perth BitDevs May 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
 <style>
 :root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -20,9 +25,7 @@ body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xm
 .dot.on{border-color:var(--or);background:var(--orG);color:var(--or);font-weight:700}
 .branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
 .branding:hover{color:var(--txM)}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
 .slide-inner{max-width:980px;margin:0 auto;width:100%}
-.slide{display:none}.slide.active{display:block}
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:34px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.bl{background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -36,7 +39,6 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
 .card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:10px 0 0 10px;opacity:.6}
 .card-label{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
 .card-text{color:var(--txM);font-size:19px;line-height:1.6}
-.card-text strong{color:var(--tx)}
 .card-text em{color:var(--txM);font-style:italic}
 .card-text code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--or);background:var(--orD);padding:2px 6px;border-radius:4px}
 .card-text a{color:var(--bl);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.3)}
@@ -107,12 +109,9 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
 .stat-lbl{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em}
 .links{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.8}
-.links a:hover{opacity:1;text-decoration:underline}
 .footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
 .nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
-.nav-btn:disabled{opacity:.4;cursor:default}
 .nav-btn.next{border-color:var(--or);background:var(--orG);color:var(--or)}
-.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
 .nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
 @media(max-width:700px){.cols,.headline-grid,.fact-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr}h2.slide-title{font-size:26px}.header{flex-wrap:wrap;gap:8px}}
 </style>
@@ -385,24 +384,5 @@ h2.slide-title.yl{background:linear-gradient(135deg,var(--yl),#facc15);-webkit-b
   <div class="nav-info" id="navInfo"></div>
   <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
 </div>
-
-<script>
-const slides=document.querySelectorAll('.slide');
-const names=Array.from(slides).map(s=>s.dataset.name);
-let cur=0;
-function render(){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
-  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
-  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
-  document.getElementById('prevBtn').disabled=cur===0;
-  const nb=document.getElementById('nextBtn');
-  nb.disabled=cur===slides.length-1;
-  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
-}
-function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
-function goTo(i){cur=i;render()}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
-render();
-</script>
 </body>
 </html>

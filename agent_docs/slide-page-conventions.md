@@ -94,34 +94,48 @@ Do not mass-retrofit old pages only for naming. When editing an old slide page f
 
 ## Navigation JavaScript
 
-The canonical JavaScript lives in `templates/slide-deck.html.tmpl`. Keep the following behaviours when customising a deck:
+The slide runtime is a single shared module: [`/assets/slides.js`](../assets/slides.js). It handles:
 
-```javascript
-const slides = document.querySelectorAll('.slide');
-const names = Array.from(slides).map(s => s.dataset.name);
-let cur = 0;
-function render() {
-  slides.forEach((s, i) => s.classList.toggle('active', i === cur));
-  document.getElementById('dots').innerHTML = names.map((_, i) =>
-    `<button class="dot${i === cur ? ' on' : ''}" onclick="goTo(${i})">${i + 1}</button>`
-  ).join('');
-  document.getElementById('navInfo').textContent = names[cur] + ' · ' + (cur + 1) + ' / ' + slides.length;
-  document.getElementById('prevBtn').disabled = cur === 0;
-  const nb = document.getElementById('nextBtn');
-  nb.disabled = cur === slides.length - 1;
-  nb.className = cur === slides.length - 1 ? 'nav-btn' : 'nav-btn next';
-}
-function go(d) { cur = Math.max(0, Math.min(slides.length - 1, cur + d)); render(); }
-function goTo(i) { cur = i; render(); }
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight') go(1);
-  if (e.key === 'ArrowLeft') go(-1);
-  if (e.key === 'Escape') window.location.href = '/YYYY-MM/';
-});
-render();
+- ArrowLeft / ArrowRight between `.slide` elements (only initialises if `.slide` elements are present, so it's safe to load on auxiliary pages too)
+- Dot rendering, click-to-jump, and prev/next button state
+- `[data-disclosure-target]` disclosure toggling (aria-expanded + body hidden)
+- **Escape → back to month hub**, derived from `location.pathname` — no more hardcoded `/YYYY-MM/` per page
+
+Pages opt in with one line in `<head>`:
+
+```html
+<script src="/assets/slides.js" defer></script>
 ```
 
-When creating a new page, copy the template instead of transplanting this snippet from an older page.
+Canonical slide pages built from `templates/slide-deck.html.tmpl` inherit this automatically. If you need topic-specific behaviour (a custom diagram interaction, a stepper, layer disclosures like `mining-stack-miningos.html`), add another `<script>` block in the page — both will run.
+
+To re-wire all canonical slide pages (e.g. after touching the template) run:
+
+```bash
+python3 tools/wire_slide_assets.py
+```
+
+It detects canonical pages by the inline-runtime signature, strips that runtime, and inserts the shared `<link>` + `<script>` tags. Idempotent. Bespoke pages without the signature (mining-stack-miningos, cluster-mempool-example, marmot-sloth-visualised, stepper-based aux pages) are skipped.
+
+### Chrome CSS
+
+The canonical slide-deck chrome — `.header`, `.badge`, `.badge-group`, `.update-tag`, `.dots`, `.dot`, `.branding`, `.content`, `.slide-inner`, `.slide`, `h2.slide-title`, `.subtitle`, `.hero`, `.hero-kicker`, `.hero-text`, `.grid`, `.card` plus colour variants, `.card-label`, `.card-text`, `.links`, `.disclosure*`, `.footer-nav`, `.nav-btn`, `.nav-info`, plus the `@media(max-width:760px)` responsive rules — lives in [`/assets/slide-chrome.css`](../assets/slide-chrome.css). Loaded by every canonical slide page via:
+
+```html
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+```
+
+Per-page `<style>` blocks load *after* the shared chrome, so topic pages can still override or extend any rule with bespoke topic components. Existing slide pages had their inline copies of canonical rules stripped by `tools/strip_canonical_chrome.py` — only rules whose normalized form matched the canonical exactly were removed. Per-month bespoke variants (notably the pre-May-2026 tighter font scales) and per-topic overrides survive untouched, so pages render exactly as they did before the carve-out.
+
+The strip tool can be re-run anytime:
+
+```bash
+python3 tools/strip_canonical_chrome.py            # dry-run report
+python3 tools/strip_canonical_chrome.py --apply    # rewrite files
+python3 tools/strip_canonical_chrome.py --verbose  # show selectors per page
+```
+
+If `/assets/slide-chrome.css` ever changes, run the dry-run to discover new exact-match opportunities.
 
 ## Content Components
 
@@ -147,7 +161,9 @@ Each topic can have bespoke design elements — the slide format is a framework,
 - **OpenClaw**: Two-column layout, stat row with 4 stats
 - **Wallet Bug**: Timeline + big stat trio
 
-The common thread is the dark theme, color system, and navigation pattern. Content layout is free-form.
+The common thread is the canonical token system (dark + Bitcoin-orange palette, semantic accents, JBM/DM-Sans), the slide chrome (header, dots, footer-nav), and the navigation pattern. Content layout is free-form.
+
+Bespoke means **layouts and accent choices inside the canonical system** — not swapping the whole aesthetic for one topic (no cream-paper hand-lettered zines, no cyberpunk-neon decks). The global light/dark toggle (see `design-system.md`) is orthogonal to this rule: it is a site-wide user preference applied uniformly via the shared `/assets/theme.css` module, not a per-topic aesthetic choice.
 
 ## When to Use Interactive Expandable Layouts
 

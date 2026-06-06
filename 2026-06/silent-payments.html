@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Silent Payments - Perth BitDevs June 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
 <style>
 :root{
   --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
@@ -23,19 +28,11 @@
 body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
 .glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--orG),transparent 70%);filter:blur(90px);opacity:.65;pointer-events:none}
-
-.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
 .badge{padding:3px 12px;background:var(--orD);border:1px solid var(--or);border-radius:16px;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-.dots{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
-.dot{min-width:34px;padding:4px 9px;border:1px solid var(--bd);border-radius:4px;background:transparent;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;cursor:pointer;transition:all .15s}
-.dot:hover{border-color:var(--bdh);color:var(--txM)}
 .dot.on{border-color:var(--or);background:var(--orD);color:var(--or);font-weight:700}
-.branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s;white-space:nowrap}
 .branding:hover{color:var(--or)}
 
 .content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 22px;overflow:auto;position:relative;z-index:1}
-.slide-inner{max-width:960px;margin:0 auto;width:100%}
-.slide{display:none}.slide.active{display:block}
 
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;line-height:1.18;margin-bottom:6px;background:linear-gradient(135deg,var(--or),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 h2.slide-title.pk{background:linear-gradient(135deg,var(--pk),#f9a8d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -49,7 +46,6 @@ h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-b
 .lead{font-size:21px;line-height:1.55;color:var(--tx);text-align:center;max-width:740px;margin:0 auto 14px}
 .lead strong{color:#fff}
 
-
 /* colour-coded vocabulary — same term, same colour, every slide */
 .sp-addr{color:var(--pk);font-weight:600}
 .oc-addr{color:var(--gn);font-weight:600}
@@ -61,14 +57,9 @@ h2.slide-title.pu{background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-b
 code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD);color:var(--or);padding:1px 7px;border-radius:4px}
 
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-
-.card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:15px 18px;position:relative}
 .card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;background:var(--or);opacity:.7}
-.card.pk::before{background:var(--pk)}.card.gn::before{background:var(--gn)}.card.yl::before{background:var(--yl)}.card.pu::before{background:var(--pu)}.card.cy::before{background:var(--cy)}.card.bl::before{background:var(--bl)}
 .card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px;color:var(--or)}
-.card.pk .card-label{color:var(--pk)}.card.gn .card-label{color:var(--gn)}.card.yl .card-label{color:var(--yl)}.card.pu .card-label{color:var(--pu)}.card.cy .card-label{color:var(--cy)}.card.bl .card-label{color:var(--bl)}
 .card-text{color:var(--txM);font-size:19px;line-height:1.55}
-.card-text strong{color:var(--tx)}
 
 /* aside / narrator note — uses canonical .box pattern, with italic uppercase kicker label */
 .box{border-radius:8px;padding:14px 18px;margin:14px auto;border:1px solid rgba(148,163,184,.25);max-width:820px}
@@ -114,16 +105,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD)
 
 .links{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:14px}
 .links a{color:var(--cy);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
-.links a:hover{opacity:1;text-decoration:underline}
-
-
-
-.footer-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
-.nav-btn{min-width:108px;padding:6px 18px;border:1px solid var(--bdh);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
-.nav-btn:disabled{opacity:.4;cursor:default}
 .nav-btn.next{border-color:var(--or);background:var(--orD);color:var(--or)}
-.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
-.nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px;text-align:center}
 
 @media(max-width:760px){
   .cols2{grid-template-columns:1fr}
@@ -161,11 +143,11 @@ code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD)
   <div class="cols2">
     <div class="card pk">
       <div class="card-label">THE PROPOSAL</div>
-      <div class="card-text"><strong>BIP-352.</strong> Ruben Somsen &amp; Josie Baker, March 2023. Builds on Peter Todd's stealth addresses (2014).</div>
+      <div class="card-text"><strong>BIP-352.</strong> josibake, Ruben Somsen &amp; Sebastian Falbesoner. Assigned 9 March 2023, Status Complete. Builds on the 2014 stealth-address lineage (Peter Todd's bitcoin-dev post, sx).</div>
     </div>
     <div class="card yl">
       <div class="card-label">WHERE WE ARE</div>
-      <div class="card-text"><strong>Sparrow 2.5.x</strong> ships receive support. Several wallet projects are working on scanning at scale. 2140's annual report covers the year of progress.</div>
+      <div class="card-text"><strong>Sparrow 2.5.0</strong> ships receive support. Several wallet projects are working on scanning at scale. 2140's annual report covers the year of progress.</div>
     </div>
   </div>
 </div>
@@ -248,7 +230,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD)
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-body">
-        Receiver scans every new block, re-deriving the addresses money <em>could</em> have been sent to. (Easier said than done — more on slide 4.)
+        Receiver scans every new block, re-deriving the addresses money <em>could</em> have been sent to. (Easier said than done — more on slide 7.)
       </div>
       <div class="step-icon" aria-hidden="true">
         <svg width="40" height="36" viewBox="0 0 44 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -380,7 +362,7 @@ code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD)
     <div class="card pk">
       <div class="card-label">THE COST</div>
       <div class="card-text">
-        For every Taproot-output transaction in every new block, the receiver does about <strong>one elliptic-curve multiplication</strong> to compute the shared secret <span class="secret">S</span>, then derives candidate output keys and checks for matches. Compare to a normal BIP-32 wallet, which just looks up incoming payments in a list of known addresses - silent payments trade that lookup for ongoing math.
+        For every eligible transaction in every new block (one with a Taproot output and at least one input the receiver could derive a shared secret from), the receiver does <strong>one ECDH</strong> to compute the shared secret <span class="secret">S</span>, plus one more elliptic-curve multiplication per candidate output index it checks. Compare to a normal BIP-32 wallet, which just looks up incoming payments in a list of known addresses - silent payments trade that lookup for ongoing math.
       </div>
     </div>
     <div class="card gn">
@@ -422,51 +404,5 @@ code{font-family:'JetBrains Mono',monospace;font-size:18px;background:var(--orD)
   <div class="nav-info" id="navInfo"></div>
   <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
 </div>
-
-<script>
-const monthHref = '/2026-06/';
-const slides = Array.from(document.querySelectorAll('.slide'));
-const names = slides.map(slide => slide.dataset.name || 'Slide');
-const dots = document.getElementById('dots');
-const navInfo = document.getElementById('navInfo');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-let cur = 0;
-
-function goTo(index) {
-  cur = Math.max(0, Math.min(slides.length - 1, index));
-  render();
-}
-function go(delta) { goTo(cur + delta); }
-
-function render() {
-  slides.forEach((slide, index) => slide.classList.toggle('active', index === cur));
-  dots.replaceChildren();
-  names.forEach((name, index) => {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = `dot${index === cur ? ' on' : ''}`;
-    button.textContent = String(index + 1);
-    button.setAttribute('aria-label', `Go to slide ${index + 1}: ${name}`);
-    if (index === cur) button.setAttribute('aria-current', 'step');
-    button.addEventListener('click', () => goTo(index));
-    dots.append(button);
-  });
-  navInfo.textContent = `${names[cur]} - ${cur + 1} / ${slides.length}`;
-  prevBtn.disabled = cur === 0;
-  nextBtn.disabled = cur === slides.length - 1;
-  nextBtn.className = cur === slides.length - 1 ? 'nav-btn' : 'nav-btn next';
-}
-
-prevBtn.addEventListener('click', () => go(-1));
-nextBtn.addEventListener('click', () => go(1));
-document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowRight') go(1);
-  if (event.key === 'ArrowLeft') go(-1);
-  if (event.key === 'Escape') window.location.href = monthHref;
-});
-
-render();
-</script>
 </body>
 </html>

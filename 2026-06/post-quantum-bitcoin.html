@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post-Quantum Bitcoin - Perth BitDevs June 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
 <style>
 :root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -18,9 +23,6 @@ body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xm
 .dot.on{border-color:var(--pu);background:var(--puG);color:var(--pu);font-weight:700}
 .branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
 .branding:hover{color:var(--txM)}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
-.slide-inner{max-width:960px;margin:0 auto;width:100%}
-.slide{display:none}.slide.active{display:block}
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--pu),#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.cy{background:linear-gradient(135deg,var(--cy),#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -32,8 +34,6 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
 .card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative}
 .card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
 .card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
-.card-text{color:var(--txM);font-size:20px;line-height:1.55}
-.card-text strong{color:var(--tx)}
 .card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--pu);background:var(--puD);padding:2px 6px;border-radius:4px}
 .card-text ul{margin:6px 0 0 22px;padding:0}
 .card-text li{margin-bottom:4px}
@@ -54,14 +54,10 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
 .fact-val{color:var(--txM);font-size:18px;line-height:1.4}
 .fact-val strong{color:var(--tx)}
 .fact-val code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--pu);background:var(--puD);padding:2px 5px;border-radius:4px}
-.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
-.links a:hover{opacity:1;text-decoration:underline}
 .footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
 .nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
-.nav-btn:disabled{opacity:.4;cursor:default}
 .nav-btn.next{border-color:var(--pu);background:var(--puG);color:var(--pu)}
-.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
 .nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
 @media(max-width:700px){.fact-grid,.cols{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
 </style>
@@ -85,8 +81,10 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
   <div class="box pu"><div class="label">WHAT MOVED</div><div class="card-text">Six distinct threads ran in parallel rather than circling one proposal. Each tackles a different layer of the same problem - what happens if quantum (or any new) attack on Bitcoin keys becomes feasible:
     <ul>
       <li><strong>QCAP</strong> - an on-chain alarm that trips before main-chain keys are at risk.</li>
-      <li><strong>Lattices</strong> and <strong>SPHINCS+</strong> - candidate replacement signature schemes.</li>
-      <li><strong>WOTS+Lamport</strong> and <strong>P2WOTS</strong> - two attempts at a Bitcoin-native one-time signature.</li>
+      <li><strong>Lattice signatures</strong> - candidate replacement signature scheme family (Dilithium, Falcon).</li>
+      <li><strong>WOTS+Lamport</strong> - chained one-time signature attempt, since pivoted.</li>
+      <li><strong>P2WOTS</strong> - a Bitcoin-native one-time signature output type, with a live signet demo.</li>
+      <li><strong>SPHINCS+ HD wallet</strong> - hash-based fallback path baked into BIP-32/44 derivation.</li>
       <li><strong>ECDSA.fail</strong> - the measurement layer: how close to feasible is the attack today?</li>
     </ul>
   </div></div>
@@ -103,7 +101,7 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
 <div class="slide" data-name="QCAP">
   <h2 class="slide-title cy">QCAP - Quantum Canary Alert</h2>
   <p class="subtitle">qatkk, Delving Bitcoin, 2026-05-11</p>
-  <div class="box cy"><div class="label">THE IDEA</div><div class="card-text">A <strong>"canary in a coal mine"</strong> address inside Bitcoin itself. Every Bitcoin key rests on a math problem (ECDLP) defined on a 256-bit curve. QCAP funds a Taproot address whose key is <strong>also valid on a deliberately weaker 192-bit curve</strong>. Smaller curve = easier to attack. If anyone ever breaks the weaker curve, they sweep the canary funds - and the world sees the spend on-chain as a real-money alarm that ECDLP attacks now exist, well before the main chain is in danger.</div></div>
+  <div class="box cy"><div class="label">THE IDEA</div><div class="card-text">A <strong>"canary in a coal mine"</strong> address inside Bitcoin itself. Every Bitcoin key rests on a math problem (ECDLP) defined on the 256-bit secp256k1 curve. QCAP picks a secret scalar small enough to also live on the weaker NIST <strong>secp192r1</strong> (192-bit) curve, then publishes <em>both</em> derived public keys - one on each curve - and funds the Bitcoin one. Smaller curve = easier to attack. If anyone ever breaks the discrete log on the 192-bit curve they recover the same scalar, sweep the canary funds, and the world sees the spend on-chain as a real-money alarm that ECDLP attacks now exist, well before the main chain is in danger.</div></div>
   <div class="cols">
     <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">MULTI-PARTY SETUP</div><div class="card-text">To make sure no founder secretly holds the key, <strong>n people each generate a piece</strong> and only the sum is funded. An <code>OP_RETURN</code> inside the funding transaction points to IPFS-hosted proofs that every step was honest, so anyone can audit the construction. A working proof-of-concept already sits on testnet (tx <code>ebfcee0b...4a628c</code>).</div></div>
     <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">OBJECTIONS</div><div class="card-text">
@@ -121,7 +119,7 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
 <div class="slide" data-name="Lattices">
   <h2 class="slide-title tl">Lattice-based Signatures</h2>
   <p class="subtitle">nkaretnikov, Delving Bitcoin, 2026-05-21</p>
-  <div class="box tl"><div class="label">THE PITCH</div><div class="card-text">Most of today's leading post-quantum signatures are built on <strong>lattices</strong> - high-dimensional grids whose hard problems do not collapse under any known quantum algorithm. <strong>Three of NIST's first four selected PQC algorithms</strong> are lattice-based; for signatures specifically, ML-DSA / Dilithium and Falcon are lattice schemes, while SPHINCS+ / SLH-DSA is hash-based. They also come with an unusual security property: a mathematical proof that the easiest version of the problem is essentially as hard as the hardest version - so an attacker can't get lucky on weak inputs. RSA and ECDSA don't have an equivalent guarantee.</div></div>
+  <div class="box tl"><div class="label">THE PITCH</div><div class="card-text">Most of today's leading post-quantum signatures are built on <strong>lattices</strong> - high-dimensional grids whose hard problems do not collapse under any known quantum algorithm. Three of NIST's first four standardised PQC algorithms are lattice-based (ML-KEM, ML-DSA, FN-DSA); among the first selected <em>signatures</em> specifically, two of three are lattice (ML-DSA / Dilithium and FN-DSA / Falcon) and one is hash-based (SLH-DSA / SPHINCS+). They also come with an unusual security property: a mathematical proof that the easiest version of the problem is essentially as hard as the hardest version - so an attacker can't get lucky on weak inputs. RSA and ECDSA don't have an equivalent guarantee.</div></div>
   <div class="cols">
     <div class="card"><div class="card-accent" style="background:var(--tl)"></div><div class="card-label" style="color:var(--tl)">WHAT'S DEBATED</div><div class="card-text">Practical wallet integration, whether multi-party / threshold signing works as cleanly as it does on Schnorr, and the headline catch: lattice signatures are much bigger than Schnorr's 64 bytes. The thread is a survey, not a BIP draft.</div></div>
     <div class="card"><div class="card-accent" style="background:var(--yl)"></div><div class="card-label" style="color:var(--yl)">REPLIES NOTE</div><div class="card-text">ion_minus (2026-05-28): the reductions are attractive but "devil is in the details" on implementation - and the on-chain cost of bigger signatures and pubkeys, once they live in every input's witness, is the load-bearing constraint.</div></div>
@@ -152,7 +150,7 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
 <div class="slide" data-name="P2WOTS">
   <h2 class="slide-title pk">P2WOTS</h2>
   <p class="subtitle">opus-lux, Delving Bitcoin, 2026-05-24 (signet demo 2026-06-04)</p>
-  <div class="box pk"><div class="label">CORE IDEA</div><div class="card-text">A new output type using lightweight Winternitz one-time signatures directly at the UTXO level. The initial thread targeted SegWit witness version 2, but Murch noted that BIP-360 / P2MR already uses that slot; opus-lux then moved the proposal toward witness version 3. The key insight: every Bitcoin transaction already has a globally unique txid, so the transaction itself becomes the per-key anchor - no shared list of "used" keys, no off-chain chaining. Each address commits to a small Merkle tree of <strong>64 ready-to-use one-time keys</strong>; a full spend signature comes to about <strong>434 vbytes</strong> (a Schnorr Taproot spend is ~57 vbytes, for context).</div></div>
+  <div class="box pk"><div class="label">CORE IDEA</div><div class="card-text">A new output type using lightweight Winternitz one-time signatures directly at the UTXO level. The initial thread targeted SegWit witness version 2, but Murch noted that BIP-360 / P2MR already uses that slot; opus-lux then moved the proposal toward witness version 3. The key insight: every Bitcoin transaction already has a globally unique txid, so the transaction itself becomes the per-key anchor - no shared list of "used" keys, no off-chain chaining. Each address commits to a small Merkle tree of <strong>64 ready-to-use one-time keys</strong>; one P2WOTS input contributes about <strong>434 vbytes</strong> of witness data (a Schnorr Taproot key-path input contributes ~57.5 vbytes, for the apples-to-apples comparison).</div></div>
   <div class="cols">
     <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">SIGNET DEMO (2026-06-04)</div><div class="card-text">Interactive wallet at <code>block_opuslux.ar.io</code>; reference implementation at <code>github.com/opus-lux/bitcoin-proposal</code>. Posted just before this Perth BitDevs - early code, expect rough edges.</div></div>
     <div class="card"><div class="card-accent" style="background:var(--rd)"></div><div class="card-label" style="color:var(--rd)">CONCERNS</div><div class="card-text">Murch:
@@ -188,8 +186,8 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
   <div class="box rd"><div class="label">THE CHALLENGE</div><div class="card-text">A quantum attack on a Bitcoin key needs two things: enough <strong>qubits</strong> (the "memory") and enough <strong>Toffoli gates</strong> (the costly operations). ECDSA.fail crowdsources the smallest possible quantum circuit to break secp256k1 - so the community has a single, comparable number tracking how close a real attack actually is. The baseline is Litinski's 2023 published circuit; submissions track improvements per model generation.</div></div>
   <div class="fact-grid">
     <div class="fact"><div class="fact-label">BABBUSH ET AL. (ARXIV 2603.28846)</div><div class="fact-val">2026 whitepaper: <strong>2-3&times; smaller</strong> gate and qubit count than Litinski by optimising the elliptic-curve point-addition circuit.</div></div>
-    <div class="fact"><div class="fact-label">BABBUSH TRADE-OFF</div><div class="fact-val">Two points on the same curve: ~<strong>1,200 logical qubits + 90M Toffolis</strong>, or ~<strong>1,450 logical qubits + 70M Toffolis</strong>. "Logical" is the error-corrected count - each one costs thousands of physical qubits in real hardware. Even the friendlier estimate is well beyond today's machines.</div></div>
-    <div class="fact"><div class="fact-label">SECP256K1 FOLLOW-UP</div><div class="fact-val">Schrottenloher (arXiv 2606.02235) gives a comparable secp256k1 circuit: about 1.5% more qubits than Babbush and 6.5-10% fewer Toffolis, exploiting secp256k1's pseudo-Mersenne prime structure.</div></div>
+    <div class="fact"><div class="fact-label">BABBUSH TRADE-OFF</div><div class="fact-val">Two upper-bound points on the same curve: &lt;<strong>1,200 logical qubits + &lt;90M Toffolis</strong>, or &lt;<strong>1,450 logical qubits + &lt;70M Toffolis</strong>. "Logical" is the error-corrected count - each one costs thousands of physical qubits in real hardware. Even the friendlier estimate is well beyond today's machines.</div></div>
+    <div class="fact"><div class="fact-label">SECP256K1 FOLLOW-UP</div><div class="fact-val">Schrottenloher (arXiv 2606.02235) gives a comparable secp256k1 circuit: roughly 1.5% more qubits than Babbush and 6.5-10% fewer Toffolis (baseline not pinned to one Babbush trade-off point in the abstract), exploiting secp256k1's pseudo-Mersenne prime structure.</div></div>
     <div class="fact"><div class="fact-label">WHY THIS MATTERS</div><div class="fact-val">Numbers like these are how the community decides what "cryptographically relevant" quantum computer means. QCAP, P2WOTS and SPHINCS+ all exist because that line keeps moving toward feasibility.</div></div>
   </div>
   <div class="links">
@@ -208,24 +206,5 @@ h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-b
   <div class="nav-info" id="navInfo"></div>
   <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
 </div>
-
-<script>
-const slides=document.querySelectorAll('.slide');
-const names=Array.from(slides).map(s=>s.dataset.name);
-let cur=0;
-function render(){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
-  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
-  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
-  document.getElementById('prevBtn').disabled=cur===0;
-  const nb=document.getElementById('nextBtn');
-  nb.disabled=cur===slides.length-1;
-  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
-}
-function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
-function goTo(i){cur=i;render()}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
-render();
-</script>
 </body>
 </html>

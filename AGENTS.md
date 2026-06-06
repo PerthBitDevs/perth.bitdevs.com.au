@@ -4,7 +4,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 ## Stack
 
-- Pure static HTML + inline CSS + inline JS
+- Pure static HTML + per-page inline CSS + small shared `/assets/` theme module
 - GitHub Pages with `.nojekyll` (no build)
 - Google Fonts: JetBrains Mono (headings/mono), DM Sans (body)
 - No deployed runtime dependencies, no package manager, no build tools
@@ -18,6 +18,11 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
   manifest.json     Current-month event/topic metadata source of truth
   index.html        Month hub (links to topic pages, or archive of topics)
   topic-name.html   Individual topic slides (Feb 2026+ only)
+/assets/            Shared static deps
+  theme.css         Light-mode token overrides + theme-toggle component (every page)
+  theme.js          Theme toggle handler — FOUC-prevention script stays inline per page (every page)
+  slide-chrome.css  Canonical slide-deck chrome (.header/.dots/.slide/.footer-nav/etc.) — canonical slide pages
+  slides.js         Slide runtime + disclosure handler + Escape→month (canonical slide pages)
 /templates/         Authoring templates copied into month folders; not deployed directly
   manifest.json.tmpl
   *.html.tmpl
@@ -32,8 +37,8 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 ## Commands
 
-- `just dev [port=8000]` - serve the static site locally
-- `just run [port=8000]` - serve locally, wait until ready, then open the browser; choose another port with `just run port=8001`
+- `just dev [port=8888]` - serve the static site locally
+- `just run [port=8888]` - serve locally, wait until ready, then open the browser; choose another port with `just run port=8889`
 - `just site-check` - validate local links, manifest consistency, slide conventions, and safety warnings
 - `just check` - run `site-check`, newswatch source validation, and newswatch tests
 - `just setup-newswatch` - create `.venv` and install newswatch dependencies
@@ -44,6 +49,27 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 1. **Interactive slide pages** (2026-02 onward): Per-topic HTML with slide navigation, keyboard controls, bespoke creative design per topic
 2. **Archive pages** (2023-12 through 2025-12): Single scrollable page per month listing all topics from the GitHub issue
+
+## Theming
+
+Every page — landing, about, month hubs, archives, slide decks, auxiliary visual pages — carries a light/dark theme toggle. Dark + Bitcoin-orange is the canonical default; light mode is an inverse warm-paper palette opted into via `data-theme="light"` on `<html>`. The preference is stored in `localStorage` under `pbd-theme` and the initial value falls back to `prefers-color-scheme`.
+
+The theme system is a single shared module:
+
+- `/assets/theme.css` — light-mode token overrides + `.theme-toggle` component CSS
+- `/assets/theme.js` — toggle button construction + click handler
+
+Each page loads them via three head-level tags inserted right after the Google Fonts `<link>`:
+
+```html
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/theme.js" defer></script>
+```
+
+The FOUC-prevention script stays inline because it must run before the stylesheet applies. Per-page inline `:root` token defaults remain — the shared module only carries the variations on top.
+
+When adding a new page, copy these three tags from `templates/month-hub.html.tmpl` (or any other template). To backfill the wiring across all pages run `python3 tools/wire_shared_theme.py` (idempotent). See `agent_docs/design-system.md` for the light palette and toggle behaviour.
 
 ## Source Templates
 
@@ -65,7 +91,7 @@ Static HTML site for [perth.bitdevs.com.au](https://perth.bitdevs.com.au). No bu
 
 ## Key Constraints
 
-- Every HTML page is **fully self-contained** (inline CSS, no external deps except Google Fonts)
+- Pages depend ONLY on: Google Fonts, `/assets/theme.{css,js}` (every page), and `/assets/slide-chrome.css` + `/assets/slides.js` (canonical slide pages only). All other CSS and JS stays inline per page (per-topic creative freedom). No build step. No framework.
 - New page work should start from `templates/`, then be edited in the target month directory.
 - Current-month non-topic HTML pages must be classified under `auxiliary_pages` in `manifest.json`; historical non-manifest exceptions are documented in `agent_docs/content-workflow.md`.
 - New slide pages should use the canonical class vocabulary in `agent_docs/slide-page-conventions.md`; avoid old shorthand names such as `.si`, `.st`, `.cl`, and `.ct`.

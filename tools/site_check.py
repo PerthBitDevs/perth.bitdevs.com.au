@@ -241,7 +241,12 @@ def check_slide_conventions(pages: list[HtmlPage], findings: list[Finding], stri
                 1,
                 "slide topic body must not use overflow:hidden",
             )
-        if "Escape" not in page.text or month_href not in page.text:
+        # Escape-back is provided either by an inline keydown handler OR by
+        # linking the shared /assets/slides.js (which derives the month URL
+        # from location.pathname).
+        has_inline_escape = "Escape" in page.text and month_href in page.text
+        has_shared_runtime = "/assets/slides.js" in page.text
+        if not (has_inline_escape or has_shared_runtime):
             add(
                 findings,
                 severity,

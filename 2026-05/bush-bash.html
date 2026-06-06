@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Australian Bitcoin Bush Bash 2026 — Perth BitDevs</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
 <style>
 :root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--gn:#22c55e;--gnG:rgba(34,197,94,.15);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.12);--pu:#a855f7;--puG:rgba(168,85,247,.12);--yl:#eab308;--ylG:rgba(234,179,8,.12);--tl:#14b8a6;--tlG:rgba(20,184,166,.12)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -20,9 +25,6 @@ body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xm
 .dot.on{border-color:var(--gn);background:var(--gnG);color:var(--gn);font-weight:700}
 .branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
 .branding:hover{color:var(--txM)}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
-.slide-inner{max-width:960px;margin:0 auto;width:100%}
-.slide{display:none}.slide.active{display:block}
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:-.02em;text-align:center;margin-bottom:12px;background:linear-gradient(135deg,var(--gn),#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .subtitle{text-align:center;color:var(--txM);font-size:20px;margin-bottom:18px;line-height:1.5}
 .info-box{background:var(--blG);border:1px solid rgba(59,130,246,.35);border-radius:8px;padding:14px 18px;margin-bottom:14px}
@@ -56,11 +58,9 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
 .format-val strong{color:var(--tx)}
 .links{display:flex;flex-direction:column;gap:5px;margin-top:10px}
 .links a{color:var(--gn);font-family:'JetBrains Mono',monospace;font-size:17px;text-decoration:none;opacity:.8}
-.links a:hover{opacity:1;text-decoration:underline}
 .note{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;margin-top:14px;line-height:1.5}
 .footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
 .nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
-.nav-btn:disabled{opacity:.4;cursor:default}
 .nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
 @media(max-width:600px){.format-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.event-row{grid-template-columns:auto 1fr;gap:10px}.event-state{grid-column:1/-1;justify-self:start;margin-top:4px}}
 </style>
@@ -166,22 +166,5 @@ h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight
   <div class="nav-info" id="navInfo"></div>
   <button class="nav-btn" id="nextBtn" onclick="go(1)" disabled>Next &rarr;</button>
 </div>
-
-<script>
-const slides=document.querySelectorAll('.slide');
-const names=Array.from(slides).map(s=>s.dataset.name);
-let cur=0;
-function render(){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
-  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
-  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
-  document.getElementById('prevBtn').disabled=cur===0;
-  document.getElementById('nextBtn').disabled=cur===slides.length-1;
-}
-function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
-function goTo(i){cur=i;render()}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-05/'});
-render();
-</script>
 </body>
 </html>

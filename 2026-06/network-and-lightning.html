@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Network and Lightning - Perth BitDevs June 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
 <style>
 :root{--bg:#0a0e17;--sf:#111827;--sf2:#1a2332;--bd:#1e293b;--bd2:#334155;--tx:#e2e8f0;--txM:#94a3b8;--txD:#64748b;--or:#f7931a;--orG:rgba(247,147,26,.15);--orD:rgba(247,147,26,.08);--rd:#ef4444;--rdG:rgba(239,68,68,.12);--rdD:rgba(239,68,68,.08);--gn:#22c55e;--gnG:rgba(34,197,94,.12);--gnD:rgba(34,197,94,.08);--bl:#3b82f6;--blG:rgba(59,130,246,.15);--blD:rgba(59,130,246,.08);--pu:#a855f7;--puG:rgba(168,85,247,.12);--puD:rgba(168,85,247,.08);--yl:#eab308;--ylG:rgba(234,179,8,.12);--ylD:rgba(234,179,8,.08);--cy:#06b6d4;--cyG:rgba(6,182,212,.12);--cyD:rgba(6,182,212,.08);--pk:#ec4899;--pkG:rgba(236,72,153,.12);--pkD:rgba(236,72,153,.08);--tl:#14b8a6;--tlG:rgba(20,184,166,.12);--tlD:rgba(20,184,166,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -18,9 +23,6 @@ body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xm
 .dot.on{border-color:var(--bl);background:var(--blG);color:var(--bl);font-weight:700}
 .branding{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:14px;text-decoration:none;transition:color .15s}
 .branding:hover{color:var(--txM)}
-.content{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;overflow:auto;position:relative;z-index:1}
-.slide-inner{max-width:960px;margin:0 auto;width:100%}
-.slide{display:none}.slide.active{display:block}
 h2.slide-title{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:800;letter-spacing:0;text-align:center;margin-bottom:14px;background:linear-gradient(135deg,var(--bl),#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.rd{background:linear-gradient(135deg,var(--rd),#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 h2.slide-title.gn{background:linear-gradient(135deg,var(--gn),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -33,8 +35,6 @@ h2.slide-title.tl{background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-b
 .card{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative}
 .card-accent{position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px;opacity:.6}
 .card-label{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;letter-spacing:.04em;margin-bottom:8px}
-.card-text{color:var(--txM);font-size:20px;line-height:1.55}
-.card-text strong{color:var(--tx)}
 .card-text code{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--bl);background:var(--blD);padding:2px 6px;border-radius:4px}
 .card-text ul{margin:6px 0 0 22px;padding:0}
 .card-text li{margin-bottom:4px}
@@ -56,14 +56,10 @@ h2.slide-title.tl{background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-b
 .fact-val{color:var(--txM);font-size:18px;line-height:1.4}
 .fact-val strong{color:var(--tx)}
 .fact-val code{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--bl);background:var(--blD);padding:2px 5px;border-radius:4px}
-.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
 .links a{color:var(--bl);font-family:'JetBrains Mono',monospace;font-size:16px;text-decoration:none;opacity:.85}
-.links a:hover{opacity:1;text-decoration:underline}
 .footer-nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--bd);flex-shrink:0;position:relative;z-index:10}
 .nav-btn{padding:6px 18px;border:1px solid var(--bd2);border-radius:6px;background:transparent;color:var(--txM);font-family:'JetBrains Mono',monospace;font-size:17px;cursor:pointer;transition:all .15s}
-.nav-btn:disabled{opacity:.4;cursor:default}
 .nav-btn.next{border-color:var(--bl);background:var(--blG);color:var(--bl)}
-.nav-btn.next:disabled{border-color:var(--bd);background:transparent;color:var(--txD)}
 .nav-info{color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:16px}
 @media(max-width:700px){.cols,.fact-grid{grid-template-columns:1fr}h2.slide-title{font-size:30px}.header{flex-wrap:wrap;gap:8px}.content{justify-content:flex-start}}
 </style>
@@ -167,7 +163,7 @@ h2.slide-title.tl{background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-b
   <p class="subtitle">dutenrapha, BNOC, 2026-05-28 (b10c's original prompt)</p>
   <div class="box cy"><div class="label">THE QUESTION</div><div class="card-text">b10c asked publicly: can the network spot <strong>"spy" public Electrum servers</strong> - those that surveillance firms (Chainalysis et al.) might be running to log address queries? The working hypothesis: a cheap way to deploy many such servers is to <strong>back them all by the same Bitcoin node</strong>, which would make their mempool views nearly identical.</div></div>
   <div class="cols">
-    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">METHOD</div><div class="card-text">Every five minutes, ask every public Electrum server listed at <code>1209k.com/bitcoin-eye</code> for its mempool fee histogram (via <code>mempool.get_fee_histogram</code>). Then compare every pair of histograms using a standard statistical "how different are these two distributions?" score - <strong>Jensen-Shannon Divergence</strong>. Servers whose histograms stay near-identical (JSD &le; 0.5) cluster together, a likely sign of a shared backing node.</div></div>
+    <div class="card"><div class="card-accent" style="background:var(--cy)"></div><div class="card-label" style="color:var(--cy)">METHOD</div><div class="card-text">Every five minutes, ask every public Electrum server listed at <code>1209k.com/bitcoin-eye</code> for its mempool fee histogram (via <code>mempool.get_fee_histogram</code>). Then compare every pair of histograms using a standard statistical "how different are these two distributions?" score - <strong>Jensen-Shannon Divergence</strong> (log base 2, so JSD is bounded [0, 1]). Servers whose histograms stay near-identical (JSD &le; 0.5) cluster together, a likely sign of a shared backing node.</div></div>
     <div class="card"><div class="card-accent" style="background:var(--pk)"></div><div class="card-label" style="color:var(--pk)">EARLY FINDINGS</div><div class="card-text"><strong>59 of 96</strong> registered servers respond; <strong>5 stable clusters</strong> persist across timestamps. Most server pairs report identical histograms (JSD = 0). Cluster 1 groups servers that look operationally unrelated - but it could also just reflect identical mempool-policy defaults.</div></div>
   </div>
   <div class="box yl"><div class="label">CAVEAT</div><div class="card-text">Tor servers are excluded in this first version. The author flags that matching histograms could indicate shared infrastructure or simply identical implementations - the test is suggestive, not conclusive.</div></div>
@@ -283,24 +279,5 @@ h2.slide-title.tl{background:linear-gradient(135deg,var(--tl),#5eead4);-webkit-b
   <div class="nav-info" id="navInfo"></div>
   <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next &rarr;</button>
 </div>
-
-<script>
-const slides=document.querySelectorAll('.slide');
-const names=Array.from(slides).map(s=>s.dataset.name);
-let cur=0;
-function render(){
-  slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
-  document.getElementById('dots').innerHTML=names.map((_,i)=>`<button class="dot${i===cur?' on':''}" onclick="goTo(${i})">${i+1}</button>`).join('');
-  document.getElementById('navInfo').textContent=names[cur]+' · '+(cur+1)+' / '+slides.length;
-  document.getElementById('prevBtn').disabled=cur===0;
-  const nb=document.getElementById('nextBtn');
-  nb.disabled=cur===slides.length-1;
-  nb.className=cur===slides.length-1?'nav-btn':'nav-btn next';
-}
-function go(d){cur=Math.max(0,Math.min(slides.length-1,cur+d));render()}
-function goTo(i){cur=i;render()}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1);if(e.key==='Escape')window.location.href='/2026-06/'});
-render();
-</script>
 </body>
 </html>

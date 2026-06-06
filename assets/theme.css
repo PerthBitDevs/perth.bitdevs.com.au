@@ -1,0 +1,99 @@
+/*
+ * Perth BitDevs — shared theme module.
+ *
+ * Loaded by every page. Carries the light-mode token overrides, the
+ * theme-toggle component, and the cross-page tweaks needed for light mode
+ * to read well on slide pages.
+ *
+ * Per-page :root token defaults stay inline on each page; this module only
+ * supplies the variations on top.
+ *
+ * See agent_docs/design-system.md for the full token vocabulary.
+ */
+
+/* ===== Light palette =================================================== */
+
+html[data-theme="light"] {
+  --bg:  #f7f4ec;
+  --sf:  #ffffff;
+  --sf2: #f1ebde;
+  --bd:  #e3d8c5;
+  --bdh: #cbbb9d;
+  --tx:  #1c1f24;
+  --txM: #4d5969;
+  --txD: #7a8597;
+  --or:  #b36a0f;
+  --orB: #b36a0f;
+  --orD: rgba(247,147,26,.12);
+  --orG: rgba(247,147,26,.32);
+}
+
+/* Glow is subtler on light bg — bump opacity */
+html[data-theme="light"] .glow { opacity: .55; }
+
+/* Landing/hub h1 gradient — darken so it reads on light bg */
+html[data-theme="light"] h1 {
+  background: linear-gradient(135deg, #9c5b0d 0%, #f7931a 50%, #9c5b0d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Slide-deck title gradient — same treatment as h1 */
+html[data-theme="light"] h2.slide-title {
+  background: linear-gradient(135deg, #9c5b0d 0%, #f7931a 50%, #9c5b0d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Slide hero text often uses color:#fff for emphasis — flip to dark in light mode */
+html[data-theme="light"] .hero-text strong,
+html[data-theme="light"] .card-text strong { color: var(--tx); }
+
+/* Hover shadows on cards — soften dark dropshadow for light bg */
+html[data-theme="light"] a.event:hover,
+html[data-theme="light"] a.card:hover,
+html[data-theme="light"] a.topic:hover,
+html[data-theme="light"] .card:hover {
+  box-shadow: 0 4px 24px rgba(120, 72, 10, .15);
+}
+
+/* ===== Theme toggle component ========================================== */
+
+.theme-toggle {
+  background: var(--sf);
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--txM);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+  flex-shrink: 0;
+}
+.theme-toggle:hover { border-color: var(--bdh); color: var(--or); }
+.theme-toggle svg { width: 14px; height: 14px; }
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon { display: none; }
+html[data-theme="dark"]  .theme-toggle .icon-sun  { display: inline-block; }
+html[data-theme="light"] .theme-toggle .icon-moon { display: inline-block; }
+
+/* On standalone pages (no .header bar) the toggle floats top-right.
+   On slide pages the script inserts it inside .header as a flex sibling,
+   so the fixed positioning is skipped via the .in-header marker class. */
+.theme-toggle:not(.in-header) {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1100;
+}
+
+@media print { .theme-toggle { display: none; } }

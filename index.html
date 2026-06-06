@@ -11,8 +11,12 @@
 <meta property="og:url" content="https://perth.bitdevs.com.au">
 <link rel="icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/theme.js" defer></script>
 <style>
   :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12)}
+
   *{margin:0;padding:0;box-sizing:border-box}
   body{background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
   body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:1000}
@@ -74,7 +78,7 @@
   <header>
     <h1>Perth BitDevs</h1>
     <p class="tagline">Monthly socratic seminar exploring Bitcoin development, protocol changes, and the broader technical ecosystem.</p>
-    <p class="meta-line"><strong style="color:var(--or)">Next:</strong> Thursday 4 June 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</p>
+    <p class="meta-line"><strong style="color:var(--or)">Next:</strong> Thursday 2 July 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</p>
     <p class="meta-line">First Thursday of each month &middot; <a href="/about.html">About</a></p>
     <div class="nav-row">
       <a class="nav-link" href="https://github.com/PerthBitDevs/PerthBitDevs/issues" target="_blank" rel="noopener">Add a topic for discussion on GitHub</a>
@@ -85,22 +89,14 @@
 
   <div class="section-label">Upcoming</div>
   <div class="section-gap">
-    <a class="event next" href="/2026-06/">
+    <a class="event next" href="https://github.com/PerthBitDevs/PerthBitDevs/issues/37" target="_blank" rel="noopener">
       <span class="next-badge">Next Meetup</span>
-      <div class="event-title">June 2026</div>
-      <div class="event-meta-line"><span class="when">Thursday 4 June, 6pm</span> &middot; Rocky Ridge, Burswood</div>
-      <div class="event-desc"><ul>
-        <li><strong>Silent Payments</strong> - Sparrow 2.5.x receiving-wallet support, BIP-352, scan/spend keys</li>
-        <li><strong>Post-quantum Bitcoin</strong> - QCAP, lattice signatures, P2WOTS, hybrid SPHINCS+, and ECDSA.fail</li>
-        <li><strong>BIP-110 watch</strong> - recurring policy thread; no concrete update this window</li>
-        <li><strong>Changing consensus</strong> - BIP-54 to Complete, BIP-449 OP_TWEAKADD, BIP 3 process discussion</li>
-        <li><strong>Covenants and exits</strong> - CTV-only vaults, sibling-aware covenant design, replay protection, blockspace limits</li>
-        <li><strong>Network and Lightning</strong> - BNOC threads, Electrum monitoring, CLN DoS disclosure, v26.06 RCs, LND rc1/rc3</li>
-        <li><strong>News roundup</strong> - Core merges, reproducibility, secp256k1, funding orgs, mempool policy, AI security, Travel Rule, Nostr VPN, Kagikai, Zcash upgrade</li>
-      </ul></div>
+      <div class="event-title">July 2026</div>
+      <div class="event-meta-line"><span class="when">Thursday 2 July, 6pm</span> &middot; Rocky Ridge, Burswood</div>
+      <div class="event-desc">Topics open for discussion. Suggest one on the GitHub issue.</div>
       <div class="event-tags">
-        <span class="event-tag">7 topics</span>
-        <span class="event-tag">Interactive slides</span>
+        <span class="event-tag">Topics open</span>
+        <span class="event-tag">GitHub issue &nearr;</span>
       </div>
     </a>
   </div>
@@ -109,6 +105,18 @@
 
   <div class="section-label">2026</div>
   <div class="section-gap">
+    <a class="event" href="/2026-06/">
+      <div class="event-top">
+        <span class="event-date">Thursday 4 June 2026</span>
+        <span class="event-arrow">&rarr;</span>
+      </div>
+      <div class="event-title">June 2026</div>
+      <div class="event-desc">Silent Payments in Sparrow 2.5.x, post-quantum Bitcoin (QCAP, lattice signatures, P2WOTS, SPHINCS+), BIP-110 watch, consensus changes (BIP-54, BIP-449, BIP 3), CTV vaults and covenant exits, Lightning DoS disclosures and v26.06/LND RCs, news roundup.</div>
+      <div class="event-tags">
+        <span class="event-tag">7 topics</span>
+        <span class="event-tag">Interactive slides</span>
+      </div>
+    </a>
     <a class="event" href="/2026-05/">
       <div class="event-top">
         <span class="event-date">7 May 2026</span>
@@ -307,5 +315,6 @@
   </footer>
 
 </div>
+
 </body>
 </html>

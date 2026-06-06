@@ -3,6 +3,7 @@
 ## Contents
 
 - [Color Palette](#color-palette)
+- [Light Mode](#light-mode)
 - [Typography](#typography)
 - [Google Fonts Import](#google-fonts-import)
 - [Shared Visual Elements](#shared-visual-elements)
@@ -46,6 +47,69 @@ All pages use CSS custom properties. The canonical set:
 ```
 
 Each semantic color has a dim variant at ~12% opacity for backgrounds (e.g. `--bld: rgba(59,130,246,.12)`).
+
+## Light Mode
+
+Dark + Bitcoin-orange is the canonical default. Every page — landing, about, month hubs, archives, slide decks, auxiliary visual pages — supports a user-toggleable light mode via `data-theme="light"` on `<html>`. The light palette is warm-paper inverse: cream background, white card surfaces, darker orange text accents for AA contrast.
+
+### Where the theme lives
+
+The light overrides and toggle component are NOT inlined per page. They live in a single shared module:
+
+- [`/assets/theme.css`](../assets/theme.css) — `html[data-theme="light"]` token overrides and slide-page-specific tweaks (gradient h1, slide-title gradient, hero-text strong colour), plus the `.theme-toggle` button styles
+- [`/assets/theme.js`](../assets/theme.js) — toggle button construction (sun/moon SVGs, no emoji), click handler, localStorage persistence
+
+Per-page inline `:root { ... }` blocks still define the dark token defaults. The shared `theme.css` only supplies the `[data-theme="light"]` overrides on top — attribute-selector specificity ensures the override wins over inline `:root`.
+
+### Per-page wiring
+
+Three head-level tags inserted immediately after the Google Fonts `<link>`:
+
+```html
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/theme.js" defer></script>
+```
+
+The first script must stay inline — it has to run before the stylesheet applies, otherwise the page flashes the wrong theme. The other two are external. Each template in `templates/` already includes this block; new pages copied from a template inherit it.
+
+### Toggle placement
+
+`theme.js` adapts placement to the page:
+
+- **Slide pages**: detects `.header > .branding` (the "← Topics" back link) and appends the toggle inside `.header` as a flex sibling so it sits naturally in the header bar.
+- **All other pages**: appends to `<body>` with `position: fixed; top: 16px; right: 16px;`.
+
+### Tokens
+
+```css
+html[data-theme="light"] {
+  --bg:  #f7f4ec;   /* warm paper background */
+  --sf:  #ffffff;   /* white card surface */
+  --sf2: #f1ebde;   /* hover surface */
+  --bd:  #e3d8c5;   /* warm border */
+  --bdh: #cbbb9d;   /* warm border hover */
+  --tx:  #1c1f24;   /* primary text */
+  --txM: #4d5969;   /* muted text */
+  --txD: #7a8597;   /* dim text */
+  --or:  #b36a0f;   /* darker orange for AA on light bg */
+  --orB: #b36a0f;
+  --orD: rgba(247,147,26,.12);
+  --orG: rgba(247,147,26,.32);
+}
+```
+
+The semantic accents (`--bl`, `--gn`, `--rd`, `--cy`, `--pu`, `--pk`, `--yl`, `--tl`) are **not** overridden — they read fine on warm paper and preserve the meaning each colour carries on topic cards.
+
+### Backfill
+
+To re-wire every page (e.g. after touching the templates), run:
+
+```bash
+python3 tools/wire_shared_theme.py
+```
+
+It is idempotent — already-wired pages report `skip`.
 
 ## Typography
 
