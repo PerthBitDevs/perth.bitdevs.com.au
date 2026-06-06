@@ -101,7 +101,7 @@ check:
     just news-test
 
 # Serve the site locally with working absolute links
-dev port="8000":
+dev port="8888":
     #!/usr/bin/env bash
     set -euo pipefail
     port_arg="{{port}}"
@@ -109,7 +109,7 @@ dev port="8000":
     ruby -run -e httpd . -p "$port"
 
 # Open the site in the default browser
-open port="8000":
+open port="8888":
     #!/usr/bin/env bash
     set -euo pipefail
     port_arg="{{port}}"
@@ -117,7 +117,7 @@ open port="8000":
     open "http://localhost:$port"
 
 # Serve and open in one step
-run port="8000":
+run port="8888":
     #!/usr/bin/env bash
     set -euo pipefail
     port_arg="{{port}}"
@@ -127,7 +127,7 @@ run port="8000":
       exit 2
     fi
     if lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
-      echo "Port $port is already in use. Choose another port, e.g. just run port=8001" >&2
+      echo "Port $port is already in use. Choose another port, e.g. just run port=8889" >&2
       exit 1
     fi
 

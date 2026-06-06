@@ -36,7 +36,7 @@ just dev
 just run port=8001
 ```
 
-`just dev` serves the static site on port 8000 by default. `just run` starts the server, waits until it is responding, opens the browser, and cleans up the server when the command exits. Pass `port=NNNN` when the default port is already in use.
+`just dev` serves the static site on port 8888 by default. `just run` starts the server, waits until it is responding, opens the browser, and cleans up the server when the command exits. Pass `port=NNNN` when the default port is already in use.
 
 ## Newswatch Helper
 
