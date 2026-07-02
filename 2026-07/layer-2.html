@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>State of Layer 2 - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--cy);--accent-bg:var(--cyd);--accent-glow:var(--cyd);--accent-border:var(--cy);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+.card-text ul{margin:6px 0 0 20px;padding:0}
+.card-text li{margin-bottom:5px}
+.caveat{text-align:center;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Layer 2</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">State of Layer 2</h2>
+  <p class="subtitle">Ark reaches mainnet without covenants, BitVM bridges become the federations' stated successor, and chaumian ecash moves on-chain.</p>
+  <div class="hero">
+    <div class="hero-kicker">Takeaway</div>
+    <div class="hero-text">A spectrum from most-trustless to most-federated: Ark and covenants, BitVM bridges, ecash, statechains, and one sidechain winding down.</div>
+  </div>
+  <div class="links">
+    <a href="https://blog.second.tech/bark-now-on-bitcoin-mainnet/" target="_blank" rel="noopener">Second: bark on mainnet</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Ark">
+  <h2 class="slide-title">Ark Reaches Mainnet</h2>
+  <p class="subtitle">A shared-UTXO design that ships today without any new consensus rules.</p>
+  <div class="grid">
+    <div class="card cy">
+      <div class="card-label">THE LAUNCH</div>
+      <div class="card-text">Second (Steven Roose) put its Ark client <strong>bark on Bitcoin mainnet on 9 June</strong>, which Second describes as the first Ark client on mainnet rather than signet.</div>
+    </div>
+    <div class="card tl">
+      <div class="card-label">WHAT ARK IS</div>
+      <div class="card-text">Many users share on-chain UTXOs through trees of pre-signed off-chain transactions (VTXOs). There are <strong>no Lightning channels and no pre-allocated liquidity</strong>, and a user can still exit unilaterally to the main chain.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">NO COVENANTS NEEDED</div>
+      <div class="card-text">bark runs <strong>without CTV or CSFS</strong> today, using all-of-all pre-signed "pseudo-covenants". Covenants would make it cheaper and less interactive, but are not required to ship.</div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">TWO ARKS, DON'T CONFLATE</div>
+      <div class="card-text">Second builds <strong>bark / barkd / aspd</strong> (the mainnet launch). <strong>Ark Labs</strong> builds Arkade / arkd, in public beta since October 2025 with point releases this month. Different teams, same idea.</div>
+    </div>
+  </div>
+  <div class="links">
+    <a href="https://blog.second.tech/bark-now-on-bitcoin-mainnet/" target="_blank" rel="noopener">Second: bark on mainnet</a>
+    <a href="https://github.com/arkade-os/arkd" target="_blank" rel="noopener">Ark Labs: arkd</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Ark in practice">
+  <h2 class="slide-title">What Ark Is For</h2>
+  <p class="subtitle">The clearest use case is cheap, self-custodial payments without channel liquidity.</p>
+  <div class="grid">
+    <div class="card cy">
+      <div class="card-label">AFRICA SETTLEMENT PILOT</div>
+      <div class="card-text">At the bitcoin++ Nairobi hackathon, Second, Tando, Mavapay and JunubBTC ran a pilot where Tando swapped its phoenixd Lightning setup for a Bark client, cutting liquidity cost an estimated <strong>50-80%</strong> while keeping self-custodial, exitable VTXOs.</div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">ECASH TO MOBILE MONEY</div>
+      <div class="card-text">The pilot melts blinded ecash into a mobile-money gateway over Ark at 0% network fee, with a Bark cosignature proof-of-reserves. It runs on <strong>testnet</strong> (Kenya M-PESA to South Sudan MTN MoMo), separate from the mainnet launch.</div>
+    </div>
+    <div class="card bl">
+      <div class="card-label">LIGHTNING BACKEND</div>
+      <div class="card-text">Alby built a Bark backend for its hub, so NWC apps can make Lightning payments backed by Ark VTXOs with no Lightning node or channels of their own.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">SECURITY RELEASE TRAIN</div>
+      <div class="card-text">Six bark releases (0.2.2 to 0.3.0) focused on the unilateral-exit game: 0.2.5 was a security release (nonce-reuse and HTLC-expiry fixes), and 0.3.0 stops committing VTXOs until broadcast and auto-recovers force-exited ones.</div>
+    </div>
+  </div>
+  <p class="caveat">Second's launch post omitted round interval, VTXO expiry, exit window and amount caps; confirm parameters before relying on them.</p>
+</div>
+
+<div class="slide" data-name="Covenants">
+  <h2 class="slide-title">Covenants Without a Soft Fork</h2>
+  <p class="subtitle">Two June threads showed how much is already possible on today's rules.</p>
+  <div class="grid">
+    <div class="card tl">
+      <div class="card-label">CSFS + CAT DEMOS</div>
+      <div class="card-text">AaronZhang posted three live Inquisition-signet transactions showing <strong>OP_CHECKSIGFROMSTACK + OP_CAT</strong> can reproduce most dedicated covenant behaviour: CTV-style output binding, input binding (constraining <code>sha_prevouts</code>), and eltoo-style state replacement. He concedes it shows capability, not efficiency.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">TRANSACTION EXPIRY VIA BIT 21</div>
+      <div class="card-text">Josh proposed giving <strong>nSequence bit 21</strong> a meaning: such a transaction expires if its input confirms too late. A 100-block maturity rule makes it immune to the free-relay attacks that sank OP_EXPIRE, and it defeats Lightning replacement-cycling with "no new opcode, just bit 21".</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="BitVM">
+  <h2 class="slide-title">BitVM Bridges</h2>
+  <p class="subtitle">Federated pegs are naming BitVM-style bridges as their intended successor.</p>
+  <div class="grid">
+    <div class="card bl">
+      <div class="card-label">UNION ON ROOTSTOCK</div>
+      <div class="card-text">Fairgate Labs and RootstockLabs put the <strong>Union bridge on Rootstock testnet</strong> (on BitVMX): lock BTC on L1, mint on Rootstock, redeem via on-chain fraud proofs, secured by a <strong>1-of-n honest</strong> functionary set. This is the path Rootstock intends to use to replace its 5-of-9 federated PowPeg.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">LIQUID NAMES A SUCCESSOR</div>
+      <div class="card-text">Blockstream's roadmap names a <strong>BitVM-style 1-of-n bridge</strong> as the eventual successor to Liquid's 15-functionary multisig peg. It is research-stage, but the oldest production sidechain federation naming BitVM is a directional signal.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">WHERE THE DEBATE IS</div>
+      <div class="card-text">The open question has shifted from "does it work" to the <strong>griefing and DoS economics</strong> of operator bonds and challenge games.</div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">DON'T MISREAD CITREA</div>
+      <div class="card-text">Citrea widening a bridge multisig from 2-of-2 to 3-of-4 is a custody-multisig change for wrapped assets, <strong>not</strong> a milestone for its BitVM2 Bitcoin bridge. Keep the two separate.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Ecash">
+  <h2 class="slide-title">Ecash As a Bitcoin Layer</h2>
+  <p class="subtitle">Chaumian ecash spec work is making mints usable as on-chain on-ramps.</p>
+  <div class="grid">
+    <div class="card pu">
+      <div class="card-label">NUT-30: ON-CHAIN MINT/MELT</div>
+      <div class="card-text">Cashu's NUT-30 lets you mint and melt ecash directly against <strong>on-chain Bitcoin</strong> with no Lightning hop, using a reusable deposit address, so a mint can act as an on and off ramp. Shipped in CDK v0.17.0.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">NUT-12: SAFER NONCES</div>
+      <div class="card-text">NUT-12 derives the DLEQ proof nonce deterministically via HMAC instead of trusting the RNG, closing a <strong>nonce-reuse to mint-key-recovery</strong> footgun, the same failure mode as the 2013 repeated-nonce ECDSA thefts.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">PAYJOIN TO CASHU</div>
+      <div class="card-text">A draft (CDK PR #2049) combines NUT-30 on-chain deposits with BIP-77 async Payjoin: the receiver contributes a UTXO to break the common-input heuristic.</div>
+    </div>
+    <div class="card tl">
+      <div class="card-label">FEDIMINT V2</div>
+      <div class="card-text">Fedimint's v2 mint and wallet modules now <strong>compile under WASM</strong> for browser and mobile clients, with a gateway latency win. Still experimental on master.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Statechains">
+  <h2 class="slide-title">Statechains: Spark and Mercury</h2>
+  <p class="subtitle">Fast shipping does not change the underlying trust model; read it directly.</p>
+  <div class="grid">
+    <div class="card yl">
+      <div class="card-label">SPARK SHIPPED A LOT</div>
+      <div class="card-text">Lightspark's Spark added a two-phase-commit consensus engine, mutual operator authentication, exit and refund hardening, and five SDK releases this month.</div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">THE TRUST MODEL</div>
+      <div class="card-text">Spark is a <strong>two-operator federation</strong> (Lightspark and Flashnet) whose safety rests on honest key deletion at transfer time that cannot be observed or proven. Spark's own research brands this "perfect forward security"; read it as a semi-trusted federation with a liveness-dependent exit and judge the framing yourself.</div>
+    </div>
+    <div class="card bl">
+      <div class="card-label">MERCURY LAYER</div>
+      <div class="card-text">Mercury Layer is the blinded-operator contrast, where the operator cannot see the transfer tree. As of late June its public repository was <strong>not reachable</strong> without authentication and had no recent releases; treat its status as unconfirmed.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">A TEACHING PAIR</div>
+      <div class="card-text">Blinded operator (Mercury) versus sees-the-tree operator (Spark) is a clean way to show what "statechain" actually leaves you trusting.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Wind-down">
+  <h2 class="slide-title">A Sidechain Winds Down</h2>
+  <p class="subtitle">An orderly shutdown still ends in a federation sweep at a deadline.</p>
+  <div class="grid">
+    <div class="card rd">
+      <div class="card-label">BOTANIX CLOSES SPIDERCHAIN</div>
+      <div class="card-text">Botanix is winding down its EVM Spiderchain. Users must <strong>peg out before 9 July</strong>; after that the rotating BTC-bonded federation sweeps remaining BTC, and other tokens are unrecoverable.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">WHY IT MATTERS</div>
+      <div class="card-text">It ran about a year (~25M transactions, ~200k wallets) and shut down over <strong>economics, not an exploit</strong>: fee revenue never covered costs and there was no token to subsidise it. A rare clean post-mortem of a federated-peg sidechain.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">Which of these is actually trust-minimised?</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">For each design, who can take or freeze your coins, and what does a unilateral exit really require?</div></div>
+    <div class="card cy"><div class="card-label">QUESTION</div><div class="card-text">Ark ships without covenants today. What would CTV or CSFS actually buy it, and is that worth a soft fork?</div></div>
+    <div class="card bl"><div class="card-label">QUESTION</div><div class="card-text">If federations are naming BitVM bridges as their successor, how far off is a 1-of-n bridge you would trust with real size?</div></div>
+    <div class="card rd"><div class="card-label">OPEN ISSUE</div><div class="card-text">Several projects market honest-operator or custodial-multisig designs as trustless L2s; read the trust model before repeating the label.</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

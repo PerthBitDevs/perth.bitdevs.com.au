@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Stacker News? - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--tl);--accent-bg:var(--tld);--accent-glow:var(--tld);--accent-border:var(--tl);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+.card-text ul{margin:6px 0 0 20px;padding:0}
+.card-text li{margin-bottom:5px}
+.caveat{text-align:center;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Community tools</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">What Is Stacker News?</h2>
+  <p class="subtitle">A speaker-led introduction from frequent participant OT.</p>
+  <div class="hero">
+    <div class="hero-kicker">Session</div>
+    <div class="hero-text">OT walks through Stacker News as a Bitcoin-native discussion site, then opens up the design questions around sats, incentives and community moderation.</div>
+  </div>
+</div>
+
+<div class="slide" data-name="What It Is">
+  <h2 class="slide-title">What Stacker News Is</h2>
+  <p class="subtitle">A link-aggregator and discussion site in the mould of Hacker News or Reddit, but built on Bitcoin.</p>
+  <div class="grid">
+    <div class="card tl">
+      <div class="card-label">THE FORMAT</div>
+      <div class="card-text">Users post links and discussion threads about Bitcoin, Lightning and related topics, and comment on each other's posts. The feed ranks what rises to the top.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">POWERED BY LIGHTNING</div>
+      <div class="card-text">What sets it apart is that participation runs on <strong>Bitcoin micropayments over the Lightning Network</strong>, not ad revenue or free engagement.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">ACCOUNTS</div>
+      <div class="card-text">Accounts are pseudonymous and you can sign in with a Lightning wallet; there is no KYC to read or post.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">OPEN SOURCE</div>
+      <div class="card-text">The site is open source and was created by the developer known as <strong>k00b</strong>.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Sats">
+  <h2 class="slide-title">How Sats Change the Feed</h2>
+  <p class="subtitle">The core idea: an upvote costs money, so attention is expressed in sats rather than free clicks.</p>
+  <div class="grid">
+    <div class="card gn">
+      <div class="card-label">ZAPPING IS THE UPVOTE</div>
+      <div class="card-text">Instead of a free click, you <strong>zap</strong> a post or comment by paying it a small amount of sats. The payment is the upvote.</div>
+    </div>
+    <div class="card tl">
+      <div class="card-label">POSTING COSTS SATS</div>
+      <div class="card-text">Posting and some other actions cost a small amount of sats. That fee is a <strong>spam-resistance mechanism</strong>: low-effort content is no longer free to publish.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">RANKING</div>
+      <div class="card-text">The feed blends those sat signals with recency, so what rises reflects what people were willing to pay to signal, not just raw clicks.</div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">BOOST</div>
+      <div class="card-text">A poster can also pay sats to <strong>boost</strong> a post's visibility, an explicit, priced way to buy attention rather than a hidden algorithm.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Territories">
+  <h2 class="slide-title">Territories And Rewards</h2>
+  <p class="subtitle">Where the sats go, and how the site is organised into communities.</p>
+  <div class="grid">
+    <div class="card tl">
+      <div class="card-label">TERRITORIES</div>
+      <div class="card-text">Content is organised into <strong>territories</strong>, user-created sub-communities for particular topics, run and moderated by their founder. The rough analogue is a subreddit.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">REWARDS POOL</div>
+      <div class="card-text">Stacker News pays out a pool of sats to top contributors, posters, commenters and curators, funded by the site's own revenue from fees and zaps.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">THE LOOP</div>
+      <div class="card-text">Attention is paid in sats, and some of that value flows back to the people who post and curate, rather than to advertisers or the platform alone.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Walkthrough">
+  <h2 class="slide-title">For OT's Walkthrough</h2>
+  <p class="subtitle">A lightweight agenda for the live demo.</p>
+  <div class="grid">
+    <div class="card tl"><div class="card-label">THE FEED</div><div class="card-text">How links, discussion posts and comments surface, and what the ranking rewards.</div></div>
+    <div class="card gn"><div class="card-label">A LIVE ZAP</div><div class="card-text">Watching a real sat payment act as an upvote, and what posting costs.</div></div>
+    <div class="card cy"><div class="card-label">A TERRITORY</div><div class="card-text">Browsing a territory, who runs it, and how it differs from a normal forum board.</div></div>
+    <div class="card yl"><div class="card-label">IDENTITY</div><div class="card-text">What a handle and payment history signal that a normal forum account does not.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">Questions for the room after OT's walkthrough.</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">Does adding sats make the conversation better, or just different?</div></div>
+    <div class="card pu"><div class="card-label">MODERATION</div><div class="card-text">What should be handled by explicit moderation, and what should be handled by incentives and user behaviour?</div></div>
+    <div class="card bl"><div class="card-label">COMMUNITY</div><div class="card-text">Could this kind of tool help local Bitcoin communities between meetups?</div></div>
+    <div class="card rd"><div class="card-label">TRADEOFF</div><div class="card-text">Where does payment-linked participation create friction, exclusion, spam resistance or privacy concerns?</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

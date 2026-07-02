@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "month": "2026-07",
+  "status": "ready",
+  "content_status": "ready",
+  "event": {
+    "title": "July 2026",
+    "date": "2026-07-02",
+    "date_label": "Thursday 2 July 2026",
+    "short_date_label": "Thursday 2 July",
+    "time_label": "6pm",
+    "timezone": "Australia/Perth",
+    "venue": {
+      "name": "Rocky Ridge",
+      "suburb": "Burswood",
+      "label": "Rocky Ridge, Burswood"
+    }
+  },
+  "sources": {
+    "newswatch_packet": {
+      "markdown": "tools/newswatch/runs/20260630-roundup-agents.md"
+    },
+    "note": "No GitHub issue this cycle; topics seeded from the pre-meetup research packet."
+  },
+  "topic_count": 6,
+  "topics": [
+    {
+      "file": "news-roundup.html",
+      "title": "News Roundup - July",
+      "category": "News roundup",
+      "status": "ready",
+      "slides": 12,
+      "summary": "Cross-topic roundup with focused slides for Core privatebroadcast IP leak, BIP-452 P2P UTXO-set sharing with an AssumeUTXO explainer, wallet/dependency work (Branch-and-Bound, libevent removal, RBF signalling, compaction and secp256k1 performance), Core process (meta#46), Project Loupe's LDK v0.2.3 security and interop fixes, funding (Maelstrom, OpenSats/Utreexo, Brink Hornet/Bedrock, contribution-spam tooling), privacy (Marmot v2, Payjoin-to-Cashu), self-custody and policy (AUSTRAC Travel Rule, Bitaroo's SHAZAM opt-out, libssh2 RCE, Ledger mail scam), network measurement (b10c connection rates, v2 transport, ASmap dashboard), and a markets slide on Strategy's STRC preferred trading below par (paused ATM issuance, first BTC sale since 2022, 11.50% rate held vs Strive's SATA, and the dividend-sustainability debate). Not sourced from the newswatch packet; STRC facts were web-verified against CoinDesk (June 2026) and are fast-moving.",
+      "tags": [
+        "core",
+        "project-loupe",
+        "ldk",
+        "funding",
+        "travel-rule",
+        "privacy",
+        "network"
+      ],
+      "source_refs": [
+        "tools/newswatch/runs/20260630-roundup-agents.md"
+      ]
+    },
+    {
+      "file": "stacker-news.html",
+      "title": "What Is Stacker News?",
+      "category": "Community tools",
+      "status": "ready",
+      "slides": 6,
+      "summary": "Speaker-led session by frequent participant OT, with factual grounding added: what Stacker News is (a Lightning-powered link-aggregator and discussion site, pseudonymous, open source, by k00b), how sats change the feed (zapping as the upvote, posting fees for spam resistance, boost, sat-weighted ranking), territories and the rewards pool, a lightweight live-demo agenda for OT, and discussion questions on moderation, identity, rewards and community norms.",
+      "tags": [
+        "stacker-news",
+        "community",
+        "sats",
+        "lightning",
+        "ot"
+      ],
+      "source_refs": [
+        "Presenter: OT"
+      ]
+    },
+    {
+      "file": "august-fork.html",
+      "title": "The August Fork: BIP-110 and Drivechains",
+      "category": "Policy and consensus",
+      "status": "ready",
+      "slides": 8,
+      "summary": "Two contentious August events: BIP-110's mandatory-signaling window near block 961,632 (~7 Aug) at near-zero hashrate, 55% threshold, no Core enforcement; and, separately, a Sztorc/LayerTwo Labs hard-fork spinoff chain floated for late August (new SHA-256d chain, one-time difficulty reset, 1:1 airdrop) - BIP-300 itself is the Drivechains (hashrate-escrow) soft fork, not the spinoff. Plus Adam Back and Jameson Lopp's chain-split warnings; the data-carrier backdrop (Blockspace Weekly Alkanes numbers, the Segregated Data counter-proposal); and the BNOC/b10c fork-day monitoring plan. Block heights, dates and signalling figures are fast-moving; re-verify before the meetup.",
+      "tags": [
+        "bip-110",
+        "drivechains",
+        "bip-300",
+        "data-carrier",
+        "soft-fork",
+        "chain-split",
+        "monitoring"
+      ],
+      "source_refs": [
+        "tools/newswatch/runs/20260630-roundup-agents.md"
+      ]
+    },
+    {
+      "file": "stratum-v2.html",
+      "title": "Stratum V2",
+      "category": "Mining",
+      "status": "ready",
+      "slides": 7,
+      "summary": "On 25 June GoMining mined the first known live Bitcoin block with miner-selected transactions via Stratum V2 job declaration on the DMND pool. The deck covers what SV2 job declaration changes (transaction selection moves from pool to miner), adoption (about seven pools, ~75% hashrate, joined the SV2 working group in May, but only Braiins and DMND run SV2 natively; OCEAN uses its own DATUM protocol), the stack (SRI v1.10.0 libraries and v0.5.0 apps on 3 June, Bitcoin Core Mining IPC submitBlock #34644), and the SV2-vs-DATUM debate (Luke Dashjr's criticism). Adoption and hashrate figures are fast-moving; re-verify before the meetup.",
+      "tags": [
+        "stratum-v2",
+        "mining",
+        "job-declaration",
+        "datum",
+        "decentralisation",
+        "braiins"
+      ],
+      "source_refs": [
+        "tools/newswatch/runs/20260630-roundup-agents.md"
+      ]
+    },
+    {
+      "file": "post-quantum-migration.html",
+      "title": "Post-Quantum Migration",
+      "category": "Post-quantum cryptography",
+      "status": "ready",
+      "slides": 7,
+      "summary": "July post-quantum migration deck expanded into one slide per thread: the PQ output type (P2MR/BIP-360 vs P2TRv2) under Wuille's Never/Later/Now framing; the Tripwire and Miner Lockdown proposals for triggering EC disabling (Wuille, Dryja, Sjors); BIP-360 PR #2198 (depth-zero anyone-can-spend, a privacy fix; ~32 weight-unit overhead vs P2TRv2 with the EC key-recovery trick); SHRINCS and the stateful-signing problem; and PACT/Quantum Sunset migration economics.",
+      "tags": [
+        "pqc",
+        "bip-360",
+        "p2trv2",
+        "tripwire",
+        "shrincs",
+        "migration"
+      ],
+      "source_refs": [
+        "tools/newswatch/runs/20260630-roundup-agents.md"
+      ]
+    },
+    {
+      "file": "layer-2.html",
+      "title": "State of Layer 2",
+      "category": "Layer 2",
+      "status": "ready",
+      "slides": 9,
+      "summary": "A trust-model spectrum: Ark on mainnet without covenants (Second's bark, release train, African settlement pilot); the covenants enabling it (CSFS+CAT demos, nSequence bit-21 expiry); BitVM bridges (Union on Rootstock testnet, Liquid's stated research-stage migration); ecash as a layer (Cashu NUT-30 on-chain, Payjoin-to-Cashu, Fedimint v2 under WASM); statechains (Spark's unchanged 2-operator trust model, Mercury Layer's repo going dark); and Botanix's Spiderchain wind-down.",
+      "tags": [
+        "ark",
+        "bark",
+        "bitvm",
+        "ecash",
+        "statechains",
+        "spark",
+        "botanix"
+      ],
+      "source_refs": [
+        "tools/newswatch/runs/20260630-roundup-agents.md"
+      ]
+    }
+  ],
+  "auxiliary_pages": [],
+  "landing": {
+    "href": "/2026-07/",
+    "summary_topics": [
+      "News roundup (Core security, P2P sharing, Loupe, funding, Travel Rule)",
+      "What is Stacker News? (presentation by OT)",
+      "The August fork (BIP-110, and a Drivechain spinoff)",
+      "Stratum V2 (first miner-built block; SV2 vs DATUM)",
+      "Post-quantum migration (P2MR vs P2TRv2, Tripwire, SHRINCS)",
+      "State of Layer 2 (Ark, BitVM bridges, ecash, statechains)"
+    ]
+  }
+}

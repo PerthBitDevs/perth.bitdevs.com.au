@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post-Quantum Migration - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--pu);--accent-bg:var(--pud);--accent-glow:var(--pud);--accent-border:var(--pu);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Post-quantum</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Threads">
+  <h2 class="slide-title">Post-Quantum Migration</h2>
+  <p class="subtitle">For July, the busiest post-quantum thread is migration mechanics: output format, EC-disabling triggers, wallet state, and who has an incentive to move.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">OUTPUT TYPE</div><div class="card-text">P2MR (BIP-360) vs P2TRv2, framed by Pieter Wuille as Never / Later / Now: when do we expect EC to be disabled, and what does the type assume?</div></div>
+    <div class="card rd"><div class="card-label">GIVING IT TEETH</div><div class="card-text">Tripwire (a NUMS-point spend proves ECDLP is broken and auto-disables EC) and Miner Lockdown, from Wuille, Tadge Dryja and Sjors Provoost.</div></div>
+    <div class="card cy"><div class="card-label">BIP-360 UPDATE</div><div class="card-text">PR #2198 merged: depth-zero Merkle trees made anyone-can-spend (a privacy fix). With Nagaev Boris's EC key-recovery trick, P2MR's overhead versus P2TRv2 falls to about 32 weight units (roughly 8 vbytes).</div></div>
+    <div class="card gn"><div class="card-label">HASH-BASED SIGS</div><div class="card-text">SHRINCS (Blockstream Research) and a production operator's account of why stateful signing is hard in practice.</div></div>
+    <div class="card yl"><div class="card-label">ECONOMICS</div><div class="card-text">The Quantum Sunset / PACT working paper: the largest dormant holders are the least likely to migrate voluntarily.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Output Type">
+  <h2 class="slide-title">P2MR vs P2TRv2</h2>
+  <p class="subtitle">The dispute is really about what the output type assumes about future EC disabling.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">P2TRv2 / LATER</div><div class="card-text">The low-friction camp wants something close to Taproot: cheap, familiar, and easy for wallets to adopt. It relies on a later soft fork disabling elliptic-curve paths inside the new output type at the right time, so the goal is to maximise the share of users migrated before Q-day.</div></div>
+    <div class="card cy"><div class="card-label">P2MR / NOW</div><div class="card-text">P2MR removes the key-path spend up front. Holders who choose it can avoid long-exposure EC risk without waiting for a perfectly timed disable fork. The cost is extra witness data and stricter wallet behaviour around script trees.</div></div>
+    <div class="card gn"><div class="card-label">SELF-RELIANCE</div><div class="card-text">conduition's argument: perfect timing is unlikely, consensus changes take years, and Bitcoin needs somewhere safe to rescue coins into even if Q-day arrives before broad migration.</div></div>
+    <div class="card yl"><div class="card-label">SYSTEMIC RISK</div><div class="card-text">Wuille's counter: if too many users remain vulnerable, a broad EC freeze or rescue fork is damaging either way. A lower-cost path that gets almost everyone migrated may improve Bitcoin's survival odds more than a safer niche path.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://mirror.b10c.me/lists/bitcoindev/jVpYczjMUwILN76cjc9LSoXttkuOrkClgAX6gwtlQ4-lVEcGFKD8tEp72zhTCzCqmOdyrkyuoyGF2DA-p5WebDgmgXyAGpBnH6mYRGvl1-I%3D%40proton.me/" target="_blank" rel="noopener">P2MR privacy-incentives thread</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" target="_blank" rel="noopener">BIP-360 spec</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Tripwire">
+  <h2 class="slide-title">Tripwire And Miner Lockdown</h2>
+  <p class="subtitle">How do you turn an expected future EC disable fork into something the output type can depend on?</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">TRIPWIRE</div><div class="card-text">Pick a fixed nothing-up-my-sleeve point. If a mined transaction ever contains a successful <code>&lt;NUMS&gt; OP_CHECKSIG</code>, that proves the discrete log was recovered and EC spending paths inside the new output type are disabled from the next block.</div></div>
+    <div class="card yl"><div class="card-label">MINER LOCKDOWN</div><div class="card-text">Give miners a long or indefinite emergency signalling path. If a sufficiently high hashrate threshold signals a CRQC emergency, full nodes begin enforcing the EC disable rule quickly instead of waiting for a normal deployment cycle.</div></div>
+    <div class="card cy"><div class="card-label">SCOPE QUESTION</div><div class="card-text">Boris asked whether disabling means only the main key path or every EC opcode inside the new output type. Wuille's answer: all EC usage inside that type must be disabled, otherwise users cannot safely keep sharing public keys.</div></div>
+    <div class="card pu"><div class="card-label">AJ'S VARIANT</div><div class="card-text">Anthony Towns sketched a victim-triggered proof and suggested putting the trigger in the coinbase witness commitment. That would need relay, Stratum V2, or <code>getblocktemplate</code> updates so pools can include the proof.</div></div>
+    <div class="card rd"><div class="card-label">RISK</div><div class="card-text">False positives and misread incidents matter. Boris pointed at prior real-world key failures that could have been mistaken for Q-day. Miner Lockdown also hands miners an irreversible network-wide trigger.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://mirror.b10c.me/lists/bitcoindev/yHRpA2LEJ2AugT4W2KiWO3ggSims4GuHBkr6rWtE-e1uVC2wh3ZqD4bUDyxXq1iEuPrezhZZeqDoG7uBLNvjbW0sk_UTorI1Pkz6LcKhXRA%3D%40wuille.net/T/" target="_blank" rel="noopener">Giving teeth to expected EC disabling</a>
+    <a href="https://mirror.b10c.me/lists/bitcoindev/aj9SkwXqdRbuVZxH%40erisian.com.au/" target="_blank" rel="noopener">AJ's reply</a>
+  </div>
+</div>
+
+<div class="slide" data-name="BIP-360">
+  <h2 class="slide-title">BIP-360 Update</h2>
+  <p class="subtitle">The current P2MR text removes a privacy and incentive footgun.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">WHAT CHANGED</div><div class="card-text">PR #2198 makes depth-zero P2MR script trees anyone-can-spend. That means a P2MR output must commit to at least two apparent spending paths if the owner wants the coins to be safe.</div></div>
+    <div class="card gn"><div class="card-label">WHY</div><div class="card-text">A single-leaf tree would tempt wallets to omit a PQ leaf just to save witness bytes when spending with Schnorr. Forcing depth one or more aligns P2MR's privacy profile with Taproot and nudges wallets toward an actual escape path.</div></div>
+    <div class="card pu"><div class="card-label">WHAT P2MR IS</div><div class="card-text">BIP-360 defines a SegWit v2 <code>bc1z</code> output that commits directly to a script-tree Merkle root. It keeps tapscript-style leaves, but removes Taproot's quantum-vulnerable key-path spend.</div></div>
+    <div class="card yl"><div class="card-label">LIMIT</div><div class="card-text">P2MR only addresses long-exposure attacks, where a public key is visible for a long time. Short-exposure attacks against a transaction in the mempool still need post-quantum signature opcodes or another signature scheme.</div></div>
+    <div class="card cy"><div class="card-label">P2TRH SIDE IDEA</div><div class="card-text">conduition also floated P2TRH, a hidden-output-key alternative closer to the P2TRv2 family. The output-format space is still changing, not settled into a simple two-option vote.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/pull/2198" target="_blank" rel="noopener">BIP-360 PR #2198</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0360.mediawiki" target="_blank" rel="noopener">BIP-360 mediawiki</a>
+    <a href="https://delvingbitcoin.org/t/major-bip-360-update/2170" target="_blank" rel="noopener">Major BIP-360 update</a>
+  </div>
+</div>
+
+<div class="slide" data-name="SHRINCS">
+  <h2 class="slide-title">SHRINCS And State</h2>
+  <p class="subtitle">Small hash-based signatures are appealing, but stateful signing is a wallet UX problem.</p>
+  <div class="grid">
+    <div class="card gn"><div class="card-label">THE APPEAL</div><div class="card-text">SHRINCS is Blockstream Research's hash-based post-quantum signature construction. In the efficient stateful path it targets very compact signatures for blockchain use, with a stateless fallback if signing state is lost.</div></div>
+    <div class="card rd"><div class="card-label">THE FOOTGUN</div><div class="card-text">The signer must never reuse a one-time signing leaf. Lost counters, restored backups, cloned machines, duplicated seed material, or parallel signing requests can all create state confusion.</div></div>
+    <div class="card cy"><div class="card-label">OPERATOR FEEDBACK</div><div class="card-text">Patrick Cerri, who has operated SPHINCS-style state in production on Minima, adds the practical warning: users and services are worse at slot tracking than protocol designers want them to be.</div></div>
+    <div class="card pu"><div class="card-label">WHY IT MATTERS</div><div class="card-text">BIP-360 is only an output container. It still needs a signature scheme inside the script leaves. SHRINCS, SHRIMPS, SPHINCS, WOTS, and lattice schemes are competing answers to that separate question.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/shrincs-324-byte-stateful-post-quantum-signatures-with-static-backups/2158" target="_blank" rel="noopener">SHRINCS Delving thread</a>
+    <a href="https://eprint.iacr.org/2025/2203" target="_blank" rel="noopener">Hash-based signatures for Bitcoin</a>
+    <a href="/2026-04/shrimps.html">April SHRIMPS slides</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Economics">
+  <h2 class="slide-title">Quantum Sunset Economics</h2>
+  <p class="subtitle">The migration bottleneck may be incentives, not cryptography.</p>
+  <div class="grid">
+    <div class="card yl"><div class="card-label">EXPOSED SUPPLY</div><div class="card-text">Ahmed Raza's working paper first estimated the exposed-key UTXO surface around 25% of circulating supply. After AdamISZ pushed on used P2SH and P2WSH scripts, the revised estimate moved to about 35.30%.</div></div>
+    <div class="card rd"><div class="card-label">DORMANT WHALES</div><div class="card-text">The largest dormant holders face the highest privacy cost from proving control or moving coins alone. Under a convex privacy-cost model, they are the least likely to voluntarily commit before a deadline.</div></div>
+    <div class="card gn"><div class="card-label">PACTS</div><div class="card-text">PACTs let holders prove address control before a sunset using BIP-322 signatures and timestamps, then redeem later if legacy EC spending is disabled. The paper treats PACTs as one policy option, not a complete migration by itself.</div></div>
+    <div class="card cy"><div class="card-label">POOLING</div><div class="card-text">The paper's highest-leverage recommendation is early standardisation plus a pooling service that spreads privacy cost across holder sizes. Without pooling, the biggest holders have the strongest reason to wait.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/quantum-sunset-economics-a-working-paper-analyzing-pact-adoption/2645" target="_blank" rel="noopener">Quantum Sunset Economics thread</a>
+    <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6901220" target="_blank" rel="noopener">Working paper</a>
+    <a href="https://www.paradigm.xyz/2026/05/pacts-protecting-your-bitcoin-from-a-quantum-sunset" target="_blank" rel="noopener">PACTs overview</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">The hard part is timing and incentives, not the maths.</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">How do you time an EC-disabling soft fork so it is not confiscatory and not too early?</div></div>
+    <div class="card cy"><div class="card-label">QUESTION</div><div class="card-text">Should Bitcoin optimise for the cheapest path that gets everyone migrated, or for an output type that lets cautious users self-protect immediately?</div></div>
+    <div class="card yl"><div class="card-label">QUESTION</div><div class="card-text">If voluntary migration misses the largest dormant holders, is a pooling mechanism enough to avoid a later theft-or-freeze choice?</div></div>
+    <div class="card rd"><div class="card-label">OPEN ISSUE</div><div class="card-text">This area moves weekly and attracts low-quality and AI-generated proposals; attribute carefully and check the primary thread.</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs - July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/theme.js" defer></script>
+<style>
+  :root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;--bl:#3b82f6;--bld:rgba(59,130,246,.12);--gn:#22c55e;--gnd:rgba(34,197,94,.12);--pu:#a855f7;--pud:rgba(168,85,247,.12);--rd:#ef4444;--rdd:rgba(239,68,68,.12);--cy:#06b6d4;--cyd:rgba(6,182,212,.12);--pk:#ec4899;--pkd:rgba(236,72,153,.12);--yl:#eab308;--yld:rgba(234,179,8,.12);--tl:#14b8a6;--tld:rgba(20,184,166,.12)}
+
+  .glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+  .shell{max-width:1080px;margin:0 auto;padding:52px 24px 100px;position:relative}
+  header{text-align:center;margin-bottom:48px}
+  h1{font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,60px);font-weight:800;letter-spacing:0;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .subtitle{color:var(--txD);font-size:21px;font-family:'JetBrains Mono',monospace}
+  .divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin-bottom:32px}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+  .section-gap{margin-bottom:40px}
+  .cards{display:flex;flex-direction:column;gap:12px;margin-bottom:12px}
+  a.card{display:block;text-decoration:none;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:20px 22px;transition:all .2s ease;position:relative;overflow:hidden;cursor:pointer}
+  a.card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;border-radius:12px 0 0 12px;transition:opacity .2s ease;opacity:.6}
+  a.card:hover{border-color:var(--bdh);background:var(--sf2);transform:translateY(-1px);box-shadow:0 4px 24px rgba(0,0,0,.3)}
+  a.card:hover::before{opacity:1}
+  .card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;gap:8px}
+  .card-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .card-tag{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:10px;text-transform:uppercase;white-space:nowrap}
+  .card-arrow{font-family:'JetBrains Mono',monospace;font-size:24px;color:var(--txD);transition:all .2s ease;flex-shrink:0}
+  a.card:hover .card-arrow{color:var(--or);transform:translateX(3px)}
+  .card-title{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:0;line-height:1.35}
+  .card-desc{color:var(--txM);font-size:20px;line-height:1.55}
+  .card-desc ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+  .card-desc li{padding-left:18px;position:relative;line-height:1.45}
+  .card-desc li::before{content:"▸";position:absolute;left:0;top:0;font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD)}
+  a.card--or:hover .card-desc li::before{color:var(--or)}
+  a.card--bl:hover .card-desc li::before{color:var(--bl)}
+  a.card--gn:hover .card-desc li::before{color:var(--gn)}
+  a.card--pu:hover .card-desc li::before{color:var(--pu)}
+  a.card--rd:hover .card-desc li::before{color:var(--rd)}
+  a.card--cy:hover .card-desc li::before{color:var(--cy)}
+  a.card--pk:hover .card-desc li::before{color:var(--pk)}
+  a.card--yl:hover .card-desc li::before{color:var(--yl)}
+  a.card--tl:hover .card-desc li::before{color:var(--tl)}
+  .card-desc li strong{color:var(--tx)}
+  .card-meta{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+  .card-meta-item{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--txD);display:flex;align-items:center;gap:5px}
+  .card-meta-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .card--or::before{background:var(--or)}.card--or .card-tag{color:var(--or);background:var(--orD)}
+  .card--bl::before{background:var(--bl)}.card--bl .card-tag{color:var(--bl);background:var(--bld)}
+  .card--gn::before{background:var(--gn)}.card--gn .card-tag{color:var(--gn);background:var(--gnd)}
+  .card--pu::before{background:var(--pu)}.card--pu .card-tag{color:var(--pu);background:var(--pud)}
+  .card--rd::before{background:var(--rd)}.card--rd .card-tag{color:var(--rd);background:var(--rdd)}
+  .card--cy::before{background:var(--cy)}.card--cy .card-tag{color:var(--cy);background:var(--cyd)}
+  .card--pk::before{background:var(--pk)}.card--pk .card-tag{color:var(--pk);background:var(--pkd)}
+  .card--yl::before{background:var(--yl)}.card--yl .card-tag{color:var(--yl);background:var(--yld)}
+  .card--tl::before{background:var(--tl)}.card--tl .card-tag{color:var(--tl);background:var(--tld)}
+  .note{background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.25);border-radius:10px;padding:14px 18px;margin-bottom:32px;font-size:20px;color:var(--txM);line-height:1.6}
+  .note strong{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:17px;letter-spacing:.06em}
+  footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:16px}
+  footer p{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD);line-height:1.8}
+  footer a{color:var(--or);text-decoration:none}footer a:hover{text-decoration:underline}
+  .back{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+  .back:hover{color:var(--or)}
+  @media(max-width:480px){.shell{padding:36px 16px 60px}a.card{padding:16px}.card-title{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+
+  <a class="back" href="/">&larr; All Events</a>
+
+  <header>
+    <h1>Perth BitDevs</h1>
+    <div class="subtitle">Thursday 2 July 2026 &middot; 6pm &middot; Rocky Ridge, Burswood</div>
+  </header>
+
+  <div class="divider"></div>
+  <div class="section-label">In Brief</div>
+  <div class="cards section-gap">
+
+    <a class="card card--or" href="news-roundup.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Core</span><span class="card-tag">Loupe</span><span class="card-tag">Funding</span><span class="card-tag">Travel Rule</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">News Roundup - July</div>
+      <div class="card-desc"><ul><li><strong>Bitcoin Core</strong> - privatebroadcast IP-leak fix, BIP-452 P2P UTXO sharing, wallet/dependency work, and meta#46 process debate</li><li><strong>Project Loupe</strong> - LDK v0.2.3 security fixes, DoS/panic cluster, MPP correctness and BOLT12 interop</li><li><strong>Funding</strong> - Maelstrom annual report, OpenSats LTS for Utreexo's Calvin Kim, Brink's Hornet and Bedrock</li><li><strong>Privacy</strong> - Marmot v2 specs, Payjoin to Cashu (CDK PR2049, BIP77)</li><li><strong>Self-custody</strong> - AUSTRAC Travel Rule from 1 July and Bitaroo's SHAZAM opt-out, libssh2 RCE, Ledger mail scam</li><li><strong>Network</strong> - b10c outbound connection-success rates, first ASmap dashboard</li></ul></div>
+    </a>
+
+    <a class="card card--tl" href="stacker-news.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Community</span><span class="card-tag">Sats</span><span class="card-tag">OT</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">What Is Stacker News?</div>
+      <div class="card-desc"><ul><li><strong>Presenter</strong> - frequent participant OT</li><li><strong>Frame</strong> - how Stacker News works as a Bitcoin-native discussion site</li><li><strong>Questions</strong> - incentives, moderation, identity, rewards and what makes it different from normal social platforms</li></ul></div>
+    </a>
+
+  </div>
+  <div class="divider"></div>
+  <div class="section-label">The August Fork</div>
+  <div class="cards section-gap">
+
+    <a class="card card--rd" href="august-fork.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BIP-110</span><span class="card-tag">Drivechains</span><span class="card-tag">Chain-split</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">The August Fork: BIP-110 and Drivechains</div>
+      <div class="card-desc"><ul><li><strong>BIP-110</strong> - mandatory-signaling window near block 961,632 (about 7 Aug) at near-zero hashrate (late June 2026); no Core enforcement</li><li><strong>Drivechain spinoff</strong> - BIP-300 is the Drivechains soft fork; a separate hard-fork spinoff (new SHA-256d chain, 1:1 airdrop) is floated for late August</li><li><strong>Opposition</strong> - Adam Back and Jameson Lopp on chain-split risk</li><li><strong>Backdrop</strong> - Blockspace Weekly's Alkanes data; the Segregated Data prunable-region proposal</li><li><strong>Fork day</strong> - the BNOC / b10c monitoring and replay-tracking plan</li></ul></div>
+    </a>
+
+  </div>
+  <div class="divider"></div>
+  <div class="section-label">Stratum V2</div>
+  <div class="cards section-gap">
+
+    <a class="card card--gn" href="stratum-v2.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Mining</span><span class="card-tag">Stratum V2</span><span class="card-tag">DATUM</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Stratum V2</div>
+      <div class="card-desc"><ul><li><strong>The milestone</strong> - GoMining mined the first known live block with miner-selected transactions via SV2 job declaration (25 June, DMND pool)</li><li><strong>Why it matters</strong> - job declaration moves transaction selection from the pool to the individual miner</li><li><strong>Who runs it</strong> - ~7 pools (~75% hashrate) joined the SV2 working group; only Braiins and DMND run it natively; OCEAN uses DATUM</li><li><strong>The stack</strong> - SRI v1.10.0 libraries and v0.5.0 apps; Bitcoin Core Mining IPC submitBlock (#34644)</li><li><strong>The debate</strong> - Luke Dashjr (Ocean) on SV2 vs DATUM for real miner template control</li></ul></div>
+    </a>
+
+  </div>
+  <div class="divider"></div>
+  <div class="section-label">Post-Quantum Migration</div>
+  <div class="cards section-gap">
+
+    <a class="card card--pu" href="post-quantum-migration.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">BIP-360</span><span class="card-tag">P2TRv2</span><span class="card-tag">Tripwire</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">Post-Quantum Migration</div>
+      <div class="card-desc"><ul><li><strong>Output type</strong> - P2MR (BIP-360) vs P2TRv2 under Wuille's Never / Later / Now framing</li><li><strong>Giving it teeth</strong> - Tripwire and Miner Lockdown for triggering EC disabling (Wuille, Dryja, Sjors)</li><li><strong>BIP-360 update</strong> - PR #2198 merged (depth-zero trees anyone-can-spend); P2MR overhead vs P2TRv2 down to ~32 weight units (~8 vbytes)</li><li><strong>Hash-based sigs</strong> - SHRINCS (Blockstream Research) and why stateful signing is hard in practice</li><li><strong>Economics</strong> - the Quantum Sunset / PACT paper on who actually migrates</li></ul></div>
+    </a>
+
+  </div>
+  <div class="divider"></div>
+  <div class="section-label">State of Layer 2</div>
+  <div class="cards section-gap">
+
+    <a class="card card--cy" href="layer-2.html">
+      <div class="card-top"><div class="card-tags"><span class="card-tag">Ark</span><span class="card-tag">BitVM</span><span class="card-tag">Ecash</span></div><span class="card-arrow">&rarr;</span></div>
+      <div class="card-title">State of Layer 2</div>
+      <div class="card-desc"><ul><li><strong>Ark on mainnet</strong> - Second's bark without covenants, plus an African settlement pilot</li><li><strong>Covenants</strong> - CSFS+CAT on-chain demos and a minimal nSequence bit-21 expiry proposal</li><li><strong>BitVM bridges</strong> - Union on Rootstock testnet; Liquid names a 1-of-n BitVM bridge as its research-stage successor</li><li><strong>Ecash</strong> - Cashu NUT-30 on-chain mint/melt, Payjoin to Cashu, Fedimint v2 under WASM</li><li><strong>Statechains</strong> - Spark's unchanged 2-operator trust model; Mercury Layer goes dark</li><li><strong>Wind-down</strong> - Botanix closes its Spiderchain; peg out before 9 July</li></ul></div>
+    </a>
+
+  </div>
+
+  <footer>
+    <p>
+      Perth BitDevs &middot; July 2026<br>
+      <a href="https://github.com/PerthBitDevs/PerthBitDevs" target="_blank" rel="noopener">PerthBitDevs on GitHub</a>
+    </p>
+  </footer>
+
+</div>
+
+</body>
+</html>

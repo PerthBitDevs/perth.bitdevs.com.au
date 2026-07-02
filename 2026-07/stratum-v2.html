@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratum V2 - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--gn);--accent-bg:var(--gnd);--accent-glow:var(--gnd);--accent-border:var(--gn);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+.card-text ul{margin:6px 0 0 20px;padding:0}
+.card-text li{margin-bottom:5px}
+.caveat{text-align:center;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Mining</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">Stratum V2</h2>
+  <p class="subtitle">A miner used Stratum V2 job declaration to build its own block template on mainnet for the first time, so it is a good moment to cover what Stratum V2 actually changes.</p>
+  <div class="hero">
+    <div class="hero-kicker">Takeaway</div>
+    <div class="hero-text">On 25 June, GoMining mined the first known live Bitcoin block whose transactions were chosen by the miner rather than the pool, using Stratum V2 job declaration on the DMND pool.</div>
+  </div>
+  <div class="links">
+    <a href="https://stratumprotocol.org/" target="_blank" rel="noopener">Stratum V2 / Stratum Reference Implementation</a>
+  </div>
+</div>
+
+<div class="slide" data-name="The Block">
+  <h2 class="slide-title">What GoMining Did</h2>
+  <p class="subtitle">The milestone is about where the block template was built, not who hashed it.</p>
+  <div class="grid">
+    <div class="card gn">
+      <div class="card-label">THE FLOW</div>
+      <div class="card-text">
+        <ul>
+          <li>GoMining assembled a block template <strong>locally</strong> and chose its own transactions.</li>
+          <li>It sent that to the DMND pool as a <strong>declared job</strong> over Stratum V2.</li>
+          <li>DMND hashed and broadcast the block; GoMining picked the contents.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">WHY IT'S A FIRST</div>
+      <div class="card-text">Pools have chosen block contents for years. This is the <strong>first known live mainnet block</strong> where the miner selected the transactions via SV2 job declaration (25 June).</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Job Declaration">
+  <h2 class="slide-title">What Job Declaration Changes</h2>
+  <p class="subtitle">Who decides which transactions go in a block, and why that is the centralisation question.</p>
+  <div class="grid">
+    <div class="card yl">
+      <div class="card-label">TODAY</div>
+      <div class="card-text">Under the older Stratum V1 the <strong>pool</strong> builds the block template and hands miners work. Miners supply hashpower but do not choose transactions, so a handful of pools effectively decide block content.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">WITH SV2 JOB DECLARATION</div>
+      <div class="card-text">A miner can build its own template and <strong>declare</strong> it to the pool, which still handles payouts and block submission. Transaction selection moves to the miner.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">WHY IT MATTERS</div>
+      <div class="card-text">Concentration of <strong>transaction selection</strong> in a few pools is the part of mining centralisation most people worry about. Job declaration targets that directly, without changing who runs payout infrastructure.</div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">NOT AUTOMATIC</div>
+      <div class="card-text">Job declaration is opt-in and needs miner-side template building. Most hashrate still takes pool-built templates, so the default has not changed.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Adoption">
+  <h2 class="slide-title">Who Actually Runs It</h2>
+  <p class="subtitle">Joining the working group is not the same as running SV2 in production.</p>
+  <div class="grid">
+    <div class="card bl">
+      <div class="card-label">THE WORKING GROUP</div>
+      <div class="card-text">About <strong>seven pools, roughly 75% of hashrate</strong>, joined the SV2 working group in May. That is intent and coordination, not live deployment.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">NATIVE IN PRODUCTION</div>
+      <div class="card-text">Only <strong>Braiins and DMND</strong> run SV2 natively today. The GoMining block ran on DMND.</div>
+    </div>
+    <div class="card or">
+      <div class="card-label">THE DATUM PATH</div>
+      <div class="card-text">OCEAN reaches similar miner template control through its own <strong>DATUM</strong> protocol rather than SV2, so miner-chosen templates are not unique to Stratum V2.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">THE GAP</div>
+      <div class="card-text">Job declaration is still a small share of total hashrate. One miner-built block shows the path works; it is not yet a shift in who controls block content.</div>
+    </div>
+  </div>
+  <p class="caveat">Pool counts and hashrate shares move; re-verify before the meetup.</p>
+</div>
+
+<div class="slide" data-name="The Stack">
+  <h2 class="slide-title">The Stack Behind It</h2>
+  <p class="subtitle">The tooling that made a miner-declared mainnet block possible.</p>
+  <div class="grid">
+    <div class="card pu">
+      <div class="card-label">STRATUM REFERENCE IMPLEMENTATION</div>
+      <div class="card-text">The SRI shipped <strong>v1.10.0 core protocol libraries and v0.5.0 applications</strong> on 3 June, the open-source stack pools and miners build SV2 roles on.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">CORE MINING IPC</div>
+      <div class="card-text">Bitcoin Core's Mining IPC added a <strong><code>submitBlock</code></strong> method (#34644, Optech #408) so an external process can hand Core a fully assembled block for validation, part of moving block building out of the node.</div>
+    </div>
+  </div>
+  <div class="links">
+    <a href="https://stratumprotocol.org/" target="_blank" rel="noopener">stratumprotocol.org</a>
+    <a href="https://github.com/stratum-mining/stratum" target="_blank" rel="noopener">Stratum Reference Implementation</a>
+  </div>
+</div>
+
+<div class="slide" data-name="SV2 vs DATUM">
+  <h2 class="slide-title">Stratum V2 vs DATUM</h2>
+  <p class="subtitle">There is a genuine architecture disagreement underneath the pool politics.</p>
+  <div class="grid">
+    <div class="card gn">
+      <div class="card-label">THE SV2 CASE</div>
+      <div class="card-text">Stratum V2 bundles job declaration with an encrypted, authenticated transport and a broader split of mining roles, aiming to be the general next-generation mining protocol.</div>
+    </div>
+    <div class="card or">
+      <div class="card-label">LUKE DASHJR'S CRITIQUE</div>
+      <div class="card-text">Dashjr (OCEAN) argues SV2 is <strong>overcomplicated</strong> and weak at genuine miner template control, and points to <strong>DATUM</strong> as a simpler way to let miners build their own templates.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">KEEP IT SEPARATE</div>
+      <div class="card-text">Both approaches aim at the same goal, miner-chosen transactions. It is worth keeping the technical question apart from the competition between pools promoting each protocol.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">Does this actually decentralise who picks transactions?</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">If only two pools run SV2 natively, how much does one miner-built block change the centralisation picture?</div></div>
+    <div class="card cy"><div class="card-label">QUESTION</div><div class="card-text">Does moving transaction selection to miners help decentralisation if most miners keep taking the pool's default template anyway?</div></div>
+    <div class="card rd"><div class="card-label">OPEN ISSUE</div><div class="card-text">Job declaration is opt-in and still a small share of hashrate; do not read one block as a tipping point.</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The August Fork - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--rd);--accent-bg:var(--rdd);--accent-glow:var(--rdd);--accent-border:var(--rd);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+.card-text ul{margin:6px 0 0 20px;padding:0}
+.card-text li{margin-bottom:5px}
+.caveat{text-align:center;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Policy and consensus</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Overview">
+  <h2 class="slide-title">The August Fork</h2>
+  <p class="subtitle">Two separate August events keep getting lumped together. They are worth pulling apart before the arguments start.</p>
+  <div class="hero">
+    <div class="hero-kicker">Takeaway</div>
+    <div class="hero-text">BIP-110, a temporary soft fork, hits its <strong>mandatory-signaling window near block 961,632 (about 7 August)</strong> with almost no hashrate behind it. Separately, a <strong>Drivechain spinoff hard fork</strong> is being floated for late August. Different mechanisms, different risks; only the timing is shared.</div>
+  </div>
+  <div class="links">
+    <a href="https://bitcoinops.org/en/newsletters/2026/06/26/" target="_blank" rel="noopener">Bitcoin Optech #411 (BIP-110 Q&amp;A)</a>
+    <a href="/2026-06/bip-110-watch.html">June: BIP-110 Watch</a>
+  </div>
+</div>
+
+<div class="slide" data-name="BIP-110">
+  <h2 class="slide-title">BIP-110: The Soft Fork</h2>
+  <p class="subtitle">A temporary, opt-in limit on how much arbitrary data a transaction can carry. It reaches its enforcement deadline in August.</p>
+  <div class="grid">
+    <div class="card rd">
+      <div class="card-label">THE DEADLINE</div>
+      <div class="card-text">
+        <ul>
+          <li>Mandatory-signaling window near <strong>block 961,632</strong> (about <strong>7 August</strong>).</li>
+          <li>Modified BIP9: a <strong>55% threshold</strong> (1,109 of 2,016 blocks in one retarget period).</li>
+          <li>Framed by its authors as a <strong>one-year temporary deployment</strong> that can be refined or extended.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">WHERE SIGNALING STANDS</div>
+      <div class="card-text">
+        <ul>
+          <li>About <strong>0.31% of hashrate</strong> (~5 EH/s) as of late June; Ocean is effectively the only signaler.</li>
+          <li>Knots, the main BIP-110-capable implementation, sits near <strong>22% of nodes</strong>.</li>
+          <li>No major pool has signaled.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">CORE'S POSITION</div>
+      <div class="card-text">Bitcoin Core ships <strong>no BIP-110 enforcement and no block-template support</strong>, reaffirmed in the Optech #411 Q&amp;A. Enforcement today comes from Knots-family nodes.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">SPEC STATUS</div>
+      <div class="card-text">BIP-110 advanced to <strong>"Complete"</strong> in the BIPs repository, with test vectors and a generator script (PR #2201). "Complete" describes the document, not network adoption.</div>
+    </div>
+  </div>
+  <p class="caveat">Signaling %, node share and projected heights move daily. Re-verify at meeting time.</p>
+</div>
+
+<div class="slide" data-name="Spinoff">
+  <h2 class="slide-title">The Drivechain Spinoff</h2>
+  <p class="subtitle">A separate proposal, and a common point of confusion: BIP-300 is not the spinoff.</p>
+  <div class="grid">
+    <div class="card pu">
+      <div class="card-label">BIP-300 (DRIVECHAINS)</div>
+      <div class="card-text">A long-standing <strong>soft fork</strong> proposal for hashrate-escrow sidechains: BTC is locked on the main chain and released by miner voting. It changes Bitcoin's rules but does not create a separate coin.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">THE SPINOFF (HARD FORK)</div>
+      <div class="card-text">Separately, Paul Sztorc / LayerTwo Labs have floated a <strong>hard-fork spinoff chain</strong> for late August (target near block 964,000, about 21 August):
+        <ul>
+          <li>A new SHA-256d chain.</li>
+          <li>A one-time difficulty reset.</li>
+          <li>A 1:1 BTC airdrop to existing holders.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">WHY IT MATTERS HERE</div>
+      <div class="card-text">A spinoff launches a <strong>new chain</strong> rather than changing Bitcoin. It needs no Bitcoin consensus, but it lands in the same August window as BIP-110, which is why the two get conflated.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">STATUS</div>
+      <div class="card-text">This is a floated plan, not a scheduled event. Confirm the parameters and dates against a primary source before treating any figure as fixed.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Debate">
+  <h2 class="slide-title">Support And Opposition</h2>
+  <p class="subtitle">The contested question is whether a low-threshold activation carrying little hashrate is safe.</p>
+  <div class="grid">
+    <div class="card gn">
+      <div class="card-label">THE AUTHORS' FRAMING</div>
+      <div class="card-text">bip110.org presents BIP-110 as a modest, <strong>temporary</strong> measure: a 55% threshold, a voluntary deadline, and roughly a one-year deployment that can be refined or extended rather than a permanent rule change.</div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">ADAM BACK</div>
+      <div class="card-text">Argues BIP-110 <strong>"doesn't have tech nor ecosystem consensus"</strong>, and that with minimal node and pool support the mandatory path either fails to activate or forces a minority split.</div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">JAMESON LOPP</div>
+      <div class="card-text">Calls the attempt <strong>"reckless"</strong> and warns the low 55% threshold <strong>"greatly increases the chances of a chain split"</strong>.</div>
+    </div>
+    <div class="card bl">
+      <div class="card-label">THE MINORITY-CHAIN QUESTION</div>
+      <div class="card-text">What happens if BIP-110 activates on minority hashrate: slow blocks, delayed coinbase maturity, and heavy exchange confirmation requirements. The June deck works through Murch's and Lopp's analysis in detail.</div>
+    </div>
+  </div>
+  <div class="links">
+    <a href="/2026-06/bip-110-watch.html">June: minority-hashrate mechanics</a>
+    <a href="https://bip110.org/" target="_blank" rel="noopener">bip110.org</a>
+    <a href="https://bip110monitor.com/" target="_blank" rel="noopener">bip110monitor.com</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Data carriage">
+  <h2 class="slide-title">The Data-Carrier Backdrop</h2>
+  <p class="subtitle">BIP-110 targets arbitrary data in transactions. How much is there, and does a transaction-count view undercount it?</p>
+  <div class="grid">
+    <div class="card or">
+      <div class="card-label">HOW MUCH DATA</div>
+      <div class="card-text">Blockspace Weekly #29 ("Counting the Leaves", Renaud Cuny, June) reports Alkanes protostones are about <strong>91% of OP_RETURN outputs</strong> (~2,540 per block), and that the OP_RETURN share of block space roughly <strong>doubled from 13% to 34%</strong> over twelve months.</div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">WHY TX COUNT MISLEADS</div>
+      <div class="card-text">The analysis argues BIP-110's 256-byte witness limit is aimed at the roughly <strong>627 code-deployment transactions</strong> that bootstrap an estimated <strong>19 million downstream mints</strong>. Judging the limit by raw transaction volume misses those leverage points.</div>
+    </div>
+  </div>
+  <p class="caveat">Figures from a single community analysis; treat as one data point, not a consensus measurement.</p>
+</div>
+
+<div class="slide" data-name="Segregated Data">
+  <h2 class="slide-title">A Counter-Proposal: Segregated Data</h2>
+  <p class="subtitle">Instead of restricting data carriage, give data a prunable home of its own.</p>
+  <div class="grid">
+    <div class="card tl">
+      <div class="card-label">THE IDEA</div>
+      <div class="card-text">MrHash's "Segregated Data" draft (Delving Bitcoin, June) proposes a <strong>prunable, script-isolated region</strong> of each block for data carriage, so nodes can drop it without affecting the UTXO set.</div>
+    </div>
+    <div class="card pu">
+      <div class="card-label">HOW IT WORKS</div>
+      <div class="card-text">
+        <ul>
+          <li>A separate coinbase Merkle commitment for the data region.</li>
+          <li>Witness-v2 reference outputs pointing at the data.</li>
+          <li>A 288-block retention window, after which the data can be pruned.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">PUSHBACK</div>
+      <div class="card-text">Pieter Wuille pushed back, describing the reference outputs as "weight markers". The proposal reframes the debate from policing data toward finding it a cheaper, prunable place to live.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Monitoring">
+  <h2 class="slide-title">Watching Fork Day</h2>
+  <p class="subtitle">The operator-side complement: if a split happens, observe it cleanly rather than guess.</p>
+  <div class="grid">
+    <div class="card gn">
+      <div class="card-label">THE MONITORING PLAN</div>
+      <div class="card-text">b10c's BNOC fork-monitoring notes lay out a plan for fork day:
+        <ul>
+          <li>A side-by-side fork-observer instance tracking both chains.</li>
+          <li>Replay tracking across the split.</li>
+          <li>Pool alignment inferred from Stratum data.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card cy">
+      <div class="card-label">REPLAY-IMMUNE UTXOs</div>
+      <div class="card-text">murchandamus proposed cataloguing <strong>replay-immune, Bitcoin-only UTXO sets</strong> in advance, so wallets and services can move coins on one chain without the transaction also being valid on the other.</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">If the threshold is unreachable, what is the deadline actually forcing?</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">If BIP-110 activates at low hashrate, what happens to blocks, exchanges and confirmation times on each chain?</div></div>
+    <div class="card cy"><div class="card-label">QUESTION</div><div class="card-text">Is a limit on data carriage the right tool, or does a prunable region like Segregated Data address the concern more cleanly?</div></div>
+    <div class="card yl"><div class="card-label">QUESTION</div><div class="card-text">The spinoff hard fork needs no Bitcoin consensus. Does landing in the same August window change how either event plays out?</div></div>
+    <div class="card rd"><div class="card-label">OPEN ISSUE</div><div class="card-text">Two events in one compressed window raise replay and chain-split questions; the monitoring plan is the operator-side answer.</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Roundup - July - Perth BitDevs July 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--or);--accent-bg:var(--orD);--accent-glow:var(--orD);--accent-border:var(--orB);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+.card-text ul{margin:6px 0 0 20px;padding:0}
+.card-text li{margin-bottom:5px}
+.caveat{text-align:center;color:var(--txD);font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">News roundup</div>
+    <div class="update-tag">July 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-07/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Map">
+  <h2 class="slide-title">In Brief</h2>
+  <p class="subtitle">Ten threads before the headline decks: Core security, node sync, wallet performance, project process, Loupe findings, funding, privacy, local policy, network measurement, and a markets story on Strategy's STRC.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">PRIVATEBROADCAST</div><div class="card-text">Bitcoin Core v31.1rc1 is led by a private-broadcast IP-leak fix and the disclosure-handling story around it.</div></div>
+    <div class="card cy"><div class="card-label">P2P UTXO SHARING</div><div class="card-text">BIP-452 proposes moving AssumeUTXO snapshots peer-to-peer, with new messages and a UTXO-set Merkle-root check.</div></div>
+    <div class="card gn"><div class="card-label">WALLET / DEPS</div><div class="card-text">Branch-and-Bound coin selection, libevent removal, RBF signalling, assumevalid compaction, and secp256k1 performance work.</div></div>
+    <div class="card yl"><div class="card-label">CORE PROCESS</div><div class="card-text">bitcoin-core/meta#46 asks when external conduct should affect repository access. Treat it as governance, not code review.</div></div>
+    <div class="card cy"><div class="card-label">PROJECT LOUPE</div><div class="card-text">LDK v0.2.3 ships a cluster of Loupe-reported DoS, panic, graph-limit and interop fixes.</div></div>
+    <div class="card gn"><div class="card-label">FUNDING</div><div class="card-text">Maelstrom annual report (privacy-weighted grantees); OpenSats LTS for Utreexo's Calvin Kim; Brink's Hornet and Bedrock testing tools.</div></div>
+    <div class="card pu"><div class="card-label">PRIVACY</div><div class="card-text">Marmot v2 specs (deterministic group state, transport-agnostic); Payjoin to Cashu via CDK PR2049 and BIP77.</div></div>
+    <div class="card yl"><div class="card-label">SELF-CUSTODY</div><div class="card-text">AUSTRAC Travel Rule starts 1 July; Bitaroo opts out of info-sharing via its SHAZAM system; libssh2 RCE; Ledger physical-mail seed scam.</div></div>
+    <div class="card or"><div class="card-label">NETWORK</div><div class="card-text">b10c outbound connection-success-rate measurements; the first ASmap build-quality dashboard.</div></div>
+    <div class="card rd"><div class="card-label">MARKETS / STRC</div><div class="card-text">Strategy's STRC preferred fell below its $100 par, pausing at-the-market share sales and prompting a first Bitcoin sale since 2022; debate over dividend sustainability.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Privatebroadcast">
+  <h2 class="slide-title">Privatebroadcast IP Leak</h2>
+  <p class="subtitle">The July Core release story is not a feature launch. It is a privacy bug in a privacy feature.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">THE BUG</div><div class="card-text"><code>-privatebroadcast</code> is supposed to keep transaction broadcast away from clearnet identity leakage. The v31.1 release candidate is led by a fix for a path that could reveal a clearnet IP.</div></div>
+    <div class="card rd"><div class="card-label">WHY IT MATTERS</div><div class="card-text">Broadcast privacy is fragile because the failure is metadata, not a bad signature or invalid block. Users usually cannot detect the leak after the fact.</div></div>
+    <div class="card cy"><div class="card-label">RELEASE SHAPE</div><div class="card-text">The rc also carries validation, P2P, wallet, MuSig empty-pubkey rejection, and Boost compatibility fixes, but the privacy disclosure is the reason to pay attention.</div></div>
+    <div class="card yl"><div class="card-label">ROOM QUESTION</div><div class="card-text">How should wallets and node operators talk about experimental privacy features when the fallback behaviour can reveal exactly what the feature was meant to hide?</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="UTXO Sharing">
+  <h2 class="slide-title">P2P UTXO Set Sharing</h2>
+  <p class="subtitle">BIP-452 is about making AssumeUTXO easier to obtain without trusting a website, torrent, or one-off download.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">ASSUMEUTXO</div><div class="card-text">AssumeUTXO lets a node start from a signed UTXO-set snapshot at a known block height, become useful quickly, then verify historical blocks in the background.</div></div>
+    <div class="card bl"><div class="card-label">THE PROPOSAL</div><div class="card-text">Fabian Jahr's BIP-452 moves snapshot distribution into Bitcoin P2P: a service bit, four new messages, chunk transfer, and a UTXO-set Merkle root for verification.</div></div>
+    <div class="card gn"><div class="card-label">WHY IT HELPS</div><div class="card-text">If it works, a new node can get the same fast-start benefit from peers instead of needing an out-of-band snapshot source.</div></div>
+    <div class="card rd"><div class="card-label">OPEN RISK</div><div class="card-text">Antoine Riard flagged CPU-asymmetric DoS risk from malleated chunks. Sjors also asks whether UTXO commitments are worth it if the only goal is faster IBD.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Wallet And Dependencies">
+  <h2 class="slide-title">Wallet And Dependencies</h2>
+  <p class="subtitle">This is the unglamorous performance and dependency work that makes normal node and wallet operation less brittle.</p>
+  <div class="grid">
+    <div class="card gn"><div class="card-label">BRANCH AND BOUND</div><div class="card-text">Murch's coin-selection rewrite skips already-visited input sets, so the wallet can explore more useful combinations within the same iteration budget.</div></div>
+    <div class="card cy"><div class="card-label">LIBEVENT REMOVAL</div><div class="card-text">Core's HTTP/RPC server moves from libevent to an in-tree implementation, reducing an external dependency in a high-value process surface.</div></div>
+    <div class="card bl"><div class="card-label">IBD PERFORMANCE</div><div class="card-text">LevelDB compaction at the assumevalid boundary targets a real sync bottleneck, especially on HDDs, where the packet cites roughly 15% IBD speedup.</div></div>
+    <div class="card pu"><div class="card-label">SIGNATURE PATH</div><div class="card-text">A secp256k1 int128 force-inline change is another small performance win in validation. These are not headline changes, but they compound.</div></div>
+    <div class="card yl"><div class="card-label">RBF FINGERPRINTING</div><div class="card-text">The wallet RBF-signalling discussion moved away from MAX-1 after data showed MAX-2 is already common enough to be the lower-fingerprint choice.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Core Process">
+  <h2 class="slide-title">Core Process</h2>
+  <p class="subtitle">bitcoin-core/meta#46 is not about a patch. It is about what repository access means when conflict happens outside the repository.</p>
+  <div class="grid">
+    <div class="card yl"><div class="card-label">THE QUESTION</div><div class="card-text">Should Bitcoin Core ban or restrict contributors for external conduct if their in-repository behaviour and patches are otherwise reviewable?</div></div>
+    <div class="card bl"><div class="card-label">ONE SIDE</div><div class="card-text">Murch argues a ban can be in order when someone publicly accuses the project of crimes for years without evidence, because that damages the project and contributors.</div></div>
+    <div class="card cy"><div class="card-label">THE OTHER SIDE</div><div class="card-text">stickies-v argues refusing technically good patches over out-of-repo conduct is unworkable and risks turning access decisions into social enforcement.</div></div>
+    <div class="card rd"><div class="card-label">WHY IT BELONGS HERE</div><div class="card-text">Open-source governance is infrastructure. Repository access, maintainer discretion, and contributor trust shape what code gets reviewed and merged.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Project Loupe">
+  <h2 class="slide-title">Project Loupe</h2>
+  <p class="subtitle">LDK v0.2.3 is the useful item here: a security-heavy release driven by systematic vulnerability finding.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">WHAT SHIPPED</div><div class="card-text">LDK v0.2.3 includes roughly a dozen DoS and panic fixes, with many reports attributed to Project Loupe.</div></div>
+    <div class="card rd"><div class="card-label">BUG CLUSTER</div><div class="card-text">Examples from the packet: Bolt11 pubkey-recovery panic, LSPSDateTime pre-1970 panic, HashDoS, and rapid-gossip-sync graph-size limiting.</div></div>
+    <div class="card gn"><div class="card-label">CORRECTNESS</div><div class="card-text">The release also fixes an MPP-claim race with async monitor updates, which is not just a crash story. It is channel-state correctness under real async conditions.</div></div>
+    <div class="card pu"><div class="card-label">INTEROP</div><div class="card-text">PR #4647 generates blinded paths so LND peers stop refusing BOLT12 onion messages. That is the kind of boring interop fix that makes specs usable.</div></div>
+    <div class="card yl"><div class="card-label">TAKEAWAY</div><div class="card-text">Loupe is interesting because it makes the maintenance burden visible: Lightning libraries need adversarial inputs, fuzzing-style attention, and cross-implementation feedback.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Funding">
+  <h2 class="slide-title">Funding And Tooling</h2>
+  <p class="subtitle">A month of grants and testing infrastructure, with privacy and verification work heavily represented.</p>
+  <div class="grid">
+    <div class="card gn"><div class="card-label">MAELSTROM</div><div class="card-text">First annual grant report highlights rkrux, stratospher, benalleng and macgyver13, with two of four grantees now full-time on privacy work.</div></div>
+    <div class="card cy"><div class="card-label">OPENSATS</div><div class="card-text">Long-term support for Calvin Kim keeps Utreexo moving: accumulator work aimed at making fully validating nodes cheaper to run and sync.</div></div>
+    <div class="card bl"><div class="card-label">BRINK</div><div class="card-text">Hornet and Bedrock both sit in the testing stack: executable consensus specification, differential testing against Core, and deterministic low-level test environments.</div></div>
+    <div class="card pu"><div class="card-label">MAINTAINER LOAD</div><div class="card-text">Btrust's open-source hackathon included contribution-spam tooling, a useful signal that AI-assisted low-quality PRs are now a maintainer-workload problem.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Privacy">
+  <h2 class="slide-title">Privacy Plumbing</h2>
+  <p class="subtitle">The interesting movement is mostly protocol plumbing: group state, payjoin, Cashu, and transport choices.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">MARMOT v2</div><div class="card-text">Specs move toward deterministic group-state consensus with hard-coded parameters, so members cannot silently fork the group by choosing different settings.</div></div>
+    <div class="card cy"><div class="card-label">TRANSPORT-AGNOSTIC</div><div class="card-text">Marmot also becomes less tied to any single transport. That matters if private coordination protocols need to survive Nostr, relay, or messaging churn.</div></div>
+    <div class="card gn"><div class="card-label">PAYJOIN TO CASHU</div><div class="card-text">CDK PR2049 builds toward Payjoin-to-Cashu using BIP77 async payjoin: the receiver contributes a UTXO, breaking the common-input heuristic.</div></div>
+    <div class="card yl"><div class="card-label">QUESTION</div><div class="card-text">Which privacy work is closest to normal wallet UX: better coinjoins, payjoin, ecash, silent payments, or messaging-layer coordination?</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Self-custody">
+  <h2 class="slide-title">Self-Custody And Local Policy</h2>
+  <p class="subtitle">The Australian Travel Rule deadline is local; the rest is the usual warning that self-custody also means operational hygiene.</p>
+  <div class="grid">
+    <div class="card yl"><div class="card-label">AUSTRAC</div><div class="card-text">The Travel Rule starts 1 July for Australian VASPs: originator and beneficiary information, counterparty due diligence, and risk-based self-hosted-wallet policy.</div></div>
+    <div class="card or"><div class="card-label">BITAROO SHAZAM</div><div class="card-text">Bitaroo says it will avoid Travel Rule information-sharing through its SHAZAM system. The mechanism is undisclosed, so this is a discussion hook, not a conclusion.</div></div>
+    <div class="card rd"><div class="card-label">libssh2 RCE</div><div class="card-text">Client-side RCE via a malicious SSH server affects tooling people actually use: Git, curl, SCP clients and firmware updaters can all sit near key material.</div></div>
+    <div class="card pu"><div class="card-label">LEDGER MAIL SCAM</div><div class="card-text">Physical letters posing as firmware-update notices used QR codes to harvest seeds, reportedly drawing on address data from the old Ledger breach.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Network">
+  <h2 class="slide-title">Network Operations</h2>
+  <p class="subtitle">The useful part is measurement: how reachable peers actually are, and whether ASmap data is getting better.</p>
+  <div class="grid">
+    <div class="card or"><div class="card-label">OUTBOUND SUCCESS</div><div class="card-text">b10c's measurements show IPv4 outbound success rates remain low, while Tor, I2P and IPv6 look healthier. Reachability is still uneven by network.</div></div>
+    <div class="card cy"><div class="card-label">V2 TRANSPORT</div><div class="card-text">Most outbound attempts now target v2-transport-capable nodes, but downgrades still happen. That is progress, with a real deployment tail.</div></div>
+    <div class="card bl"><div class="card-label">ASmap DASHBOARD</div><div class="card-text">The first ASmap build-quality dashboard makes drift and match quality inspectable instead of burying it in generated data files.</div></div>
+    <div class="card gn"><div class="card-label">WHY CARE</div><div class="card-text">Peer diversity, eclipse resistance, and transport privacy all depend on boring network facts. Dashboards and crawlers beat vibes.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Strategy STRC">
+  <h2 class="slide-title">Strategy's STRC Falls Below Par</h2>
+  <p class="subtitle">A markets story rather than a protocol one: Strategy's newest preferred stock is meant to sit at $100, and through June it did not.</p>
+  <div class="grid">
+    <div class="card cy">
+      <div class="card-label">WHAT STRC IS</div>
+      <div class="card-text">STRC ("Stretch") is a perpetual preferred stock Strategy (MSTR) launched in July 2025 to help fund its Bitcoin purchases. Its dividend rate is reset on a monthly cadence to keep the price near its <strong>$100 par</strong>.</div>
+    </div>
+    <div class="card rd">
+      <div class="card-label">BELOW PAR</div>
+      <div class="card-text">Through June 2026 STRC traded well under par, closing around <strong>$89 on 18 June</strong> and near <strong>$73</strong> by late June. Because it is below par, Strategy <strong>paused its at-the-market share sales</strong>, removing a lever it uses to keep buying Bitcoin.</div>
+    </div>
+    <div class="card yl">
+      <div class="card-label">THE DIVIDEND SQUEEZE</div>
+      <div class="card-text">Strategy held the stated rate at <strong>11.50% for a fourth month</strong> while the effective yield climbed toward <strong>15%</strong>. Markets expect a rise to 12-12.5%, and Strive's competing SATA preferred pays 13%.</div>
+    </div>
+    <div class="card or">
+      <div class="card-label">THE SALE THAT RATTLED THE MARKET</div>
+      <div class="card-text">To fund STRC distributions, Strategy disclosed on 1 June that it sold <strong>32 BTC (~$2.5M)</strong> in late May, its first Bitcoin sale since 2022, against Michael Saylor's long-stated pledge never to sell. It has also built a <strong>$1.1B dollar reserve</strong> for preferred dividends and debt.</div>
+    </div>
+    <div class="card gn">
+      <div class="card-label">THE DEBATE</div>
+      <div class="card-text">Critics argue the preferred dividends are funded by new share sales or Bitcoin sales rather than operating cash flow, calling the structure circular or Ponzi-like. Strategy and its supporters read the held rate as stable demand and point to the rate-reset mechanism and the dollar reserve as the design working as intended.</div>
+    </div>
+  </div>
+  <p class="caveat">STRC's price is volatile and its rate resets monthly; these are late-June figures, re-verify at meeting time.</p>
+</div>
+
+<div class="slide" data-name="Discussion">
+  <h2 class="slide-title">Discussion</h2>
+  <p class="subtitle">Pick the thread that should not stay a roundup item next month.</p>
+  <div class="grid">
+    <div class="card"><div class="card-label">QUESTION</div><div class="card-text">Which bucket deserves a real deck next month: Core process, Loupe-style library hardening, privacy plumbing, or local compliance?</div></div>
+    <div class="card or"><div class="card-label">STRATEGY / STRC</div><div class="card-text">Is STRC a Bitcoin story or a markets story? Does a treasury company selling BTC to fund preferred dividends create network-level risk, or does it stay with its own shareholders?</div></div>
+    <div class="card rd"><div class="card-label">OPEN ISSUE</div><div class="card-text">The Travel Rule deadline lands the day before the meetup; the SHAZAM mechanism is undisclosed, so verify before drawing conclusions.</div></div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>
