@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIPS and Nostr - Perth BitDevs October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --accent:var(--pu);--accent-bg:var(--pud);--accent-glow:var(--pud);--accent-border:var(--pu);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Networking</div>
+    <div class="update-tag">October 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-10/">&larr; Topics</a>
+</div>
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Address">
+  <h2 class="slide-title">The Address Is a Nostr Key</h2>
+  <p class="subtitle">FIPS is jmcorgan's Free Internetworking Peering System: a mesh network whose addresses are Nostr keys. Intelligence Snacks 72, with Pete Winn and Andy David, is a plain-language tour. June's nostr-vpn runs on this mesh.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">WHO YOU REACH</div><div class="card-text">A machine generates a secp256k1 key, the same kind of key Nostr uses. Other nodes reach it by that public key. There is no domain to register and no central address list. The repository maps the key to an IPv6 address in <code>fd00::/8</code> and answers names that end in <code>.fips</code>.</div></div>
+    <div class="card bl"><div class="card-label">WHAT IS ENCRYPTED</div><div class="card-text">Mesh traffic is encrypted twice: Noise IK between neighbouring nodes, and Noise XK between the two ends, with rekey. Those packets are not Nostr events. An ordinary IPv6 program can use the <code>.fips</code> name. A program written for FIPS can skip IPv6 and address <code>npub:port</code> directly.</div></div>
+    <div class="card yl"><div class="card-label">HOW PACKETS FIND YOU</div><div class="card-text">Nodes build a spanning tree and route greedily toward the destination's coordinates in it. To learn where an npub sits, a node follows bloom filters its neighbours advertise, instead of flooding the mesh.</div></div>
+    <div class="card gn"><div class="card-label">NOT STABLE</div><div class="card-text">The README says the protocol and APIs are not stable. Current release is v0.5.2, dated 28 Sep 2026. Master is marked v0.6.0-dev. A security audit of the cryptographic protocols is listed as a near-term item, not as work that is finished.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://www.youtube.com/watch?v=5mNhaiwZMX0" target="_blank" rel="noopener">Intelligence Snacks 72</a>
+    <a href="https://github.com/jmcorgan/fips" target="_blank" rel="noopener">jmcorgan/fips</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Rendezvous">
+  <h2 class="slide-title">Nostr Is the Rendezvous</h2>
+  <p class="subtitle">The packets do not have to cross a relay. Nostr is one way two nodes find each other when they are not already on the same link.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">OPTIONAL</div><div class="card-text">The README marks Nostr discovery as optional. On a LAN, mDNS finds peers with no relay. The same mesh also runs over Ethernet, Wi-Fi, Bluetooth, Tor, and the Nym mixnet. A node can use more than one of those at once.</div></div>
+    <div class="card bl"><div class="card-label">THE PUNCH</div><div class="card-text">When Nostr is used, a node publishes where it can be reached. The two sides exchange candidates and open a direct UDP path through NAT, with STUN. After that path exists, the traffic is between the nodes. The relay's job was the introduction.</div></div>
+    <div class="card rd"><div class="card-label">A KEY ON THE RELAY</div><div class="card-text">Through v0.5.1, a node that finished this traversal published NIP-09 deletions signed with its routing key. That placed the node's identity next to the ids of its gift-wrapped offer and answer, on every relay it reached. v0.5.2 stops sending those deletions. A relay keeps the wraps until their NIP-40 expiry.</div></div>
+    <div class="card yl"><div class="card-label">WHAT THE RELAY SAW</div><div class="card-text">Stopping the deletion does not undo the introduction. A relay that carried the offer and answer still saw the discovery messages. Direct packets afterwards are a separate path from that record.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Release">
+  <h2 class="slide-title">Release v0.5.2</h2>
+  <p class="subtitle">The release is 28 Sep 2026, after the episode. The notes say there is no wire-format change, so a mixed mesh still works and nodes can be upgraded one at a time.</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">EVERY NODE</div><div class="card-text">The notes say every node should upgrade. Nostr relay connections move to rustls 0.23.45, past a flaw that accepted TLS 1.3 handshake messages across encryption-level boundaries (RUSTSEC-2026-0285; the handshake stays authenticated). A lost rekey reply no longer splits the link, and a lost session handshake no longer leaves the session one-sided.</div></div>
+    <div class="card bl"><div class="card-label">THEIR COUNT</div><div class="card-text">The README says the protocol runs end to end on a public test mesh of thousands of nodes, over the transports above. That count is the project's figure.</div></div>
+    <div class="card pu"><div class="card-label">WHAT THEY DEMO</div><div class="card-text">The episode walks through reaching a machine or a local app at an npub-shaped <code>.fips</code> address, without operating a DNS name. A chapter covers Pete's draft NIP-F5, a <code>window.fipsTransport</code> capability that lets a browser reach <code>.fips</code> services. It is open as <a href="https://github.com/nostr-protocol/nips/pull/2469">nostr-protocol/nips#2469</a>.</div></div>
+    <div class="card yl"><div class="card-label">QUESTION</div><div class="card-text">If the introduction happens on a public relay, what is still private about who wanted to reach whom, once the packets themselves have gone direct?</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/jmcorgan/fips/releases/tag/v0.5.2" target="_blank" rel="noopener">v0.5.2 notes</a>
+    <a href="https://github.com/nostr-protocol/nips/pull/2469" target="_blank" rel="noopener">NIP-F5 draft</a>
+    <a href="/2026-06/news-roundup.html">June: nostr-vpn</a>
+  </div>
+</div>
+
+</div>
+</div>
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

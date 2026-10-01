@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depots - Perth BitDevs October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --accent:var(--gn);--accent-bg:var(--gnd);--accent-glow:var(--gnd);--accent-border:var(--gn);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Protocol research</div>
+    <div class="update-tag">October 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-10/">&larr; Topics</a>
+</div>
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Problem">
+  <h2 class="slide-title">Channels Too Small to Settle</h2>
+  <p class="subtitle">John Law, Delving 15 Sep 2026. The post is a design for people whose Lightning balance is smaller than the fee to put that balance on chain.</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">THE GAP HE NAMES</div><div class="card-text">A trust-free protocol, in his framing, cannot at once use about 1&ndash;2 vbytes per user per year, let people join without paying an on-chain fee themselves, and avoid a pile of off-chain transactions that cannot be published before someone can steal. He says no existing trust-free design hits all three, so most users are expected to stay on custodians.</div></div>
+    <div class="card gn"><div class="card-label">DEPOT</div><div class="card-text">One operator puts up a single Taproot output. Thousands or millions of users buy off-chain Lightning channels against that output. Neither side can take the other's funds outright. Each side can force the other to lose money only by losing a proportional expected amount of their own.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/depots-theft-proof-self-custodial-bitcoin-for-billions-of-users/2892" target="_blank" rel="noopener">Depots on Delving</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Hit">
+  <h2 class="slide-title">Most Channels Never Hit</h2>
+  <p class="subtitle">A channel pays X sats only if it is published. The user pays X/P. P is a large prime.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">THE BET</div><div class="card-text">To buy a channel that pays X sats if it is published, the user pays X/P sats. P is a large prime, his example range is a hundred thousand to a billion. The user's guess is committed so the operator does not learn it. After expiry the operator reveals a target. A hit is a guess that matches.</div></div>
+    <div class="card yl"><div class="card-label">ONE HIT</div><div class="card-text">If exactly one channel hits, that user and the operator split the depot on chain, and the user is paid P times what they paid for the channel. If nobody hits, the operator claims the output after a delay.</div></div>
+    <div class="card rd"><div class="card-label">TWO HITS</div><div class="card-text">If more than one channel hits, the depot's funds are burned. That is the penalty that is supposed to stop the operator from selling so many channels that a safe target no longer exists, and to push users to drain before expiry.</div></div>
+    <div class="card gn"><div class="card-label">DRAIN</div><div class="card-text">Users are supposed to empty channels before expiry, by Lightning payments or by moving to another depot, and to reveal the guess so the operator can pick a target that misses. Channels that were drained do not have to appear on chain.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Softforks">
+  <h2 class="slide-title">It Needs CTV and CSFS</h2>
+  <p class="subtitle">Depots are not a policy idea. The scripts he draws do not exist on Bitcoin today.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">REQUIRED</div><div class="card-text"><code>OP_CHECKTEMPLATEVERIFY</code> (BIP-119) fixes the shape of the child transaction. <code>OP_CHECKSIGFROMSTACK</code> (BIP-348) lets the operator's signature cover a commitment to the user's hidden guess. Without both, the construction does not work.</div></div>
+    <div class="card cy"><div class="card-label">OPTIONAL</div><div class="card-text">He says PairCommit, <code>OP_MUL</code>, and <code>OP_MOD</code> make depots much smaller, and are not required for the basic protocol. Those are further opcodes, not part of CTV or CSFS.</div></div>
+    <div class="card yl"><div class="card-label">HIS SCALE CLAIM</div><div class="card-text">With one depot created per block, he says depots could give 10 Lightning channels to each of 10 billion users and carry over 900,000 payments per second, using little block space. That is his analysis of the design, not a measurement of a running system.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Security">
+  <h2 class="slide-title">Security Is a Penalty Ratio</h2>
+  <p class="subtitle">He does not claim the protocol is safe against an operator who is willing to lose money. He claims a self-interested operator will not grief.</p>
+  <div class="grid">
+    <div class="card gn"><div class="card-label">GRIEF RATIOS</div><div class="card-text">Two parameters, GrO and GrU, bound the expected loss. His example: a GrO of 0.05 means that if the operator costs users an expected x, the operator must expect to lose at least 0.05x. He says values of 0.10 and 0.50 still give a reasonably efficient depot, and that any positive ratio deters a party who only cares about their own funds.</div></div>
+    <div class="card rd"><div class="card-label">WHAT IT INHERITS</div><div class="card-text">The argument leans on Lightning's record: people rarely grief even when there is no financial penalty, because reputation and the ultimatum game make burning value unattractive. A depot user who cannot afford to publish a non-hit channel is trusting that this keeps holding after expiry.</div></div>
+    <div class="card yl"><div class="card-label">ON THE THREAD</div><div class="card-text">Users must drain before expiry. Anzus, from GemWallet, asked what happens to a user who loses a device or misses the deadline, and whether wallets could move users to a new depot automatically.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/depots-theft-proof-self-custodial-bitcoin-for-billions-of-users/2892" target="_blank" rel="noopener">Depots on Delving</a>
+  </div>
+</div>
+
+</div>
+</div>
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

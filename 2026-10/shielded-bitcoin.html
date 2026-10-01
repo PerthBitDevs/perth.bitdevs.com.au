@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shielded Bitcoin - Perth BitDevs October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --accent:var(--cy);--accent-bg:var(--cyd);--accent-glow:var(--cyd);--accent-border:var(--cy);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Privacy</div>
+    <div class="update-tag">October 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-10/">&larr; Topics</a>
+</div>
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Context">
+  <h2 class="slide-title">Two Ways to Hide a Payment</h2>
+  <p class="subtitle">A normal Bitcoin payment leaves the amount, and enough structure to guess who paid whom, where anyone can read it. CoinJoin, Payjoin, and Silent Payments scramble the labels. The amounts stay on the chain. The designs below try to hide the payment itself, without a soft fork. None of them has a wallet release.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">GLASS COINS</div><div class="card-text">Hand the payment privately to the recipient, with a proof that it is valid. Bitcoin stores a short marker so the same coin cannot be spent twice. If you lose the proof, the chain does not have a copy.</div></div>
+    <div class="card cy"><div class="card-label">SHIELDED BITCOIN</div><div class="card-text">Post the encrypted payment on Bitcoin, with a proof that it was valid. Anyone can rebuild the books by replaying those posts in chain order. A seed can find your notes again because the ciphertext is on the chain.</div></div>
+    <div class="card yl"><div class="card-label">THE LOCK</div><div class="card-text">Those notes are not bitcoin until something locks real coins to the rules. A PIPE encrypts a Bitcoin private key so it can be decrypted only by someone who proves a statement. Miners still see an ordinary signature.</div></div>
+    <div class="card bl"><div class="card-label">WHAT BITCOIN CHECKS</div><div class="card-text">In all three, Bitcoin consensus does not learn a new opcode and does not verify the private payment. It orders bytes, or it sees a normal spend. The extra rules are checked by the users, or by software replaying the chain.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Glass">
+  <h2 class="slide-title">Glass Coins</h2>
+  <p class="subtitle">Formerly Shielded CSV. Jonas Nick, Liam Eagen, and Robin Linus, ePrint 2025/068. Client-side validation: the recipient checks the coin. The chain is only there to catch a double spend.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">64 BYTES</div><div class="card-text">The paper puts a 64-byte nullifier on the chain per transaction. A user checks one Schnorr signature per nullifier. Everyone else can ignore the bytes. The proof travels with the coin, and the paper says its size and check cost do not grow with that coin's history.</div></div>
+    <div class="card yl"><div class="card-label">100 PER SECOND</div><div class="card-text">Their example is private Bitcoin payments at 100 per second, and only if there is an adequate bridge to the chain. They name BitVM-style bridges for that job. The 100 is their figure under that condition, not a measurement.</div></div>
+    <div class="card rd"><div class="card-label">IF THE PROOF IS LOST</div><div class="card-text">The protocol does not publish everything needed to rebuild the private state from Bitcoin. Shielded Bitcoin's related work, citing this paper, says a lost local proof is not generally recoverable from the chain alone.</div></div>
+    <div class="card bl"><div class="card-label">THE RENAME</div><div class="card-text">btc++ Insider, 31 Aug 2026: at the first developer call on 27 Aug, the three authors renamed the protocol Glass Coins and shared a high-level specification. The 24 Sep Shielded Bitcoin paper still describes Shielded CSV as a theoretical proposal, not a deployed system.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://eprint.iacr.org/2025/068" target="_blank" rel="noopener">Shielded CSV, ePrint 2025/068</a>
+    <a href="https://insider.btcpp.dev/p/glass-coins-last-week-in-bitcoin" target="_blank" rel="noopener">btc++ on the rename</a>
+    <a href="https://hackmd.io/H7BO61ART0CazAh752K2eQ" target="_blank" rel="noopener">Glass Coins specification</a>
+  </div>
+</div>
+
+<div class="slide" data-name="PIPEs">
+  <h2 class="slide-title">A PIPE Locks the Key</h2>
+  <p class="subtitle">PIPEs v2 is ePrint 2026/186, from [alloc] init. Mikhail Komarov is an author of both PIPEs v2 and the Shielded Bitcoin paper. A proof gets control of a coin by encrypting the spending key, without a covenant opcode.</p>
+  <div class="grid">
+    <div class="card yl"><div class="card-label">ENCRYPT, THEN DELETE</div><div class="card-text">Make a fresh Bitcoin key. Encrypt the private key under a statement, and do not keep the plaintext key. Whoever can prove the statement decrypts it and produces a Schnorr signature. The statement can be "this shielded peg-out is valid."</div></div>
+    <div class="card rd"><div class="card-label">NO CONSENSUS NET</div><div class="card-text">Miners do not check the statement. They see a key-path spend like any other. If the encryption is broken, or the key leaks, the coins are not saved by a consensus rule. The guarantee is the cryptography.</div></div>
+    <div class="card cy"><div class="card-label">WHERE SHIELDED BITCOIN USES IT</div><div class="card-text">The 24 Sep paper says PIPEs enter at peg-in and peg-out, and sketches a PIPE fee vault so publication is not paid from the user's ordinary wallet. It does not specify either construction. It says the claim that users keep their own keys does not cover the peg.</div></div>
+    <div class="card bl"><div class="card-label">NOT DEPLOYED</div><div class="card-text">The concrete candidate in PIPEs v2 is AADP witness encryption, which that paper calls a research direction. It rests on assumptions much newer than Schnorr. There is no shipped way to lock a mainnet coin to a shielded-note proof with it.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://eprint.iacr.org/2026/186" target="_blank" rel="noopener">PIPEs v2, ePrint 2026/186</a>
+    <a href="/2026-03/pipes-v2.html">March: the vault walkthrough</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Notes">
+  <h2 class="slide-title">Notes Posted on Bitcoin</h2>
+  <p class="subtitle">Clara Shikhelman, Mikhail Komarov, and Aleksei Moskvin, 24 Sep 2026. Same note, nullifier, and proof shape as Zcash. No second chain. Bitcoin stores the bytes and their order. It does not interpret them.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">A NOTE</div><div class="card-text">Value inside the metaprotocol is an encrypted record: a satoshi amount and a way to reach the owner. The plaintext is not on the chain.</div></div>
+    <div class="card bl"><div class="card-label">A TRANSFER</div><div class="card-text">The sender publishes encrypted notes, one nullifier per note spent, and a proof that the notes exist, the spender is allowed to spend them, and the amounts balance. A nullifier can be accepted once.</div></div>
+    <div class="card gn"><div class="card-label">REPLAY</div><div class="card-text">Indexers rebuild the note tree and the nullifier set from accepted envelopes, in Bitcoin order. The paper says two correct implementations, on the same profile and the same chain, get the same state without coordinating. They do not receive a key that can spend.</div></div>
+    <div class="card yl"><div class="card-label">ONE SEED</div><div class="card-text">One seed derives a spending key, a viewing key for incoming notes, and a viewing key for the owner's own outgoing history. A viewing key cannot spend. Showing one transfer is narrower than handing over the viewing key, and a disclosure does not prove that nothing was withheld.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/shielded-bitcoin-private-transfers-on-the-bitcoin-l1/2912" target="_blank" rel="noopener">Delving post</a>
+    <a href="https://www.allocinit.xyz/uploads/shielded-bitcoin.pdf" target="_blank" rel="noopener">Paper PDF</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Envelope">
+  <h2 class="slide-title">The Envelope Is Still Public</h2>
+  <p class="subtitle">Hiding the note contents is separate from hiding that a transfer was published, and separate from how bitcoin enters and leaves.</p>
+  <div class="grid">
+    <div class="card yl"><div class="card-label">STILL VISIBLE</div><div class="card-text">An observer sees when the envelope was published, how many notes went in and out, the fee, and the Bitcoin transaction that carried it. Amounts, the shielded sender, the recipient, and which earlier note was spent stay inside the proof. A wallet that repeatedly pays the fee can still be clustered.</div></div>
+    <div class="card cy"><div class="card-label">625 vB</div><div class="card-text">Their 2-input, 2-output profile is a 610-byte envelope. In one <code>OP_RETURN</code> output that is 625 vB. They also price a witness carrier at 438 vB across two transactions. Relay of the <code>OP_RETURN</code> assumes Bitcoin Core v30's default data-carrier size. An operator can set it back to 83 bytes. Consensus does not require miners to include it.</div></div>
+    <div class="card rd"><div class="card-label">THE DOOR</div><div class="card-text">Peg-in and peg-out are not specified. The direction they name is a PIPE. They write that this paper does not claim entry or exit is trustless, private, unlinkable, or censorship-resistant. A distinctive peg amount, and its timing, can still be matched to later shielded activity.</div></div>
+    <div class="card bl"><div class="card-label">GROTH16</div><div class="card-text">The profile uses Groth16 proofs of about 192 bytes. Bitcoin does not verify them. Indexers do. The setup is per circuit, and one setup per arity they choose to support. Groth16's setup holds if at least one ceremony participant was honest. They list other proof systems as an open choice.</div></div>
+  </div>
+</div>
+
+<div class="slide" data-name="Tradeoff">
+  <h2 class="slide-title">Where the Proof Lives</h2>
+  <p class="subtitle">Glass Coins and Shielded Bitcoin put the payment data in opposite places. Both still need a bridge before the notes are bitcoin, and neither bridge is specified as a finished construction.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">GLASS COINS</div><div class="card-text">Small chain footprint. The owner must keep the proof. The paper's bridge is BitVM-style. A filtered service is not required to learn the payment, because the payment was never posted.</div></div>
+    <div class="card cy"><div class="card-label">SHIELDED BITCOIN</div><div class="card-text">Larger chain footprint, seed recovery, and a shared state anyone can replay. ZmnSCPxj's point on the thread: a phone that will not trust an indexer has to scan the chain, and a filtered service learns that you use the system even when it does not learn which notes are yours.</div></div>
+    <div class="card rd"><div class="card-label">INDEXERS</div><div class="card-text">A dishonest indexer can omit or delay envelopes and mislead a wallet that trusts it. It cannot spend. The user can switch indexers or replay the history. That is an availability dependency, not custody of the notes.</div></div>
+    <div class="card yl"><div class="card-label">QUESTION</div><div class="card-text">The transfer rules are the part that is written down. The peg, which is the part that touches real bitcoin, is a later PIPE paper. What is safe to treat as specified, and what is still a direction?</div></div>
+  </div>
+</div>
+
+</div>
+</div>
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

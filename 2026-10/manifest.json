@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "month": "2026-10",
+  "status": "upcoming",
+  "content_status": "draft",
+  "event": {
+    "title": "October 2026",
+    "date": "2026-10-01",
+    "date_label": "Thursday 1 October 2026",
+    "short_date_label": "Thursday 1 October",
+    "time_label": "6pm",
+    "timezone": "Australia/Perth",
+    "venue": {
+      "name": "Blasta Brewing",
+      "suburb": "Burswood",
+      "label": "Blasta Brewing, Burswood"
+    }
+  },
+  "sources": {
+    "github_issue": {
+      "repo": "PerthBitDevs/PerthBitDevs",
+      "number": 43,
+      "url": "https://github.com/PerthBitDevs/PerthBitDevs/issues/43"
+    },
+    "note": "Topics taken from issue #43 comments. Dedicated decks are the clusters that justify a discussion; the rest is the news roundup."
+  },
+  "topic_count": 9,
+  "topics": [
+    {
+      "file": "general-news.html",
+      "title": "News",
+      "category": "News",
+      "status": "draft",
+      "slides": 7,
+      "summary": "BIP-110 mandatory signaling at block 961,632 on 8 Aug split a short branch: two blocks by 11 Aug (b10c), four by 17 Aug (Lopp, all from Roughnecks), and eight SHA-256d blocks before 961,640 switched to BLAKE2b. BIPs #2245 closed BIP-110, and #2248 removed Luke Dashjr as a BIP editor; Luke called it an abuse of power by Core. Knots 29.4.1 (2 Sep) is a hard fork: BLAKE2b proof of work, a temporary 800 kWU limit, and opt-in SIGHASH_UNIFIED. Also: Sztorc's eCash (ECX) schedule, with the permanent release on 31 Oct and opt-in replay protection; x402 Lightning; SpiderPool at 963,853 and BIP332 stale tip relay; address-relay spam; Core consensus in a zkVM; invalid-blocks (171 records at 4fad71d, two F2Pool headers 7 and 14 days below MTP); and overtorment's App Store wallet-binary survey (904 listed, 494 analysed, 23 critical and 22 high).",
+      "tags": ["bip-110", "ecash", "x402", "invalid-blocks"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "liquid-incident.html",
+      "title": "Liquid Peg-Out, 6 September",
+      "category": "Security",
+      "status": "draft",
+      "slides": 5,
+      "summary": "An Elements range-proof cache bug let one party mint about 4,000 unbacked L-BTC on 6 Sep. SideSwap's automatic peg-out, with an online key, turned it into 3,996.02 BTC on Bitcoin, and Liquid's reserve fell from about 4,205 to 197 BTC. The 3 Aug fix for a 2018 cache-key bug built the key without length prefixes, and that is the bug that was used; Elements 23.3.4 (9 Sep) fixes it. 3,400 BTC came back on 7 Sep; about 600 BTC is held as a self-declared bounty that Blockstream refuses to pay. Liquid resumed blocks on 9 Sep and transactions on 10 Sep; pegs were still suspended in Blockstream's 23 Sep report.",
+      "tags": ["liquid", "elements", "sideswap", "peg"],
+      "source_refs": [
+        "PerthBitDevs/PerthBitDevs#43",
+        "https://blog.blockstream.com/liquid-network-security-incident-assessment/"
+      ]
+    },
+    {
+      "file": "pq-migration.html",
+      "title": "Post-Quantum Proposals",
+      "category": "Post-quantum",
+      "status": "draft",
+      "slides": 6,
+      "summary": "Lopp's 17 Sep map of options for coins that do not migrate (1.7M BTC in P2PK, at least 2.6M BTC exposed). The 26 Aug SHRINCS draft: 48-byte keys, stateful signatures from 548 to 4,619 bytes, a 5,777-byte stateless fallback, no output type, and a full-scheme proof still TODO (libshrincs proves WOTS+C). Wuille on CISA and P2TRv2. duncan0k's exposure classification (BIPs #2294, v0.6.0). Ahmet Kurt's PQLN with roasbeef's reply. Conduition's DropKick commit-delay-reveal rescue. James Tagg's 22 Sep QSAVE five-BIP draft, its custody model, the QSAVE Wealth Fund context, and 2025 criticism from Conduition and Javier Mateos.",
+      "tags": ["pq", "lightning", "dropkick", "qsave"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "depots.html",
+      "title": "Depots",
+      "category": "Protocol research",
+      "status": "draft",
+      "slides": 4,
+      "summary": "John Law, Delving 15 Sep 2026. Operator-funded Taproot output holding probabilistic Lightning channels for many users. Requires CTV and CSFS. A channel is a hit with probability 1/P and then pays P times the purchase price; more than one hit burns the depot. Security is griefer penalization plus self-interest, not a trust-free protocol. Includes Anzus (GemWallet)'s question about lost devices and missed drain deadlines.",
+      "tags": ["ctv", "csfs", "lightning", "scaling"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "shielded-bitcoin.html",
+      "title": "Shielded Bitcoin",
+      "category": "Privacy",
+      "status": "draft",
+      "slides": 6,
+      "summary": "Plain context, then three designs. Glass Coins (formerly Shielded CSV; Nick, Eagen, Linus, ePrint 2025/068; renamed on the 27 Aug 2026 dev call, with a HackMD specification): 64-byte nullifiers, proofs stay with the user, BitVM-style bridge still required. PIPEs v2 (ePrint 2026/186, [alloc] init): witness-encrypt a Bitcoin key so a proof can spend it; miners see a normal signature; AADP is research, not a deployment. Shielded Bitcoin (Shikhelman, Komarov, Moskvin, 24 Sep 2026): encrypted notes posted on Bitcoin, Groth16, 625 vB OP_RETURN for a 2-in 2-out envelope. Peg-in and peg-out are a later PIPE paper, and this paper does not claim that boundary is trustless or private.",
+      "tags": ["privacy", "zk", "metaprotocol"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "fips-nostr.html",
+      "title": "FIPS and Nostr",
+      "category": "Networking",
+      "status": "draft",
+      "slides": 3,
+      "summary": "jmcorgan's Free Internetworking Peering System, as walked through on Intelligence Snacks 72 (Pete Winn and Andy David). A node address is a self-generated secp256k1 key, mapped to fd00::/8 and a .fips name. Packets route over a spanning tree, with bloom-filter discovery. Mesh traffic is Noise, not a Nostr event. Nostr discovery is optional: relays introduce peers for UDP hole punching, then packets go direct; mDNS covers the LAN. v0.5.2 (28 Sep 2026) stops signing NIP-09 traversal deletions with the routing key. Pete's NIP-F5 browser transport is open as nips#2469. Protocol and APIs are not stable. June's nostr-vpn uses this mesh.",
+      "tags": ["fips", "nostr", "mesh"],
+      "source_refs": ["https://www.youtube.com/watch?v=5mNhaiwZMX0", "https://github.com/jmcorgan/fips", "https://github.com/nostr-protocol/nips/pull/2469"]
+    },
+    {
+      "file": "coldcard-firmware.html",
+      "title": "Coldcard Firmware You Build",
+      "category": "Hardware",
+      "status": "draft",
+      "slides": 2,
+      "summary": "Coinkite, 23 Sep 2026: the firmware tree includes development signing key zero, development images show a boot warning, and a seed used under unknown firmware should not be treated as private again. TibaneLabs/catcard is clean-room Rust firmware that installs through the same dev-signed path. Its README estimates far less entropy in affected stock seeds (about 22 bits on Mk3, 32 on Mk4) than Coinkite's backgrounder (about 40 and 72 bits), and objects to Coldcard's Commons Clause licence.",
+      "tags": ["coldcard", "firmware"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "rust-full-nodes.html",
+      "title": "Two Rust Full Nodes",
+      "category": "Implementations",
+      "status": "draft",
+      "slides": 2,
+      "summary": "gosuda/bitcoin-rs (Delving 28 Sep 2026) keeps a UTXO set and can check scripts natively or through libbitcoinkernel. reardencode/rbitcoin v0.7.0 (18 Sep 2026) stores an archive instead of a UTXO set, serves Electrum or Esplora in-process, and its README says the code is AI-written (Grok). rbitcoin skips script checks below block 840,000 by default, less history than Core v32's assumevalid default (966,143). Separate projects.",
+      "tags": ["rust", "full-node", "client-diversity"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    },
+    {
+      "file": "news-roundup.html",
+      "title": "Releases and Fixes",
+      "category": "Releases",
+      "status": "draft",
+      "slides": 6,
+      "summary": "Core 32.x branched on 11 Sep; v32.0rc2 (18 Sep), final aimed at 10 Oct. In 32.0: #34931 (unreadable coins now abort, defensive), #36048 (walletnotify injection), #35949 (BIP54 templates). On master for 33: #29278 maxfeerate, #35984, #36365 (proposed backport), #35813, #35752, #35675, #36309, and #35301's BIP352 cryptography with no wallet send or receive. Lightning: Eclair v0.14.0 DoS disclosure and v0.14.3, CLN ping exhaustion before 25.09, LDK v0.2.6 and v0.3-rc2, LND release candidates, BTCPay macaroon theft, the LND close disclosure, and HWI maintenance. BIPs: BIP376, BIP138, BIP461, and the open BIP375 vector and BIP-346 fixes.",
+      "tags": ["core", "lightning", "bips", "btcpay"],
+      "source_refs": ["PerthBitDevs/PerthBitDevs#43"]
+    }
+  ],
+  "auxiliary_pages": [],
+  "landing": {
+    "href": "/2026-10/",
+    "summary_topics": [
+      "News (BIP-110 split and the BIP editor change, Knots 29.4.1 BLAKE2b fork, eCash on 31 October, invalid blocks, App Store wallet binaries)",
+      "Liquid peg-out: the range-proof cache bug, 3,400 BTC returned, about 600 BTC outstanding",
+      "Post-quantum proposals (SHRINCS draft, exposure classes, PQLN, DropKick, QSAVE)",
+      "Depots, Shielded Bitcoin with Glass Coins and PIPEs, FIPS over Nostr, Coldcard development firmware, two Rust full nodes",
+      "Releases: Core 32.0 and master, Lightning security fixes, and BIP352 cryptography without a Core wallet"
+    ]
+  }
+}

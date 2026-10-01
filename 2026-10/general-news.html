@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News - Perth BitDevs October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --accent:var(--or);--accent-bg:var(--orD);--accent-glow:var(--orD);--accent-border:var(--orB);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">News</div>
+    <div class="update-tag">October 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-10/">&larr; Topics</a>
+</div>
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="BIP-110">
+  <h2 class="slide-title">The BIP-110 Split</h2>
+  <p class="subtitle">Block 961,632, 8 August 2026. Nodes enforcing BIP-110 rejected blocks that did not signal bit 4, and followed a branch of their own.</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">THE BRANCH</div><div class="card-text">b10c, 11 Aug: two blocks on the branch, 961,632 and 961,633, with the main chain more than 400 blocks ahead. Lopp, 17 Aug: four blocks, all from a miner calling itself Roughnecks, and OCEAN refunded miners whose hashrate had been pointed at that chain. bitcoinbip110.org lists 961,639 as the last SHA-256d block, so eight in all.</div></div>
+    <div class="card yl"><div class="card-label">BIPS REPO</div><div class="card-text"><a href="https://github.com/bitcoin/bips/pull/2245">BIPs #2245</a>, merged 10 Aug, sets BIP-110 to Closed. Sjors Provoost writes that the activation criteria were not met. SatsAndSports writes that no height on the heaviest chain ever enforced its rules.</div></div>
+    <div class="card pu"><div class="card-label">BIP EDITORS</div><div class="card-text"><a href="https://github.com/bitcoin/bips/pull/2248">BIPs #2248</a>, merged 10 Aug, removed Luke Dashjr as a BIP editor. Murch's motion cites BIP-110's handling, including a number assigned on X before list discussion and a merge within minutes, and little editorial work since 2024. Luke, on X on 10 Aug, called it "an abuse of power by Core" and said they have no authority to do so.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://b10c.me/projects/028-bip110-monitoring-livestream/" target="_blank" rel="noopener">b10c, 11 Aug</a>
+    <a href="https://blog.lopp.net/bip-110-post-mortem/" target="_blank" rel="noopener">Lopp, 17 Aug post mortem</a>
+    <a href="https://github.com/bitcoin/bips/pull/2245" target="_blank" rel="noopener">BIPs #2245</a>
+    <a href="https://github.com/bitcoin/bips/pull/2248" target="_blank" rel="noopener">BIPs #2248</a>
+    <a href="https://bitcoinmagazine.com/news/luke-dashjr-removed-as-bitcoin-bip-editor" target="_blank" rel="noopener">Bitcoin Magazine on the removal</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Knots">
+  <h2 class="slide-title">Knots 29.4.1: A New Proof of Work</h2>
+  <p class="subtitle">Released 2 September. A hard fork: SHA-256d miners cannot extend the chain it follows. bitcoinbip110.org dates the first BLAKE2b block, 961,640, to 30 August at 06:14 UTC.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">WHAT CHANGES</div><div class="card-text">A BLAKE2b proof of work (knots#359), a temporary 800,000 weight-unit block limit, BIP-110's reduced-data rules active from that flag day, and opt-in <code>SIGHASH_UNIFIED</code>. The notes say a backward-incompatible change was required. Header JSON gains new fields, including <code>header_version</code>, <code>nonce2</code>, <code>nonce3</code>, and <code>xor_key</code>.</div></div>
+    <div class="card pu"><div class="card-label">WHICH CHAIN</div><div class="card-text">The release notes say that on 8 August most former miners abandoned Bitcoin and have been promoting a new altcoin as Bitcoin, and that the proof-of-work change mitigates that attack. bitcoinbip110.org calls the BLAKE2b chain Bitcoin BIP110. Bitcoin Core implements neither BIP-110 nor the new proof of work.</div></div>
+    <div class="card rd"><div class="card-label">REPLAY</div><div class="card-text">Coins from before 8 August exist on both histories. A transaction signed for one can also be valid on the other, unless the signer uses <code>SIGHASH_UNIFIED</code>, which bitcoinbip110.org presents as the chain's opt-in replay protection.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.1.knots20260508" target="_blank" rel="noopener">Knots 29.4.1 release notes</a>
+    <a href="https://bitcoinbip110.org/technicals/" target="_blank" rel="noopener">BLAKE2b chain checkpoints</a>
+  </div>
+</div>
+
+<div class="slide" data-name="eCash">
+  <h2 class="slide-title">Sztorc's eCash (ECX) Schedule</h2>
+  <p class="subtitle">Paul Sztorc, 7 August: the BIP-300 hard fork launches in three stages instead of one. This is not Chaumian ecash and not XEC. Bitcoin's rules are unchanged.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">THREE DATES</div><div class="card-text">Alpha on 23 August at block 963,648, with practice coins (pECX) credited 1 per BTC. Beta on 20 September at block 967,680. The permanent release on 31 October at block 973,728, four weeks after this meetup. Practice coins can be redeemed for ECX after that.</div></div>
+    <div class="card yl"><div class="card-label">REPLAY RISK</div><div class="card-text">Replay protection is opt-in, and official ECX wallet software applies it. Without it, an ordinary Bitcoin spend can be replayed on the ECX chain, so the ECX follows the bitcoin to its new owner. Sztorc, quoted by bitcoin.com: "If you ignore us, we will replay your txns."</div></div>
+    <div class="card pu"><div class="card-label">REPLAY DESIGNS</div><div class="card-text">Optech #420, after a minority chain was hit by replayed transactions. Moonsettler sketches committing the previous block hash in the taproot annex, 34 bytes. Anthony Towns suggests a block height plus a hash suffix, 6 bytes, and an <code>nLockTime</code> so a reorg cannot mine the transaction early.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://x.com/Truthcoin/status/2085825694697746745" target="_blank" rel="noopener">Sztorc, 7 Aug update</a>
+    <a href="https://news.bitcoin.com/crypto-news/bitcoins-ecx-hard-fork-splinters-into-3-launches-through-october/" target="_blank" rel="noopener">bitcoin.com on the schedule</a>
+    <a href="https://bitcoinops.org/en/newsletters/2026/08/28/" target="_blank" rel="noopener">Optech #420</a>
+    <a href="/2026-07/august-fork.html">July: the fork preview</a>
+  </div>
+</div>
+
+<div class="slide" data-name="x402">
+  <h2 class="slide-title">Lightning on x402</h2>
+  <p class="subtitle">HTTP 402 means Payment Required. x402 is a standard for answering with a price, taking a payment, and then serving the request. The Lightning scheme for that merged on 23 September.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">THE SCHEME</div><div class="card-text">benthecarman, <a href="https://github.com/x402-foundation/x402/pull/2861">x402 #2861</a>, merged 23 Sep 2026. The <code>exact</code> scheme on <code>lnbtc</code>. The client pays a fresh BOLT11 invoice and returns the 32-byte preimage. The facilitator checks that SHA-256 of the preimage is the invoice payment hash, and that the invoice signing key matches <code>payTo</code>. The check needs no access to the receiver's Lightning node.</div></div>
+    <div class="card yl"><div class="card-label">THE INVOICE</div><div class="card-text">The amount is an integer number of millisatoshis. The server hashes the request and puts that hash in the invoice description, so the proof is for this request. A replay store records the payment hash. The flow is upfront: the resource is served only after <code>/settle</code> accepts the proof.</div></div>
+    <div class="card gn"><div class="card-label">BLOCK</div><div class="card-text">24 Sep 2026: Block says it joined the x402 Foundation and contributed Lightning payments to the protocol. Steve Lee, head of Spiral, is quoted in the post. The merged scheme above is benthecarman's pull request.</div></div>
+    <div class="card rd"><div class="card-label">THE PROOF</div><div class="card-text">The preimage does not show how much was received, and Lightning can pay more than the invoice. The spec accepts the proof at the invoice amount, so the extra buys nothing more. The scheme has no refund path.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_lnbtc.md" target="_blank" rel="noopener">exact scheme on Lightning</a>
+    <a href="https://block.xyz/inside/block-joins-the-x402-foundation-to-advance-open-agentic-commerce" target="_blank" rel="noopener">Block, 24 Sep 2026</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Network">
+  <h2 class="slide-title">Stale Blocks, Address Spam, and a zkVM</h2>
+  <p class="subtitle">Network observations from August, and a draft BIP for relaying stale tips.</p>
+  <div class="grid">
+    <div class="card cy"><div class="card-label">SPIDERPOOL</div><div class="card-text">24 Aug, height 963,853: SpiderPool mined two blocks. The winner ends <code>542c</code> (11:28:27Z), the stale one <code>a108</code> (11:25:04Z). mononaut: the stale block was built later and carried newer, higher-feerate transactions. Anthony Towns saw the winner 0.36 seconds before the loser.</div></div>
+    <div class="card gn"><div class="card-label">STALE TIP RELAY</div><div class="card-text">BIP332 (Anthony Towns, w0xlt, Ram), merged as a draft on 9 Sep: an optional <code>staletip</code> message announcing recent stale branch headers, and whether the sender will serve the blocks. Its case: stale-block rates track how fast blocks reach miners, and a node already holding a stale block reorgs faster.</div></div>
+    <div class="card yl"><div class="card-label">ADDRESS RELAY</div><div class="card-text">mzumsande and stratospher, BNOC, 14 Aug. From mid-April to about 14 July an entity flooded address gossip; they report a tenfold rise. The spam met Core's relay rules: at most 10 addresses per <code>addr</code> message, each timestamped within 10 minutes. It ended when the spammer stopped refreshing timestamps.</div></div>
+    <div class="card pu"><div class="card-label">CORE IN A ZKVM</div><div class="card-text">defenwycke, Delving, 15 Aug: Bitcoin Core v28's own consensus code, including <code>interpreter.cpp</code> and libsecp256k1, run in a RISC0 zkVM to produce STARK proofs of mainnet blocks. Block 962,000, with 8,006 inputs, took about 9.7 hours on one L40S GPU. The two-hour future-time rule cannot be proven: the guest has no clock.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bnoc.xyz/t/spiderpool-mines-two-blocks-at-same-height-963853/166" target="_blank" rel="noopener">SpiderPool at 963,853</a>
+    <a href="https://github.com/bitcoin/bips/blob/master/bip-0332.md" target="_blank" rel="noopener">BIP332</a>
+    <a href="https://bnoc.xyz/t/address-relay-under-stress-attack-characteristics-and-measuring-its-effects/164" target="_blank" rel="noopener">Address relay under stress</a>
+    <a href="https://delvingbitcoin.org/t/running-cores-real-consensus-code-inside-a-zkvm/2811" target="_blank" rel="noopener">Core consensus in a zkVM</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Invalid">
+  <h2 class="slide-title">Invalid Blocks</h2>
+  <p class="subtitle">deadmanoz, bitcoin-data/invalid-blocks. A header that meets proof of work and fails a named consensus rule. A stale block is the other case: it passes the rules and loses the race.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">THE FILE</div><div class="card-text">Split from stale-blocks. At commit <code>4fad71d</code> (1 Oct), <code>invalid-blocks.jsonl</code> has 171 records, and <code>reported-blocks.jsonl</code> holds 12 whose failure is not established. The 23 September note counted 143. On 30 September, 27 descendants were admitted under <code>prev_block_invalid</code>. The site is generated from the dataset.</div></div>
+    <div class="card rd"><div class="card-label">TWO IN 2026</div><div class="card-text">946,213 and 957,780, both <code>/F2Pool/</code>, rule <code>time_below_mtp</code>. Their headers say 15 April and 29 June, but they were mined around 22 April and 13 July: 7 and 14 days behind the median time of the previous 11 blocks. Namecoin AuxPoW proofs bind the coinbases to the headers. b10c found neither in his logs; stratum.work shows forks at the next height, and he says SpiderPool mined on them.</div></div>
+    <div class="card yl"><div class="card-label">2012 P2SH</div><div class="card-text">89 records, 1 April to 17 July 2012, all failing on a spend of the same output, <code>b0539a45…:1</code>. Nodes enforcing the new P2SH rules rejected them. Older nodes accepted them, so the spend kept being mined for months. Four have reconstructed bodies; 85 are admitted from a proof of the transaction and the block's ordered txids.</div></div>
+    <div class="card gn"><div class="card-label">WHAT COUNTS</div><div class="card-text">CI checks the named failure. A body failure needs a complete block, or a proof that reproduces the merkle root. Pool tags and payout addresses are read from bytes the header commits to. A report with no header or no body stays in the reported file. The checks do not replay every historical consensus rule.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://bitcoin-data.github.io/invalid-blocks/" target="_blank" rel="noopener">invalid-blocks site</a>
+    <a href="https://github.com/bitcoin-data/invalid-blocks" target="_blank" rel="noopener">bitcoin-data/invalid-blocks</a>
+    <a href="https://bnoc.xyz/t/invalid-blocks-catalogue/177" target="_blank" rel="noopener">BNOC note, 23 Sep</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Wallets">
+  <h2 class="slide-title">App Store Wallet Binaries</h2>
+  <p class="subtitle">@overtorment, 6 September 2026. He compared Apple App Store builds that advertise themselves as non-custodial with what those binaries do.</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">THE COUNT</div><div class="card-text">He lists 904 apps marketed as non-custodial wallets and analysed 494 of the binaries. Forty-five raised a flag: 23 he rates critical and 22 high. He was looking for private-key exfiltration and weak entropy. He says a flag can be a false positive, and that an app missing from the list is not evidence it is safe.</div></div>
+    <div class="card yl"><div class="card-label">THE METHOD</div><div class="card-text">ipatool downloaded the store binaries, and Grok 4.6 analysed them. JavaScript bundles are easy for an LLM to read; native code is not, and he says a deeper pass would need decrypted binaries from a jailbroken device. The public source repository, when one exists, was not treated as the same artefact as the store build.</div></div>
+    <div class="card bl"><div class="card-label">TWO BUILDS</div><div class="card-text">Aura: Bitcoin Wallet, store build v27.27.60, posts the mnemonic, a WIF, and vault phrases to coffer.agency. He says the public GitHub code is local-only. "Bitcoin Wallet : BTC,ETH,USD" says it never has access to keys. He says its store build posts the recovery phrase and an EVM private key to xcryptowallet.org, in a field named <code>encryptedMnemonic</code>, with no encryption step.</div></div>
+    <div class="card gn"><div class="card-label">HIS LIMIT</div><div class="card-text">App Store search, ads, reviews, and the project's reputation do not establish what the binary sends. He says a single device should not be the only signer for a meaningful amount. The write-up is one person's static pass, published so the findings can be checked.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://kek.lol/research/appstore-wallets/" target="_blank" rel="noopener">App Store wallet binaries</a>
+  </div>
+</div>
+
+</div>
+</div>
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>

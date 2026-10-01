@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post-Quantum Proposals - Perth BitDevs October 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --accent:var(--pu);--accent-bg:var(--pud);--accent-glow:var(--pud);--accent-border:var(--pu);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Post-quantum</div>
+    <div class="update-tag">October 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-10/">&larr; Topics</a>
+</div>
+<div class="content">
+<div class="slide-inner">
+
+<div class="slide" data-name="Lopp">
+  <h2 class="slide-title">Lopp's Map of the Choice</h2>
+  <p class="subtitle">Jameson Lopp, 17 Sep 2026. If quantum computers break today's signatures, he argues one property Bitcoin treats as inviolable breaks either way: owners keep the right to spend, or exposed keys stay safe from theft.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">HIS FIGURES</div><div class="card-text">About 1.7 million BTC sits in old pay-to-public-key outputs. He counts at least 2.6 million BTC, about 13% of supply, as still exposed even if every active user migrates.</div></div>
+    <div class="card yl"><div class="card-label">BOTH SIDES</div><div class="card-text">A freeze stops vulnerable spends, and can look like confiscation to an owner who still has the key. Doing nothing leaves long-exposed keys to whoever can run Shor's algorithm first.</div></div>
+    <div class="card bl"><div class="card-label">HIS OPTIONS</div><div class="card-text">Freeze; do nothing; stop new vulnerable outputs; temporary locks instead of burns; rate limits, such as Hourglass's 1 BTC per block from pay-to-public-key; commit-delay-reveal rescues; and zero-knowledge proofs that you know the seed behind an exposed key.</div></div>
+    <div class="card gn"><div class="card-label">WHERE THESE FIT</div><div class="card-text">SHRINCS is a candidate signature for the outputs people would move to. The exposure draft says which coins are at risk. PQLN covers Lightning's messages. DropKick is a commit-delay-reveal rescue. QSAVE pairs a seed proof with custody.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://blog.lopp.net/bitcoin-quantum-migration-debate/" target="_blank" rel="noopener">Lopp, Bitcoin's Quantum Migration Debate</a>
+    <a href="/2026-07/post-quantum-migration.html">July: output types and state</a>
+  </div>
+</div>
+
+<div class="slide" data-name="SHRINCS">
+  <h2 class="slide-title">SHRINCS, Specified</h2>
+  <p class="subtitle">26 Aug 2026: Conduition with Ethan Heilman, Mikhail Kudinov, Oleksandr Kurbatov, Jonas Nick, and remix7531. A hash-based post-quantum signature that assumes only SHA256. A cryptographic draft, not yet a pull request in the BIPs repository.</p>
+  <div class="grid">
+    <div class="card gn"><div class="card-label">SIZES</div><div class="card-text">Public key 48 bytes. A key's first stateful signature is 548 bytes, growing to at most 4,619 as the key keeps signing; earlier write-ups said 324. A 5,777-byte stateless fallback covers up to 2<sup>40</sup> signatures. Schnorr is 64 bytes. Key plus smallest signature is about 13 times smaller than SLH-DSA-128s, and 6 times smaller than ML-DSA-44.</div></div>
+    <div class="card rd"><div class="card-label">STATE</div><div class="card-text">Reusing a counter value under one key lets anyone who saw both signatures forge a new one. Lost state, a restored backup, or two devices on one seed can do that, so a wallet unsure of its counter must refuse stateful signing. April's SHRIMPS is the multi-device variant, at about 2.5 KB.</div></div>
+    <div class="card pu"><div class="card-label">NOT AN OUTPUT</div><div class="card-text">Like BIP340, it defines keys and signing, not consensus. It cannot be deployed safely without a new output type, and it has no structure for BIP32 xpubs or MuSig. Wuille, in Optech #421: bundling cross-input aggregation into P2TRv2 saves at most about 28% weight, and wallet support, not fees, is the bottleneck.</div></div>
+    <div class="card yl"><div class="card-label">FEES AND PROOFS</div><div class="card-text">Antoine Riard: the fallback is about 90 times a Schnorr signature in Lightning or vault fee-bump reserves. Conduition: a 2-in, 2-out spend is 840 WU with Schnorr and 12,426 WU with the fallback, about 14.8 times. Still missing: test vectors and a proof for the full scheme. remix7531's libshrincs has machine-checked proofs for WOTS+C, its one-time piece.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://mirror.b10c.me/lists/bitcoindev/2fb38fb8-2584-4550-b268-ee7138de419bn@googlegroups.com/t/" target="_blank" rel="noopener">bitcoindev, 26 Aug 2026</a>
+    <a href="https://github.com/SHRINCS/shrincs-bip/blob/main/SHRINCS.md" target="_blank" rel="noopener">Draft specification</a>
+    <a href="https://delvingbitcoin.org/t/libshrincs-a-c-implementation-with-a-machine-checked-security-proof/2795" target="_blank" rel="noopener">libshrincs on Delving</a>
+    <a href="/2026-04/shrimps.html">April: SHRIMPS</a>
+  </div>
+</div>
+
+<div class="slide" data-name="Exposure">
+  <h2 class="slide-title">Which Outputs Are Exposed</h2>
+  <p class="subtitle">duncan0k's informational draft, BIPs pull request #2294, now at v0.6.0 (24 Sep). It classifies outputs; it changes no consensus or policy rule.</p>
+  <div class="grid">
+    <div class="card rd"><div class="card-label">AT REST</div><div class="card-text"><code>EXPOSED_AT_REST</code>: the public key is already on chain, as with pay-to-public-key, or a reused address that has been spent and still holds a balance.</div></div>
+    <div class="card yl"><div class="card-label">ON SPEND</div><div class="card-text"><code>EXPOSED_ON_SPEND</code>: the key appears when the coin is spent. A P2MR leaf that requires a signature publishes a secp256k1 key, so P2MR sits here until post-quantum leaves exist. Outputs sharing a script count together: once a confirmed spend publishes the key, the rest are at rest.</div></div>
+    <div class="card gn"><div class="card-label">FAIL CLOSED</div><div class="card-text"><code>NOT_EXPOSED</code> has no member today. Unrecognised types are <code>UNDETERMINED</code>, not safe. When the data cannot distinguish two levels, the draft assigns the more exposed one.</div></div>
+    <div class="card bl"><div class="card-label">CORRECTION</div><div class="card-text">Earlier versions listed P2MR as <code>NOT_EXPOSED</code>. v0.5.0 moved it to <code>EXPOSED_ON_SPEND</code> after Murch pointed to BIP 360's own terms. A wallet using the old rule would show P2MR as hidden when a leaf spend is not.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://github.com/bitcoin/bips/pull/2294" target="_blank" rel="noopener">BIPs #2294</a>
+  </div>
+</div>
+
+<div class="slide" data-name="PQLN">
+  <h2 class="slide-title">PQLN on Lightning</h2>
+  <p class="subtitle">Ahmet Kurt, Delving 16 Sep. A hybrid post-quantum layer for Lightning messages, implemented in a rust-lightning fork. Funding, commitment, and penalty keys stay classical, because those need a consensus change.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">WHAT MOVES</div><div class="card-text">BOLTs 4, 7, 8, 11, and 12. Gossip carries ML-DSA and ML-KEM keys and pins them on first sight. The Noise handshake adds two ML-KEM encapsulations on a separate port, with no in-band negotiation, so a quantum adversary cannot rewrite a downgrade.</div></div>
+    <div class="card cy"><div class="card-label">HIS MEASUREMENTS</div><div class="card-text">ML-DSA signing at 0.33 ms. On a 50 ms, 10 Mbit/s link, a payment is 19&ndash;53 ms slower per hop, mostly from a 21.8 kB ciphertext list. A new node on a 33,000-channel network downloads about 270 MB of gossip instead of 26 MB, about 10&times;, because <code>channel_announcement</code> stays classical.</div></div>
+    <div class="card yl"><div class="card-label">ROASBEEF</div><div class="card-text">29 Sep reply. He wants hybrid schemes, questions BOLT 11's size limits, and says ML-KEM ciphertexts sitting in fixed slots beside the onion can reveal a hop's position and are not re-randomised the way Sphinx packets are. Trust-on-first-use only helps nodes that met before a quantum computer exists.</div></div>
+    <div class="card rd"><div class="card-label">OPEN</div><div class="card-text">TLV types and feature bits are unassigned. No interoperability run against CLN, LND, or Eclair yet. PQ gossip does not relay through vanilla rust-lightning nodes while <code>MAX_EXCESS_BYTES_FOR_RELAY</code> stays at 1024 bytes.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://delvingbitcoin.org/t/pqln-post-quantum-security-for-the-bitcoin-lightning-networks-off-chain-surfaces/2893" target="_blank" rel="noopener">PQLN on Delving</a>
+  </div>
+</div>
+
+<div class="slide" data-name="DropKick">
+  <h2 class="slide-title">DropKick</h2>
+  <p class="subtitle">Conduition, Brink-funded write-up dated 1 Aug 2026, then discussed on bitcoindev. A commit-delay-reveal rescue for coins whose owners do not migrate before a quantum computer can spend them.</p>
+  <div class="grid">
+    <div class="card bl"><div class="card-label">TWO STEPS</div><div class="card-text">Commit to a hidden value in a block, for example in an <code>OP_RETURN</code> or a Taproot tweak. After a long delay, 1,440 blocks (about 10 days) in his example, reveal the witness, a post-quantum signature, and a proof in the style of SPV or OpenTimestamps that the commitment is old enough.</div></div>
+    <div class="card gn"><div class="card-label">VS LIFEBOAT</div><div class="card-text">Tadge Dryja's Lifeboat needs each user to hold a post-quantum-secure output, and validators to index every commitment. DropKick lets untrusted aggregators merkle-commit many users under one root, with no index. Optech #421: the cost is more miner-censorship risk on the reveal.</div></div>
+    <div class="card yl"><div class="card-label">WHAT IT CAN COVER</div><div class="card-text">Optech's summary: a non-confiscatory soft fork if it only encumbers outputs where validators can see, from the output alone, that hidden data exists. Covering undecidable cases such as BIP32 derivation would rescue more coins and could confiscate some. Pay-to-public-key cannot be covered.</div></div>
+    <div class="card rd"><div class="card-label">CENSORSHIP</div><div class="card-text">His minimum fee ratio is 1/(1 + delay): about 100 blocks of delay works if users pay 1% of the coin to honest miners, assuming censors will not reorg the commitment out. Those are his parameters, not a deployed rule.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://conduition.io/bitcoin/dropkick/" target="_blank" rel="noopener">DropKick write-up</a>
+    <a href="https://bitcoinops.org/en/newsletters/2026/09/04/" target="_blank" rel="noopener">Optech #421</a>
+  </div>
+</div>
+
+<div class="slide" data-name="QSAVE">
+  <h2 class="slide-title">QSAVE</h2>
+  <p class="subtitle">James Tagg, bitcoindev, 22 Sep 2026. Five draft BIPs, hosted on qsave.org. He presents it as a no-burn alternative to BIP 361 and Hourglass for coins that do not migrate.</p>
+  <div class="grid">
+    <div class="card pu"><div class="card-label">SECOND FACTOR</div><div class="card-text">After an enforcement height, a spend still needs the existing signature plus a second factor: a zero-knowledge proof linking the seed to a post-quantum authority, or a watermark committed before the cutoff. He says a quantum-derived key alone is not enough.</div></div>
+    <div class="card yl"><div class="card-label">IF IT IS MISSING</div><div class="card-text">The coin is not burned. It goes to recovery outputs held by a set of custodians, with a backup custodian and a veto controller. He says held funds can earn 0.5% for charity, and is explicit that recovery without on-chain proof involves people and is no longer permissionless.</div></div>
+    <div class="card bl"><div class="card-label">THE FIVE DRAFTS</div><div class="card-text">Conditional spending, watermarks, a seed-derivation factor, protective recovery, and a zk-STARK spend leaf for BIP 360 P2MR. He also describes a path with no consensus change, in which "white-hat" quantum spends move coins to custody. None of these has a BIP number.</div></div>
+    <div class="card rd"><div class="card-label">CONTEXT</div><div class="card-text">qsave.org is titled QSAVE Staking, and the GitHub organisation is the QSAVE Wealth Fund. His August 2025 version proposed a fund targeting 3&ndash;5% returns. Replying then, Conduition wrote that KYC cannot be the answer, and Javier Mateos objected to writing a group of claim arbiters into the code.</div></div>
+  </div>
+  <div class="links">
+    <a href="https://mirror.b10c.me/lists/bitcoindev/305ed790-577c-4c94-a92a-1e15c4536b40n@googlegroups.com/" target="_blank" rel="noopener">Tagg, 22 Sep 2026</a>
+    <a href="https://groups.google.com/g/bitcoindev/c/PjpaidcHX4A/m/gYA0JIsDAgAJ" target="_blank" rel="noopener">2025 thread and replies</a>
+  </div>
+</div>
+
+</div>
+</div>
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+</body>
+</html>
