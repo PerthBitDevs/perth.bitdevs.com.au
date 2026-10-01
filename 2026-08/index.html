@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perth BitDevs - August 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/theme.js" defer></script>
+<style>
+:root{--bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;--tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;--or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f}
+
+.glow{position:fixed;top:-180px;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse at center,var(--orG) 0%,transparent 70%);opacity:.4;pointer-events:none;filter:blur(80px)}
+.shell{max-width:1080px;margin:0 auto;padding:52px 24px 100px;position:relative}
+.back{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD);text-decoration:none;display:inline-block;margin-bottom:24px;transition:color .2s}
+.back:hover{color:var(--or)}
+header{text-align:center;margin-bottom:48px}
+h1{font-family:'JetBrains Mono',monospace;font-size:clamp(40px,6vw,60px);font-weight:800;letter-spacing:0;line-height:1.15;margin-bottom:10px;background:linear-gradient(135deg,#f7931a 0%,#fbbf24 50%,#f7931a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--txD);font-size:21px;font-family:'JetBrains Mono',monospace}
+.note{background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.25);border-radius:10px;padding:14px 18px;margin-bottom:32px;font-size:20px;color:var(--txM);line-height:1.6}
+.divider{height:1px;background:linear-gradient(90deg,transparent 0%,var(--bd) 30%,var(--bd) 70%,transparent 100%);margin-bottom:32px}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:17px;font-weight:700;color:var(--txD);letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px;padding-left:2px}
+.panel{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:22px 24px;position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--or);border-radius:12px 0 0 12px;opacity:.6}
+.panel h2{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--tx);margin-bottom:10px;letter-spacing:0;line-height:1.35}
+.panel p{color:var(--txM);font-size:20px;line-height:1.6;margin-bottom:12px}
+.panel p:last-of-type{margin-bottom:0}
+.links{display:flex;flex-direction:column;gap:6px;margin-top:16px}
+.links a{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--or);text-decoration:none}
+.links a:hover{text-decoration:underline}
+footer{text-align:center;padding-top:20px;border-top:1px solid var(--bd);margin-top:40px}
+footer p{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--txD);line-height:1.8}
+footer a{color:var(--or);text-decoration:none}footer a:hover{text-decoration:underline}
+@media(max-width:480px){.shell{padding:36px 16px 60px}.panel{padding:16px 18px}.panel h2{font-size:21px}.panel p,.note{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="shell">
+  <a class="back" href="/">&larr; All Events</a>
+
+  <header>
+    <h1>Perth BitDevs</h1>
+    <div class="subtitle">Thursday 6 August 2026 &middot; 6pm &middot; Blasta Brewing, Burswood</div>
+  </header>
+
+  <div class="note">
+    The evening was given over entirely to information and support for the Perth BitDevs community on the Coldcard seed-generation incident.
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-label">This meetup</div>
+  <div class="panel">
+    <h2>Coldcard seed generation</h2>
+    <p>Coinkite reported that a firmware bug weakened seed generation on affected Coldcard releases. The devices were not remotely compromised. Installing fixed firmware corrects new seeds; it does not repair a seed already generated on affected firmware.</p>
+    <p>The session worked through that advisory with people in the community: which seeds were affected, and how to migrate carefully.</p>
+    <div class="links">
+      <a href="https://blog.coinkite.com/coldcard-mk3-seed-generation-warning/" target="_blank" rel="noopener">Coinkite security advisory</a>
+      <a href="https://blog.coinkite.com/entropy-technical-backgrounder/" target="_blank" rel="noopener">Coinkite technical backgrounder</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      Perth BitDevs &middot; August 2026<br>
+      <a href="https://github.com/PerthBitDevs/PerthBitDevs/issues/38" target="_blank" rel="noopener">GitHub Issue #38</a>
+    </p>
+  </footer>
+</div>
+</body>
+</html>
