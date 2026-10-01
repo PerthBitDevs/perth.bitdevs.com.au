@@ -49,6 +49,8 @@ May 2026 examples that should have been caught earlier:
 
 To check: `git diff $(cat agent_docs/.docs-ref)..HEAD -- '2026-*/*.html'` and skim the previous month's hub.
 
+When the previous one or two meetups had no topic decks (August 2026 was a single Coldcard session and September 2026 an informal catchup), "recent" means the last month with decks, and the news window runs from that meetup. October checked against July: its "What SHRINCS Is" slide repeated March to July material and was folded into the slide covering the new draft.
+
 ## When the budget is tight
 
 Cut order, in priority:

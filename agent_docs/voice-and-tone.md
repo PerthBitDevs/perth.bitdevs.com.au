@@ -55,6 +55,7 @@ These recurred across May 2026 and required multi-pass cleanup. Don't write them
 - `Workshops, socialising, networking` — generic event filler
 - `RECORDINGS WORTH CATCHING` / `talks worth scrubbing` — colloquial section titles
 - `first pass` / `First Pass` (badge or text), `Newswatch found`, `DRAFT TAKEAWAY`, `WATCH ITEM`, `NEEDS REVIEW`, `EDITORIAL RULE`, `What To Split Out`, internal source lists, `read before presenting`, `needs source review`: planning and editorial meta from the local newswatch packet. The packet is research input only (`content-workflow.md` already flags `runs/` packets as "not publishable content"); its classification labels and scaffolding must never reach published HTML. Participants don't need to know how the deck was assembled.
+- Research-trail sentences: `No GitHub release body was found for that tag`, `That report does not link the file`, `the height given with the topic ... is not on the project homepage`, `as reported`, `This deck is the mesh under that app`. They describe how the deck was researched, not the topic, and three of October 2026's were also false. State the fact with its source, or drop the sentence.
 
 ### Cross-topic stale references
 After a topic merge or rename, sweep every other deck. May 2026 had `ProductionReady` references in `governance.html` and `alt-clients.html` long after the topic was consolidated. **After any rename/merge, grep all `2026-MM/*.html` for the old name.**
@@ -155,6 +156,6 @@ Run through this list before declaring a deck done:
 - Every slide leads with the result / why-it-matters, not jargon or math (see Plain-English-first and Right-size the detail above)
 - Run a banned-token grep across all month files before declaring done:
   ```sh
-  grep -rinE 'first pass|newswatch found|draft takeaway|watch item|needs review|editorial rule|what to split out|read before presenting|needs source review|in[- ]window|the window|odds and ends|odd-ends' 2026-*/*.html
+  grep -rinE 'first pass|newswatch found|draft takeaway|watch item|needs review|editorial rule|what to split out|read before presenting|needs source review|in[- ]window|the window|odds and ends|odd-ends|as reported|this deck is|no github release|does not link the' 2026-*/*.html
   ```
   (Adjust the month glob to the month you're shipping.) Expect zero hits before you ship. This makes the existing `in window` / `the window` ban above actually enforceable, not just listed.
