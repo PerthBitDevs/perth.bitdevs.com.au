@@ -1,12 +1,16 @@
 # Content Budget
 
-Perth BitDevs is a ~1–1.5 hour in-person meetup. Content must fit that envelope. Today's drafts overshoot routinely; this doc encodes the limits.
+Keep each meetup within the organiser's requested session limit. Use that limit to select topics and control slide density.
+
+## Keep timing internal
+
+Do not add per-topic or per-slide time estimates. A requested session duration is an internal curation constraint. Keep presentation timings out of published HTML and manifests, including header tags, hub cards, landing badges and programme notes. Use slide counts for deck metadata. The actual event start time and factual technical measurements still belong in the content.
 
 ## Per-meetup target
 
 | Dimension | Target | Hard cap |
 |---|---|---|
-| Total presentation time | 60–90 min | 100 min |
+| Session limit | Follow the organiser's request | Follow the organiser's request |
 | Topic decks | 6–8 | 9 |
 | Slides per deck | 3–5 | 7 |
 | Total slides across all decks | ~30–40 | 50 |
@@ -40,7 +44,7 @@ Community-submitted items are real topics, not filler. A community item that is 
 
 ## Don't re-cover recent topics
 
-Check the previous 2 months' decks before drafting. If a topic was covered in depth, don't re-litigate. A one-liner update under news roundup is fine; a fresh deep-dive isn't.
+Check the previous 2 months' decks before drafting. Avoid repeating old developments at length, but retain the definitions and problem context needed to understand the new material. A participant must not need to have attended an earlier meetup. A short update can belong in the news roundup; it still needs to identify its subject.
 
 May 2026 examples that should have been caught earlier:
 - Bitcoin Core v31 release — covered in detail in April; May only needed a one-liner
@@ -54,7 +58,7 @@ When the previous one or two meetups had no topic decks (August 2026 was a singl
 ## When the budget is tight
 
 Cut order, in priority:
-1. Drop "history of this topic" recap slides — assume audience knows recent context
+1. Drop extended topic history and repeated past developments, while retaining essential definitions and problem context
 2. Collapse "voices for / voices against" into a single slide per topic
 3. Move "what this signals" interpretation into one line at the bottom of the factual slide
 4. Move minor items to news roundup
@@ -63,14 +67,8 @@ Cut order, in priority:
 Cut order, never:
 - Don't cut citations or sources to save space — bullet them tight, but keep them
 - Don't cut neutrality balance — if you cut "for", cut "against" too
+- Don't cut prerequisites to preserve implementation trivia. Explain what the proposal is before opcode names, benchmarks or protocol variants. A short primer is justified when it makes the rest of the deck understandable.
 
-## Time-per-slide guidance
+## Control slide density
 
-Rough budget for the presenter, useful when sizing content:
-- Title/intro slide of a deck: 30–60s
-- Standard content slide: 90–120s
-- Dense data slide (table, multi-bullet): 2–3 min
-
-Over-detailed slides cost speaking time the same way extra slides do. A slide stuffed with low-level implementation detail eats minutes whether or not the slide count looks fine, so when the budget is tight, **tighten dense slides, don't just count them**. June 2026 had decks carrying too much low-level detail and multi-sentence descriptions that one sentence would have covered. Lead with the result and why it matters; drop low-level detail unless that detail is the story.
-
-A 5-slide deck is roughly 8–12 minutes of speaking time. Eight 5-slide decks is ~80 minutes — this is the upper bound.
+Over-detailed slides expand the programme just as extra slides do. When the content budget is tight, **tighten dense slides, don't just count them**. June 2026 had decks carrying too much low-level detail and multi-sentence descriptions that one sentence would have covered. Lead with the result and why it matters; drop low-level detail unless that detail is the story.

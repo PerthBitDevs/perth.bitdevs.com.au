@@ -175,6 +175,8 @@ For each selected topic, Claude Code:
 
 Each topic page is self-contained HTML with inline CSS and JS. Per-topic creative freedom within the shared design framework.
 
+Before filling slides, outline the prerequisite sequence for a reader who knows Bitcoin basics but has not read the sources or attended prior meetups. Establish the system, its problem and the proposal before its implementation or new result. Review the visible text in reading order: every specialist concept must be explained before later statements depend on it. Follow `voice-and-tone.md`'s prerequisite review and preserve this context when applying the content budget. Factual accuracy and layout checks do not establish that a deck is understandable.
+
 ### Step 3.5: Mandatory Fact-Check Gate
 
 **Before a topic deck is considered done**, run the `technical-accuracy-review` skill against it (in Codex: `$technical-accuracy-review path/to/topic.html`). This catches:
@@ -207,6 +209,10 @@ Verification precision (October 2026 misses to avoid):
 ### Step 3.6: No Planning / Editorial Meta in Published Content
 
 The Step 2.5 newswatch packet is **research input only** (the helper writes it under the ignored `tools/newswatch/runs/`). Its classification and scaffolding vocabulary must never reach published HTML, the manifest, or the hub. Participants don't need to know how the content was triaged.
+
+Presentation time estimates are planning metadata too. A requested session duration constrains topic selection and density; do not publish it or per-topic estimates in slide headers, hub cards, landing badges, notes, or manifest fields. Use slide counts for deck metadata and keep the actual event start time. November 2026 initially leaked the requested content budget into all these surfaces; check the whole month, not just the homepage, when removing it.
+
+Do not add "Discuss" panels, facilitator questions, or closing discussion slides. Keep factual open issues and limitations attributed to their sources. Review slides for substantive context after removing prompts: the space should explain the event, mechanism or example, not remain a few headline bullets. The slide template uses evidence and limits for its final section.
 
 Before a page is done, grep the new month's files for packet and editorial scaffolding and remove every hit:
 

@@ -49,6 +49,7 @@ These recurred across May 2026 and required multi-pass cleanup. Don't write them
 - `odds and ends` / `odd-ends` / `misc` / `etc.` lumping of community-submitted topics. Each distinct community item is a real topic and gets its own slide; never bundle or dismiss them
 
 ### Slide-meta filler
+- `Discuss` panels, facilitator questions, generic discussion prompts and closing question slides. Present the facts and let the room's discussion happen naturally. Use substantive, attributed open issues where they are part of the topic.
 - `in-window`, `in window`, `the window`, `Apr 7 → May 7, 2026 — five threads ran in parallel and rarely cross-quoted each other` — readers know the window implicitly
 - `a 10-slide neutral overview` — describing the deck inside the deck
 - `the biggest financial story out of [event] — and it isn't a price chart` — TV-news style framing
@@ -65,6 +66,20 @@ After a topic merge or rename, sweep every other deck. May 2026 had `ProductionR
 The audience is a **smart layperson who knows Bitcoin basics, not a Core developer**. Don't open a slide with jargon or the math. Lead with a plain-English framing or analogy, **then** name the concept, **then** show the specifics or the math. When a quantity is unfamiliar, add a scale-anchor number so a layperson can compare.
 
 This is the same target as Right-size the detail (below), seen from the opposite side: aim for neither a thin slide nor a wall of jargon.
+
+### Explain prerequisites in reading order
+
+Do not assume attendance at earlier meetups or familiarity with the linked articles. Before writing a deck, identify the concepts its explanation depends on. Teach them in that order: what the system does, the problem, the proposed change, then the new result and its limits. A title can name the subject, but its opening explanation must establish what that subject is before asking the audience to reason about it.
+
+- Explain a term by its job and an example, not just its expanded acronym. “Cross-input signature aggregation” still needs an explanation of inputs and why each needs authorisation.
+- Keep essential context in the visible slide body, before the mechanism that uses it. A source link, tooltip, later slide or footer does not repair a missing prerequisite.
+- Reuse one concrete example across the explanation when possible. For Eltoo: a channel holds coins, successive agreements change the balance, old signed agreements still exist, and a newer agreement must override an old one before payout.
+- Add an opening slide when the prerequisite chain cannot fit comfortably. Cut secondary opcode names, research history or extra measurements before cutting the explanation needed to understand the topic.
+- For a roundup, introduce each new subject independently. Knowing Liquid does not imply knowing wallet-export standards.
+
+**Before:** “Eltoo replaces an outdated channel balance”, followed immediately by U1, U3 and TEMPLATEHASH.
+
+**After:** Explain payment channels and an old-balance example; define Eltoo as a proposed way to settle using the latest agreement; then show the test-network experiment and the tools it uses.
 
 ### Plain-English-first before/after
 
@@ -87,6 +102,8 @@ Scale-anchor examples (add a comparison number when the quantity is unfamiliar):
 ## Right-size the detail
 
 Lead with the result and why it matters. Roll secondary numbers into prose. Cut low-level implementation detail **unless that detail is the story**. Right-size for neither thin nor jargon-wall (the same target as Plain-English-first, above, seen from the other side).
+
+Accuracy alone is not enough. Each slide needs enough context to explain the development without assuming the audience has read its links. For an incident recovery, include what was missing, what changed, the relevant amounts and what remains restricted. For a technical proposal, show the mechanism or a concrete example and its limits. Do not fill thin slides with discussion questions or generic significance claims.
 
 ### Right-size before/after
 
@@ -128,6 +145,8 @@ Lead with the result and why it matters. Roll secondary numbers into prose. Cut 
 
 Slide titles should describe content, not perform. Avoid slogans, alliteration for its own sake, and rhetorical questions used as titles.
 
+Read the title and subtitle together without the source article. They must identify the subject and actual development. Explain the problem before the mechanism: “SideSwap pays from its own BTC wallet” omits the Liquid withdrawal recovery it is explaining; “A seed is not the whole wallet” hides the BIP139 export proposal behind a slogan. Use “Liquid withdrawals reopen through SideSwap” and “BIP139: a shared wallet export format”, then explain the payout path or migration example.
+
 - ❌ `Ocean Climbs — Signaling Doesn't Follow`
 - ✅ `Ocean Hashrate Rose; BIP-110 Signaling Did Not`
 - ❌ `Where The Conversation Was — & Read`
@@ -150,10 +169,13 @@ Run through this list before declaring a deck done:
 
 - No phrase from the banned list above appears
 - Every dense factual block uses bullets
+- No facilitator prompts or discussion panels; each slide has enough concrete context to stand on its own
 - Every contested claim has a named source or is removed
 - After any merge/rename, grep across all month files for stale references
 - Headings describe content, not opinion
-- Every slide leads with the result / why-it-matters, not jargon or math (see Plain-English-first and Right-size the detail above)
+- Every deck establishes its subject and problem before the new mechanism or result; every slide explains new terms before relying on them (see Plain-English-first above)
+- Read the deck in order with sources closed. For each specialist term, can a reader explain its role from text already shown? Could they describe what the proposal changes and why? If not, repair the prerequisite order, not just the wording.
+- Read every slide body without the source article. Can a reader identify the actors, relevant components, causal steps and limits? Replace vague abstractions with the specific hardware, permission or protocol action supported by the source.
 - Run a banned-token grep across all month files before declaring done:
   ```sh
   grep -rinE 'first pass|newswatch found|draft takeaway|watch item|needs review|editorial rule|what to split out|read before presenting|needs source review|in[- ]window|the window|odds and ends|odd-ends|as reported|this deck is|no github release|does not link the' 2026-*/*.html

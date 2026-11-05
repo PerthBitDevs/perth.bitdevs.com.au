@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "month": "2026-11",
+  "status": "upcoming",
+  "content_status": "ready",
+  "event": {
+    "title": "November 2026",
+    "date": "2026-11-05",
+    "date_label": "Thursday 5 November 2026",
+    "short_date_label": "Thursday 5 November",
+    "time_label": "6pm",
+    "timezone": "Australia/Perth",
+    "venue": {
+      "name": "Blasta Brewing",
+      "suburb": "Burswood",
+      "label": "Blasta Brewing, Burswood"
+    }
+  },
+  "sources": {
+    "github_issue": {
+      "repo": "PerthBitDevs/PerthBitDevs",
+      "number": 44,
+      "url": "https://github.com/PerthBitDevs/PerthBitDevs/issues/44"
+    }
+  },
+  "topic_count": 7,
+  "topics": [
+    {
+      "file": "news-roundup.html",
+      "title": "In Brief",
+      "category": "News",
+      "slides": 3,
+      "tags": [
+        "Liquid",
+        "Wallets"
+      ],
+      "summary": "How Liquid’s BTC reserves back L-BTC, what restored backing means for withdrawals, and how a shared wallet-export format could preserve settings when changing applications.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6619675445",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6405968399",
+        "https://blog.liquid.net/liquid-network-staged-recovery-update/",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0139.md",
+        "https://github.com/bitcoin/bips/pull/2130",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0139/field-registry.md",
+        "https://sideswap.io/news/the-liquid-peg-is-back-to-one-to-one/",
+        "https://blog.blockstream.com/liquid-network-security-incident-assessment/",
+        "https://sideswap.io/news/peg-out-update-21-october-2026/",
+        "https://www.theblock.co/news/ecosystems/2026-11-03-liquid-network-restores-full-bitcoin-backing-following-exploit-432387"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "custody-boundaries.html",
+      "title": "Custody Failures: Ledger and Binance",
+      "category": "Custody",
+      "slides": 4,
+      "tags": [
+        "Hardware",
+        "Signing"
+      ],
+      "summary": "How hardware wallets and exchange signing services protect spending keys, how attackers bypassed those protections, and what recovery requires after seeds or credentials are copied.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6135869183",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6619664327",
+        "https://www.ledger.com/blog-response-hardware-implant-attack",
+        "https://donjon.ledger.com/threat-model/device-genuineness/",
+        "https://www.tibane.net/research/ledger-nano-x-implant",
+        "https://www.binance.com/en/blog/community/3229153443759566763",
+        "https://trezor.io/blog/news/implant-reported-in-a-trezor-sold-by-cryptobilis",
+        "https://www.ledger.com/academy/crypto-hardware-wallet"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "security-disclosure.html",
+      "title": "Bug Discovery, Disclosure and Patching",
+      "category": "Security",
+      "slides": 4,
+      "tags": [
+        "Bitcoin Core",
+        "BTCPay"
+      ],
+      "summary": "Why developers delay publishing security flaws, what changes when bugs are easy to find, and how Core and BTCPay fixed failures in network handling and merchant isolation.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6484920073",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6592617672",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6619664327",
+        "https://bitcoincore.org/en/security-advisories/",
+        "https://bitcoincore.org/en/releases/32.1/",
+        "https://bitcoincore.org/en/2026/10/28/disclose-undo-overflow/",
+        "https://bitcoincore.org/en/2026/10/28/disclose-tcp-oom/",
+        "https://github.com/btcpayserver/btcpayserver/releases/tag/v2.4.7",
+        "https://blog.btcpayserver.org/btcpay-server-security-incident-2-4-1-and-earlier/",
+        "https://github.com/bitcoin/bitcoin/pull/36665",
+        "https://github.com/btcpayserver/btcpayserver/pull/7758",
+        "https://docs.btcpayserver.org/FAQ/General/"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "quantum-update.html",
+      "title": "Quantum Progress and Migration",
+      "category": "Post-quantum",
+      "slides": 5,
+      "tags": [
+        "Quantum",
+        "Wallets"
+      ],
+      "summary": "Why quantum key recovery threatens Bitcoin signatures, what the new research actually improves, and how proposed wallet policies and spending rules would address the risk.",
+      "source_refs": [
+        "https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/",
+        "https://arxiv.org/abs/2512.13908",
+        "https://www.anthropic.com/research/designing-efficient-quantum-circuits",
+        "https://arxiv.org/abs/2610.22367",
+        "https://www.coinbase.com/blog/working-together-on-btc-post-quantum-readiness",
+        "https://mirror.b10c.me/lists/bitcoindev/CAAa3hFNACEoE4KXi06SaqGM0qsOTrgT3HB6X2oiocp--r6-rmg@mail.gmail.com/",
+        "https://mirror.b10c.me/lists/bitcoindev/40a9f73d-481f-47e6-a64b-acfb2c7f4fa8n@googlegroups.com/",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6205692990",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6257420785",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6181977727",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6280842729",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6646635630",
+        "https://arxiv.org/abs/quant-ph/0301141",
+        "https://www.nist.gov/cybersecurity-and-privacy/what-post-quantum-cryptography",
+        "https://research.google/blog/suppressing-quantum-errors-by-scaling-a-surface-code-logical-qubit/",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0341.mediawiki"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "signature-aggregation.html",
+      "title": "Cross-Input Signature Aggregation",
+      "category": "Protocol",
+      "slides": 4,
+      "tags": [
+        "BIP458–460",
+        "CISA"
+      ],
+      "summary": "Why a transaction needs signatures for its inputs, how draft BIPs458–460 combine them, and the tradeoff between smaller transactions and coordinating the signers.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6592616806",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6619665130",
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6646634788",
+        "https://github.com/bitcoin/bips/pull/2205",
+        "https://github.com/bitcoin/bips/pull/2210",
+        "https://github.com/bitcoin/bips/pull/2212",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0458.mediawiki",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0459.mediawiki",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0460.mediawiki"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "eltoo-templatehash.html",
+      "title": "Eltoo with TEMPLATEHASH",
+      "category": "Lightning research",
+      "slides": 4,
+      "tags": [
+        "Channels",
+        "TEMPLATEHASH"
+      ],
+      "summary": "What payment channels are, why old balances can cause trouble, and how Eltoo lets the latest agreement determine the payout. A test-network experiment demonstrates the replacement mechanism.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6566561472",
+        "https://delvingbitcoin.org/t/eltoo-state-chain-on-signet-third-time-templatehash-csfs-internalkey/3012",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0446.md",
+        "https://blockstream.com/eltoo.pdf",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0348.md",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0349.md"
+      ],
+      "status": "ready"
+    },
+    {
+      "file": "ecash-fork.html",
+      "title": "ECX After the Fork",
+      "category": "Forks",
+      "slides": 3,
+      "tags": [
+        "ECX",
+        "Drivechains"
+      ],
+      "summary": "How ECX copied Bitcoin’s history into a separate network, how its sidechains depend on miner-approved withdrawals, and why reassigned balances and replay protection matter to holders.",
+      "source_refs": [
+        "https://github.com/PerthBitDevs/PerthBitDevs/issues/44#issuecomment-6542631679",
+        "https://dashboard.ecash.com/news?network=mainnet",
+        "https://ecash.com/fast-facts/",
+        "https://ecash.com/sidechains/",
+        "https://explorer.blockfab.org/block/00000000000000002ba7288e4eaba9cbacdb189e0aed1a641be9b9c82f1f27e8",
+        "https://buy.ecash.com/ecash-investment-details.pdf",
+        "https://www.coindesk.com/tech/2026/04/28/bitcoiners-are-calling-ecash-a-hard-fork-theft-but-it-doesn-t-even-touch-satoshi-s-btc",
+        "https://ecash.com/coin-splitting/",
+        "https://petertodd.org/2023/drivechains",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0300.mediawiki",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0301.mediawiki",
+        "https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0065.mediawiki"
+      ],
+      "status": "ready"
+    }
+  ],
+  "auxiliary_pages": [],
+  "landing": {
+    "href": "/2026-11/",
+    "summary_topics": [
+      "In Brief",
+      "Custody Failures: Ledger and Binance",
+      "Bug Discovery, Disclosure and Patching",
+      "Quantum Progress and Migration",
+      "Cross-Input Signature Aggregation",
+      "Eltoo with TEMPLATEHASH",
+      "ECX After the Fork"
+    ]
+  }
+}

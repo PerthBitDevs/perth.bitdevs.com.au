@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantum Progress and Migration - Perth BitDevs November 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--or);--accent-bg:var(--orD);--accent-glow:var(--orG);--accent-border:var(--orB);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.65;pointer-events:none}
+/*
+ * The slide-deck chrome (.header, .badge, .dots, .branding, .content,
+ * .slide-inner, .slide, h2.slide-title, .subtitle, .hero, .grid, .card and
+ * variants, .links, .disclosure, .footer-nav, .nav-btn, .nav-info, plus the
+ * @media responsive rules) lives in /assets/slide-chrome.css. Add per-topic
+ * bespoke components below as needed; they'll override the shared rules.
+ */
+
+:root{--accent:var(--bl);--accent-bg:var(--bld);--accent-border:var(--bl);--accent-glow:var(--bld)}
+.card-text ul{padding-left:1.15em}.card-text li+li{margin-top:7px}
+.scope-note{font-size:18px;line-height:1.5;color:var(--txM);margin:10px 0}
+.links a{font-size:19px;color:var(--or)}.branding,.nav-info{color:var(--txM)}.nav-btn{white-space:nowrap}
+.badge-group{max-width:45%}.slide-title{overflow-wrap:anywhere}
+@media(max-width:600px){.header{flex-wrap:wrap}.badge-group{max-width:none}.dots{order:4;width:100%}.content{padding:24px 16px}.nav-info{font-size:13px}.nav-btn{min-width:78px;padding:6px 10px}}
+.card{padding:14px 18px}.grid{margin-bottom:10px}.links{margin-top:6px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Post-quantum</div>
+    <div class="update-tag">5 Nov 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-11/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<section class="slide" data-name="The quantum threat">
+<h2 class="slide-title">Quantum attacks would target signing keys</h2>
+<p class="subtitle">A private key creates a signature authorising a spend. The corresponding public key lets everyone verify that signature.</p>
+<div class="grid"><div class="card rd"><div class="card-label">WHAT WOULD BREAK?</div><div class="card-text"><ul>
+<li>Bitcoin relies on it being impractical to calculate the private key from the public key.</li>
+<li><strong>Shor’s algorithm</strong> is a quantum computation that could do this on a sufficiently capable machine.</li>
+<li>An attacker could then sign a competing spend without stealing the owner’s device or backup.</li>
+</ul></div></div><div class="card bl"><div class="card-label">WHY PUBLIC-KEY EXPOSURE MATTERS</div><div class="card-text"><ul>
+<li>Exposing a public key is normal and does not reveal the private key to ordinary computers.</li>
+<li>Some Bitcoin outputs hide the public key behind a hash until spending. Taproot outputs expose a public key from creation.</li>
+<li><strong>Post-quantum signatures</strong> use different mathematical problems intended to resist known quantum attacks.</li>
+</ul></div></div></div><p class="scope-note">The research on the next slide improves parts of a possible attack. Neither result demonstrates recovery of a Bitcoin private key.</p>
+<div class="links"><a href="https://arxiv.org/abs/quant-ph/0301141" target="_blank" rel="noopener">Shor’s algorithm and elliptic curves</a><a href="https://www.nist.gov/cybersecurity-and-privacy/what-post-quantum-cryptography" target="_blank" rel="noopener">Post-quantum cryptography</a></div>
+</section>
+
+<section class="slide" data-name="Research progress">
+<h2 class="slide-title">More reliable quantum operations</h2>
+<p class="subtitle">Qubits store quantum information. Many physical qubits can encode one more reliable logical qubit through error correction.</p>
+<div class="grid"><div class="card bl"><div class="card-label">GOOGLE: PREPARE RELIABLE HELPERS</div><div class="card-text"><ul>
+<li>Some required operations use up specially prepared quantum states called <strong>magic states</strong>. Preparing them reliably is expensive.</li>
+<li>Google’s Willow processor reduced their error about <strong>40×</strong> compared with initial preparation alone, while retaining <strong>8% of attempts</strong>.</li>
+</ul></div></div><div class="card cy"><div class="card-label">ANTHROPIC: USE FEWER OPERATIONS</div><div class="card-text"><ul>
+<li>A quantum circuit is a sequence of operations. These circuits simplify one arithmetic step used in key recovery: adding elliptic-curve points.</li>
+<li>One uses <strong>17× fewer Toffoli gates</strong>, a costly operation, with <strong>12% more logical qubits</strong> than the previous lowest-qubit circuit for that step.</li>
+</ul></div></div></div><p class="scope-note">The 17× figure is not an end-to-end attack speedup. Google’s 15 October report describes work first posted in December 2025.</p>
+<div class="links"><a href="https://blog.google/innovation-and-ai/models-and-research/quantum-computing/magic-state-cultivation-quantum-computing/" target="_blank" rel="noopener">Google report</a>
+<a href="https://arxiv.org/abs/2512.13908" target="_blank" rel="noopener">Magic-state paper</a>
+<a href="https://www.anthropic.com/research/designing-efficient-quantum-circuits" target="_blank" rel="noopener">Anthropic report</a>
+<a href="https://arxiv.org/abs/2610.22367" target="_blank" rel="noopener">Circuit paper</a></div>
+</section>
+
+<section class="slide" data-name="Wallet requirements">
+<h2 class="slide-title">Quantum-safe signing and wallet backups</h2>
+<p class="subtitle">Coinbase’s 13 October proposal sets requirements for new signature schemes used by wallets and custodians.</p>
+<div class="grid"><div class="card gn"><div class="card-label">THE BACKUP PROBLEM</div><div class="card-text"><ul>
+<li>Some hash-based signatures use each piece of signing material once. Wallets must record which pieces they used.</li>
+<li>Restoring an old backup can roll back that record. Reusing signing material can enable forged signatures.</li>
+<li>Coinbase asks for a <strong>stateless fallback</strong> whose safety does not depend on tracking earlier uses.</li>
+</ul></div></div><div class="card bl"><div class="card-label">SHARED CUSTODY AND BITCOIN RULES</div><div class="card-text"><ul>
+<li><strong>Multi-party computation (MPC)</strong> lets custody systems jointly sign using shares of a key, splitting signing authority.</li>
+<li>New schemes need to support that arrangement. Splitting keys does not by itself make the signature quantum-resistant.</li>
+<li>Also required: upgradeable output formats and measurements of signature size and node verification costs.</li>
+</ul></div></div></div><p class="scope-note">A migration that allows either an old or a post-quantum signature still permits a quantum attacker to use the old route while it remains enabled.</p>
+<div class="links"><a href="https://www.coinbase.com/blog/working-together-on-btc-post-quantum-readiness" target="_blank" rel="noopener">Coinbase’s migration requirements</a></div>
+</section>
+
+<section class="slide" data-name="Wallet exposure">
+<h2 class="slide-title">Spending can expose keys for other coins</h2>
+<p class="subtitle">Zeeshan Ali Khan’s 19 October proposal moves spendable coins together when their shared public-key material becomes exposed.</p>
+<div class="grid"><div class="card rd"><div class="card-label">EXAMPLE: REUSING AN ADDRESS</div><div class="card-text"><ul>
+<li>A common SegWit address type, <strong>P2WPKH</strong>, stores a hash of the public key. Spending reveals the key for signature verification.</li>
+<li>Receive 0.2 BTC and 0.3 BTC at the same address. Spending the 0.2 BTC also reveals the key controlling the unspent 0.3 BTC.</li>
+<li>A future quantum attacker could target that remaining coin.</li>
+</ul></div></div><div class="card bl"><div class="card-label">PROPOSED WALLET BEHAVIOUR</div><div class="card-text"><ul>
+<li>Before revealing key material outside the trusted signing setup, prepare spends for every newly exposed, confirmed coin it can spend.</li>
+<li>Broadcast together and send change to outputs whose required public-key material remains hidden.</li>
+<li>This is an opt-in wallet policy, without a Bitcoin consensus change.</li>
+</ul></div></div></div><p class="scope-note">It does not stop an attack before confirmation or guarantee the transactions confirm together. The wallet needs to know earlier disclosures; grouping coins can link them publicly.</p>
+<div class="links"><a href="https://mirror.b10c.me/lists/bitcoindev/CAAa3hFNACEoE4KXi06SaqGM0qsOTrgT3HB6X2oiocp--r6-rmg@mail.gmail.com/" target="_blank" rel="noopener">Exposure-aware transaction construction</a></div>
+</section>
+
+<section class="slide" data-name="Collateral proposal">
+<h2 class="slide-title">A bond for spending vulnerable coins</h2>
+<p class="subtitle">After quantum key recovery becomes possible, a signature alone cannot distinguish the old owner from someone who recovered the key.</p>
+<div class="grid"><div class="card bl"><div class="card-label">OWNER PREPARES A HIDDEN PROOF</div><div class="card-text"><ul>
+<li>Cory Fields’ 4 November “quantum landmines” idea starts <strong>before</strong> keys can be broken.</li>
+<li>The owner signs a binding record of a new post-quantum key, called a <strong>commitment</strong>, using the old key. They hide the proof in a quantum-safe output.</li>
+<li>Revealing that earlier proof can later establish prior control of the old key.</li>
+</ul></div></div><div class="card gn"><div class="card-label">EXAMPLE: AN ATTACKER SPENDS 1 BTC</div><div class="card-text"><ul>
+<li>The proposed rules require another <strong>1 BTC as collateral</strong>. Both coins remain locked during a challenge period.</li>
+<li>The owner reveals the prepared proof and claims both coins, costing the attacker their collateral.</li>
+<li>Without a challenge, the spender receives the coins after the timeout.</li>
+</ul></div></div></div><p class="scope-note">This is a thought experiment needing new Bitcoin rules. Legitimate owners also need collateral; lost keys cannot prepare proofs. Deployment mechanics remain open.</p>
+<div class="links"><a href="https://mirror.b10c.me/lists/bitcoindev/40a9f73d-481f-47e6-a64b-acfb2c7f4fa8n@googlegroups.com/" target="_blank" rel="noopener">Fields: landmines and auction variants</a></div>
+</section>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+<!--
+  Slide runtime (keyboard navigation, dot rendering, prev/next, disclosure
+  toggling, Escape → back to month hub) is provided by /assets/slides.js.
+  Add per-topic bespoke <script> blocks below if needed.
+-->
+</body>
+</html>

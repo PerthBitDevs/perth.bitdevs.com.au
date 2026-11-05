@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECX After the Fork - Perth BitDevs November 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--or);--accent-bg:var(--orD);--accent-glow:var(--orG);--accent-border:var(--orB);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.65;pointer-events:none}
+/*
+ * The slide-deck chrome (.header, .badge, .dots, .branding, .content,
+ * .slide-inner, .slide, h2.slide-title, .subtitle, .hero, .grid, .card and
+ * variants, .links, .disclosure, .footer-nav, .nav-btn, .nav-info, plus the
+ * @media responsive rules) lives in /assets/slide-chrome.css. Add per-topic
+ * bespoke components below as needed; they'll override the shared rules.
+ */
+
+/* November content components. Shared navigation remains in /assets/. */
+.card-text ul{padding-left:1.15em}.card-text li+li{margin-top:7px}
+.scope-note{font-size:18px;line-height:1.5;color:var(--txM);margin:10px 0}
+.metric{font:800 40px/1.2 'JetBrains Mono',monospace;color:var(--tx);margin:8px 0}
+.comparison{width:100%;border-collapse:collapse;margin:12px 0;font-size:20px;line-height:1.4}
+.comparison caption{text-align:left;color:var(--txM);font-size:18px;margin-bottom:10px}
+.comparison th,.comparison td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--bd)}
+.comparison th{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--accent)}
+.comparison td{color:var(--txM)}.comparison td strong{color:var(--tx)}
+.table-scroll{overflow-x:auto}.links a{font-size:19px;color:var(--or)}
+.branding,.nav-info{color:var(--txM)}
+.nav-btn{white-space:nowrap}
+.badge-group{max-width:45%}.slide-title{overflow-wrap:anywhere}
+@media(max-width:600px){.header{flex-wrap:wrap}.badge-group{max-width:none}.dots{order:4;width:100%}.content{padding:24px 16px}.comparison{font-size:17px}.comparison th,.comparison td{padding:10px 8px}.metric{font-size:32px}.nav-info{font-size:13px}.nav-btn{min-width:78px;padding:6px 10px}}
+
+:root{--accent:var(--pu);--accent-bg:var(--pud);--accent-border:var(--pu);--accent-glow:var(--pud);}
+.card{padding:14px 18px}.grid{margin-bottom:10px}.links{margin-top:6px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Forks</div>
+    <div class="update-tag">5 Nov 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-11/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<section class="slide" data-name="Separate chain">
+<h2 class="slide-title">ECX: a separate copy of Bitcoin’s history</h2>
+<p class="subtitle">ECX forked from Bitcoin at block 973,728 on 29 October: it copied the history and unspent coins, then continued under different rules.</p>
+<div class="grid">
+<div class="card pu"><div class="card-label">A SEPARATE ASSET AND NETWORK</div><div class="card-text"><ul>
+<li>eCash at ecash.com uses <strong>ECX</strong>. It is separate from Bitcoin and the older eCash project, XEC.</li>
+<li>Copied Bitcoin outputs become coins on ECX. The fork itself leaves BTC balances unchanged.</li>
+<li>ECX has its own mining security; copying Bitcoin’s history does not copy its hashpower.</li>
+</ul></div></div>
+<div class="card bl"><div class="card-label">WHAT DRIVECHAINS ENABLE</div><div class="card-text"><ul>
+<li>A <strong>sidechain</strong> is a separate blockchain with its own transaction rules. Drivechains connect ECX to these chains.</li>
+<li><strong>BIP300:</strong> lock ECX, receive a sidechain balance, then ask ECX miners to approve a withdrawal back.</li>
+<li><strong>BIP301:</strong> builders pay ECX miners to record a sidechain block’s cryptographic reference. Miners need not check its transactions.</li>
+</ul></div></div>
+</div>
+<p class="scope-note">Peter Todd’s critique of BIP300: miners can approve incorrect withdrawals; the mainchain has no fraud-proof mechanism to overturn them.</p>
+<div class="links"><a href="https://dashboard.ecash.com/news?network=mainnet" target="_blank" rel="noopener">Official launch timeline</a>
+<a href="https://ecash.com/fast-facts/" target="_blank" rel="noopener">Protocol reference</a>
+<a href="https://ecash.com/sidechains/" target="_blank" rel="noopener">Drivechains</a>
+<a href="https://petertodd.org/2023/drivechains" target="_blank" rel="noopener">Withdrawal security critique</a></div>
+</section>
+
+<section class="slide" data-name="Allocation rules">
+<h2 class="slide-title">ECX reassigns 500,000 copied coins</h2>
+<p class="subtitle">Spending normally requires the owner’s authorisation. ECX’s new rules let block 973,768 reassign copied balances without it.</p>
+<div class="grid">
+<div class="card pu"><div class="card-label">ACCEPTED UNDER ECX’S RULES</div><div class="card-text">
+<div class="metric">500,000 ECX</div>
+<ul><li>232 transactions sent this amount to <strong>232 distinct addresses</strong>.</li>
+<li>They spent 10,127 copied unspent outputs, the transactions’ inputs, without the original holders’ signatures.</li>
+<li>The corresponding BTC was not spent.</li></ul>
+</div></div>
+<div class="card bl"><div class="card-label">FUNDING PLAN AND OBJECTION</div><div class="card-text"><ul>
+<li><strong>LayerTwo Labs:</strong> proposed allocating copied coins it attributed to Satoshi to investors, to finance development and launch.</li>
+<li><strong>Beau Turner, Abundant Mines:</strong> reassigning fork coins violates property rights, even though BTC is untouched.</li>
+</ul></div></div>
+</div>
+<p class="scope-note">The transactions show amounts and destinations. They do not establish who owned the original keys or identify the recipients; 232 addresses does not mean 232 investors.</p>
+<div class="links"><a href="https://explorer.blockfab.org/block/00000000000000002ba7288e4eaba9cbacdb189e0aed1a641be9b9c82f1f27e8" target="_blank" rel="noopener">ECX block 973,768</a>
+<a href="https://buy.ecash.com/ecash-investment-details.pdf" target="_blank" rel="noopener">LayerTwo Labs funding plan</a>
+<a href="https://www.coindesk.com/tech/2026/04/28/bitcoiners-are-calling-ecash-a-hard-fork-theft-but-it-doesn-t-even-touch-satoshi-s-btc" target="_blank" rel="noopener">Turner’s objection · CoinDesk</a></div>
+</section>
+
+<section class="slide" data-name="Replay protection">
+<h2 class="slide-title">A BTC payment can also move ECX</h2>
+<p class="subtitle">Replay means copying the same signed transaction to another chain. ECX protection is opt-in.</p>
+<div class="grid">
+<div class="card rd"><div class="card-label">EXAMPLE: ALICE PAYS BOB</div><div class="card-text"><ul>
+<li>An output exists unspent on both Bitcoin and ECX. Alice signs a BTC payment spending it to Bob.</li>
+<li>Someone copies that transaction to ECX. If valid there too, it transfers Alice’s matching ECX to Bob without another signature.</li>
+</ul></div></div>
+<div class="card pu"><div class="card-label">MAKING THE ECX SPEND DIFFERENT</div><div class="card-text"><ul>
+<li>Locktime can mean “not before this block”. ECX accepts the special value <code>499999998</code>; Bitcoin treats it as a far-future height.</li>
+<li>Each input has a sequence field. At least one must use a <strong>non-final</strong> value to enable locktime; otherwise Bitcoin ignores it and the protection fails.</li>
+</ul></div></div>
+</div>
+<p class="scope-note">A confirmed protected ECX spend separates only its included coins. Follow wallet-specific guidance and check both chains; a reorganisation can undo a recent split. <strong>Never enter a BTC seed or private key into a claiming website.</strong></p>
+<div class="links"><a href="https://ecash.com/coin-splitting/" target="_blank" rel="noopener">Official mainnet splitting guidance</a></div>
+</section>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+<!--
+  Slide runtime (keyboard navigation, dot rendering, prev/next, disclosure
+  toggling, Escape → back to month hub) is provided by /assets/slides.js.
+  Add per-topic bespoke <script> blocks below if needed.
+-->
+</body>
+</html>

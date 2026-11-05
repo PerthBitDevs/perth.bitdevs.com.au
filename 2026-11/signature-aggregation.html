@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Input Signature Aggregation - Perth BitDevs November 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pbd-theme');var m=window.matchMedia&&window.matchMedia('(prefers-color-scheme: light)');var t=s||(m&&m.matches?'light':'dark');document.documentElement.dataset.theme=t}catch(e){}})();</script>
+<link rel="stylesheet" href="/assets/theme.css">
+<link rel="stylesheet" href="/assets/slide-chrome.css">
+<script src="/assets/theme.js" defer></script>
+<script src="/assets/slides.js" defer></script>
+<style>
+:root {
+  --bg:#06080d;--sf:#0d1117;--sf2:#151b25;--bd:#1c2432;--bdh:#2a3545;
+  --tx:#e2e8f0;--txM:#94a3b8;--txD:#506078;
+  --or:#f7931a;--orD:rgba(247,147,26,.10);--orG:rgba(247,147,26,.25);--orB:#b36a0f;
+  --bl:#3b82f6;--bld:rgba(59,130,246,.12);
+  --gn:#22c55e;--gnd:rgba(34,197,94,.12);
+  --rd:#ef4444;--rdd:rgba(239,68,68,.12);
+  --cy:#06b6d4;--cyd:rgba(6,182,212,.12);
+  --pu:#a855f7;--pud:rgba(168,85,247,.12);
+  --pk:#ec4899;--pkd:rgba(236,72,153,.12);
+  --yl:#eab308;--yld:rgba(234,179,8,.12);
+  --tl:#14b8a6;--tld:rgba(20,184,166,.12);
+  --accent:var(--or);--accent-bg:var(--orD);--accent-glow:var(--orG);--accent-border:var(--orB);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--tx);font-family:'DM Sans',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1000;
+}
+.glow{position:fixed;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:430px;background:radial-gradient(ellipse,var(--accent-glow),transparent 70%);filter:blur(90px);opacity:.65;pointer-events:none}
+/*
+ * The slide-deck chrome (.header, .badge, .dots, .branding, .content,
+ * .slide-inner, .slide, h2.slide-title, .subtitle, .hero, .grid, .card and
+ * variants, .links, .disclosure, .footer-nav, .nav-btn, .nav-info, plus the
+ * @media responsive rules) lives in /assets/slide-chrome.css. Add per-topic
+ * bespoke components below as needed; they'll override the shared rules.
+ */
+
+/* November content components. Shared navigation remains in /assets/. */
+.card-text ul{padding-left:1.15em}.card-text li+li{margin-top:7px}
+.scope-note{font-size:18px;line-height:1.5;color:var(--txM);margin:10px 0}
+.metric{font:800 40px/1.2 'JetBrains Mono',monospace;color:var(--tx);margin:8px 0}
+.comparison{width:100%;border-collapse:collapse;margin:12px 0;font-size:20px;line-height:1.4}
+.comparison caption{text-align:left;color:var(--txM);font-size:18px;margin-bottom:10px}
+.comparison th,.comparison td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--bd)}
+.comparison th{font-family:'JetBrains Mono',monospace;font-size:17px;color:var(--accent)}
+.comparison td{color:var(--txM)}.comparison td strong{color:var(--tx)}
+.table-scroll{overflow-x:auto}.links a{font-size:19px;color:var(--or)}
+.branding,.nav-info{color:var(--txM)}
+.nav-btn{white-space:nowrap}
+.badge-group{max-width:45%}.slide-title{overflow-wrap:anywhere}
+@media(min-width:761px) and (max-height:800px){.comparison th,.comparison td{padding:8px 12px}}
+@media(max-width:600px){.header{flex-wrap:wrap}.badge-group{max-width:none}.dots{order:4;width:100%}.content{padding:24px 16px}.comparison{font-size:17px}.comparison th,.comparison td{padding:10px 8px}.metric{font-size:32px}.nav-info{font-size:13px}.nav-btn{min-width:78px;padding:6px 10px}}
+
+:root{--accent:var(--cy);--accent-bg:var(--cyd);--accent-border:var(--cy);--accent-glow:var(--cyd);}
+.card{padding:14px 18px}.grid{margin-bottom:10px}.links{margin-top:6px}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="header">
+  <div class="badge-group">
+    <div class="badge">Protocol</div>
+    <div class="update-tag">5 Nov 2026</div>
+  </div>
+  <div class="dots" id="dots" aria-label="Slide navigation"></div>
+  <a class="branding" href="/2026-11/">&larr; Topics</a>
+</div>
+
+<div class="content">
+<div class="slide-inner">
+
+<section class="slide" data-name="Many inputs">
+<h2 class="slide-title">One transaction can need many signatures</h2>
+<p class="subtitle">A transaction spends earlier payments through inputs and creates new payments as outputs.</p>
+<div class="grid"><div class="card"><div class="card-label">ALICE AND BOB SPEND TOGETHER</div><div class="card-text"><ul>
+<li>Alice and Bob contribute one coin each. Each input needs its owner’s authorisation.</li>
+<li>Under Bitcoin’s Taproot rules, a simple spend uses a <strong>64-byte Schnorr signature</strong>. Two inputs need two signatures.</li>
+<li>Several signers controlling one coin is <strong>multisig</strong>. CISA combines authorisations across different input coins.</li>
+</ul></div></div><div class="card bl"><div class="card-label">COMBINE THE SIGNATURE DATA</div><div class="card-text"><ul>
+<li><strong>Cross-input signature aggregation (CISA)</strong> compresses these signatures into one proof that nodes check.</li>
+<li><strong>Half-aggregation:</strong> combine signatures after people sign separately.</li>
+<li><strong>Full aggregation:</strong> people cooperate while signing to produce a smaller proof.</li>
+</ul></div></div></div>
+<p class="scope-note">Draft Bitcoin Improvement Proposals BIPs458–460 specify these schemes and their use in transactions. Published 2–4 November (UTC); not activated on mainnet.</p>
+<div class="links"><a href="https://github.com/bitcoin/bips/pull/2205" target="_blank" rel="noopener">BIP458 · 2 Nov UTC</a>
+<a href="https://github.com/bitcoin/bips/pull/2210" target="_blank" rel="noopener">BIP459 · 3 Nov UTC</a>
+<a href="https://github.com/bitcoin/bips/pull/2212" target="_blank" rel="noopener">BIP460 · 4 Nov UTC</a></div>
+</section>
+
+<section class="slide" data-name="Signature savings">
+<h2 class="slide-title">Two ways to reduce signature data</h2>
+<p class="subtitle">A Schnorr signature has two 32-byte parts. Ten separate signatures therefore use 640 bytes.</p>
+<div class="table-scroll"><table class="comparison"><caption>Signature bytes only; transaction framing and BIP460 markers excluded.</caption><thead><tr><th scope="col">Method</th><th scope="col">Ten inputs</th><th scope="col">What gets combined</th></tr></thead><tbody>
+<tr><td>Separate signatures</td><td><strong>640 bytes</strong></td><td>Ten complete 64-byte signatures.</td></tr>
+<tr><td>BIP458: half-aggregation</td><td><strong>352 bytes</strong></td><td>Keep each first part; combine the second parts into one value: <strong>10 × 32 + 32</strong>.</td></tr>
+<tr><td>BIP459: full aggregation</td><td><strong>64 bytes</strong></td><td>Produce one signature covering all participating keys and the transaction data each authorises.</td></tr>
+</tbody></table></div><p class="scope-note">Input references, amounts and destinations remain, so percentage fee savings are smaller than signature-byte savings at a fixed fee rate.</p>
+<div class="links"><a href="https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0458.mediawiki" target="_blank" rel="noopener">BIP458</a>
+<a href="https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0459.mediawiki" target="_blank" rel="noopener">BIP459 / DahLIAS</a></div>
+</section>
+
+<section class="slide" data-name="Signing together">
+<h2 class="slide-title">Full aggregation requires two signing rounds</h2>
+<p class="subtitle">DahLIAS, the scheme in BIP459, creates its 64-byte signature through an exchange between the participating wallets.</p>
+<div class="table-scroll"><table class="comparison"><caption>A coordinator collects the messages; each wallet must still authorise its own spend.</caption><thead><tr><th scope="col">Round</th><th scope="col">What the wallets do</th></tr></thead><tbody>
+<tr><td><strong>1. Prepare</strong></td><td>Each wallet creates fresh, single-use signing material called a nonce. It sends the public part and receives the combined result plus everyone’s keys and transaction data.</td></tr>
+<tr><td><strong>2. Sign</strong></td><td>Each wallet checks that session and returns a partial signature. The coordinator combines the partials into the final signature.</td></tr>
+</tbody></table></div><div class="grid"><div class="card rd"><div class="card-label">THE COORDINATION COST</div><div class="card-text"><ul><li>A participant can stall the session. Reusing secret nonce material can expose a private key.</li></ul></div></div>
+<div class="card gn"><div class="card-label">WHY KEEP HALF-AGGREGATION?</div><div class="card-text"><ul><li>People can sign separately, at different times. Someone combines their completed signatures afterwards.</li></ul></div></div></div>
+<div class="links"><a href="https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0459.mediawiki" target="_blank" rel="noopener">DahLIAS signing flow</a>
+<a href="https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0460.mediawiki" target="_blank" rel="noopener">Why both schemes are proposed</a></div>
+</section>
+
+<section class="slide" data-name="New spending rules">
+<h2 class="slide-title">Aggregation needs a new Bitcoin output type</h2>
+<p class="subtitle">Each output sets conditions for spending its coins. BIP460 proposes a new type whose conditions allow aggregated signatures.</p>
+<div class="grid"><div class="card"><div class="card-label">HOW NODES RECOGNISE THE RULES</div><div class="card-text"><ul>
+<li>The spending data, including signatures, is called the <strong>witness</strong>. A version number on the output tells nodes how to check it.</li>
+<li>BIP460 proposes witness version 2. Existing Taproot outputs use different rules and would not change automatically.</li>
+<li>After activation, coins would need to be sent to the new output type to use aggregation.</li>
+</ul></div></div><div class="card bl"><div class="card-label">WHICH SPENDS ARE INCLUDED?</div><div class="card-text"><ul>
+<li>A <strong>key-path</strong> spend authorises payment with a signature. These signatures can aggregate within one transaction.</li>
+<li>A <strong>script-path</strong> spend reveals a program with additional spending conditions. Those signatures are excluded.</li>
+<li>The signer chooses half, full or no aggregation. This preserves protocols that need the exact individual signature.</li>
+</ul></div></div></div><p class="scope-note">The draft has no activation schedule, and the proposed version number needs coordination. Aggregation does not hide amounts or transaction links.</p>
+<div class="links"><a href="https://github.com/bitcoin/bips/blob/a0c977f3755da6476b955677ca9318334a2432c4/bip-0460.mediawiki" target="_blank" rel="noopener">BIP460 scope and rationale</a></div>
+</section>
+</div>
+</div>
+
+<div class="footer-nav">
+  <button type="button" class="nav-btn" id="prevBtn">&larr; Prev</button>
+  <div class="nav-info" id="navInfo"></div>
+  <button type="button" class="nav-btn next" id="nextBtn">Next &rarr;</button>
+</div>
+<!--
+  Slide runtime (keyboard navigation, dot rendering, prev/next, disclosure
+  toggling, Escape → back to month hub) is provided by /assets/slides.js.
+  Add per-topic bespoke <script> blocks below if needed.
+-->
+</body>
+</html>
